@@ -1,0 +1,7 @@
+#,,,/opt/VRTS/install/_INSTALL_CMD_ -uninstall _IP_,,,1800
+The installer has discovered an existing installer process,,,n
+Do you want to stop,,,y,,,30
+Press*to continue,,, ,,,20
+you want to continue?,,,y,,,1800
+you like to view the summary file,,,n
+you want to exit install,,,y

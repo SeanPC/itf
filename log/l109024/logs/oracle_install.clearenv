@@ -1,0 +1,845 @@
+
+
+DATE:2017-09-27 10:20:34
+HOST:l109024
+USER:root
+STDIN:for file in /etc/vx/encryption;do [ -d $file ] && rm -rf $file || echo 0;done
+STDOUT:
+0
+
+
+DATE:2017-09-27 10:20:35
+HOST:l109025
+USER:root
+STDIN:for file in /etc/vx/encryption;do [ -d $file ] && rm -rf $file || echo 0;done
+STDOUT:
+0
+
+
+DATE:2017-09-27 10:20:36
+HOST:l109024
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sfrac24 (
+	SecureClus = 1
+	DefaultGuestAccess = 1
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l109024 (
+	)
+
+system l109025 (
+	)
+
+group cvm (
+	SystemList = { l109024 = 0, l109025 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l109024, l109025 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sfrac24
+		CVMNodeId = { l109024 = 0, l109025 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+***umount vxfs on node l109024***
+
+
+
+DATE:2017-09-27 10:20:37
+HOST:l109024
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sdb2 127G 24G 97G 20% /
+devtmpfs 9.8G 0 9.8G 0% /dev
+tmpfs 9.8G 0 9.8G 0% /dev/shm
+tmpfs 9.8G 36M 9.7G 1% /run
+tmpfs 9.8G 0 9.8G 0% /sys/fs/cgroup
+tmpfs 2.0G 0 2.0G 0% /run/user/0
+10.198.90.16:/re 2.1T 1.8T 387G 82% /mnt
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+10.200.111.57:/oracle/linux/12102 127G 54G 67G 45% /oraimage
+/dev/vx/dsk/oradg1510_ocrvote/ocrvote 9.0G 38M 8.5G 1% /ocrvote
+/dev/vx/dsk/oradg1510_dbarch/dbdata 9.0G 38M 8.5G 1% /dbdata
+/dev/vx/dsk/oradg1510_dbarch/archive 9.0G 38M 8.5G 1% /archive
+
+***umount vxfs on node l109025***
+
+
+
+DATE:2017-09-27 10:20:38
+HOST:l109025
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sdy2 127G 23G 98G 19% /
+devtmpfs 9.8G 0 9.8G 0% /dev
+tmpfs 9.8G 0 9.8G 0% /dev/shm
+tmpfs 9.8G 36M 9.7G 1% /run
+tmpfs 9.8G 0 9.8G 0% /sys/fs/cgroup
+tmpfs 2.0G 0 2.0G 0% /run/user/0
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/oradg1510_ocrvote/ocrvote 9.0G 38M 8.5G 1% /ocrvote
+/dev/vx/dsk/oradg1510_dbarch/dbdata 9.0G 38M 8.5G 1% /dbdata
+/dev/vx/dsk/oradg1510_dbarch/archive 9.0G 38M 8.5G 1% /archive
+
+
+DATE:2017-09-27 10:20:40
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      DEVICE
+
+
+DATE:2017-09-27 10:20:41
+HOST:l109025
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      DEVICE
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-09-27 10:20:42
+HOST:l109024
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen701
+
+
+DATE:2017-09-27 10:20:43
+HOST:l109024
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc0_02a0    auto:cdsdisk    -            (vxfendg)    online
+emc0_02aa    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ab    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ac    auto:cdsdisk    -            (fen701)     online
+emc0_02ad    auto:cdsdisk    -            (fen701)     online
+emc0_02ae    auto:cdsdisk    -            (fen701)     online
+emc0_02af    auto:cdsdisk    -            -            online
+emc0_02a1    auto:cdsdisk    -            -            online
+emc0_02a2    auto:cdsdisk    -            -            online
+emc0_02a3    auto:cdsdisk    -            -            online
+emc0_02a4    auto:cdsdisk    -            -            online
+emc0_02a5    auto:cdsdisk    -            -            online
+emc0_02a6    auto:cdsdisk    -            -            online
+emc0_02a7    auto:cdsdisk    -            -            online
+emc0_02a8    auto:cdsdisk    -            -            online
+emc0_02a9    auto:cdsdisk    -            -            online
+emc0_02b0    auto:cdsdisk    -            -            online thinrclm
+emc0_02b1    auto:LVM        -            -            LVM
+emc0_02b2    auto:cdsdisk    -            -            online thinrclm
+emc0_02b3    auto:cdsdisk    -            -            online thinrclm
+emc0_02b4    auto:cdsdisk    -            -            online thinrclm
+emc0_02b5    auto:cdsdisk    -            -            online thinrclm
+emc0_02b6    auto:cdsdisk    -            -            online thinrclm
+emc0_02b7    auto:cdsdisk    -            -            online thinrclm
+emc0_02b8    auto:cdsdisk    -            -            online thinrclm
+emc0_02b9    auto:cdsdisk    -            -            online thinrclm
+emc0_02de    auto:cdsdisk    -            -            online
+emc0_02df    auto:cdsdisk    -            -            online
+emc0_02e0    auto:cdsdisk    -            -            online
+emc0_02ea    auto:cdsdisk    -            -            online
+emc0_02eb    auto:cdsdisk    -            -            online
+emc0_02ec    auto:cdsdisk    -            -            online
+emc0_02ed    auto:cdsdisk    -            -            online
+emc0_02ee    auto:cdsdisk    -            -            online
+emc0_02ef    auto:cdsdisk    -            -            online
+emc0_02e1    auto:cdsdisk    -            -            online
+emc0_02e2    auto:cdsdisk    -            -            online
+emc0_02e3    auto:cdsdisk    -            -            online
+emc0_02e4    auto:cdsdisk    -            -            online
+emc0_02e5    auto:cdsdisk    -            -            online
+emc0_02e6    auto:cdsdisk    -            -            online
+emc0_02e7    auto:cdsdisk    -            -            online
+emc0_02e8    auto:cdsdisk    -            -            online
+emc0_02e9    auto:cdsdisk    -            -            online
+emc0_02f0    auto:cdsdisk    -            -            online
+emc0_02fa    auto:cdsdisk    -            -            online
+emc0_02fb    auto:cdsdisk    -            -            online
+emc0_02fc    auto:cdsdisk    -            -            online
+emc0_02fd    auto:cdsdisk    -            -            online
+emc0_02fe    auto:cdsdisk    emc0_02fe    oradg1510_dbarch online shared
+emc0_02ff    auto:cdsdisk    emc0_02ff    oradg1510_dbarch online shared
+emc0_02f1    auto:cdsdisk    -            -            online
+emc0_02f2    auto:cdsdisk    -            -            online
+emc0_02f3    auto:cdsdisk    -            -            online
+emc0_02f4    auto:cdsdisk    -            -            online
+emc0_02f5    auto:cdsdisk    -            -            online
+emc0_02f6    auto:cdsdisk    -            -            online
+emc0_02f7    auto:cdsdisk    -            -            online
+emc0_02f8    auto:cdsdisk    -            -            online
+emc0_02f9    auto:cdsdisk    -            -            online
+emc0_023a    auto:cdsdisk    -            -            online
+emc0_023b    auto:cdsdisk    -            -            online
+emc0_029c    auto:cdsdisk    -            -            online
+emc0_029d    auto:cdsdisk    -            -            online
+emc0_029e    auto:cdsdisk    -            -            online
+emc0_029f    auto:cdsdisk    -            -            online
+emc0_0234    auto:cdsdisk    -            -            online
+emc0_0235    auto:cdsdisk    -            -            online
+emc0_0236    auto:cdsdisk    -            -            online
+emc0_0237    auto:cdsdisk    -            -            online
+emc0_0238    auto:cdsdisk    -            -            online
+emc0_0239    auto:cdsdisk    -            -            online
+emc0_0300    auto:cdsdisk    emc0_0300    oradg1510_dbarch online shared
+emc0_0301    auto:cdsdisk    emc0_0301    oradg1510_dbarch online shared
+emc0_0302    auto:cdsdisk    emc0_0302    oradg1510_ocrvote online shared
+emc0_0303    auto:cdsdisk    emc0_0303    oradg1510_ocrvote online shared
+emc0_0304    auto:cdsdisk    emc0_0304    oradg1510_ocrvote online shared
+emc0_0305    auto:LVM        -            -            LVM
+sdb          auto:none       -            -            online invalid
+
+
+DATE:2017-09-27 10:20:45
+HOST:l109024
+USER:root
+STDIN:vxdg -Cf import vxfendg
+STDOUT:
+VxVM vxdg ERROR V-5-1-10978 Disk group vxfendg: import failed: 
+Diskgroup version not supported in release
+RETURN:20
+RESULT:WARNING
+
+
+DATE:2017-09-27 10:20:46
+HOST:l109024
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen701
+
+
+DATE:2017-09-27 10:20:47
+HOST:l109024
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc0_02a0    auto:cdsdisk    -            (vxfendg)    online
+emc0_02aa    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ab    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ac    auto:cdsdisk    -            (fen701)     online
+emc0_02ad    auto:cdsdisk    -            (fen701)     online
+emc0_02ae    auto:cdsdisk    -            (fen701)     online
+emc0_02af    auto:cdsdisk    -            -            online
+emc0_02a1    auto:cdsdisk    -            -            online
+emc0_02a2    auto:cdsdisk    -            -            online
+emc0_02a3    auto:cdsdisk    -            -            online
+emc0_02a4    auto:cdsdisk    -            -            online
+emc0_02a5    auto:cdsdisk    -            -            online
+emc0_02a6    auto:cdsdisk    -            -            online
+emc0_02a7    auto:cdsdisk    -            -            online
+emc0_02a8    auto:cdsdisk    -            -            online
+emc0_02a9    auto:cdsdisk    -            -            online
+emc0_02b0    auto:cdsdisk    -            -            online thinrclm
+emc0_02b1    auto:LVM        -            -            LVM
+emc0_02b2    auto:cdsdisk    -            -            online thinrclm
+emc0_02b3    auto:cdsdisk    -            -            online thinrclm
+emc0_02b4    auto:cdsdisk    -            -            online thinrclm
+emc0_02b5    auto:cdsdisk    -            -            online thinrclm
+emc0_02b6    auto:cdsdisk    -            -            online thinrclm
+emc0_02b7    auto:cdsdisk    -            -            online thinrclm
+emc0_02b8    auto:cdsdisk    -            -            online thinrclm
+emc0_02b9    auto:cdsdisk    -            -            online thinrclm
+emc0_02de    auto:cdsdisk    -            -            online
+emc0_02df    auto:cdsdisk    -            -            online
+emc0_02e0    auto:cdsdisk    -            -            online
+emc0_02ea    auto:cdsdisk    -            -            online
+emc0_02eb    auto:cdsdisk    -            -            online
+emc0_02ec    auto:cdsdisk    -            -            online
+emc0_02ed    auto:cdsdisk    -            -            online
+emc0_02ee    auto:cdsdisk    -            -            online
+emc0_02ef    auto:cdsdisk    -            -            online
+emc0_02e1    auto:cdsdisk    -            -            online
+emc0_02e2    auto:cdsdisk    -            -            online
+emc0_02e3    auto:cdsdisk    -            -            online
+emc0_02e4    auto:cdsdisk    -            -            online
+emc0_02e5    auto:cdsdisk    -            -            online
+emc0_02e6    auto:cdsdisk    -            -            online
+emc0_02e7    auto:cdsdisk    -            -            online
+emc0_02e8    auto:cdsdisk    -            -            online
+emc0_02e9    auto:cdsdisk    -            -            online
+emc0_02f0    auto:cdsdisk    -            -            online
+emc0_02fa    auto:cdsdisk    -            -            online
+emc0_02fb    auto:cdsdisk    -            -            online
+emc0_02fc    auto:cdsdisk    -            -            online
+emc0_02fd    auto:cdsdisk    -            -            online
+emc0_02fe    auto:cdsdisk    emc0_02fe    oradg1510_dbarch online shared
+emc0_02ff    auto:cdsdisk    emc0_02ff    oradg1510_dbarch online shared
+emc0_02f1    auto:cdsdisk    -            -            online
+emc0_02f2    auto:cdsdisk    -            -            online
+emc0_02f3    auto:cdsdisk    -            -            online
+emc0_02f4    auto:cdsdisk    -            -            online
+emc0_02f5    auto:cdsdisk    -            -            online
+emc0_02f6    auto:cdsdisk    -            -            online
+emc0_02f7    auto:cdsdisk    -            -            online
+emc0_02f8    auto:cdsdisk    -            -            online
+emc0_02f9    auto:cdsdisk    -            -            online
+emc0_023a    auto:cdsdisk    -            -            online
+emc0_023b    auto:cdsdisk    -            -            online
+emc0_029c    auto:cdsdisk    -            -            online
+emc0_029d    auto:cdsdisk    -            -            online
+emc0_029e    auto:cdsdisk    -            -            online
+emc0_029f    auto:cdsdisk    -            -            online
+emc0_0234    auto:cdsdisk    -            -            online
+emc0_0235    auto:cdsdisk    -            -            online
+emc0_0236    auto:cdsdisk    -            -            online
+emc0_0237    auto:cdsdisk    -            -            online
+emc0_0238    auto:cdsdisk    -            -            online
+emc0_0239    auto:cdsdisk    -            -            online
+emc0_0300    auto:cdsdisk    emc0_0300    oradg1510_dbarch online shared
+emc0_0301    auto:cdsdisk    emc0_0301    oradg1510_dbarch online shared
+emc0_0302    auto:cdsdisk    emc0_0302    oradg1510_ocrvote online shared
+emc0_0303    auto:cdsdisk    emc0_0303    oradg1510_ocrvote online shared
+emc0_0304    auto:cdsdisk    emc0_0304    oradg1510_ocrvote online shared
+emc0_0305    auto:LVM        -            -            LVM
+sdb          auto:none       -            -            online invalid
+
+
+DATE:2017-09-27 10:20:49
+HOST:l109024
+USER:root
+STDIN:vxfenadm -ak 1 -f /tmp/disk.25050 && vxfenadm -ck 1 -f /tmp/disk.25050
+STDOUT:
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc0_02aa
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc0_02ab
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc0_02a0
+DMP Clear completed for disk path: /dev/vx/rdmp/emc0_02a0
+DMP Clear completed for disk path: /dev/vx/rdmp/emc0_02aa
+DMP Clear completed for disk path: /dev/vx/rdmp/emc0_02ab
+
+
+DATE:2017-09-27 10:20:50
+HOST:l109024
+USER:root
+STDIN:echo "emc0_02a0 emc0_02aa emc0_02ab"|xargs -n1 vxdisk -f init
+STDOUT:
+VxVM vxdisk ERROR V-5-1-12067  cannot initialize coordinator disk
+VxVM vxdisk ERROR V-5-1-12067  cannot initialize coordinator disk
+VxVM vxdisk ERROR V-5-1-12067  cannot initialize coordinator disk
+RETURN:123
+RESULT:WARNING
+
+
+DATE:2017-09-27 10:20:51
+HOST:l109024
+USER:root
+STDIN:rm -f /tmp/disk.25050
+STDOUT:
+
+
+
+DATE:2017-09-27 10:20:52
+HOST:l109024
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+oradg1510_ocrvote enabled,shared,cds   1506478784.91.l109024.cdc.veritas.com
+oradg1510_dbarch enabled,shared,cds   1506478786.93.l109024.cdc.veritas.com
+
+
+DATE:2017-09-27 10:20:53
+HOST:l109024
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+emc0              EMC            000492600040         CONNECTED    A/A        78         5876
+disk              Disk           DISKS                CONNECTED    Disk        1         HS09
+
+
+DATE:2017-09-27 10:20:54
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/vxdisk list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc0_02a0    auto:cdsdisk    -            -            online
+emc0_02aa    auto:cdsdisk    -            -            online
+emc0_02ab    auto:cdsdisk    -            -            online
+emc0_02ac    auto:cdsdisk    -            -            online
+emc0_02ad    auto:cdsdisk    -            -            online
+emc0_02ae    auto:cdsdisk    -            -            online
+emc0_02af    auto:cdsdisk    -            -            online
+emc0_02a1    auto:cdsdisk    -            -            online
+emc0_02a2    auto:cdsdisk    -            -            online
+emc0_02a3    auto:cdsdisk    -            -            online
+emc0_02a4    auto:cdsdisk    -            -            online
+emc0_02a5    auto:cdsdisk    -            -            online
+emc0_02a6    auto:cdsdisk    -            -            online
+emc0_02a7    auto:cdsdisk    -            -            online
+emc0_02a8    auto:cdsdisk    -            -            online
+emc0_02a9    auto:cdsdisk    -            -            online
+emc0_02b0    auto:cdsdisk    -            -            online thinrclm
+emc0_02b1    auto:LVM        -            -            LVM
+emc0_02b2    auto:cdsdisk    -            -            online thinrclm
+emc0_02b3    auto:cdsdisk    -            -            online thinrclm
+emc0_02b4    auto:cdsdisk    -            -            online thinrclm
+emc0_02b5    auto:cdsdisk    -            -            online thinrclm
+emc0_02b6    auto:cdsdisk    -            -            online thinrclm
+emc0_02b7    auto:cdsdisk    -            -            online thinrclm
+emc0_02b8    auto:cdsdisk    -            -            online thinrclm
+emc0_02b9    auto:cdsdisk    -            -            online thinrclm
+emc0_02de    auto:cdsdisk    -            -            online
+emc0_02df    auto:cdsdisk    -            -            online
+emc0_02e0    auto:cdsdisk    -            -            online
+emc0_02ea    auto:cdsdisk    -            -            online
+emc0_02eb    auto:cdsdisk    -            -            online
+emc0_02ec    auto:cdsdisk    -            -            online
+emc0_02ed    auto:cdsdisk    -            -            online
+emc0_02ee    auto:cdsdisk    -            -            online
+emc0_02ef    auto:cdsdisk    -            -            online
+emc0_02e1    auto:cdsdisk    -            -            online
+emc0_02e2    auto:cdsdisk    -            -            online
+emc0_02e3    auto:cdsdisk    -            -            online
+emc0_02e4    auto:cdsdisk    -            -            online
+emc0_02e5    auto:cdsdisk    -            -            online
+emc0_02e6    auto:cdsdisk    -            -            online
+emc0_02e7    auto:cdsdisk    -            -            online
+emc0_02e8    auto:cdsdisk    -            -            online
+emc0_02e9    auto:cdsdisk    -            -            online
+emc0_02f0    auto:cdsdisk    -            -            online
+emc0_02fa    auto:cdsdisk    -            -            online
+emc0_02fb    auto:cdsdisk    -            -            online
+emc0_02fc    auto:cdsdisk    -            -            online
+emc0_02fd    auto:cdsdisk    -            -            online
+emc0_02fe    auto:cdsdisk    emc0_02fe    oradg1510_dbarch online shared
+emc0_02ff    auto:cdsdisk    emc0_02ff    oradg1510_dbarch online shared
+emc0_02f1    auto:cdsdisk    -            -            online
+emc0_02f2    auto:cdsdisk    -            -            online
+emc0_02f3    auto:cdsdisk    -            -            online
+emc0_02f4    auto:cdsdisk    -            -            online
+emc0_02f5    auto:cdsdisk    -            -            online
+emc0_02f6    auto:cdsdisk    -            -            online
+emc0_02f7    auto:cdsdisk    -            -            online
+emc0_02f8    auto:cdsdisk    -            -            online
+emc0_02f9    auto:cdsdisk    -            -            online
+emc0_023a    auto:cdsdisk    -            -            online
+emc0_023b    auto:cdsdisk    -            -            online
+emc0_029c    auto:cdsdisk    -            -            online
+emc0_029d    auto:cdsdisk    -            -            online
+emc0_029e    auto:cdsdisk    -            -            online
+emc0_029f    auto:cdsdisk    -            -            online
+emc0_0234    auto:cdsdisk    -            -            online
+emc0_0235    auto:cdsdisk    -            -            online
+emc0_0236    auto:cdsdisk    -            -            online
+emc0_0237    auto:cdsdisk    -            -            online
+emc0_0238    auto:cdsdisk    -            -            online
+emc0_0239    auto:cdsdisk    -            -            online
+emc0_0300    auto:cdsdisk    emc0_0300    oradg1510_dbarch online shared
+emc0_0301    auto:cdsdisk    emc0_0301    oradg1510_dbarch online shared
+emc0_0302    auto:cdsdisk    emc0_0302    oradg1510_ocrvote online shared
+emc0_0303    auto:cdsdisk    emc0_0303    oradg1510_ocrvote online shared
+emc0_0304    auto:cdsdisk    emc0_0304    oradg1510_ocrvote online shared
+emc0_0305    auto:LVM        -            -            LVM
+sdb          auto:none       -            -            online invalid
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-09-27 10:20:55
+HOST:l109025
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen701
+
+
+DATE:2017-09-27 10:20:57
+HOST:l109025
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc0_02a0    auto:cdsdisk    -            (vxfendg)    online
+emc0_02aa    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ab    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ac    auto:cdsdisk    -            (fen701)     online
+emc0_02ad    auto:cdsdisk    -            (fen701)     online
+emc0_02ae    auto:cdsdisk    -            (fen701)     online
+emc0_02af    auto:cdsdisk    -            -            online
+emc0_02a1    auto:cdsdisk    -            -            online
+emc0_02a2    auto:cdsdisk    -            -            online
+emc0_02a3    auto:cdsdisk    -            -            online
+emc0_02a4    auto:cdsdisk    -            -            online
+emc0_02a5    auto:cdsdisk    -            -            online
+emc0_02a6    auto:cdsdisk    -            -            online
+emc0_02a7    auto:cdsdisk    -            -            online
+emc0_02a8    auto:cdsdisk    -            -            online
+emc0_02a9    auto:cdsdisk    -            -            online
+emc0_02b0    auto:cdsdisk    -            -            online thinrclm
+emc0_02b1    auto:LVM        -            -            LVM
+emc0_02b2    auto:cdsdisk    -            -            online thinrclm
+emc0_02b3    auto:cdsdisk    -            -            online thinrclm
+emc0_02b4    auto:cdsdisk    -            -            online thinrclm
+emc0_02b5    auto:cdsdisk    -            -            online thinrclm
+emc0_02b6    auto:cdsdisk    -            -            online thinrclm
+emc0_02b7    auto:cdsdisk    -            -            online thinrclm
+emc0_02b8    auto:cdsdisk    -            -            online thinrclm
+emc0_02b9    auto:cdsdisk    -            -            online thinrclm
+emc0_02de    auto:cdsdisk    -            -            online
+emc0_02df    auto:cdsdisk    -            -            online
+emc0_02e0    auto:cdsdisk    -            -            online
+emc0_02ea    auto:cdsdisk    -            -            online
+emc0_02eb    auto:cdsdisk    -            -            online
+emc0_02ec    auto:cdsdisk    -            -            online
+emc0_02ed    auto:cdsdisk    -            -            online
+emc0_02ee    auto:cdsdisk    -            -            online
+emc0_02ef    auto:cdsdisk    -            -            online
+emc0_02e1    auto:cdsdisk    -            -            online
+emc0_02e2    auto:cdsdisk    -            -            online
+emc0_02e3    auto:cdsdisk    -            -            online
+emc0_02e4    auto:cdsdisk    -            -            online
+emc0_02e5    auto:cdsdisk    -            -            online
+emc0_02e6    auto:cdsdisk    -            -            online
+emc0_02e7    auto:cdsdisk    -            -            online
+emc0_02e8    auto:cdsdisk    -            -            online
+emc0_02e9    auto:cdsdisk    -            -            online
+emc0_02f0    auto:cdsdisk    -            -            online
+emc0_02fa    auto:cdsdisk    -            -            online
+emc0_02fb    auto:cdsdisk    -            -            online
+emc0_02fc    auto:cdsdisk    -            -            online
+emc0_02fd    auto:cdsdisk    -            -            online
+emc0_02fe    auto:cdsdisk    emc0_02fe    oradg1510_dbarch online shared
+emc0_02ff    auto:cdsdisk    emc0_02ff    oradg1510_dbarch online shared
+emc0_02f1    auto:cdsdisk    -            -            online
+emc0_02f2    auto:cdsdisk    -            -            online
+emc0_02f3    auto:cdsdisk    -            -            online
+emc0_02f4    auto:cdsdisk    -            -            online
+emc0_02f5    auto:cdsdisk    -            -            online
+emc0_02f6    auto:cdsdisk    -            -            online
+emc0_02f7    auto:cdsdisk    -            -            online
+emc0_02f8    auto:cdsdisk    -            -            online
+emc0_02f9    auto:cdsdisk    -            -            online
+emc0_023a    auto:cdsdisk    -            -            online
+emc0_023b    auto:cdsdisk    -            -            online
+emc0_029c    auto:cdsdisk    -            -            online
+emc0_029d    auto:cdsdisk    -            -            online
+emc0_029e    auto:cdsdisk    -            -            online
+emc0_029f    auto:cdsdisk    -            -            online
+emc0_0234    auto:cdsdisk    -            -            online
+emc0_0235    auto:cdsdisk    -            -            online
+emc0_0236    auto:cdsdisk    -            -            online
+emc0_0237    auto:cdsdisk    -            -            online
+emc0_0238    auto:cdsdisk    -            -            online
+emc0_0239    auto:cdsdisk    -            -            online
+emc0_0300    auto:cdsdisk    emc0_0300    oradg1510_dbarch online shared
+emc0_0301    auto:cdsdisk    emc0_0301    oradg1510_dbarch online shared
+emc0_0302    auto:cdsdisk    emc0_0302    oradg1510_ocrvote online shared
+emc0_0303    auto:cdsdisk    emc0_0303    oradg1510_ocrvote online shared
+emc0_0304    auto:cdsdisk    emc0_0304    oradg1510_ocrvote online shared
+emc0_0305    auto:LVM        -            -            LVM
+l109025_disk_1 auto:none       -            -            online invalid
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-09-27 10:20:58
+HOST:l109025
+USER:root
+STDIN:vxdg -Cf import vxfendg
+STDOUT:
+VxVM vxdg ERROR V-5-1-10978 Disk group vxfendg: import failed: 
+Diskgroup version not supported in release
+RETURN:20
+RESULT:WARNING
+
+
+DATE:2017-09-27 10:20:59
+HOST:l109025
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen701
+
+
+DATE:2017-09-27 10:21:00
+HOST:l109025
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc0_02a0    auto:cdsdisk    -            (vxfendg)    online
+emc0_02aa    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ab    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ac    auto:cdsdisk    -            (fen701)     online
+emc0_02ad    auto:cdsdisk    -            (fen701)     online
+emc0_02ae    auto:cdsdisk    -            (fen701)     online
+emc0_02af    auto:cdsdisk    -            -            online
+emc0_02a1    auto:cdsdisk    -            -            online
+emc0_02a2    auto:cdsdisk    -            -            online
+emc0_02a3    auto:cdsdisk    -            -            online
+emc0_02a4    auto:cdsdisk    -            -            online
+emc0_02a5    auto:cdsdisk    -            -            online
+emc0_02a6    auto:cdsdisk    -            -            online
+emc0_02a7    auto:cdsdisk    -            -            online
+emc0_02a8    auto:cdsdisk    -            -            online
+emc0_02a9    auto:cdsdisk    -            -            online
+emc0_02b0    auto:cdsdisk    -            -            online thinrclm
+emc0_02b1    auto:LVM        -            -            LVM
+emc0_02b2    auto:cdsdisk    -            -            online thinrclm
+emc0_02b3    auto:cdsdisk    -            -            online thinrclm
+emc0_02b4    auto:cdsdisk    -            -            online thinrclm
+emc0_02b5    auto:cdsdisk    -            -            online thinrclm
+emc0_02b6    auto:cdsdisk    -            -            online thinrclm
+emc0_02b7    auto:cdsdisk    -            -            online thinrclm
+emc0_02b8    auto:cdsdisk    -            -            online thinrclm
+emc0_02b9    auto:cdsdisk    -            -            online thinrclm
+emc0_02de    auto:cdsdisk    -            -            online
+emc0_02df    auto:cdsdisk    -            -            online
+emc0_02e0    auto:cdsdisk    -            -            online
+emc0_02ea    auto:cdsdisk    -            -            online
+emc0_02eb    auto:cdsdisk    -            -            online
+emc0_02ec    auto:cdsdisk    -            -            online
+emc0_02ed    auto:cdsdisk    -            -            online
+emc0_02ee    auto:cdsdisk    -            -            online
+emc0_02ef    auto:cdsdisk    -            -            online
+emc0_02e1    auto:cdsdisk    -            -            online
+emc0_02e2    auto:cdsdisk    -            -            online
+emc0_02e3    auto:cdsdisk    -            -            online
+emc0_02e4    auto:cdsdisk    -            -            online
+emc0_02e5    auto:cdsdisk    -            -            online
+emc0_02e6    auto:cdsdisk    -            -            online
+emc0_02e7    auto:cdsdisk    -            -            online
+emc0_02e8    auto:cdsdisk    -            -            online
+emc0_02e9    auto:cdsdisk    -            -            online
+emc0_02f0    auto:cdsdisk    -            -            online
+emc0_02fa    auto:cdsdisk    -            -            online
+emc0_02fb    auto:cdsdisk    -            -            online
+emc0_02fc    auto:cdsdisk    -            -            online
+emc0_02fd    auto:cdsdisk    -            -            online
+emc0_02fe    auto:cdsdisk    emc0_02fe    oradg1510_dbarch online shared
+emc0_02ff    auto:cdsdisk    emc0_02ff    oradg1510_dbarch online shared
+emc0_02f1    auto:cdsdisk    -            -            online
+emc0_02f2    auto:cdsdisk    -            -            online
+emc0_02f3    auto:cdsdisk    -            -            online
+emc0_02f4    auto:cdsdisk    -            -            online
+emc0_02f5    auto:cdsdisk    -            -            online
+emc0_02f6    auto:cdsdisk    -            -            online
+emc0_02f7    auto:cdsdisk    -            -            online
+emc0_02f8    auto:cdsdisk    -            -            online
+emc0_02f9    auto:cdsdisk    -            -            online
+emc0_023a    auto:cdsdisk    -            -            online
+emc0_023b    auto:cdsdisk    -            -            online
+emc0_029c    auto:cdsdisk    -            -            online
+emc0_029d    auto:cdsdisk    -            -            online
+emc0_029e    auto:cdsdisk    -            -            online
+emc0_029f    auto:cdsdisk    -            -            online
+emc0_0234    auto:cdsdisk    -            -            online
+emc0_0235    auto:cdsdisk    -            -            online
+emc0_0236    auto:cdsdisk    -            -            online
+emc0_0237    auto:cdsdisk    -            -            online
+emc0_0238    auto:cdsdisk    -            -            online
+emc0_0239    auto:cdsdisk    -            -            online
+emc0_0300    auto:cdsdisk    emc0_0300    oradg1510_dbarch online shared
+emc0_0301    auto:cdsdisk    emc0_0301    oradg1510_dbarch online shared
+emc0_0302    auto:cdsdisk    emc0_0302    oradg1510_ocrvote online shared
+emc0_0303    auto:cdsdisk    emc0_0303    oradg1510_ocrvote online shared
+emc0_0304    auto:cdsdisk    emc0_0304    oradg1510_ocrvote online shared
+emc0_0305    auto:LVM        -            -            LVM
+l109025_disk_1 auto:none       -            -            online invalid
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-09-27 10:21:02
+HOST:l109025
+USER:root
+STDIN:vxfenadm -ak 1 -f /tmp/disk.25050 && vxfenadm -ck 1 -f /tmp/disk.25050
+STDOUT:
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc0_02ab
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc0_02aa
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc0_02a0
+DMP Clear completed for disk path: /dev/vx/rdmp/emc0_02a0
+DMP Clear completed for disk path: /dev/vx/rdmp/emc0_02aa
+DMP Clear completed for disk path: /dev/vx/rdmp/emc0_02ab
+
+
+DATE:2017-09-27 10:21:03
+HOST:l109025
+USER:root
+STDIN:echo "emc0_02a0 emc0_02aa emc0_02ab"|xargs -n1 vxdisk -f init
+STDOUT:
+VxVM vxdisk ERROR V-5-1-12067  cannot initialize coordinator disk
+VxVM vxdisk ERROR V-5-1-12067  cannot initialize coordinator disk
+VxVM vxdisk ERROR V-5-1-12067  cannot initialize coordinator disk
+RETURN:123
+RESULT:WARNING
+
+
+DATE:2017-09-27 10:21:04
+HOST:l109025
+USER:root
+STDIN:rm -f /tmp/disk.25050
+STDOUT:
+
+
+
+DATE:2017-09-27 10:21:05
+HOST:l109025
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+oradg1510_ocrvote enabled,shared,cds   1506478784.91.l109024.cdc.veritas.com
+oradg1510_dbarch enabled,shared,cds   1506478786.93.l109024.cdc.veritas.com
+
+
+DATE:2017-09-27 10:21:07
+HOST:l109025
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+disk              Disk           DISKS                CONNECTED    Disk        2         HS0A
+emc0              EMC            000492600040         CONNECTED    A/A        78         5876
+
+
+DATE:2017-09-27 10:21:08
+HOST:l109025
+USER:root
+STDIN:/opt/VRTS/bin/vxdisk list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc0_02a0    auto:cdsdisk    -            -            online
+emc0_02aa    auto:cdsdisk    -            -            online
+emc0_02ab    auto:cdsdisk    -            -            online
+emc0_02ac    auto:cdsdisk    -            -            online
+emc0_02ad    auto:cdsdisk    -            -            online
+emc0_02ae    auto:cdsdisk    -            -            online
+emc0_02af    auto:cdsdisk    -            -            online
+emc0_02a1    auto:cdsdisk    -            -            online
+emc0_02a2    auto:cdsdisk    -            -            online
+emc0_02a3    auto:cdsdisk    -            -            online
+emc0_02a4    auto:cdsdisk    -            -            online
+emc0_02a5    auto:cdsdisk    -            -            online
+emc0_02a6    auto:cdsdisk    -            -            online
+emc0_02a7    auto:cdsdisk    -            -            online
+emc0_02a8    auto:cdsdisk    -            -            online
+emc0_02a9    auto:cdsdisk    -            -            online
+emc0_02b0    auto:cdsdisk    -            -            online thinrclm
+emc0_02b1    auto:LVM        -            -            LVM
+emc0_02b2    auto:cdsdisk    -            -            online thinrclm
+emc0_02b3    auto:cdsdisk    -            -            online thinrclm
+emc0_02b4    auto:cdsdisk    -            -            online thinrclm
+emc0_02b5    auto:cdsdisk    -            -            online thinrclm
+emc0_02b6    auto:cdsdisk    -            -            online thinrclm
+emc0_02b7    auto:cdsdisk    -            -            online thinrclm
+emc0_02b8    auto:cdsdisk    -            -            online thinrclm
+emc0_02b9    auto:cdsdisk    -            -            online thinrclm
+emc0_02de    auto:cdsdisk    -            -            online
+emc0_02df    auto:cdsdisk    -            -            online
+emc0_02e0    auto:cdsdisk    -            -            online
+emc0_02ea    auto:cdsdisk    -            -            online
+emc0_02eb    auto:cdsdisk    -            -            online
+emc0_02ec    auto:cdsdisk    -            -            online
+emc0_02ed    auto:cdsdisk    -            -            online
+emc0_02ee    auto:cdsdisk    -            -            online
+emc0_02ef    auto:cdsdisk    -            -            online
+emc0_02e1    auto:cdsdisk    -            -            online
+emc0_02e2    auto:cdsdisk    -            -            online
+emc0_02e3    auto:cdsdisk    -            -            online
+emc0_02e4    auto:cdsdisk    -            -            online
+emc0_02e5    auto:cdsdisk    -            -            online
+emc0_02e6    auto:cdsdisk    -            -            online
+emc0_02e7    auto:cdsdisk    -            -            online
+emc0_02e8    auto:cdsdisk    -            -            online
+emc0_02e9    auto:cdsdisk    -            -            online
+emc0_02f0    auto:cdsdisk    -            -            online
+emc0_02fa    auto:cdsdisk    -            -            online
+emc0_02fb    auto:cdsdisk    -            -            online
+emc0_02fc    auto:cdsdisk    -            -            online
+emc0_02fd    auto:cdsdisk    -            -            online
+emc0_02fe    auto:cdsdisk    emc0_02fe    oradg1510_dbarch online shared
+emc0_02ff    auto:cdsdisk    emc0_02ff    oradg1510_dbarch online shared
+emc0_02f1    auto:cdsdisk    -            -            online
+emc0_02f2    auto:cdsdisk    -            -            online
+emc0_02f3    auto:cdsdisk    -            -            online
+emc0_02f4    auto:cdsdisk    -            -            online
+emc0_02f5    auto:cdsdisk    -            -            online
+emc0_02f6    auto:cdsdisk    -            -            online
+emc0_02f7    auto:cdsdisk    -            -            online
+emc0_02f8    auto:cdsdisk    -            -            online
+emc0_02f9    auto:cdsdisk    -            -            online
+emc0_023a    auto:cdsdisk    -            -            online
+emc0_023b    auto:cdsdisk    -            -            online
+emc0_029c    auto:cdsdisk    -            -            online
+emc0_029d    auto:cdsdisk    -            -            online
+emc0_029e    auto:cdsdisk    -            -            online
+emc0_029f    auto:cdsdisk    -            -            online
+emc0_0234    auto:cdsdisk    -            -            online
+emc0_0235    auto:cdsdisk    -            -            online
+emc0_0236    auto:cdsdisk    -            -            online
+emc0_0237    auto:cdsdisk    -            -            online
+emc0_0238    auto:cdsdisk    -            -            online
+emc0_0239    auto:cdsdisk    -            -            online
+emc0_0300    auto:cdsdisk    emc0_0300    oradg1510_dbarch online shared
+emc0_0301    auto:cdsdisk    emc0_0301    oradg1510_dbarch online shared
+emc0_0302    auto:cdsdisk    emc0_0302    oradg1510_ocrvote online shared
+emc0_0303    auto:cdsdisk    emc0_0303    oradg1510_ocrvote online shared
+emc0_0304    auto:cdsdisk    emc0_0304    oradg1510_ocrvote online shared
+emc0_0305    auto:LVM        -            -            LVM
+l109025_disk_1 auto:none       -            -            online invalid
+sda          auto:none       -            -            online invalid

@@ -1,0 +1,232 @@
+
+==================== Operation Log for TC encapsulate_root ====================
+DATE:2017-05-23 00:49:54
+Nodes:l111031 l111032
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-05-23 00:49:54
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-05-23 00:49:54
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:6632740 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:2614922 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:1140411693 (1.0 GiB)  TX bytes:707882855 (675.0 MiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:576 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:576 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:74667 (72.9 KiB)  TX bytes:74667 (72.9 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-05-23 00:49:55
+HOST:l111031
+USER:root
+STDIN:ssh -l root l111031
+STDOUT:
+
+
+
+DATE:2017-05-23 00:49:57
+HOST:l111032
+USER:root
+STDIN:ssh -l root l111032
+STDOUT:
+
+
+
+DATE:2017-05-23 00:50:02
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111031,l111032
+STDOUT:
+
+
+
+DATE:2017-05-23 00:50:03
+HOST:l111031
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+
+DATE:2017-05-23 00:50:04
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+***Getting os version***
+
+
+
+DATE:2017-05-23 00:50:06
+HOST:l111031
+USER:root
+STDIN:cat /etc/issue;uname -r
+STDOUT:
+Oracle Linux Server release 6.9
+Kernel \r on an \m
+
+2.6.32-696.el6.x86_64
+
+***Getting InfoScale Product version***
+
+
+
+DATE:2017-05-23 00:50:08
+HOST:l111031
+USER:root
+STDIN:rpm -qi `rpm -qa|grep -i vxvm`
+STDOUT:
+Name        : VRTSvxvm                     Relocations: (not relocatable)
+Version     : 6.0.500.400                       Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Wed 29 Jun 2016 04:55:03 AM UTC
+Install Date: Wed 17 May 2017 08:53:29 AM UTC      Build Host: sf-rhel6ga-build.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSvxvm-6.0.500.400-RHEL6.src.rpm
+Size        : 95521231                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : support@symantec.com
+URL         : http://support.symantec.com
+Summary     : Veritas Volume Manager by Symantec
+Description :
+Veritas Volume Manager for Linux
+
+***Getting the local disk***
+
+
+
+DATE:2017-05-23 00:50:09
+HOST:l111031
+USER:root
+STDIN:df -h
+STDOUT:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sdap1       89G  5.8G   79G   7% /
+tmpfs            32G     0   32G   0% /dev/shm
+tmpfs           4.0K     0  4.0K   0% /dev/vx
+
+***checking if cvm is configured and online***
+
+
+
+DATE:2017-05-23 00:50:10
+HOST:l111031
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l111031    |ONLINE|
+cvm          State                 l111032    |ONLINE|
+
+***CVM of all nodes "l111031 l111032"are all online***
+
+
+
+DATE:2017-05-23 00:50:11
+HOST:l111031
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+====STEP: checking the dmp_native_support
+DATE:2017-05-23 00:50:11
+
+
+DATE:2017-05-23 00:50:11
+HOST:l111031
+USER:root
+STDIN:vxdmpadm gettune
+STDOUT:
+            Tunable               Current Value  Default Value
+------------------------------    -------------  -------------
+dmp_cache_open                           on	          on
+dmp_daemon_count                         10	          10
+dmp_delayq_interval                      15	          15
+dmp_fast_recovery                        on	          on
+dmp_health_time                          60	          60
+dmp_log_level                             1	           1
+dmp_low_impact_probe                     on	          on
+dmp_lun_retry_timeout                     0	           0
+dmp_path_age                            300	         300
+dmp_pathswitch_blks_shift                 9	           9
+dmp_probe_idle_lun                       on	          on
+dmp_probe_threshold                       5	           5
+dmp_restore_cycles                       10	          10
+dmp_restore_interval                    300	         300
+dmp_restore_policy             check_disabled	check_disabled
+dmp_restore_state                   enabled	     enabled
+dmp_retry_count                           5	           5
+dmp_scsi_timeout                         20	          20
+dmp_sfg_threshold                         1	           1
+dmp_stat_interval                         1	           1
+dmp_monitor_ownership                    on	          on
+dmp_monitor_fabric                       on	          on
+dmp_monitor_osevent                      on	          on
+dmp_native_support                      off	         off
+
+
+====STEP: encapsulate the disk
+DATE:2017-05-23 00:50:11
+
+
+DATE:2017-05-23 00:51:42
+HOST:l111031
+USER:root
+STDIN:(echo;echo y)|/etc/vx/bin/vxencap -c -g rootdg rootdisk=sdap
+STDOUT:
+/usr/lib/vxvm/voladm.d/lib/vxgrublib.sh: line 24: syntax error near unexpected token `}'
+/usr/lib/vxvm/voladm.d/lib/vxgrublib.sh: line 24: `	}'
+/usr/lib/vxvm/voladm.d/lib/vxgrublib.sh: line 24: warning: syntax errors in . or eval will cause future versions of the shell to abort as Posix requires
+
+  VxVM vxencap INFO V-5-2-1923 Encapsulating root disk...
+
+  VxVM vxencap INFO V-5-2-2123 Verifying generated partition-table...
+
+  VxVM vxencap INFO V-5-2-4086 Checking private region location of root disk ...
+
+  VxVM vxencap INFO V-5-2-1946 Generating VxVM initrd image...
+Created /tmp/vx.2942.11000.11875.14083/vx.28597.4043.30160.14083
+
+  NOTE: Until the next reboot has completed, do not modify any 'grub'
+  settings, otherwise your system might become unbootable!
+
+  VxVM vxencap INFO V-5-2-2414 Adding vxvm_root entry to 'grub'...
+/etc/vx/bin/vxencap: line 314: grub_has_vxvmentry: command not found
+/etc/vx/bin/vxencap: line 316: [: : integer expression expected
+/etc/vx/bin/vxencap: line 329: grub_backup_config: command not found
+
+  VxVM vxencap ERROR V-5-2-2562 Not enough space to backup /boot/grub/menu.lst file in /boot/grub/menu.lst.b4vxvm
+RETURN:13
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-05-23 00:51:42
+Duration:1m48s

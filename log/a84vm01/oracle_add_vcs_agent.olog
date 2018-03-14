@@ -1,0 +1,1688 @@
+
+==================== Operation Log for TC oracle_add_vcs_agent ====================
+DATE:2017-04-21 13:47:52
+Nodes:a84vm01 a84vm02
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-04-21 13:47:52
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-04-21 13:47:52
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:9527745 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:3428296 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3139193506 (2.9 GiB)  TX bytes:3270360389 (3.0 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:14460 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:14460 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:1619160 (1.5 MiB)  TX bytes:1619160 (1.5 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-04-21 13:47:53
+HOST:a84vm01
+USER:root
+STDIN:ssh -l root a84vm01
+STDOUT:
+
+
+
+DATE:2017-04-21 13:47:54
+HOST:a84vm02
+USER:root
+STDIN:ssh -l root a84vm02
+STDOUT:
+
+
+
+DATE:2017-04-21 13:47:56
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+
+DATE:2017-04-21 13:47:57
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-04-21 13:47:57
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:9527939 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:3428454 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3139226994 (2.9 GiB)  TX bytes:3270387815 (3.0 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:14460 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:14460 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:1619160 (1.5 MiB)  TX bytes:1619160 (1.5 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-04-21 13:47:58
+HOST:a84vm01
+USER:root
+STDIN:ssh -l root a84vm01
+STDOUT:
+
+
+
+DATE:2017-04-21 13:48:00
+HOST:a84vm02
+USER:root
+STDIN:ssh -l root a84vm02
+STDOUT:
+
+
+
+DATE:2017-04-21 13:48:02
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+
+DATE:2017-04-21 13:48:02
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+***Getting hostname of node***
+
+
+
+DATE:2017-04-21 13:48:03
+HOST:a84vm01
+USER:root
+STDIN:hostname
+STDOUT:
+a84vm01
+
+***Getting os version***
+
+
+
+DATE:2017-04-21 13:48:04
+HOST:a84vm01
+USER:root
+STDIN:uname
+STDOUT:
+AIX
+
+
+DATE:2017-04-21 13:48:06
+HOST:a84vm01
+USER:root
+STDIN:oslevel -s
+STDOUT:
+7200-01-01-1642
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-04-21 13:48:07
+HOST:a84vm01
+USER:root
+STDIN:lslpp -l|grep -i vrts
+STDOUT:
+  VRTSamf                    7.2.0.0  COMMITTED  Veritas AMF
+  VRTSaslapm                 7.2.0.0  COMMITTED  Array Support Libraries and
+  VRTScavf                   7.2.0.0  COMMITTED  Veritas cfs and cvm agents
+  VRTScps                    7.2.0.0  COMMITTED  Veritas Co-ordination Point
+  VRTSdbac                   7.2.0.0  COMMITTED  Veritas Oracle Real
+  VRTSdbed                   7.2.0.0  COMMITTED  Storage Management Software
+  VRTSfsadv                  7.2.0.0  COMMITTED  Veritas File System Advanced
+  VRTSgab                    7.2.0.0  COMMITTED  Veritas Group Membership and
+  VRTSglm                    7.2.0.0  COMMITTED  Veritas LOCK MGR
+  VRTSgms                    7.2.0.0  COMMITTED  Veritas Global Messaging
+  VRTSllt                    7.2.0.0  COMMITTED  Veritas Low Latency Transport 
+  VRTSodm                    7.2.0.0  COMMITTED  Veritas Extension for Oracle
+  VRTSperl                  5.24.0.0  COMMITTED  Perl 5.24.0 for Veritas
+  VRTSsfcpi                  7.2.0.0  COMMITTED  Veritas InfoScale Installer
+  VRTSsfmh                   7.2.0.0  COMMITTED  Veritas Infoscale Operations
+  VRTSspt                    7.2.0.0  COMMITTED  Veritas Support Tools
+  VRTSvbs                    7.2.0.0  COMMITTED  Virtual Business Services
+  VRTSvcs                    7.2.0.0  COMMITTED  Veritas Cluster Server
+  VRTSvcsag                  7.2.0.0  COMMITTED  Veritas Cluster Server Bundled
+  VRTSvcsea                  7.2.0.0  COMMITTED  Veritas High Availability
+  VRTSvcswiz                 7.2.0.0  COMMITTED  Veritas Cluster Server Wizards
+  VRTSveki                   7.2.0.0  COMMITTED  Veritas Kernel Interface
+  VRTSvlic                  3.2.71.4  COMMITTED  Veritas License Utilities
+  VRTSvxfen                  7.2.0.0  COMMITTED  Veritas I/O Fencing 
+  VRTSvxfs                   7.2.0.0  COMMITTED  Veritas File System
+  VRTSvxvm                   7.2.0.0  COMMITTED  Veritas Volume Manager
+  VRTSamf                    7.2.0.0  COMMITTED  Veritas AMF
+  VRTSaslapm                 7.2.0.0  COMMITTED  Array Support Libraries and
+  VRTScavf                   7.2.0.0  COMMITTED  Veritas cfs and cvm agents
+  VRTScps                    7.2.0.0  COMMITTED  Veritas Co-ordination Point
+  VRTSdbac                   7.2.0.0  COMMITTED  Veritas Oracle Real
+  VRTSgab                    7.2.0.0  COMMITTED  Veritas Group Membership and
+  VRTSglm                    7.2.0.0  COMMITTED  Veritas LOCK MGR
+  VRTSgms                    7.2.0.0  COMMITTED  Veritas Global Messaging
+  VRTSllt                    7.2.0.0  COMMITTED  Veritas Low Latency Transport 
+  VRTSodm                    7.2.0.0  COMMITTED  Veritas Extension for Oracle
+  VRTSperl                  5.24.0.0  COMMITTED  Perl 5.24.0 for Veritas
+  VRTSsfcpi                  7.2.0.0  COMMITTED  Veritas InfoScale Installer
+  VRTSsfmh                   7.2.0.0  COMMITTED  Veritas Infoscale Operations
+  VRTSvbs                    7.2.0.0  COMMITTED  Virtual Business Services
+  VRTSvcs                    7.2.0.0  COMMITTED  Veritas Cluster Server
+  VRTSvcsag                  7.2.0.0  COMMITTED  Veritas Cluster Server Bundled
+  VRTSvcsea                  7.2.0.0  COMMITTED  Veritas High Availability
+  VRTSveki                   7.2.0.0  COMMITTED  Veritas Kernel Interface
+  VRTSvxfen                  7.2.0.0  COMMITTED  Veritas I/O Fencing 
+  VRTSvxfs                   7.2.0.0  COMMITTED  Veritas File System
+  VRTSvxvm                   7.2.0.0  COMMITTED  Veritas Volume Manager
+
+***Getting hostname of node***
+
+
+
+DATE:2017-04-21 13:48:07
+HOST:a84vm02
+USER:root
+STDIN:hostname
+STDOUT:
+a84vm02
+
+***Getting os version***
+
+
+
+DATE:2017-04-21 13:48:08
+HOST:a84vm02
+USER:root
+STDIN:uname
+STDOUT:
+AIX
+
+
+DATE:2017-04-21 13:48:10
+HOST:a84vm02
+USER:root
+STDIN:oslevel -s
+STDOUT:
+7200-01-01-1642
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-04-21 13:48:11
+HOST:a84vm02
+USER:root
+STDIN:lslpp -l|grep -i vrts
+STDOUT:
+  VRTSamf                    7.2.0.0  COMMITTED  Veritas AMF
+  VRTSaslapm                 7.2.0.0  COMMITTED  Array Support Libraries and
+  VRTScavf                   7.2.0.0  COMMITTED  Veritas cfs and cvm agents
+  VRTScps                    7.2.0.0  COMMITTED  Veritas Co-ordination Point
+  VRTSdbac                   7.2.0.0  COMMITTED  Veritas Oracle Real
+  VRTSdbed                   7.2.0.0  COMMITTED  Storage Management Software
+  VRTSfsadv                  7.2.0.0  COMMITTED  Veritas File System Advanced
+  VRTSgab                    7.2.0.0  COMMITTED  Veritas Group Membership and
+  VRTSglm                    7.2.0.0  COMMITTED  Veritas LOCK MGR
+  VRTSgms                    7.2.0.0  COMMITTED  Veritas Global Messaging
+  VRTSllt                    7.2.0.0  COMMITTED  Veritas Low Latency Transport 
+  VRTSodm                    7.2.0.0  COMMITTED  Veritas Extension for Oracle
+  VRTSperl                  5.24.0.0  COMMITTED  Perl 5.24.0 for Veritas
+  VRTSsfcpi                  7.2.0.0  COMMITTED  Veritas InfoScale Installer
+  VRTSsfmh                   7.2.0.0  COMMITTED  Veritas Infoscale Operations
+  VRTSspt                    7.2.0.0  COMMITTED  Veritas Support Tools
+  VRTSvbs                    7.2.0.0  COMMITTED  Virtual Business Services
+  VRTSvcs                    7.2.0.0  COMMITTED  Veritas Cluster Server
+  VRTSvcsag                  7.2.0.0  COMMITTED  Veritas Cluster Server Bundled
+  VRTSvcsea                  7.2.0.0  COMMITTED  Veritas High Availability
+  VRTSvcswiz                 7.2.0.0  COMMITTED  Veritas Cluster Server Wizards
+  VRTSveki                   7.2.0.0  COMMITTED  Veritas Kernel Interface
+  VRTSvlic                  3.2.71.4  COMMITTED  Veritas License Utilities
+  VRTSvxfen                  7.2.0.0  COMMITTED  Veritas I/O Fencing 
+  VRTSvxfs                   7.2.0.0  COMMITTED  Veritas File System
+  VRTSvxvm                   7.2.0.0  COMMITTED  Veritas Volume Manager
+  VRTSamf                    7.2.0.0  COMMITTED  Veritas AMF
+  VRTSaslapm                 7.2.0.0  COMMITTED  Array Support Libraries and
+  VRTScavf                   7.2.0.0  COMMITTED  Veritas cfs and cvm agents
+  VRTScps                    7.2.0.0  COMMITTED  Veritas Co-ordination Point
+  VRTSdbac                   7.2.0.0  COMMITTED  Veritas Oracle Real
+  VRTSgab                    7.2.0.0  COMMITTED  Veritas Group Membership and
+  VRTSglm                    7.2.0.0  COMMITTED  Veritas LOCK MGR
+  VRTSgms                    7.2.0.0  COMMITTED  Veritas Global Messaging
+  VRTSllt                    7.2.0.0  COMMITTED  Veritas Low Latency Transport 
+  VRTSodm                    7.2.0.0  COMMITTED  Veritas Extension for Oracle
+  VRTSperl                  5.24.0.0  COMMITTED  Perl 5.24.0 for Veritas
+  VRTSsfcpi                  7.2.0.0  COMMITTED  Veritas InfoScale Installer
+  VRTSsfmh                   7.2.0.0  COMMITTED  Veritas Infoscale Operations
+  VRTSvbs                    7.2.0.0  COMMITTED  Virtual Business Services
+  VRTSvcs                    7.2.0.0  COMMITTED  Veritas Cluster Server
+  VRTSvcsag                  7.2.0.0  COMMITTED  Veritas Cluster Server Bundled
+  VRTSvcsea                  7.2.0.0  COMMITTED  Veritas High Availability
+  VRTSveki                   7.2.0.0  COMMITTED  Veritas Kernel Interface
+  VRTSvxfen                  7.2.0.0  COMMITTED  Veritas I/O Fencing 
+  VRTSvxfs                   7.2.0.0  COMMITTED  Veritas File System
+  VRTSvxvm                   7.2.0.0  COMMITTED  Veritas Volume Manager
+
+
+====STEP: Checking status of Oracle database
+DATE:2017-04-21 13:48:11
+
+
+DATE:2017-04-21 13:48:12
+HOST:a84vm01
+USER:root
+STDIN:cat /orainst/oraInventory/ContentsXML/inventory.xml
+STDOUT:
+<?xml version="1.0" standalone="yes" ?>
+<!-- Copyright (c) 1999, 2013, Oracle and/or its affiliates.
+All rights reserved. -->
+<!-- Do not modify the contents of this file by hand. -->
+<INVENTORY>
+<VERSION_INFO>
+   <SAVED_WITH>11.2.0.4.0</SAVED_WITH>
+   <MINIMUM_VER>2.1.0.6.0</MINIMUM_VER>
+</VERSION_INFO>
+<HOME_LIST>
+<HOME NAME="Ora11g_gridinfrahome1" LOC="/crs/crshome" TYPE="O" IDX="1" CRS="true">
+   <NODE_LIST>
+      <NODE NAME="a84vm01"/>
+      <NODE NAME="a84vm02"/>
+   </NODE_LIST>
+</HOME>
+<HOME NAME="OraDb11g_home1" LOC="/oracle/orahome" TYPE="O" IDX="2">
+   <NODE_LIST>
+      <NODE NAME="a84vm01"/>
+      <NODE NAME="a84vm02"/>
+   </NODE_LIST>
+</HOME>
+</HOME_LIST>
+<COMPOSITEHOME_LIST>
+</COMPOSITEHOME_LIST>
+</INVENTORY>
+
+***Checking if Oracle instance is OPEN***
+
+
+
+DATE:2017-04-21 13:48:14
+HOST:a84vm01
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Fri Apr 21 13:48:13 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+orcl1		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Checking if Archive log mode is enabled***
+
+
+
+DATE:2017-04-21 13:48:15
+HOST:a84vm01
+USER:oracle
+STDIN:archive log list;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Fri Apr 21 13:48:15 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+Database log mode	       Archive Mode
+Automatic archival	       Enabled
+Archive destination	       /archive
+Oldest online log sequence     6
+Next log sequence to archive   7
+Current log sequence	       7
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Checking if Oracle instance is OPEN***
+
+
+
+DATE:2017-04-21 13:48:17
+HOST:a84vm02
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Fri Apr 21 13:48:17 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+orcl2		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Checking if Archive log mode is enabled***
+
+
+
+DATE:2017-04-21 13:48:19
+HOST:a84vm02
+USER:oracle
+STDIN:archive log list;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Fri Apr 21 13:48:18 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+Database log mode	       Archive Mode
+Automatic archival	       Enabled
+Archive destination	       /archive
+Oldest online log sequence     5
+Next log sequence to archive   6
+Current log sequence	       6
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+====STEP: relink oracle odm file to VRTS odm file
+DATE:2017-04-21 13:48:19
+
+***Stopping Oracle***
+
+
+
+DATE:2017-04-21 13:48:41
+HOST:a84vm01
+USER:oracle
+STDIN:shutdown immediate;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Fri Apr 21 13:48:20 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-21 13:49:05
+HOST:a84vm02
+USER:oracle
+STDIN:shutdown immediate;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Fri Apr 21 13:48:42 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-21 13:49:06
+HOST:a84vm01
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*
+STDOUT:
+-rw-r--r--    1 oracle   oinstall      12892 Oct 01 2013  /oracle/orahome/lib/libodm11.a
+lrwxrwxrwx    1 oracle   oinstall         12 Apr 20 17:10 /oracle/orahome/lib/libodm11.so -> libodmd11.so
+-rw-r--r--    1 oracle   oinstall       8651 Oct 01 2013  /oracle/orahome/lib/libodmd11.so
+
+
+DATE:2017-04-21 13:49:06
+HOST:a84vm01
+USER:oracle
+STDIN:rm -f /oracle/orahome/lib/libodm11.so && ln -s /opt/VRTSodm/lib64/libodm.so /oracle/orahome/lib/libodm11.so
+STDOUT:
+
+
+
+DATE:2017-04-21 13:49:07
+HOST:a84vm02
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*
+STDOUT:
+-rw-r--r--    1 oracle   oinstall      12892 Apr 20 17:36 /oracle/orahome/lib/libodm11.a
+lrwxrwxrwx    1 oracle   oinstall         12 Apr 20 17:27 /oracle/orahome/lib/libodm11.so -> libodmd11.so
+-rw-r--r--    1 oracle   oinstall       8651 Apr 20 17:36 /oracle/orahome/lib/libodmd11.so
+
+
+DATE:2017-04-21 13:49:08
+HOST:a84vm02
+USER:oracle
+STDIN:rm -f /oracle/orahome/lib/libodm11.so && ln -s /opt/VRTSodm/lib64/libodm.so /oracle/orahome/lib/libodm11.so
+STDOUT:
+
+
+
+====STEP: Shutdown crs if RAC and umount mountpoint
+DATE:2017-04-21 13:49:08
+
+
+DATE:2017-04-21 13:49:32
+HOST:a84vm01
+USER:root
+STDIN:/crs/crshome/bin/crsctl stop cluster -all
+STDOUT:
+CRS-2673: Attempting to stop 'ora.crsd' on 'a84vm01'
+CRS-2790: Starting shutdown of Cluster Ready Services-managed resources on 'a84vm01'
+CRS-2673: Attempting to stop 'ora.LISTENER_SCAN1.lsnr' on 'a84vm01'
+CRS-2673: Attempting to stop 'ora.oc4j' on 'a84vm01'
+CRS-2673: Attempting to stop 'ora.cvu' on 'a84vm01'
+CRS-2673: Attempting to stop 'ora.LISTENER.lsnr' on 'a84vm01'
+CRS-2677: Stop of 'ora.cvu' on 'a84vm01' succeeded
+CRS-2677: Stop of 'ora.LISTENER_SCAN1.lsnr' on 'a84vm01' succeeded
+CRS-2673: Attempting to stop 'ora.scan1.vip' on 'a84vm01'
+CRS-2677: Stop of 'ora.LISTENER.lsnr' on 'a84vm01' succeeded
+CRS-2673: Attempting to stop 'ora.a84vm01.vip' on 'a84vm01'
+CRS-2677: Stop of 'ora.scan1.vip' on 'a84vm01' succeeded
+CRS-2677: Stop of 'ora.a84vm01.vip' on 'a84vm01' succeeded
+CRS-2673: Attempting to stop 'ora.crsd' on 'a84vm02'
+CRS-2790: Starting shutdown of Cluster Ready Services-managed resources on 'a84vm02'
+CRS-2673: Attempting to stop 'ora.LISTENER.lsnr' on 'a84vm02'
+CRS-2677: Stop of 'ora.LISTENER.lsnr' on 'a84vm02' succeeded
+CRS-2673: Attempting to stop 'ora.a84vm02.vip' on 'a84vm02'
+CRS-2677: Stop of 'ora.a84vm02.vip' on 'a84vm02' succeeded
+CRS-2673: Attempting to stop 'ora.ons' on 'a84vm02'
+CRS-2677: Stop of 'ora.ons' on 'a84vm02' succeeded
+CRS-2673: Attempting to stop 'ora.net1.network' on 'a84vm02'
+CRS-2677: Stop of 'ora.net1.network' on 'a84vm02' succeeded
+CRS-2792: Shutdown of Cluster Ready Services-managed resources on 'a84vm02' has completed
+CRS-2677: Stop of 'ora.crsd' on 'a84vm02' succeeded
+CRS-2673: Attempting to stop 'ora.cluster_interconnect.haip' on 'a84vm02'
+CRS-2673: Attempting to stop 'ora.ctssd' on 'a84vm02'
+CRS-2673: Attempting to stop 'ora.evmd' on 'a84vm02'
+CRS-2677: Stop of 'ora.evmd' on 'a84vm02' succeeded
+CRS-2677: Stop of 'ora.cluster_interconnect.haip' on 'a84vm02' succeeded
+CRS-2677: Stop of 'ora.oc4j' on 'a84vm01' succeeded
+CRS-2673: Attempting to stop 'ora.ons' on 'a84vm01'
+CRS-2677: Stop of 'ora.ons' on 'a84vm01' succeeded
+CRS-2673: Attempting to stop 'ora.net1.network' on 'a84vm01'
+CRS-2677: Stop of 'ora.net1.network' on 'a84vm01' succeeded
+CRS-2792: Shutdown of Cluster Ready Services-managed resources on 'a84vm01' has completed
+CRS-2677: Stop of 'ora.crsd' on 'a84vm01' succeeded
+CRS-2673: Attempting to stop 'ora.ctssd' on 'a84vm01'
+CRS-2673: Attempting to stop 'ora.evmd' on 'a84vm01'
+CRS-2673: Attempting to stop 'ora.cluster_interconnect.haip' on 'a84vm01'
+CRS-2677: Stop of 'ora.cluster_interconnect.haip' on 'a84vm01' succeeded
+CRS-2677: Stop of 'ora.evmd' on 'a84vm01' succeeded
+CRS-2677: Stop of 'ora.ctssd' on 'a84vm02' succeeded
+CRS-2673: Attempting to stop 'ora.cssd' on 'a84vm02'
+CRS-2677: Stop of 'ora.ctssd' on 'a84vm01' succeeded
+CRS-2673: Attempting to stop 'ora.cssd' on 'a84vm01'
+CRS-2677: Stop of 'ora.cssd' on 'a84vm02' succeeded
+CRS-2677: Stop of 'ora.cssd' on 'a84vm01' succeeded
+
+
+DATE:2017-04-21 13:49:33
+HOST:a84vm01
+USER:root
+STDIN:/crs/crshome/bin/crsctl disable has
+STDOUT:
+CRS-4621: Oracle High Availability Services autostart is disabled.
+
+
+DATE:2017-04-21 13:49:34
+HOST:a84vm01
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 6.31 79% 60074 4% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.86 3% 875 1% /var
+/dev/hd3 4.00 3.98 1% 264 1% /tmp
+/dev/hd1 10.00 7.76 23% 1906 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.61 28% 8890 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_dbarch/dbdata 9.00 7.03 22% 19 1% /dbdata
+/dev/vx/dsk/oradg2579_dbarch/archive 9.00 8.40 7% 13 1% /archive
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 9.00 8.38 7% 6 1% /ocrvote
+
+
+DATE:2017-04-21 13:49:35
+HOST:a84vm01
+USER:root
+STDIN:for i in /dbdata /archive /ocrvote ; do umount $i; done
+STDOUT:
+
+
+
+DATE:2017-04-21 13:49:36
+HOST:a84vm02
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.12 11.70 62% 55013 2% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.88 3% 803 1% /var
+/dev/hd3 5.00 4.30 14% 1442 1% /tmp
+/dev/hd1 5.00 5.00 1% 42 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.62 28% 8731 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_dbarch/dbdata 9.00 7.03 22% 19 1% /dbdata
+/dev/vx/dsk/oradg2579_dbarch/archive 9.00 8.40 7% 13 1% /archive
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 9.00 8.38 7% 6 1% /ocrvote
+
+
+DATE:2017-04-21 13:49:37
+HOST:a84vm02
+USER:root
+STDIN:for i in /dbdata /archive /ocrvote ; do umount $i; done
+STDOUT:
+
+
+
+====STEP: Adding oracle resource to VCS
+DATE:2017-04-21 13:49:37
+
+
+DATE:2017-04-21 13:49:38
+HOST:a84vm01
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster clus201202 (
+	UserNames = { admin = INOgNInKOjOOmWOiNL }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system a84vm01 (
+	)
+
+system a84vm02 (
+	)
+
+group cvm (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = clus201202
+		CVMNodeId = { a84vm01 = 0, a84vm02 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/usr/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+DATE:2017-04-21 13:49:38
+HOST:a84vm01
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+oradg2579_ocrvote enabled,shared,cds   1492657601.41.a84vm01
+oradg2579_dbarch enabled,shared,cds   1492657603.43.a84vm01
+
+
+DATE:2017-04-21 13:49:39
+HOST:a84vm01
+USER:oracle
+STDIN:echo $ORACLE_SID
+STDOUT:
+orcl1
+
+
+DATE:2017-04-21 13:49:40
+HOST:a84vm02
+USER:oracle
+STDIN:echo $ORACLE_SID
+STDOUT:
+orcl2
+
+***Show maincf which added oracle resources***
+
+
+
+DATE:2017-04-21 13:49:40
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:cat /opt/itf/tmp/main.cf.5285
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster clus201202 (
+	UserNames = { admin = INOgNInKOjOOmWOiNL }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system a84vm01 (
+	)
+
+system a84vm02 (
+	)
+
+group cvm (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = clus201202
+		CVMNodeId = { a84vm01 = 0, a84vm02 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/usr/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+group crs_grp (
+        SystemList = { a84vm01 = 0, a84vm02 = 1 }
+        Parallel = 1
+        AutoStartList = { a84vm01, a84vm02 }
+        )
+
+        CFSMount ocrvote_mnt (
+                Critical = 0
+                MountPoint = "/ocrvote"
+                BlockDevice = "/dev/vx/dsk/oradg2579_ocrvote/ocrvote"
+                )
+
+        CSSD cssd (
+                Critical = 0
+                CRSHOME = "/crs/crshome"
+                OnlineWaitLimit = 5
+                OfflineWaitLimit = 3
+                )
+
+        CVMVolDg ocrvote_voldg (
+                Critical = 0
+                CVMDiskGroup = oradg2579_ocrvote
+                CVMVolume = { ocrvote }
+                CVMActivation = sw
+                )
+
+
+        requires group cvm online local firm
+        cssd requires ocrvote_mnt
+        ocrvote_mnt requires ocrvote_voldg
+
+group oradb_grp (
+        SystemList = { a84vm01 = 0, a84vm02 = 1 }
+        Parallel = 1
+        AutoStartList = { a84vm01, a84vm02 }
+        )
+
+        CFSMount oraarch_mnt (
+                Critical = 0
+                MountPoint = "/archive"
+                BlockDevice = "/dev/vx/dsk/oradg2579_dbarch/archive"
+                )
+
+        CFSMount oradata_mnt (
+                Critical = 0
+                MountPoint = "/dbdata"
+                BlockDevice = "/dev/vx/dsk/oradg2579_dbarch/dbdata"
+                )
+
+        CVMVolDg data_voldg (
+                Critical = 0
+                CVMDiskGroup = oradg2579_dbarch
+                CVMVolume = { dbdata, archive }
+                CVMActivation = sw
+                )
+
+        Oracle oradb (
+                Critical = 0
+ 		Sid @a84vm01 = orcl1
+ 		Sid @a84vm02 = orcl2
+                Owner = oracle
+                Home = "/oracle/orahome"
+                StartUpOpt = SRVCTLSTART
+                ShutDownOpt = SRVCTLSTOP
+                LevelTwoMonitorFreq = 0
+                )
+
+        requires group crs_grp online local firm
+        oraarch_mnt requires data_voldg
+        oradata_mnt requires data_voldg
+        oradb requires oraarch_mnt
+        oradb requires oradata_mnt
+
+***import the maincf /opt/itf/tmp/main.cf.5285 to cluster***
+
+
+
+DATE:2017-04-21 13:49:41
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastop -all
+STDOUT:
+
+
+
+DATE:2017-04-21 13:49:52
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+
+DATE:2017-04-21 13:50:02
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+
+DATE:2017-04-21 13:50:13
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-04-21 13:50:19
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-04-21 13:50:20
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/tmp/main.cf.5285 a84vm01:/tmp/tmpfile.5285
+STDOUT:
+
+
+
+DATE:2017-04-21 13:50:21
+HOST:a84vm01
+USER:root
+STDIN:mv /etc/VRTSvcs/conf/config/main.cf /etc/VRTSvcs/conf/config/main.cf.orig;cat /tmp/tmpfile.5285 > /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+
+
+
+DATE:2017-04-21 13:50:21
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-04-21 13:50:32
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+a84vm01    SysState                RUNNING
+a84vm02    SysState                UNKNOWN
+
+
+DATE:2017-04-21 13:50:33
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+a84vm01    SysState                RUNNING
+a84vm02    SysState                UNKNOWN
+
+
+DATE:2017-04-21 13:50:34
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-04-21 13:50:45
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+a84vm01    SysState                RUNNING
+a84vm02    SysState                RUNNING
+
+
+DATE:2017-04-21 13:50:45
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+a84vm01    SysState                RUNNING
+a84vm02    SysState                RUNNING
+
+***updating /opt/itf/log/a84vm01/logs/main.cf***
+
+
+
+DATE:2017-04-21 13:50:46
+HOST:a84vm01
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster clus201202 (
+	UserNames = { admin = INOgNInKOjOOmWOiNL }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system a84vm01 (
+	)
+
+system a84vm02 (
+	)
+
+group crs_grp (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSMount ocrvote_mnt (
+		Critical = 0
+		MountPoint = "/ocrvote"
+		BlockDevice = "/dev/vx/dsk/oradg2579_ocrvote/ocrvote"
+		)
+
+	CSSD cssd (
+		Critical = 0
+		CRSHOME = "/crs/crshome"
+		OnlineWaitLimit = 5
+		OfflineWaitLimit = 3
+		)
+
+	CVMVolDg ocrvote_voldg (
+		Critical = 0
+		CVMDiskGroup = oradg2579_ocrvote
+		CVMVolume = { ocrvote }
+		CVMActivation = sw
+		)
+
+	requires group cvm online local firm
+	cssd requires ocrvote_mnt
+	ocrvote_mnt requires ocrvote_voldg
+
+
+	// resource dependency tree
+	//
+	//	group crs_grp
+	//	{
+	//	CSSD cssd
+	//	    {
+	//	    CFSMount ocrvote_mnt
+	//	        {
+	//	        CVMVolDg ocrvote_voldg
+	//	        }
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = clus201202
+		CVMNodeId = { a84vm01 = 0, a84vm02 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/usr/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group oradb_grp (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSMount oraarch_mnt (
+		Critical = 0
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg2579_dbarch/archive"
+		)
+
+	CFSMount oradata_mnt (
+		Critical = 0
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg2579_dbarch/dbdata"
+		)
+
+	CVMVolDg data_voldg (
+		Critical = 0
+		CVMDiskGroup = oradg2579_dbarch
+		CVMVolume = { dbdata, archive }
+		CVMActivation = sw
+		)
+
+	Oracle oradb (
+		Critical = 0
+		Sid @a84vm01 = orcl1
+		Sid @a84vm02 = orcl2
+		Owner = oracle
+		Home = "/oracle/orahome"
+		StartUpOpt = SRVCTLSTART
+		ShutDownOpt = SRVCTLSTOP
+		LevelTwoMonitorFreq = 0
+		)
+
+	requires group crs_grp online local firm
+	oraarch_mnt requires data_voldg
+	oradata_mnt requires data_voldg
+	oradb requires oraarch_mnt
+	oradb requires oradata_mnt
+
+
+	// resource dependency tree
+	//
+	//	group oradb_grp
+	//	{
+	//	Oracle oradb
+	//	    {
+	//	    CFSMount oraarch_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    CFSMount oradata_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    }
+	//	}
+
+
+====STEP: Bring oracle group online by VCS
+DATE:2017-04-21 13:50:46
+
+
+DATE:2017-04-21 13:50:47
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hares -probe cssd -sys a84vm01
+STDOUT:
+
+
+
+DATE:2017-04-21 13:50:48
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hares -probe cssd -sys a84vm02
+STDOUT:
+
+
+***Waiting the group crs_grp online***
+
+
+
+DATE:2017-04-21 13:50:49
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |OFFLINE|
+crs_grp      State                 a84vm02    |OFFLINE|
+
+
+DATE:2017-04-21 13:50:49
+HOST:a84vm01
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster clus201202 (
+	UserNames = { admin = INOgNInKOjOOmWOiNL }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system a84vm01 (
+	)
+
+system a84vm02 (
+	)
+
+group crs_grp (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSMount ocrvote_mnt (
+		Critical = 0
+		MountPoint = "/ocrvote"
+		BlockDevice = "/dev/vx/dsk/oradg2579_ocrvote/ocrvote"
+		)
+
+	CSSD cssd (
+		Critical = 0
+		CRSHOME = "/crs/crshome"
+		OnlineWaitLimit = 5
+		OfflineWaitLimit = 3
+		)
+
+	CVMVolDg ocrvote_voldg (
+		Critical = 0
+		CVMDiskGroup = oradg2579_ocrvote
+		CVMVolume = { ocrvote }
+		CVMActivation = sw
+		)
+
+	requires group cvm online local firm
+	cssd requires ocrvote_mnt
+	ocrvote_mnt requires ocrvote_voldg
+
+
+	// resource dependency tree
+	//
+	//	group crs_grp
+	//	{
+	//	CSSD cssd
+	//	    {
+	//	    CFSMount ocrvote_mnt
+	//	        {
+	//	        CVMVolDg ocrvote_voldg
+	//	        }
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = clus201202
+		CVMNodeId = { a84vm01 = 0, a84vm02 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/usr/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group oradb_grp (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSMount oraarch_mnt (
+		Critical = 0
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg2579_dbarch/archive"
+		)
+
+	CFSMount oradata_mnt (
+		Critical = 0
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg2579_dbarch/dbdata"
+		)
+
+	CVMVolDg data_voldg (
+		Critical = 0
+		CVMDiskGroup = oradg2579_dbarch
+		CVMVolume = { dbdata, archive }
+		CVMActivation = sw
+		)
+
+	Oracle oradb (
+		Critical = 0
+		Sid @a84vm01 = orcl1
+		Sid @a84vm02 = orcl2
+		Owner = oracle
+		Home = "/oracle/orahome"
+		StartUpOpt = SRVCTLSTART
+		ShutDownOpt = SRVCTLSTOP
+		LevelTwoMonitorFreq = 0
+		)
+
+	requires group crs_grp online local firm
+	oraarch_mnt requires data_voldg
+	oradata_mnt requires data_voldg
+	oradb requires oraarch_mnt
+	oradb requires oradata_mnt
+
+
+	// resource dependency tree
+	//
+	//	group oradb_grp
+	//	{
+	//	Oracle oradb
+	//	    {
+	//	    CFSMount oraarch_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    CFSMount oradata_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    }
+	//	}
+
+
+DATE:2017-04-21 13:51:00
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |OFFLINE|STARTING|
+crs_grp      State                 a84vm02    |OFFLINE|
+
+
+DATE:2017-04-21 13:51:11
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |OFFLINE|STARTING|
+crs_grp      State                 a84vm02    |OFFLINE|STARTING|
+
+
+DATE:2017-04-21 13:51:22
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STARTING|
+crs_grp      State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-21 13:51:32
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STARTING|
+crs_grp      State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-21 13:51:43
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STARTING|
+crs_grp      State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-21 13:51:54
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STARTING|
+crs_grp      State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-21 13:52:05
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STARTING|
+crs_grp      State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-21 13:52:16
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STARTING|
+crs_grp      State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-21 13:52:26
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STARTING|
+crs_grp      State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-21 13:52:37
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STOPPING|
+crs_grp      State                 a84vm02    |PARTIAL|STOPPING|
+
+
+DATE:2017-04-21 13:52:48
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STOPPING|
+crs_grp      State                 a84vm02    |PARTIAL|STOPPING|
+
+
+DATE:2017-04-21 13:52:59
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STOPPING|
+crs_grp      State                 a84vm02    |PARTIAL|STOPPING|
+
+
+DATE:2017-04-21 13:53:10
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STOPPING|
+crs_grp      State                 a84vm02    |PARTIAL|STOPPING|
+
+
+DATE:2017-04-21 13:53:20
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STOPPING|
+crs_grp      State                 a84vm02    |PARTIAL|STOPPING|
+
+
+DATE:2017-04-21 13:53:31
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STOPPING|
+crs_grp      State                 a84vm02    |PARTIAL|STOPPING|
+
+
+DATE:2017-04-21 13:53:42
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STOPPING|
+crs_grp      State                 a84vm02    |PARTIAL|STOPPING|
+
+
+DATE:2017-04-21 13:53:53
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STOPPING|
+crs_grp      State                 a84vm02    |PARTIAL|STOPPING|
+
+
+DATE:2017-04-21 13:54:04
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STOPPING|
+crs_grp      State                 a84vm02    |PARTIAL|STOPPING|
+
+
+DATE:2017-04-21 13:54:15
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STOPPING|
+crs_grp      State                 a84vm02    |PARTIAL|STOPPING|
+
+
+DATE:2017-04-21 13:54:25
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STOPPING|
+crs_grp      State                 a84vm02    |PARTIAL|STOPPING|
+
+
+DATE:2017-04-21 13:54:36
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+#Group       Attribute             System     Value
+crs_grp      State                 a84vm01    |PARTIAL|STOPPING|
+crs_grp      State                 a84vm02    |PARTIAL|STOPPING|
+
+
+DATE:2017-04-21 13:54:47
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state crs_grp
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+RETURN:1
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-04-21 13:54:47
+Duration:6m55s

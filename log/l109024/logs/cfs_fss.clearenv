@@ -1,0 +1,887 @@
+
+***Going to clear mount point on the nfsclient***
+
+
+
+DATE:2017-06-27 06:32:36
+HOST:cdcnfsclientcd03
+USER:root
+STDIN:ps -ef|grep tmpfile
+STDOUT:
+root     21792 21790  0 14:32 ?        00:00:00 grep tmpfile
+
+
+DATE:2017-06-27 06:32:57
+HOST:l109024
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sfrac24 (
+	SecureClus = 1
+	DefaultGuestAccess = 1
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l109024 (
+	)
+
+system l109025 (
+	)
+
+group cfsmntgrp (
+	SystemList = { l109024 = 0, l109025 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l109024, l109025 }
+	)
+
+	CFSMount cfsmount1 (
+		Critical = 0
+		MountPoint = "/autotc"
+		BlockDevice = "/dev/vx/dsk/autotcdg/autotcvol"
+		MountOpt @l109024 = rw
+		MountOpt @l109025 = rw
+		NodeList = { l109024, l109025 }
+		)
+
+	CVMVolDg cvmvoldg1 (
+		Critical = 0
+		CVMDiskGroup = autotcdg
+		CVMVolume = { autotcvol }
+		CVMActivation @l109024 = sw
+		CVMActivation @l109025 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount1 requires cvmvoldg1
+
+
+	// resource dependency tree
+	//
+	//	group cfsmntgrp
+	//	{
+	//	CFSMount cfsmount1
+	//	    {
+	//	    CVMVolDg cvmvoldg1
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { l109024 = 0, l109025 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l109024, l109025 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l109024 = { sdg1 = sw, sdg2 = sw, autotcdg = sw }
+		ActivationMode @l109025 = { sdg1 = sw, sdg2 = sw, autotcdg = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sfrac24
+		CVMNodeId = { l109024 = 0, l109025 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+***import the maincf /opt/itf/log/l109024/logs/main.cf to cluster***
+
+
+
+DATE:2017-06-27 06:32:59
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastop -all
+STDOUT:
+
+
+
+DATE:2017-06-27 06:33:10
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l109024
+l109025
+
+
+DATE:2017-06-27 06:33:12
+HOST:l109025
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l109024
+l109025
+
+
+DATE:2017-06-27 06:33:24
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l109024
+l109025
+
+
+DATE:2017-06-27 06:33:26
+HOST:l109025
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-06-27 06:33:37
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l109024
+l109025
+
+
+DATE:2017-06-27 06:33:49
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-06-27 06:34:06
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/log/l109024/logs/main.cf l109024:/tmp/tmpfile.30776
+STDOUT:
+
+
+
+DATE:2017-06-27 06:34:08
+HOST:l109024
+USER:root
+STDIN:mv /etc/VRTSvcs/conf/config/main.cf /etc/VRTSvcs/conf/config/main.cf.orig;cat /tmp/tmpfile.30776 > /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+
+
+
+DATE:2017-06-27 06:34:10
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-06-27 06:34:21
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l109024    SysState                RUNNING
+l109025    SysState                UNKNOWN
+
+
+DATE:2017-06-27 06:34:23
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l109024    SysState                RUNNING
+l109025    SysState                UNKNOWN
+
+
+DATE:2017-06-27 06:34:25
+HOST:l109025
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-06-27 06:34:37
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l109024    SysState                RUNNING
+l109025    SysState                RUNNING
+
+
+DATE:2017-06-27 06:34:38
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l109024    SysState                RUNNING
+l109025    SysState                RUNNING
+
+***Waiting the group cvm online***
+
+
+
+DATE:2017-06-27 06:34:40
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l109024    |OFFLINE|STARTING|
+cvm          State                 l109025    |OFFLINE|STARTING|
+
+
+DATE:2017-06-27 06:34:42
+HOST:l109024
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sfrac24 (
+	SecureClus = 1
+	DefaultGuestAccess = 1
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l109024 (
+	)
+
+system l109025 (
+	)
+
+group cvm (
+	SystemList = { l109024 = 0, l109025 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l109024, l109025 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l109024 = { sdg1 = sw, sdg2 = sw, autotcdg = sw }
+		ActivationMode @l109025 = { sdg1 = sw, sdg2 = sw, autotcdg = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sfrac24
+		CVMNodeId = { l109024 = 0, l109025 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+DATE:2017-06-27 06:34:54
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l109024    |ONLINE|
+cvm          State                 l109025    |ONLINE|
+
+
+DATE:2017-06-27 06:34:55
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l109024    |ONLINE|
+cvm          State                 l109025    |ONLINE|
+
+***umount vxfs on node l109024***
+
+
+
+DATE:2017-06-27 06:34:57
+HOST:l109024
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 127G 5.2G 116G 5% /
+devtmpfs 9.8G 0 9.8G 0% /dev
+tmpfs 9.8G 0 9.8G 0% /dev/shm
+tmpfs 9.8G 20M 9.8G 1% /run
+tmpfs 9.8G 0 9.8G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 2.0G 0 2.0G 0% /run/user/0
+
+***umount vxfs on node l109025***
+
+
+
+DATE:2017-06-27 06:34:59
+HOST:l109025
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sdc2 127G 5.0G 116G 5% /
+devtmpfs 9.8G 0 9.8G 0% /dev
+tmpfs 9.8G 0 9.8G 0% /dev/shm
+tmpfs 9.8G 12M 9.8G 1% /run
+tmpfs 9.8G 0 9.8G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 2.0G 0 2.0G 0% /run/user/0
+
+
+DATE:2017-06-27 06:35:05
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+
+DATE:2017-06-27 06:35:07
+HOST:l109025
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-06-27 06:35:09
+HOST:l109024
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-06-27 06:35:16
+HOST:l109024
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+emc0_02a0    auto:cdsdisk    -            (vxfendg)    online
+emc0_02aa    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ab    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ac    auto:cdsdisk    -            -            online
+emc0_02ad    auto:cdsdisk    -            -            online
+emc0_02ae    auto:cdsdisk    -            -            online
+emc0_02af    auto:cdsdisk    -            -            online
+emc0_02a1    auto:cdsdisk    -            -            online
+emc0_02a2    auto:cdsdisk    -            -            online
+emc0_02a3    auto:cdsdisk    -            -            online
+emc0_02a4    auto:cdsdisk    -            -            online
+emc0_02a5    auto:cdsdisk    -            -            online
+emc0_02a6    auto:cdsdisk    -            -            online
+emc0_02a7    auto:cdsdisk    -            -            online
+emc0_02a8    auto:cdsdisk    -            -            online
+emc0_02a9    auto:cdsdisk    -            -            online
+emc0_02b0    auto:cdsdisk    -            -            online thinrclm
+emc0_02b1    auto:cdsdisk    -            -            online thinrclm
+emc0_02b2    auto:cdsdisk    -            -            online thinrclm
+emc0_02b3    auto:cdsdisk    -            -            online thinrclm
+emc0_02b4    auto:cdsdisk    -            -            online thinrclm
+emc0_02b5    auto:cdsdisk    -            -            online thinrclm
+emc0_02b6    auto:cdsdisk    -            -            online thinrclm
+emc0_02b7    auto:cdsdisk    -            -            online thinrclm
+emc0_02b8    auto:cdsdisk    -            -            online thinrclm
+emc0_02b9    auto:cdsdisk    -            -            online thinrclm
+emc0_02de    auto:cdsdisk    -            -            online
+emc0_02df    auto:cdsdisk    -            -            online
+emc0_02e0    auto:cdsdisk    -            -            online
+emc0_02ea    auto:cdsdisk    -            -            online
+emc0_02eb    auto:cdsdisk    -            -            online
+emc0_02ec    auto:cdsdisk    -            -            online
+emc0_02ed    auto:cdsdisk    -            -            online
+emc0_02ee    auto:cdsdisk    -            -            online
+emc0_02ef    auto:cdsdisk    -            -            online
+emc0_02e1    auto:cdsdisk    -            -            online
+emc0_02e2    auto:cdsdisk    -            -            online
+emc0_02e3    auto:cdsdisk    -            -            online
+emc0_02e4    auto:cdsdisk    -            -            online
+emc0_02e5    auto:cdsdisk    -            -            online
+emc0_02e6    auto:cdsdisk    -            -            online
+emc0_02e7    auto:cdsdisk    -            -            online
+emc0_02e8    auto:cdsdisk    -            -            online
+emc0_02e9    auto:cdsdisk    -            -            online
+emc0_02f0    auto:cdsdisk    -            -            online
+emc0_02fa    auto:cdsdisk    -            -            online
+emc0_02fb    auto:cdsdisk    -            -            online
+emc0_02fc    auto:cdsdisk    -            -            online
+emc0_02fd    auto:cdsdisk    -            -            online
+emc0_02fe    auto:cdsdisk    -            -            online
+emc0_02ff    auto:cdsdisk    -            -            online
+emc0_02f1    auto:cdsdisk    -            -            online
+emc0_02f2    auto:cdsdisk    -            -            online
+emc0_02f3    auto:cdsdisk    -            -            online
+emc0_02f4    auto:cdsdisk    -            -            online
+emc0_02f5    auto:cdsdisk    -            -            online
+emc0_02f6    auto:cdsdisk    -            -            online
+emc0_02f7    auto:cdsdisk    -            -            online
+emc0_02f8    auto:cdsdisk    -            -            online
+emc0_02f9    auto:cdsdisk    -            -            online
+emc0_023a    auto:cdsdisk    -            -            online
+emc0_023b    auto:cdsdisk    -            -            online
+emc0_029c    auto:cdsdisk    -            -            online
+emc0_029d    auto:cdsdisk    -            -            online
+emc0_029e    auto:cdsdisk    -            -            online
+emc0_029f    auto:cdsdisk    -            -            online
+emc0_0234    auto:cdsdisk    -            -            online
+emc0_0235    auto:cdsdisk    -            -            online
+emc0_0236    auto:cdsdisk    -            -            online
+emc0_0237    auto:cdsdisk    -            -            online
+emc0_0238    auto:cdsdisk    -            -            online
+emc0_0239    auto:cdsdisk    -            -            online
+emc0_0300    auto:cdsdisk    -            -            online
+emc0_0301    auto:cdsdisk    -            -            online
+emc0_0302    auto:cdsdisk    -            -            online
+emc0_0303    auto:cdsdisk    -            -            online
+emc0_0304    auto:cdsdisk    emc0_0304    autotcdg     online shared remote
+emc0_0305    auto:cdsdisk    emc0_0305    autotcdg     online exported shared
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-06-27 06:35:17
+HOST:l109024
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcdg     enabled,shared,cds   1498544568.111.l109025.cdc.veritas.com
+
+
+DATE:2017-06-27 06:35:19
+HOST:l109024
+USER:root
+STDIN:vxdg destroy autotcdg
+STDOUT:
+
+
+
+DATE:2017-06-27 06:35:20
+HOST:l109024
+USER:root
+STDIN:vxdisk list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+emc0_02a0    auto:cdsdisk    -            (vxfendg)    online
+emc0_02aa    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ab    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ac    auto:cdsdisk    -            -            online
+emc0_02ad    auto:cdsdisk    -            -            online
+emc0_02ae    auto:cdsdisk    -            -            online
+emc0_02af    auto:cdsdisk    -            -            online
+emc0_02a1    auto:cdsdisk    -            -            online
+emc0_02a2    auto:cdsdisk    -            -            online
+emc0_02a3    auto:cdsdisk    -            -            online
+emc0_02a4    auto:cdsdisk    -            -            online
+emc0_02a5    auto:cdsdisk    -            -            online
+emc0_02a6    auto:cdsdisk    -            -            online
+emc0_02a7    auto:cdsdisk    -            -            online
+emc0_02a8    auto:cdsdisk    -            -            online
+emc0_02a9    auto:cdsdisk    -            -            online
+emc0_02b0    auto:cdsdisk    -            -            online thinrclm
+emc0_02b1    auto:cdsdisk    -            -            online thinrclm
+emc0_02b2    auto:cdsdisk    -            -            online thinrclm
+emc0_02b3    auto:cdsdisk    -            -            online thinrclm
+emc0_02b4    auto:cdsdisk    -            -            online thinrclm
+emc0_02b5    auto:cdsdisk    -            -            online thinrclm
+emc0_02b6    auto:cdsdisk    -            -            online thinrclm
+emc0_02b7    auto:cdsdisk    -            -            online thinrclm
+emc0_02b8    auto:cdsdisk    -            -            online thinrclm
+emc0_02b9    auto:cdsdisk    -            -            online thinrclm
+emc0_02de    auto:cdsdisk    -            -            online
+emc0_02df    auto:cdsdisk    -            -            online
+emc0_02e0    auto:cdsdisk    -            -            online
+emc0_02ea    auto:cdsdisk    -            -            online
+emc0_02eb    auto:cdsdisk    -            -            online
+emc0_02ec    auto:cdsdisk    -            -            online
+emc0_02ed    auto:cdsdisk    -            -            online
+emc0_02ee    auto:cdsdisk    -            -            online
+emc0_02ef    auto:cdsdisk    -            -            online
+emc0_02e1    auto:cdsdisk    -            -            online
+emc0_02e2    auto:cdsdisk    -            -            online
+emc0_02e3    auto:cdsdisk    -            -            online
+emc0_02e4    auto:cdsdisk    -            -            online
+emc0_02e5    auto:cdsdisk    -            -            online
+emc0_02e6    auto:cdsdisk    -            -            online
+emc0_02e7    auto:cdsdisk    -            -            online
+emc0_02e8    auto:cdsdisk    -            -            online
+emc0_02e9    auto:cdsdisk    -            -            online
+emc0_02f0    auto:cdsdisk    -            -            online
+emc0_02fa    auto:cdsdisk    -            -            online
+emc0_02fb    auto:cdsdisk    -            -            online
+emc0_02fc    auto:cdsdisk    -            -            online
+emc0_02fd    auto:cdsdisk    -            -            online
+emc0_02fe    auto:cdsdisk    -            -            online
+emc0_02ff    auto:cdsdisk    -            -            online
+emc0_02f1    auto:cdsdisk    -            -            online
+emc0_02f2    auto:cdsdisk    -            -            online
+emc0_02f3    auto:cdsdisk    -            -            online
+emc0_02f4    auto:cdsdisk    -            -            online
+emc0_02f5    auto:cdsdisk    -            -            online
+emc0_02f6    auto:cdsdisk    -            -            online
+emc0_02f7    auto:cdsdisk    -            -            online
+emc0_02f8    auto:cdsdisk    -            -            online
+emc0_02f9    auto:cdsdisk    -            -            online
+emc0_023a    auto:cdsdisk    -            -            online
+emc0_023b    auto:cdsdisk    -            -            online
+emc0_029c    auto:cdsdisk    -            -            online
+emc0_029d    auto:cdsdisk    -            -            online
+emc0_029e    auto:cdsdisk    -            -            online
+emc0_029f    auto:cdsdisk    -            -            online
+emc0_0234    auto:cdsdisk    -            -            online
+emc0_0235    auto:cdsdisk    -            -            online
+emc0_0236    auto:cdsdisk    -            -            online
+emc0_0237    auto:cdsdisk    -            -            online
+emc0_0238    auto:cdsdisk    -            -            online
+emc0_0239    auto:cdsdisk    -            -            online
+emc0_0300    auto:cdsdisk    -            -            online
+emc0_0301    auto:cdsdisk    -            -            online
+emc0_0302    auto:cdsdisk    -            -            online
+emc0_0303    auto:cdsdisk    -            -            online
+emc0_0304    auto:cdsdisk    -            -            online remote
+emc0_0305    auto:cdsdisk    -            -            online exported
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-06-27 06:35:22
+HOST:l109024
+USER:root
+STDIN:for disk in emc0_0305; do vxdisk unexport $disk; done
+STDOUT:
+
+
+
+DATE:2017-06-27 06:35:24
+HOST:l109024
+USER:root
+STDIN:cat -n /etc/vx/vxvm.exclude
+STDOUT:
+     1	exclude_all 0
+     2	paths
+     3	sdfb pci-0000:0b:00.1-fc-0x500009780800a159-lun-77 emc0_0304
+     4	sdeb pci-0000:0b:00.0-fc-0x500009780800a158-lun-77 emc0_0304
+     5	#
+     6	controllers
+     7	#
+     8	product
+     9	#
+
+
+DATE:2017-06-27 06:35:26
+HOST:l109024
+USER:root
+STDIN:for disk in emc0_0304; do vxdmpadm include dmpnodename=$disk; done
+STDOUT:
+
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-06-27 06:35:28
+HOST:l109025
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-06-27 06:35:30
+HOST:l109025
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+emc0_02a0    auto:cdsdisk    -            (vxfendg)    online
+emc0_02aa    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ab    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ac    auto:cdsdisk    -            -            online
+emc0_02ad    auto:cdsdisk    -            -            online
+emc0_02ae    auto:cdsdisk    -            -            online
+emc0_02af    auto:cdsdisk    -            -            online
+emc0_02a1    auto:cdsdisk    -            -            online
+emc0_02a2    auto:cdsdisk    -            -            online
+emc0_02a3    auto:cdsdisk    -            -            online
+emc0_02a4    auto:cdsdisk    -            -            online
+emc0_02a5    auto:cdsdisk    -            -            online
+emc0_02a6    auto:cdsdisk    -            -            online
+emc0_02a7    auto:cdsdisk    -            -            online
+emc0_02a8    auto:cdsdisk    -            -            online
+emc0_02a9    auto:cdsdisk    -            -            online
+emc0_02b0    auto:cdsdisk    -            -            online thinrclm
+emc0_02b1    auto:cdsdisk    -            -            online thinrclm
+emc0_02b2    auto:cdsdisk    -            -            online thinrclm
+emc0_02b3    auto:cdsdisk    -            -            online thinrclm
+emc0_02b4    auto:cdsdisk    -            -            online thinrclm
+emc0_02b5    auto:cdsdisk    -            -            online thinrclm
+emc0_02b6    auto:cdsdisk    -            -            online thinrclm
+emc0_02b7    auto:cdsdisk    -            -            online thinrclm
+emc0_02b8    auto:cdsdisk    -            -            online thinrclm
+emc0_02b9    auto:cdsdisk    -            -            online thinrclm
+emc0_02de    auto:cdsdisk    -            -            online
+emc0_02df    auto:cdsdisk    -            -            online
+emc0_02e0    auto:cdsdisk    -            -            online
+emc0_02ea    auto:cdsdisk    -            -            online
+emc0_02eb    auto:cdsdisk    -            -            online
+emc0_02ec    auto:cdsdisk    -            -            online
+emc0_02ed    auto:cdsdisk    -            -            online
+emc0_02ee    auto:cdsdisk    -            -            online
+emc0_02ef    auto:cdsdisk    -            -            online
+emc0_02e1    auto:cdsdisk    -            -            online
+emc0_02e2    auto:cdsdisk    -            -            online
+emc0_02e3    auto:cdsdisk    -            -            online
+emc0_02e4    auto:cdsdisk    -            -            online
+emc0_02e5    auto:cdsdisk    -            -            online
+emc0_02e6    auto:cdsdisk    -            -            online
+emc0_02e7    auto:cdsdisk    -            -            online
+emc0_02e8    auto:cdsdisk    -            -            online
+emc0_02e9    auto:cdsdisk    -            -            online
+emc0_02f0    auto:cdsdisk    -            -            online
+emc0_02fa    auto:cdsdisk    -            -            online
+emc0_02fb    auto:cdsdisk    -            -            online
+emc0_02fc    auto:cdsdisk    -            -            online
+emc0_02fd    auto:cdsdisk    -            -            online
+emc0_02fe    auto:cdsdisk    -            -            online
+emc0_02ff    auto:cdsdisk    -            -            online
+emc0_02f1    auto:cdsdisk    -            -            online
+emc0_02f2    auto:cdsdisk    -            -            online
+emc0_02f3    auto:cdsdisk    -            -            online
+emc0_02f4    auto:cdsdisk    -            -            online
+emc0_02f5    auto:cdsdisk    -            -            online
+emc0_02f6    auto:cdsdisk    -            -            online
+emc0_02f7    auto:cdsdisk    -            -            online
+emc0_02f8    auto:cdsdisk    -            -            online
+emc0_02f9    auto:cdsdisk    -            -            online
+emc0_023a    auto:cdsdisk    -            -            online
+emc0_023b    auto:cdsdisk    -            -            online
+emc0_029c    auto:cdsdisk    -            -            online
+emc0_029d    auto:cdsdisk    -            -            online
+emc0_029e    auto:cdsdisk    -            -            online
+emc0_029f    auto:cdsdisk    -            -            online
+emc0_0234    auto:cdsdisk    -            -            online
+emc0_0235    auto:cdsdisk    -            -            online
+emc0_0236    auto:cdsdisk    -            -            online
+emc0_0237    auto:cdsdisk    -            -            online
+emc0_0238    auto:cdsdisk    -            -            online
+emc0_0239    auto:cdsdisk    -            -            online
+emc0_0300    auto:cdsdisk    -            -            online
+emc0_0301    auto:cdsdisk    -            -            online
+emc0_0302    auto:cdsdisk    -            -            online
+emc0_0303    auto:cdsdisk    -            -            online
+emc0_0304    auto:cdsdisk    -            -            online exported
+l109025_disk_1 auto:none       -            -            online invalid
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-06-27 06:35:31
+HOST:l109025
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+
+
+DATE:2017-06-27 06:35:33
+HOST:l109025
+USER:root
+STDIN:vxdisk list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+emc0_02a0    auto:cdsdisk    -            (vxfendg)    online
+emc0_02aa    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ab    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ac    auto:cdsdisk    -            -            online
+emc0_02ad    auto:cdsdisk    -            -            online
+emc0_02ae    auto:cdsdisk    -            -            online
+emc0_02af    auto:cdsdisk    -            -            online
+emc0_02a1    auto:cdsdisk    -            -            online
+emc0_02a2    auto:cdsdisk    -            -            online
+emc0_02a3    auto:cdsdisk    -            -            online
+emc0_02a4    auto:cdsdisk    -            -            online
+emc0_02a5    auto:cdsdisk    -            -            online
+emc0_02a6    auto:cdsdisk    -            -            online
+emc0_02a7    auto:cdsdisk    -            -            online
+emc0_02a8    auto:cdsdisk    -            -            online
+emc0_02a9    auto:cdsdisk    -            -            online
+emc0_02b0    auto:cdsdisk    -            -            online thinrclm
+emc0_02b1    auto:cdsdisk    -            -            online thinrclm
+emc0_02b2    auto:cdsdisk    -            -            online thinrclm
+emc0_02b3    auto:cdsdisk    -            -            online thinrclm
+emc0_02b4    auto:cdsdisk    -            -            online thinrclm
+emc0_02b5    auto:cdsdisk    -            -            online thinrclm
+emc0_02b6    auto:cdsdisk    -            -            online thinrclm
+emc0_02b7    auto:cdsdisk    -            -            online thinrclm
+emc0_02b8    auto:cdsdisk    -            -            online thinrclm
+emc0_02b9    auto:cdsdisk    -            -            online thinrclm
+emc0_02de    auto:cdsdisk    -            -            online
+emc0_02df    auto:cdsdisk    -            -            online
+emc0_02e0    auto:cdsdisk    -            -            online
+emc0_02ea    auto:cdsdisk    -            -            online
+emc0_02eb    auto:cdsdisk    -            -            online
+emc0_02ec    auto:cdsdisk    -            -            online
+emc0_02ed    auto:cdsdisk    -            -            online
+emc0_02ee    auto:cdsdisk    -            -            online
+emc0_02ef    auto:cdsdisk    -            -            online
+emc0_02e1    auto:cdsdisk    -            -            online
+emc0_02e2    auto:cdsdisk    -            -            online
+emc0_02e3    auto:cdsdisk    -            -            online
+emc0_02e4    auto:cdsdisk    -            -            online
+emc0_02e5    auto:cdsdisk    -            -            online
+emc0_02e6    auto:cdsdisk    -            -            online
+emc0_02e7    auto:cdsdisk    -            -            online
+emc0_02e8    auto:cdsdisk    -            -            online
+emc0_02e9    auto:cdsdisk    -            -            online
+emc0_02f0    auto:cdsdisk    -            -            online
+emc0_02fa    auto:cdsdisk    -            -            online
+emc0_02fb    auto:cdsdisk    -            -            online
+emc0_02fc    auto:cdsdisk    -            -            online
+emc0_02fd    auto:cdsdisk    -            -            online
+emc0_02fe    auto:cdsdisk    -            -            online
+emc0_02ff    auto:cdsdisk    -            -            online
+emc0_02f1    auto:cdsdisk    -            -            online
+emc0_02f2    auto:cdsdisk    -            -            online
+emc0_02f3    auto:cdsdisk    -            -            online
+emc0_02f4    auto:cdsdisk    -            -            online
+emc0_02f5    auto:cdsdisk    -            -            online
+emc0_02f6    auto:cdsdisk    -            -            online
+emc0_02f7    auto:cdsdisk    -            -            online
+emc0_02f8    auto:cdsdisk    -            -            online
+emc0_02f9    auto:cdsdisk    -            -            online
+emc0_023a    auto:cdsdisk    -            -            online
+emc0_023b    auto:cdsdisk    -            -            online
+emc0_029c    auto:cdsdisk    -            -            online
+emc0_029d    auto:cdsdisk    -            -            online
+emc0_029e    auto:cdsdisk    -            -            online
+emc0_029f    auto:cdsdisk    -            -            online
+emc0_0234    auto:cdsdisk    -            -            online
+emc0_0235    auto:cdsdisk    -            -            online
+emc0_0236    auto:cdsdisk    -            -            online
+emc0_0237    auto:cdsdisk    -            -            online
+emc0_0238    auto:cdsdisk    -            -            online
+emc0_0239    auto:cdsdisk    -            -            online
+emc0_0300    auto:cdsdisk    -            -            online
+emc0_0301    auto:cdsdisk    -            -            online
+emc0_0302    auto:cdsdisk    -            -            online
+emc0_0303    auto:cdsdisk    -            -            online
+emc0_0304    auto:cdsdisk    -            -            online exported
+l109025_disk_1 auto:none       -            -            online invalid
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-06-27 06:35:35
+HOST:l109025
+USER:root
+STDIN:for disk in emc0_0304; do vxdisk unexport $disk; done
+STDOUT:
+
+
+
+DATE:2017-06-27 06:35:36
+HOST:l109025
+USER:root
+STDIN:cat -n /etc/vx/vxvm.exclude
+STDOUT:
+     1	exclude_all 0
+     2	paths
+     3	sdcd pci-0000:0b:00.1-fc-0x500009780800a159-lun-78 emc0_0305
+     4	sdfe pci-0000:0b:00.0-fc-0x500009780800a158-lun-78 emc0_0305
+     5	#
+     6	controllers
+     7	#
+     8	product
+     9	#
+
+
+DATE:2017-06-27 06:35:39
+HOST:l109025
+USER:root
+STDIN:for disk in emc0_0305; do vxdmpadm include dmpnodename=$disk; done
+STDOUT:
+

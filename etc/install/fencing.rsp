@@ -1,0 +1,17 @@
+#,,,/opt/VRTS/install/_INSTALL_CMD_ -fencing _IP_
+Would you like to configure I/O fencing on the cluster?,,,y
+Select the fencing mechanism to be configured,,,2
+Do you want to continue?,,,y
+Do you have SCSI3 PR enabled disks?,,,y
+Enter the choice for a disk group:,,,2
+Select one disk group as fencing disk group,,,1
+do you want to continue with this disk group,,,y
+Is this information correct?,,,y
+encing configuration on all nodes at this point,,,y,,,600
+you want to configure Coordination Point Agent,,,n
+Would you like to send the information,,,n
+Would you like to view the summary file,,,n
+Enter disk policy for the disk,,,dmp
+you ready to stop VCS,,,y
+you want to stop VCS,,,y
+fencing for another,,,n

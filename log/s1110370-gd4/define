@@ -1,0 +1,5 @@
+export freshinstall="yes"
+export isvcs="no"
+export noipc="no"
+export setup_content="install|configure|fencing"
+export version="7.1"

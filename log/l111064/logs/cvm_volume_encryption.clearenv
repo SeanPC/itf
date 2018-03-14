@@ -1,0 +1,776 @@
+
+
+DATE:2017-07-24 13:49:51
+HOST:l111064
+USER:root
+STDIN:for file in /etc/vx/encryption;do [ -d $file ] && rm -rf $file || echo 0;done
+STDOUT:
+
+
+
+DATE:2017-07-24 13:49:52
+HOST:l111065
+USER:root
+STDIN:for file in /etc/vx/encryption;do [ -d $file ] && rm -rf $file || echo 0;done
+STDOUT:
+
+
+***Going to clear mount point on the nfsclient***
+
+
+
+DATE:2017-07-24 13:49:54
+HOST:cdc-nfs-client-cd-02
+USER:root
+STDIN:ps -ef|grep tmpfile
+STDOUT:
+root     31999 31997  0 13:51 ?        00:00:00 grep tmpfile
+
+
+DATE:2017-07-24 13:50:15
+HOST:l111064
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "ApplicationNone.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sfrac64 (
+	SecureClus = 1
+	DefaultGuestAccess = 1
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111064 (
+	)
+
+system l111065 (
+	)
+
+group autotcsg0 (
+	SystemList = { l111064 = 0, l111065 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111064, l111065 }
+	)
+
+	CFSMount cfsmount1 (
+		Critical = 0
+		MountPoint = "/autotcmnt0"
+		BlockDevice = "/dev/vx/dsk/autotcdg0/autotcvol0"
+		MountOpt @l111064 = "cluster"
+		MountOpt @l111065 = "cluster"
+		NodeList = { l111064, l111065 }
+		)
+
+	CVMVolDg cvmvoldg1 (
+		Critical = 0
+		CVMDiskGroup = autotcdg0
+		CVMVolume = { autotcvol0 }
+		CVMActivation @l111064 = sw
+		CVMActivation @l111065 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount1 requires cvmvoldg1
+
+
+	// resource dependency tree
+	//
+	//	group autotcsg0
+	//	{
+	//	CFSMount cfsmount1
+	//	    {
+	//	    CVMVolDg cvmvoldg1
+	//	    }
+	//	}
+
+
+group autotcsg1 (
+	SystemList = { l111064 = 0, l111065 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111064, l111065 }
+	)
+
+	CFSMount cfsmount2 (
+		Critical = 0
+		MountPoint = "/autotcmnt1"
+		BlockDevice = "/dev/vx/dsk/autotcdg2/autotcvol2"
+		MountOpt @l111064 = "cluster"
+		MountOpt @l111065 = "cluster"
+		NodeList = { l111064, l111065 }
+		)
+
+	CVMVolDg cvmvoldg2 (
+		Critical = 0
+		CVMDiskGroup = autotcdg2
+		CVMVolume = { autotcvol2 }
+		CVMActivation @l111064 = sw
+		CVMActivation @l111065 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount2 requires cvmvoldg2
+
+
+	// resource dependency tree
+	//
+	//	group autotcsg1
+	//	{
+	//	CFSMount cfsmount2
+	//	    {
+	//	    CVMVolDg cvmvoldg2
+	//	    }
+	//	}
+
+
+group autotcsg2 (
+	SystemList = { l111064 = 0, l111065 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111064, l111065 }
+	)
+
+	CFSMount cfsmount3 (
+		Critical = 0
+		MountPoint = "/autotcmnt2"
+		BlockDevice = "/dev/vx/dsk/autotcdg2/autotcvol3"
+		MountOpt @l111064 = "cluster"
+		MountOpt @l111065 = "cluster"
+		NodeList = { l111064, l111065 }
+		)
+
+	CVMVolDg cvmvoldg3 (
+		Critical = 0
+		CVMDiskGroup = autotcdg2
+		CVMVolume = { autotcvol3 }
+		CVMActivation @l111064 = sw
+		CVMActivation @l111065 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount3 requires cvmvoldg3
+
+
+	// resource dependency tree
+	//
+	//	group autotcsg2
+	//	{
+	//	CFSMount cfsmount3
+	//	    {
+	//	    CVMVolDg cvmvoldg3
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { l111064 = 0, l111065 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111064, l111065 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111064 = { autotcdg1 = sw, autotcdg2 = sw, autotcdg0 = sw }
+		ActivationMode @l111065 = { autotcdg1 = sw, autotcdg2 = sw, autotcdg0 = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sfrac64
+		CVMNodeId = { l111064 = 0, l111065 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group privsg2947 (
+	SystemList = { l111064 = 3, l111065 = 4 }
+	AutoStartList = { l111064 }
+	)
+
+	DiskGroup privdg2947 (
+		DiskGroup = autotcdg1
+		)
+
+	Mount privmount2947 (
+		MountPoint = "/autotcmnt3"
+		BlockDevice = "/dev/vx/dsk/autotcdg1/autotcvol1"
+		FSType = vxfs
+		FsckOpt = "-y"
+		)
+
+	privmount2947 requires privdg2947
+
+
+	// resource dependency tree
+	//
+	//	group privsg2947
+	//	{
+	//	Mount privmount2947
+	//	    {
+	//	    DiskGroup privdg2947
+	//	    }
+	//	}
+
+***import the maincf /opt/itf/log/l111064/logs/main.cf to cluster***
+
+
+
+DATE:2017-07-24 13:50:16
+HOST:l111064
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastop -all
+STDOUT:
+
+
+
+DATE:2017-07-24 13:50:27
+HOST:l111064
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l111064
+l111065
+
+
+DATE:2017-07-24 13:50:28
+HOST:l111065
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l111064
+l111065
+
+
+DATE:2017-07-24 13:50:39
+HOST:l111064
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-07-24 13:50:40
+HOST:l111065
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-07-24 13:50:56
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/log/l111064/logs/main.cf l111064:/tmp/tmpfile.9212
+STDOUT:
+
+
+
+DATE:2017-07-24 13:50:57
+HOST:l111064
+USER:root
+STDIN:mv /etc/VRTSvcs/conf/config/main.cf /etc/VRTSvcs/conf/config/main.cf.orig;cat /tmp/tmpfile.9212 > /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+
+
+
+DATE:2017-07-24 13:50:59
+HOST:l111064
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-07-24 13:51:10
+HOST:l111064
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111064    SysState                RUNNING
+l111065    SysState                UNKNOWN
+
+
+DATE:2017-07-24 13:51:11
+HOST:l111064
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111064    SysState                RUNNING
+l111065    SysState                UNKNOWN
+
+
+DATE:2017-07-24 13:51:13
+HOST:l111065
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-07-24 13:51:24
+HOST:l111064
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111064    SysState                RUNNING
+l111065    SysState                RUNNING
+
+
+DATE:2017-07-24 13:51:25
+HOST:l111064
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111064    SysState                RUNNING
+l111065    SysState                RUNNING
+
+***Waiting the group cvm online***
+
+
+
+DATE:2017-07-24 13:51:26
+HOST:l111064
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l111064    |OFFLINE|STARTING|
+cvm          State                 l111065    |OFFLINE|STARTING|
+
+
+DATE:2017-07-24 13:51:27
+HOST:l111064
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "ApplicationNone.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sfrac64 (
+	SecureClus = 1
+	DefaultGuestAccess = 1
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111064 (
+	)
+
+system l111065 (
+	)
+
+group cvm (
+	SystemList = { l111064 = 0, l111065 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111064, l111065 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111064 = { autotcdg1 = sw, autotcdg2 = sw }
+		ActivationMode @l111065 = { autotcdg1 = sw, autotcdg2 = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sfrac64
+		CVMNodeId = { l111064 = 0, l111065 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+DATE:2017-07-24 13:51:38
+HOST:l111064
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l111064    |ONLINE|
+cvm          State                 l111065    |OFFLINE|STARTING|
+
+
+DATE:2017-07-24 13:51:49
+HOST:l111064
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l111064    |ONLINE|
+cvm          State                 l111065    |ONLINE|
+
+
+DATE:2017-07-24 13:51:50
+HOST:l111064
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l111064    |ONLINE|
+cvm          State                 l111065    |ONLINE|
+
+***umount vxfs on node l111064***
+
+
+
+DATE:2017-07-24 13:51:51
+HOST:l111064
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda1 59G 11G 46G 19% /
+devtmpfs 12G 0 12G 0% /dev
+tmpfs 12G 0 12G 0% /dev/shm
+tmpfs 12G 20M 12G 1% /run
+tmpfs 12G 0 12G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 2.4G 0 2.4G 0% /run/user/0
+
+***umount vxfs on node l111065***
+
+
+
+DATE:2017-07-24 13:51:52
+HOST:l111065
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda1 59G 6.6G 50G 12% /
+devtmpfs 12G 0 12G 0% /dev
+tmpfs 12G 0 12G 0% /dev/shm
+tmpfs 12G 28M 12G 1% /run
+tmpfs 12G 0 12G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 2.4G 0 2.4G 0% /run/user/0
+
+
+DATE:2017-07-24 13:51:54
+HOST:l111064
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+
+DATE:2017-07-24 13:51:55
+HOST:l111065
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-07-24 13:51:56
+HOST:l111064
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen73
+
+
+DATE:2017-07-24 13:51:57
+HOST:l111064
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+ams_25000_518 auto:cdsdisk    ams_25000_518  dg1          online
+ams_25000_527 auto:cdsdisk    -            -            online thinrclm
+ams_25000_528 auto:cdsdisk    -            -            online thinrclm
+ams_25000_529 auto:cdsdisk    -            -            online thinrclm
+ams_25000_530 auto:cdsdisk    -            -            online thinrclm
+ams_25000_531 auto:cdsdisk    -            -            online thinrclm
+ams_25000_532 auto:cdsdisk    -            -            online thinrclm
+ams_25000_536 auto:cdsdisk    -            -            online thinrclm
+ams_25000_537 auto:cdsdisk    -            -            online thinrclm
+ams_25000_538 auto:cdsdisk    -            -            online thinrclm
+ams_25000_539 auto:cdsdisk    -            -            online thinrclm
+ams_25000_541 auto:cdsdisk    -            (fen73)      online
+ams_25000_542 auto:cdsdisk    -            (fen73)      online
+ams_25000_543 auto:cdsdisk    -            (fen73)      online
+ams_25000_544 auto:cdsdisk    ams_25000_544  autotcdg2    online shared
+ams_25000_545 auto:cdsdisk    ams_25000_545  autotcdg2    online shared
+ams_25000_546 auto:cdsdisk    -            (autotcdg1)  online
+ams_25000_547 auto:cdsdisk    -            (autotcdg1)  online
+ams_25000_548 auto:cdsdisk    -            (autotcdg1)  online
+ams_25000_549 auto:cdsdisk    -            (autotcdg1)  online
+ams_25000_550 auto:cdsdisk    -            (autotcdg1)  online
+ams_25000_551 auto:cdsdisk    -            (autotcdg1)  online
+ams_25000_552 auto:cdsdisk    ams_25000_552  autotcdg0    online shared
+ams_25000_553 auto:cdsdisk    ams_25000_553  autotcdg0    online shared
+ams_25000_1344 auto:cdsdisk    -            -            online
+ams_25000_1345 auto:cdsdisk    -            -            online
+ams_25000_1346 auto:cdsdisk    -            -            online
+ams_25000_1348 auto:cdsdisk    -            -            online
+ams_25000_1349 auto:cdsdisk    -            -            online
+ams_25000_1350 auto:cdsdisk    -            -            online
+ams_25000_1363 auto:cdsdisk    ams_25000_1363  autotcdg2    online shared
+ams_25000_1460 auto:cdsdisk    ams_25000_1460  autotcdg2    online shared
+ams_25000_1461 auto:cdsdisk    ams_25000_1461  autotcdg2    online shared
+ams_25000_1462 auto:cdsdisk    ams_25000_1462  autotcdg2    online shared
+emc_clariion0_1 auto:cdsdisk    emc_clariion0_1  dg1          online
+emc_clariion0_1365 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1366 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1367 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1368 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1369 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1370 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1371 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1372 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1373 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1374 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1375 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1376 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1377 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1378 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1379 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1380 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1381 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1382 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1383 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1384 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1385 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1386 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1387 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1388 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1389 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1390 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1391 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1392 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1393 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1394 auto:cdsdisk    -            -            online thinrclm
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-07-24 13:52:00
+HOST:l111064
+USER:root
+STDIN:vxdg -Cf import autotcdg1
+STDOUT:
+Enter password for volume autotcvol1: VxVM vxvol ERROR V-5-1-18922 Volume startup could not finish because an incorrect password was entered for an encrypted volume. Retry volume startup with the correct password.
+
+
+DATE:2017-07-24 13:52:01
+HOST:l111064
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+dg1          enabled,cds          1500874791.149.l111064.cdc.veritas.com
+autotcdg0    enabled,shared,cds,encrypted 1500874874.151.l111064.cdc.veritas.com
+autotcdg1    enabled,cds          1500874877.153.l111064.cdc.veritas.com
+autotcdg2    enabled,shared,cds   1500874880.155.l111064.cdc.veritas.com
+
+
+DATE:2017-07-24 13:52:02
+HOST:l111064
+USER:root
+STDIN:vxdg destroy dg1
+STDOUT:
+
+
+
+DATE:2017-07-24 13:52:04
+HOST:l111064
+USER:root
+STDIN:vxdg destroy autotcdg0
+STDOUT:
+
+
+
+DATE:2017-07-24 13:52:05
+HOST:l111064
+USER:root
+STDIN:vxdg destroy autotcdg1
+STDOUT:
+
+
+
+DATE:2017-07-24 13:52:08
+HOST:l111064
+USER:root
+STDIN:vxdg destroy autotcdg2
+STDOUT:
+
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-07-24 13:52:09
+HOST:l111065
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen73
+
+
+DATE:2017-07-24 13:52:10
+HOST:l111065
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+ams_25000_518 auto:cdsdisk    -            -            online
+ams_25000_527 auto:cdsdisk    -            -            online thinrclm
+ams_25000_528 auto:cdsdisk    -            -            online thinrclm
+ams_25000_529 auto:cdsdisk    -            -            online thinrclm
+ams_25000_530 auto:cdsdisk    -            -            online thinrclm
+ams_25000_531 auto:cdsdisk    -            -            online thinrclm
+ams_25000_532 auto:cdsdisk    -            -            online thinrclm
+ams_25000_536 auto:cdsdisk    -            -            online thinrclm
+ams_25000_537 auto:cdsdisk    -            -            online thinrclm
+ams_25000_538 auto:cdsdisk    -            -            online thinrclm
+ams_25000_539 auto:cdsdisk    -            -            online thinrclm
+ams_25000_541 auto:cdsdisk    -            (fen73)      online
+ams_25000_542 auto:cdsdisk    -            (fen73)      online
+ams_25000_543 auto:cdsdisk    -            (fen73)      online
+ams_25000_544 auto:cdsdisk    -            -            online
+ams_25000_545 auto:cdsdisk    -            -            online
+ams_25000_546 auto:cdsdisk    -            -            online
+ams_25000_547 auto:cdsdisk    -            -            online
+ams_25000_548 auto:cdsdisk    -            -            online
+ams_25000_549 auto:cdsdisk    -            -            online
+ams_25000_550 auto:cdsdisk    -            -            online
+ams_25000_551 auto:cdsdisk    -            -            online
+ams_25000_552 auto:cdsdisk    -            -            online
+ams_25000_553 auto:cdsdisk    -            -            online
+ams_25000_1344 auto:cdsdisk    -            -            online
+ams_25000_1345 auto:cdsdisk    -            -            online
+ams_25000_1346 auto:cdsdisk    -            -            online
+ams_25000_1348 auto:cdsdisk    -            -            online
+ams_25000_1349 auto:cdsdisk    -            -            online
+ams_25000_1350 auto:cdsdisk    -            -            online
+ams_25000_1363 auto:cdsdisk    -            -            online
+ams_25000_1460 auto:cdsdisk    -            -            online
+ams_25000_1461 auto:cdsdisk    -            -            online
+ams_25000_1462 auto:cdsdisk    -            -            online
+emc_clariion0_1 auto:cdsdisk    -            -            online
+emc_clariion0_1365 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1366 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1367 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1368 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1369 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1370 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1371 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1372 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1373 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1374 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1375 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1376 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1377 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1378 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1379 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1380 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1381 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1382 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1383 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1384 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1385 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1386 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1387 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1388 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1389 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1390 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1391 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1392 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1393 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1394 auto:cdsdisk    -            -            online thinrclm
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-07-24 13:52:11
+HOST:l111065
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID

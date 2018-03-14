@@ -1,0 +1,308 @@
+
+
+DATE:2017-04-07 14:26:44
+HOST:l111013
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster clus1314 (
+	UserNames = { admin = cJKcJEjGKfKKiSKeJH }
+	Administrators = { admin }
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111013 (
+	)
+
+system l111014 (
+	)
+
+group cvm (
+	SystemList = { l111013 = 0, l111014 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111013, l111014 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = clus1314
+		CVMNodeId = { l111013 = 0, l111014 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+***umount vxfs on node l111013***
+
+
+
+DATE:2017-04-07 14:26:45
+HOST:l111013
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 44G 4.2G 37G 11% /
+devtmpfs 4.9G 0 4.9G 0% /dev
+tmpfs 4.9G 0 4.9G 0% /dev/shm
+tmpfs 4.9G 11M 4.9G 1% /run
+tmpfs 4.9G 0 4.9G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 671M 332M 67% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 787M 223M 78% /autotcmnt1
+
+
+DATE:2017-04-07 14:26:46
+HOST:l111013
+USER:root
+STDIN:umount /autotcmnt0;umount /autotcmnt1;
+STDOUT:
+
+
+***umount vxfs on node l111014***
+
+
+
+DATE:2017-04-07 14:26:46
+HOST:l111014
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 44G 4.1G 37G 10% /
+devtmpfs 4.9G 0 4.9G 0% /dev
+tmpfs 4.9G 0 4.9G 0% /dev/shm
+tmpfs 4.9G 11M 4.9G 1% /run
+tmpfs 4.9G 0 4.9G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 786M 224M 78% /autotcmnt1
+
+
+DATE:2017-04-07 14:26:47
+HOST:l111014
+USER:root
+STDIN:umount /autotcmnt1;
+STDOUT:
+
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-04-07 14:26:47
+HOST:l111013
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+
+
+
+DATE:2017-04-07 14:26:47
+HOST:l111013
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc_clariion0_1699 auto:cdsdisk    -            -            online
+emc_clariion0_1700 auto:cdsdisk    -            -            online
+emc_clariion0_1701 auto:cdsdisk    -            -            online
+emc_clariion0_1702 auto:cdsdisk    -            -            online
+emc_clariion0_1703 auto:cdsdisk    -            -            online
+emc_clariion0_1704 auto:cdsdisk    -            -            online
+emc_clariion0_1705 auto:cdsdisk    -            -            online
+emc_clariion0_1706 auto:cdsdisk    -            -            online
+emc_clariion0_1707 auto:cdsdisk    -            -            online
+emc_clariion0_1708 auto:cdsdisk    -            -            online
+emc_clariion0_1709 auto:cdsdisk    -            -            online
+emc_clariion0_1710 auto:cdsdisk    -            -            online
+emc_clariion0_1711 auto:cdsdisk    -            -            online
+emc_clariion0_1712 auto:cdsdisk    emc_clariion0_1712  autotcdg1    online shared
+emc_clariion0_1713 auto:cdsdisk    emc_clariion0_1713  autotcdg0    online
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-04-07 14:26:48
+HOST:l111013
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcdg0    enabled,cds          1491547824.49.l111013.cdc.veritas.com
+autotcdg1    enabled,shared,cds   1491547825.51.l111013.cdc.veritas.com
+
+
+DATE:2017-04-07 14:26:48
+HOST:l111013
+USER:root
+STDIN:vxdg destroy autotcdg0
+STDOUT:
+
+
+
+DATE:2017-04-07 14:26:49
+HOST:l111013
+USER:root
+STDIN:vxdg destroy autotcdg1
+STDOUT:
+
+
+
+DATE:2017-04-07 14:26:49
+HOST:l111013
+USER:root
+STDIN:vxdisk list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc_clariion0_1699 auto:cdsdisk    -            -            online
+emc_clariion0_1700 auto:cdsdisk    -            -            online
+emc_clariion0_1701 auto:cdsdisk    -            -            online
+emc_clariion0_1702 auto:cdsdisk    -            -            online
+emc_clariion0_1703 auto:cdsdisk    -            -            online
+emc_clariion0_1704 auto:cdsdisk    -            -            online
+emc_clariion0_1705 auto:cdsdisk    -            -            online
+emc_clariion0_1706 auto:cdsdisk    -            -            online
+emc_clariion0_1707 auto:cdsdisk    -            -            online
+emc_clariion0_1708 auto:cdsdisk    -            -            online
+emc_clariion0_1709 auto:cdsdisk    -            -            online
+emc_clariion0_1710 auto:cdsdisk    -            -            online
+emc_clariion0_1711 auto:cdsdisk    -            -            online
+emc_clariion0_1712 auto:cdsdisk    -            -            online
+emc_clariion0_1713 auto:cdsdisk    -            -            online
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-04-07 14:26:49
+HOST:l111013
+USER:root
+STDIN:cat -n /etc/vx/vxvm.exclude
+STDOUT:
+     1	exclude_all 0
+     2	paths
+     3	#
+     4	controllers
+     5	#
+     6	product
+     7	#
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-04-07 14:26:50
+HOST:l111014
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+
+
+
+DATE:2017-04-07 14:26:50
+HOST:l111014
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc_clariion0_1699 auto:cdsdisk    -            -            online
+emc_clariion0_1700 auto:cdsdisk    -            -            online
+emc_clariion0_1701 auto:cdsdisk    -            -            online
+emc_clariion0_1702 auto:cdsdisk    -            -            online
+emc_clariion0_1703 auto:cdsdisk    -            -            online
+emc_clariion0_1704 auto:cdsdisk    -            -            online
+emc_clariion0_1705 auto:cdsdisk    -            -            online
+emc_clariion0_1706 auto:cdsdisk    -            -            online
+emc_clariion0_1707 auto:cdsdisk    -            -            online
+emc_clariion0_1708 auto:cdsdisk    -            -            online
+emc_clariion0_1709 auto:cdsdisk    -            -            online
+emc_clariion0_1710 auto:cdsdisk    -            -            online
+emc_clariion0_1711 auto:cdsdisk    -            -            online
+emc_clariion0_1712 auto:cdsdisk    -            -            online
+emc_clariion0_1713 auto:cdsdisk    -            -            online
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-04-07 14:26:50
+HOST:l111014
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+
+
+DATE:2017-04-07 14:26:51
+HOST:l111014
+USER:root
+STDIN:vxdisk list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc_clariion0_1699 auto:cdsdisk    -            -            online
+emc_clariion0_1700 auto:cdsdisk    -            -            online
+emc_clariion0_1701 auto:cdsdisk    -            -            online
+emc_clariion0_1702 auto:cdsdisk    -            -            online
+emc_clariion0_1703 auto:cdsdisk    -            -            online
+emc_clariion0_1704 auto:cdsdisk    -            -            online
+emc_clariion0_1705 auto:cdsdisk    -            -            online
+emc_clariion0_1706 auto:cdsdisk    -            -            online
+emc_clariion0_1707 auto:cdsdisk    -            -            online
+emc_clariion0_1708 auto:cdsdisk    -            -            online
+emc_clariion0_1709 auto:cdsdisk    -            -            online
+emc_clariion0_1710 auto:cdsdisk    -            -            online
+emc_clariion0_1711 auto:cdsdisk    -            -            online
+emc_clariion0_1712 auto:cdsdisk    -            -            online
+emc_clariion0_1713 auto:cdsdisk    -            -            online
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-04-07 14:26:51
+HOST:l111014
+USER:root
+STDIN:cat -n /etc/vx/vxvm.exclude
+STDOUT:
+     1	exclude_all 0
+     2	paths
+     3	#
+     4	controllers
+     5	#
+     6	product
+     7	#

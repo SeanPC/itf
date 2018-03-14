@@ -1,0 +1,21 @@
+
+==================== Operation Log for TC test ====================
+DATE:2017-03-03 15:52:59
+Nodes:s1110370-gd2
+
+***Getting hostname of node***
+
+
+
+DATE:2017-03-03 15:52:59
+HOST:s1110370-gd2
+USER:root
+STDIN:hostname
+STDOUT:
+
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-03-03 15:52:59
+Duration:0m0s

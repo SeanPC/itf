@@ -1,0 +1,770 @@
+
+==================== Operation Log for TC native_vgpool_convert ====================
+DATE:2017-04-14 15:32:21
+Nodes:l111055
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-04-14 15:32:21
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-04-14 15:32:21
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:4682266 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:309281 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:305474518 (291.3 MiB)  TX bytes:145667266 (138.9 MiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:9943 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:9943 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:1113749 (1.0 MiB)  TX bytes:1113749 (1.0 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-04-14 15:32:22
+HOST:l111055
+USER:root
+STDIN:ssh -l root l111055
+STDOUT:
+
+
+
+DATE:2017-04-14 15:32:23
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111055
+STDOUT:
+
+
+***Getting hostname of node***
+
+
+
+DATE:2017-04-14 15:32:23
+HOST:l111055
+USER:root
+STDIN:hostname
+STDOUT:
+l111055
+
+***Getting os version***
+
+
+
+DATE:2017-04-14 15:32:24
+HOST:l111055
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-04-14 15:32:24
+HOST:l111055
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+
+Welcome to SUSE Linux Enterprise Server 12 SP1  (x86_64) - Kernel \r (\l).
+
+
+DATE:2017-04-14 15:32:24
+HOST:l111055
+USER:root
+STDIN:uname -r
+STDOUT:
+3.12.69-60.64.32-default
+
+
+====STEP: checking if exist native vgs or pool,drop them if existing
+DATE:2017-04-14 15:32:24
+
+***Drop native vg/zpool***
+
+
+
+DATE:2017-04-14 15:32:39
+HOST:l111055
+USER:root
+STDIN:pvs|grep autotc
+STDOUT:
+  /dev/sdaw: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdaw: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdaw: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdaw: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdax: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdax: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdax: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdax: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdcd: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdcd: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdcd: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdcd: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdcu: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdcu: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdcu: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdcu: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbd: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbd: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdbd: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdbd: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdcz: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdcz: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdcz: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdcz: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbe: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbe: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdbe: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdbe: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbf: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbf: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdbf: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdbf: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbh: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbh: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdbh: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdbh: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdas: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdas: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdas: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdas: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbi: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbi: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdbi: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdbi: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdco: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdco: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdco: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdco: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdat: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdat: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdat: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdat: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdau: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdau: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdau: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdau: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbk: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbk: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdbk: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdbk: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbl: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbl: read failed after 0 of 4096 at 5368643584: Input/output error
+  /dev/sdbl: read failed after 0 of 4096 at 5368700928: Input/output error
+  /dev/sdbl: read failed after 0 of 4096 at 4096: Input/output error
+RETURN:1
+RESULT:WARNING
+
+
+====STEP: Copy mf.pl to l111055,filling files into the filesystem
+DATE:2017-04-14 15:32:39
+
+
+DATE:2017-04-14 15:32:39
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/etc/mf.pl l111055:/tmp/tmpfile.6274
+STDOUT:
+
+
+
+====STEP: Checking dmp_native_support status,if it is on,trun it to be off
+DATE:2017-04-14 15:32:39
+
+***setting dmp_native_support to be off***
+
+
+
+DATE:2017-04-14 15:32:39
+HOST:l111055
+USER:root
+STDIN:vxdmpadm gettune dmp_native_support
+STDOUT:
+            Tunable               Current Value  Default Value
+------------------------------    -------------  -------------
+dmp_native_support                      off	         off
+
+
+====STEP: Getting disks for the 1st vg or pool
+DATE:2017-04-14 15:32:44
+
+***Getting disk list by specified size***
+
+
+***Getting avaiable disks***
+
+
+
+DATE:2017-04-14 15:32:45
+HOST:l111055
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-04-14 15:32:45
+HOST:l111055
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+emc_clariion1     EMC_CLARiiON   CKM00083400155       CONNECTED    CLR-A/PF   20         0429
+emc_clariion0     EMC_CLARiiON   CETV2140800019       CONNECTED    CLR-ALUA   20         0533
+ams_25000         AMS_2500       87011286             CONNECTED    A/A        43         0000
+emc0              EMC            000492600040         CONNECTED    A/A         2         5876
+other_disks       OTHER_DISKS    OTHER_DISKS          CONNECTED    OTHER_DISKS   1         1028
+
+
+DATE:2017-04-14 15:32:46
+HOST:l111055
+USER:root
+STDIN:vxdisk scandisks;vxdisk list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+ams_25000_316 auto:cdsdisk    -            (fen72)      online
+ams_25000_317 auto:cdsdisk    -            (fen72)      online
+ams_25000_724 auto:cdsdisk    -            (fen72)      online
+ams_25000_733 auto:cdsdisk    -            -            online
+ams_25000_734 auto:cdsdisk    -            -            online
+ams_25000_735 auto:cdsdisk    -            -            online
+ams_25000_736 auto:cdsdisk    -            -            online
+ams_25000_1734 auto:cdsdisk    -            -            online
+ams_25000_1735 auto:cdsdisk    -            -            online
+ams_25000_1736 auto:cdsdisk    -            -            online
+ams_25000_1737 auto:cdsdisk    -            -            online
+ams_25000_1738 auto:cdsdisk    -            -            online
+ams_25000_1739 auto:cdsdisk    -            -            online
+ams_25000_1740 auto:cdsdisk    -            -            online
+ams_25000_1741 auto:cdsdisk    -            -            online
+ams_25000_1742 auto:cdsdisk    -            -            online
+ams_25000_1743 auto:cdsdisk    -            -            online
+ams_25000_1781 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1782 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1783 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1784 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1785 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1786 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1787 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1788 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1789 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1790 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1791 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1792 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1793 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1794 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1795 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1796 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1797 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1798 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1844 auto:cdsdisk    -            -            online
+ams_25000_1845 auto:cdsdisk    -            -            online
+ams_25000_1846 auto:cdsdisk    -            -            online
+ams_25000_1847 auto:cdsdisk    -            -            online
+ams_25000_1848 auto:cdsdisk    -            -            online
+ams_25000_1849 auto:cdsdisk    -            -            online
+ams_25000_1850 auto:cdsdisk    -            -            online
+ams_25000_1851 auto:cdsdisk    -            -            online
+emc_clariion0_70 auto:cdsdisk    -            -            online
+emc_clariion0_71 auto:cdsdisk    -            -            online
+emc_clariion0_72 auto:cdsdisk    -            -            online
+emc_clariion0_73 auto:cdsdisk    -            -            online
+emc_clariion0_74 auto:cdsdisk    -            -            online
+emc_clariion0_75 auto:cdsdisk    -            -            online
+emc_clariion0_76 auto:cdsdisk    emc_clariion0_76  autotcdg3    online
+emc_clariion0_77 auto:cdsdisk    emc_clariion0_77  autotcdg3    online
+emc_clariion0_78 auto:cdsdisk    emc_clariion0_78  autotcdg3    online
+emc_clariion0_79 auto:cdsdisk    emc_clariion0_79  autotcdg3    online
+emc_clariion0_80 auto:cdsdisk    emc_clariion0_80  autotcdg3    online
+emc_clariion0_81 auto:cdsdisk    emc_clariion0_81  autotcdg3    online
+emc_clariion0_82 auto:cdsdisk    emc_clariion0_82  autotcdg3    online
+emc_clariion0_83 auto:cdsdisk    emc_clariion0_83  autotcdg3    online
+emc_clariion0_84 auto:cdsdisk    emc_clariion0_84  autotcdg3    online
+emc_clariion0_85 auto:cdsdisk    emc_clariion0_85  autotcdg3    online
+emc_clariion0_86 auto:cdsdisk    emc_clariion0_86  autotcdg3    online
+emc_clariion0_87 auto:cdsdisk    emc_clariion0_87  autotcdg3    online
+emc_clariion0_88 auto:cdsdisk    emc_clariion0_88  autotcdg2    online
+emc_clariion0_89 auto:cdsdisk    emc_clariion0_89  autotcdg2    online
+emc_clariion1_277 auto:cdsdisk    emc_clariion1_277  autotcdg2    online
+emc_clariion1_278 auto:cdsdisk    emc_clariion1_278  autotcdg2    online
+emc_clariion1_279 auto:cdsdisk    emc_clariion1_279  autotcdg2    online
+emc_clariion1_280 auto:cdsdisk    emc_clariion1_280  autotcdg2    online
+emc_clariion1_281 auto:cdsdisk    emc_clariion1_281  autotcdg2    online
+emc_clariion1_282 auto:cdsdisk    emc_clariion1_282  autotcdg2    online
+emc_clariion1_283 auto:cdsdisk    emc_clariion1_283  autotcdg2    online
+emc_clariion1_284 auto:cdsdisk    emc_clariion1_284  autotcdg2    online
+emc_clariion1_285 auto:cdsdisk    emc_clariion1_285  autotcdg2    online
+emc_clariion1_286 auto:cdsdisk    emc_clariion1_286  autotcdg2    online
+emc_clariion1_287 auto:cdsdisk    emc_clariion1_287  autotcdg1    online shared
+emc_clariion1_288 auto:cdsdisk    emc_clariion1_288  autotcdg1    online shared
+emc_clariion1_289 auto:cdsdisk    emc_clariion1_289  autotcdg1    online shared
+emc_clariion1_290 auto:cdsdisk    emc_clariion1_290  autotcdg1    online shared
+emc_clariion1_291 auto:cdsdisk    emc_clariion1_291  autotcdg1    online shared
+emc_clariion1_292 auto:cdsdisk    emc_clariion1_292  autotcdg1    online shared
+emc_clariion1_293 auto:cdsdisk    emc_clariion1_293  autotcdg1    online shared
+emc_clariion1_294 auto:cdsdisk    emc_clariion1_294  autotcdg1    online shared
+emc_clariion1_295 auto:cdsdisk    emc_clariion1_295  autotcdg1    online shared
+emc_clariion1_296 auto:cdsdisk    emc_clariion1_296  autotcdg1    online shared
+emc0_0244    auto:cdsdisk    emc0_0244    autotcdg1    online shared
+emc0_0246    auto:cdsdisk    emc0_0246    autotcdg1    online shared
+sdfv         auto:none       -            -            online invalid
+
+
+DATE:2017-04-14 15:32:48
+HOST:l111055
+USER:root
+STDIN:/opt/VRTSsfmh/adm/dclisetup.sh
+STDOUT:
+
+
+
+DATE:2017-04-14 15:32:49
+HOST:l111055
+USER:root
+STDIN:/opt/VRTS/bin/vxlist disk
+STDOUT:
+TY   DEVICE             DISK               DISKGROUP      SIZE    FREE STATUS
+disk ams_25000_316      -                  fen72         4.96g       - deported
+disk ams_25000_317      -                  fen72         4.96g       - deported
+disk ams_25000_724      -                  fen72         4.96g       - deported
+disk ams_25000_733      -                  -             4.96g       - free
+disk ams_25000_734      -                  -             4.96g       - free
+disk ams_25000_735      -                  -             4.96g       - free
+disk ams_25000_736      -                  -             4.96g       - free
+disk ams_25000_1734     -                  -             4.96g       - free
+disk ams_25000_1735     -                  -             4.96g       - free
+disk ams_25000_1736     -                  -             4.96g       - free
+disk ams_25000_1737     -                  -             4.96g       - free
+disk ams_25000_1738     -                  -             4.96g       - free
+disk ams_25000_1739     -                  -             4.96g       - free
+disk ams_25000_1740     -                  -             4.96g       - free
+disk ams_25000_1741     -                  -             4.96g       - free
+disk ams_25000_1742     -                  -             4.96g       - free
+disk ams_25000_1743     -                  -             4.96g       - free
+disk ams_25000_1781     -                  -             4.96g       - free
+disk ams_25000_1782     -                  -             4.96g       - free
+disk ams_25000_1783     -                  -             4.96g       - free
+disk ams_25000_1784     -                  -             4.96g       - free
+disk ams_25000_1785     -                  -             4.96g       - free
+disk ams_25000_1786     -                  -             4.96g       - free
+disk ams_25000_1787     -                  -             4.96g       - free
+disk ams_25000_1788     -                  -             4.96g       - free
+disk ams_25000_1789     -                  -             4.96g       - free
+disk ams_25000_1790     -                  -             4.96g       - free
+disk ams_25000_1791     -                  -             4.96g       - free
+disk ams_25000_1792     -                  -             4.96g       - free
+disk ams_25000_1793     -                  -             4.96g       - free
+disk ams_25000_1794     -                  -             4.96g       - free
+disk ams_25000_1795     -                  -             4.96g       - free
+disk ams_25000_1796     -                  -             4.96g       - free
+disk ams_25000_1797     -                  -             4.96g       - free
+disk ams_25000_1798     -                  -             4.96g       - free
+disk ams_25000_1844     -                  -             4.96g       - free
+disk ams_25000_1845     -                  -             4.96g       - free
+disk ams_25000_1846     -                  -             4.96g       - free
+disk ams_25000_1847     -                  -             4.96g       - free
+disk ams_25000_1848     -                  -             4.96g       - free
+disk ams_25000_1849     -                  -             4.96g       - free
+disk ams_25000_1850     -                  -             4.96g       - free
+disk ams_25000_1851     -                  -             4.96g       - free
+disk emc_clariion0_70   -                  -             4.96g       - free
+disk emc_clariion0_71   -                  -             4.96g       - free
+disk emc_clariion0_72   -                  -             4.96g       - free
+disk emc_clariion0_73   -                  -             4.96g       - free
+disk emc_clariion0_74   -                  -             4.96g       - free
+disk emc_clariion0_75   -                  -             4.96g       - free
+disk emc_clariion0_76   emc_clariion0_76   autotcdg3     4.96g   4.21g imported
+disk emc_clariion0_77   emc_clariion0_77   autotcdg3     4.96g   4.21g imported
+disk emc_clariion0_78   emc_clariion0_78   autotcdg3     4.96g   4.21g imported
+disk emc_clariion0_79   emc_clariion0_79   autotcdg3     4.96g   4.21g imported
+disk emc_clariion0_80   emc_clariion0_80   autotcdg3     4.96g   4.21g imported
+disk emc_clariion0_81   emc_clariion0_81   autotcdg3     4.96g   4.21g imported
+disk emc_clariion0_82   emc_clariion0_82   autotcdg3     4.96g   4.21g imported
+disk emc_clariion0_83   emc_clariion0_83   autotcdg3     4.96g   4.21g imported
+disk emc_clariion0_84   emc_clariion0_84   autotcdg3     4.96g   4.21g imported
+disk emc_clariion0_85   emc_clariion0_85   autotcdg3     4.96g   4.21g imported
+disk emc_clariion0_86   emc_clariion0_86   autotcdg3     4.96g   4.21g imported
+disk emc_clariion0_87   emc_clariion0_87   autotcdg3     4.96g   4.21g imported
+disk emc_clariion0_88   emc_clariion0_88   autotcdg2     4.96g   4.21g imported
+disk emc_clariion0_89   emc_clariion0_89   autotcdg2     4.96g   4.21g imported
+disk emc_clariion1_277  emc_clariion1_277  autotcdg2     4.96g   4.21g imported
+disk emc_clariion1_278  emc_clariion1_278  autotcdg2     4.96g   4.21g imported
+disk emc_clariion1_279  emc_clariion1_279  autotcdg2     4.96g   4.21g imported
+disk emc_clariion1_280  emc_clariion1_280  autotcdg2     4.96g   4.21g imported
+disk emc_clariion1_281  emc_clariion1_281  autotcdg2     4.96g   4.21g imported
+disk emc_clariion1_282  emc_clariion1_282  autotcdg2     4.96g   4.21g imported
+disk emc_clariion1_283  emc_clariion1_283  autotcdg2     4.96g   4.21g imported
+disk emc_clariion1_284  emc_clariion1_284  autotcdg2     4.96g   4.21g imported
+disk emc_clariion1_285  emc_clariion1_285  autotcdg2     4.96g   4.21g imported
+disk emc_clariion1_286  emc_clariion1_286  autotcdg2     4.96g   4.21g imported
+disk emc_clariion1_287  emc_clariion1_287  autotcdg1     4.96g   4.21g imported
+disk emc_clariion1_288  emc_clariion1_288  autotcdg1     4.96g   4.21g imported
+disk emc_clariion1_289  emc_clariion1_289  autotcdg1     4.96g   4.21g imported
+disk emc_clariion1_290  emc_clariion1_290  autotcdg1     4.96g   4.21g imported
+disk emc_clariion1_291  emc_clariion1_291  autotcdg1     4.96g   4.21g imported
+disk emc_clariion1_292  emc_clariion1_292  autotcdg1     4.96g   4.21g imported
+disk emc_clariion1_293  emc_clariion1_293  autotcdg1     4.96g   4.21g imported
+disk emc_clariion1_294  emc_clariion1_294  autotcdg1     4.96g   4.21g imported
+disk emc_clariion1_295  emc_clariion1_295  autotcdg1     4.96g   4.21g imported
+disk emc_clariion1_296  emc_clariion1_296  autotcdg1     4.96g   4.21g imported
+disk emc0_0244          emc0_0244          autotcdg1   399.95g 399.20g imported
+disk emc0_0246          emc0_0246          autotcdg1   399.95g 399.20g imported
+disk sdfv               -                  -                 -       - LVM
+
+
+DATE:2017-04-14 15:32:49
+HOST:l111055
+USER:root
+STDIN:vxdmpadm getsubpaths
+STDOUT:
+NAME         STATE[A]   PATH-TYPE[M] DMPNODENAME  ENCLR-NAME   CTLR           ATTRS      PRIORITY
+=================================================================================================
+sdew         ENABLED(A)   -          ams_25000_1734 ams_25000    c5              -         -
+sdt          ENABLED(A)   -          ams_25000_1734 ams_25000    c0              -         -
+sdex         ENABLED(A)   -          ams_25000_1735 ams_25000    c5              -         -
+sdu          ENABLED(A)   -          ams_25000_1735 ams_25000    c0              -         -
+sdey         ENABLED(A)   -          ams_25000_1736 ams_25000    c5              -         -
+sdv          ENABLED(A)   -          ams_25000_1736 ams_25000    c0              -         -
+sdez         ENABLED(A)   -          ams_25000_1737 ams_25000    c5              -         -
+sdw          ENABLED(A)   -          ams_25000_1737 ams_25000    c0              -         -
+sdfa         ENABLED(A)   -          ams_25000_1738 ams_25000    c5              -         -
+sdx          ENABLED(A)   -          ams_25000_1738 ams_25000    c0              -         -
+sdfb         ENABLED(A)   -          ams_25000_1739 ams_25000    c5              -         -
+sdy          ENABLED(A)   -          ams_25000_1739 ams_25000    c0              -         -
+sdfc         ENABLED(A)   -          ams_25000_1740 ams_25000    c5              -         -
+sdz          ENABLED(A)   -          ams_25000_1740 ams_25000    c0              -         -
+sdaa         ENABLED(A)   -          ams_25000_1741 ams_25000    c0              -         -
+sdfd         ENABLED(A)   -          ams_25000_1741 ams_25000    c5              -         -
+sdab         ENABLED(A)   -          ams_25000_1742 ams_25000    c0              -         -
+sdfe         ENABLED(A)   -          ams_25000_1742 ams_25000    c5              -         -
+sdac         ENABLED(A)   -          ams_25000_1743 ams_25000    c0              -         -
+sdff         ENABLED(A)   -          ams_25000_1743 ams_25000    c5              -         -
+sdb          ENABLED(A)   -          ams_25000_1781 ams_25000    c0              -         -
+sdee         ENABLED(A)   -          ams_25000_1781 ams_25000    c5              -         -
+sdc          ENABLED(A)   -          ams_25000_1782 ams_25000    c0              -         -
+sdef         ENABLED(A)   -          ams_25000_1782 ams_25000    c5              -         -
+sdd          ENABLED(A)   -          ams_25000_1783 ams_25000    c0              -         -
+sdeg         ENABLED(A)   -          ams_25000_1783 ams_25000    c5              -         -
+sde          ENABLED(A)   -          ams_25000_1784 ams_25000    c0              -         -
+sdeh         ENABLED(A)   -          ams_25000_1784 ams_25000    c5              -         -
+sdei         ENABLED(A)   -          ams_25000_1785 ams_25000    c5              -         -
+sdf          ENABLED(A)   -          ams_25000_1785 ams_25000    c0              -         -
+sdej         ENABLED(A)   -          ams_25000_1786 ams_25000    c5              -         -
+sdg          ENABLED(A)   -          ams_25000_1786 ams_25000    c0              -         -
+sdek         ENABLED(A)   -          ams_25000_1787 ams_25000    c5              -         -
+sdh          ENABLED(A)   -          ams_25000_1787 ams_25000    c0              -         -
+sdel         ENABLED(A)   -          ams_25000_1788 ams_25000    c5              -         -
+sdi          ENABLED(A)   -          ams_25000_1788 ams_25000    c0              -         -
+sdem         ENABLED(A)   -          ams_25000_1789 ams_25000    c5              -         -
+sdj          ENABLED(A)   -          ams_25000_1789 ams_25000    c0              -         -
+sden         ENABLED(A)   -          ams_25000_1790 ams_25000    c5              -         -
+sdk          ENABLED(A)   -          ams_25000_1790 ams_25000    c0              -         -
+sdeo         ENABLED(A)   -          ams_25000_1791 ams_25000    c5              -         -
+sdl          ENABLED(A)   -          ams_25000_1791 ams_25000    c0              -         -
+sdep         ENABLED(A)   -          ams_25000_1792 ams_25000    c5              -         -
+sdm          ENABLED(A)   -          ams_25000_1792 ams_25000    c0              -         -
+sdeq         ENABLED(A)   -          ams_25000_1793 ams_25000    c5              -         -
+sdn          ENABLED(A)   -          ams_25000_1793 ams_25000    c0              -         -
+sder         ENABLED(A)   -          ams_25000_1794 ams_25000    c5              -         -
+sdo          ENABLED(A)   -          ams_25000_1794 ams_25000    c0              -         -
+sdes         ENABLED(A)   -          ams_25000_1795 ams_25000    c5              -         -
+sdp          ENABLED(A)   -          ams_25000_1795 ams_25000    c0              -         -
+sdet         ENABLED(A)   -          ams_25000_1796 ams_25000    c5              -         -
+sdq          ENABLED(A)   -          ams_25000_1796 ams_25000    c0              -         -
+sdeu         ENABLED(A)   -          ams_25000_1797 ams_25000    c5              -         -
+sdr          ENABLED(A)   -          ams_25000_1797 ams_25000    c0              -         -
+sdev         ENABLED(A)   -          ams_25000_1798 ams_25000    c5              -         -
+sds          ENABLED(A)   -          ams_25000_1798 ams_25000    c0              -         -
+sdaf         ENABLED(A)   -          ams_25000_1844 ams_25000    c0              -         -
+sdfi         ENABLED(A)   -          ams_25000_1844 ams_25000    c5              -         -
+sdag         ENABLED(A)   -          ams_25000_1845 ams_25000    c0              -         -
+sdfj         ENABLED(A)   -          ams_25000_1845 ams_25000    c5              -         -
+sdah         ENABLED(A)   -          ams_25000_1846 ams_25000    c0              -         -
+sdfk         ENABLED(A)   -          ams_25000_1846 ams_25000    c5              -         -
+sdai         ENABLED(A)   -          ams_25000_1847 ams_25000    c0              -         -
+sdfl         ENABLED(A)   -          ams_25000_1847 ams_25000    c5              -         -
+sdaj         ENABLED(A)   -          ams_25000_1848 ams_25000    c0              -         -
+sdfm         ENABLED(A)   -          ams_25000_1848 ams_25000    c5              -         -
+sdak         ENABLED(A)   -          ams_25000_1849 ams_25000    c0              -         -
+sdfn         ENABLED(A)   -          ams_25000_1849 ams_25000    c5              -         -
+sdal         ENABLED(A)   -          ams_25000_1850 ams_25000    c0              -         -
+sdfo         ENABLED(A)   -          ams_25000_1850 ams_25000    c5              -         -
+sdam         ENABLED(A)   -          ams_25000_1851 ams_25000    c0              -         -
+sdfp         ENABLED(A)   -          ams_25000_1851 ams_25000    c5              -         -
+sdad         ENABLED(A)   -          ams_25000_316 ams_25000    c0              -         -
+sdfg         ENABLED(A)   -          ams_25000_316 ams_25000    c5              -         -
+sdae         ENABLED(A)   -          ams_25000_317 ams_25000    c0              -         -
+sdfh         ENABLED(A)   -          ams_25000_317 ams_25000    c5              -         -
+sdan         ENABLED(A)   -          ams_25000_724 ams_25000    c0              -         -
+sdfq         ENABLED(A)   -          ams_25000_724 ams_25000    c5              -         -
+sdao         ENABLED(A)   -          ams_25000_733 ams_25000    c0              -         -
+sdfr         ENABLED(A)   -          ams_25000_733 ams_25000    c5              -         -
+sdap         ENABLED(A)   -          ams_25000_734 ams_25000    c0              -         -
+sdfs         ENABLED(A)   -          ams_25000_734 ams_25000    c5              -         -
+sdaq         ENABLED(A)   -          ams_25000_735 ams_25000    c0              -         -
+sdft         ENABLED(A)   -          ams_25000_735 ams_25000    c5              -         -
+sdar         ENABLED(A)   -          ams_25000_736 ams_25000    c0              -         -
+sdfu         ENABLED(A)   -          ams_25000_736 ams_25000    c5              -         -
+sdde         ENABLED(A)   -          emc0_0244    emc0         c0              -         -
+sddh         ENABLED(A)   -          emc0_0244    emc0         c5              -         -
+sddf         ENABLED(A)   -          emc0_0246    emc0         c0              -         -
+sddi         ENABLED(A)   -          emc0_0246    emc0         c5              -         -
+sdbo         ENABLED(A) Active/Optimized emc_clariion0_70 emc_clariion0 c0              -         -
+sddk         ENABLED(A) Active/Optimized(P) emc_clariion0_70 emc_clariion0 c5              -         -
+sdbp         ENABLED(A) Active/Optimized emc_clariion0_71 emc_clariion0 c0              -         -
+sddl         ENABLED(A) Active/Optimized(P) emc_clariion0_71 emc_clariion0 c5              -         -
+sdbq         ENABLED(A) Active/Optimized emc_clariion0_72 emc_clariion0 c0              -         -
+sddm         ENABLED(A) Active/Optimized(P) emc_clariion0_72 emc_clariion0 c5              -         -
+sdbr         ENABLED(A) Active/Optimized emc_clariion0_73 emc_clariion0 c0              -         -
+sddn         ENABLED(A) Active/Optimized(P) emc_clariion0_73 emc_clariion0 c5              -         -
+sdbs         ENABLED(A) Active/Optimized emc_clariion0_74 emc_clariion0 c0              -         -
+sddo         ENABLED(A) Active/Optimized(P) emc_clariion0_74 emc_clariion0 c5              -         -
+sdbt         ENABLED(A) Active/Optimized emc_clariion0_75 emc_clariion0 c0              -         -
+sddp         ENABLED(A) Active/Optimized(P) emc_clariion0_75 emc_clariion0 c5              -         -
+sdbu         ENABLED(A) Active/Optimized emc_clariion0_76 emc_clariion0 c0              -         -
+sddq         ENABLED(A) Active/Optimized(P) emc_clariion0_76 emc_clariion0 c5              -         -
+sdbv         ENABLED(A) Active/Optimized emc_clariion0_77 emc_clariion0 c0              -         -
+sddr         ENABLED(A) Active/Optimized(P) emc_clariion0_77 emc_clariion0 c5              -         -
+sdbw         ENABLED(A) Active/Optimized emc_clariion0_78 emc_clariion0 c0              -         -
+sdds         ENABLED(A) Active/Optimized(P) emc_clariion0_78 emc_clariion0 c5              -         -
+sdbz         ENABLED(A) Active/Optimized emc_clariion0_79 emc_clariion0 c0              -         -
+sddt         ENABLED(A) Active/Optimized(P) emc_clariion0_79 emc_clariion0 c5              -         -
+sdcb         ENABLED(A) Active/Optimized emc_clariion0_80 emc_clariion0 c0              -         -
+sddu         ENABLED(A) Active/Optimized(P) emc_clariion0_80 emc_clariion0 c5              -         -
+sdce         ENABLED(A) Active/Optimized emc_clariion0_81 emc_clariion0 c0              -         -
+sddv         ENABLED(A) Active/Optimized(P) emc_clariion0_81 emc_clariion0 c5              -         -
+sdch         ENABLED(A) Active/Optimized emc_clariion0_82 emc_clariion0 c0              -         -
+sddw         ENABLED(A) Active/Optimized(P) emc_clariion0_82 emc_clariion0 c5              -         -
+sdck         ENABLED(A) Active/Optimized emc_clariion0_83 emc_clariion0 c0              -         -
+sddx         ENABLED(A) Active/Optimized(P) emc_clariion0_83 emc_clariion0 c5              -         -
+sdcn         ENABLED(A) Active/Optimized emc_clariion0_84 emc_clariion0 c0              -         -
+sddy         ENABLED(A) Active/Optimized(P) emc_clariion0_84 emc_clariion0 c5              -         -
+sdcq         ENABLED(A) Active/Optimized emc_clariion0_85 emc_clariion0 c0              -         -
+sddz         ENABLED(A) Active/Optimized(P) emc_clariion0_85 emc_clariion0 c5              -         -
+sdct         ENABLED(A) Active/Optimized emc_clariion0_86 emc_clariion0 c0              -         -
+sdea         ENABLED(A) Active/Optimized(P) emc_clariion0_86 emc_clariion0 c5              -         -
+sdcv         ENABLED(A) Active/Optimized emc_clariion0_87 emc_clariion0 c0              -         -
+sdeb         ENABLED(A) Active/Optimized(P) emc_clariion0_87 emc_clariion0 c5              -         -
+sdcx         ENABLED(A) Active/Optimized emc_clariion0_88 emc_clariion0 c0              -         -
+sdec         ENABLED(A) Active/Optimized(P) emc_clariion0_88 emc_clariion0 c5              -         -
+sdda         ENABLED(A) Active/Optimized emc_clariion0_89 emc_clariion0 c0              -         -
+sded         ENABLED(A) Active/Optimized(P) emc_clariion0_89 emc_clariion0 c5              -         -
+sdas         ENABLED    SECONDARY    emc_clariion1_277 emc_clariion1 c0              -         -
+sdby         ENABLED(A) PRIMARY      emc_clariion1_277 emc_clariion1 c5              -         -
+sdat         ENABLED    SECONDARY    emc_clariion1_278 emc_clariion1 c0              -         -
+sdca         ENABLED(A) PRIMARY      emc_clariion1_278 emc_clariion1 c5              -         -
+sdau         ENABLED    SECONDARY    emc_clariion1_279 emc_clariion1 c0              -         -
+sdcc         ENABLED(A) PRIMARY      emc_clariion1_279 emc_clariion1 c5              -         -
+sdav         ENABLED(A) SECONDARY    emc_clariion1_280 emc_clariion1 c0              -         -
+sdcd         ENABLED    PRIMARY      emc_clariion1_280 emc_clariion1 c5              -         -
+sdaw         ENABLED    SECONDARY    emc_clariion1_281 emc_clariion1 c0              -         -
+sdcf         ENABLED(A) PRIMARY      emc_clariion1_281 emc_clariion1 c5              -         -
+sdax         ENABLED    SECONDARY    emc_clariion1_282 emc_clariion1 c0              -         -
+sdcg         ENABLED(A) PRIMARY      emc_clariion1_282 emc_clariion1 c5              -         -
+sday         ENABLED    SECONDARY    emc_clariion1_283 emc_clariion1 c0              -         -
+sdci         ENABLED(A) PRIMARY      emc_clariion1_283 emc_clariion1 c5              -         -
+sdaz         ENABLED    SECONDARY    emc_clariion1_284 emc_clariion1 c0              -         -
+sdcj         ENABLED(A) PRIMARY      emc_clariion1_284 emc_clariion1 c5              -         -
+sdba         ENABLED    SECONDARY    emc_clariion1_285 emc_clariion1 c0              -         -
+sdcl         ENABLED(A) PRIMARY      emc_clariion1_285 emc_clariion1 c5              -         -
+sdbb         ENABLED    SECONDARY    emc_clariion1_286 emc_clariion1 c0              -         -
+sdcm         ENABLED(A) PRIMARY      emc_clariion1_286 emc_clariion1 c5              -         -
+sdbc         ENABLED(A) SECONDARY    emc_clariion1_287 emc_clariion1 c0              -         -
+sdco         ENABLED    PRIMARY      emc_clariion1_287 emc_clariion1 c5              -         -
+sdbd         ENABLED    SECONDARY    emc_clariion1_288 emc_clariion1 c0              -         -
+sdcp         ENABLED(A) PRIMARY      emc_clariion1_288 emc_clariion1 c5              -         -
+sdbe         ENABLED    SECONDARY    emc_clariion1_289 emc_clariion1 c0              -         -
+sdcr         ENABLED(A) PRIMARY      emc_clariion1_289 emc_clariion1 c5              -         -
+sdbf         ENABLED    SECONDARY    emc_clariion1_290 emc_clariion1 c0              -         -
+sdcs         ENABLED(A) PRIMARY      emc_clariion1_290 emc_clariion1 c5              -         -
+sdbg         ENABLED(A) SECONDARY    emc_clariion1_291 emc_clariion1 c0              -         -
+sdcu         ENABLED    PRIMARY      emc_clariion1_291 emc_clariion1 c5              -         -
+sdbh         ENABLED    SECONDARY    emc_clariion1_292 emc_clariion1 c0              -         -
+sdcw         ENABLED(A) PRIMARY      emc_clariion1_292 emc_clariion1 c5              -         -
+sdbi         ENABLED    SECONDARY    emc_clariion1_293 emc_clariion1 c0              -         -
+sdcy         ENABLED(A) PRIMARY      emc_clariion1_293 emc_clariion1 c5              -         -
+sdbj         ENABLED(A) SECONDARY    emc_clariion1_294 emc_clariion1 c0              -         -
+sdcz         ENABLED    PRIMARY      emc_clariion1_294 emc_clariion1 c5              -         -
+sdbk         ENABLED    SECONDARY    emc_clariion1_295 emc_clariion1 c0              -         -
+sddb         ENABLED(A) PRIMARY      emc_clariion1_295 emc_clariion1 c5              -         -
+sdbl         ENABLED    SECONDARY    emc_clariion1_296 emc_clariion1 c0              -         -
+sddd         ENABLED(A) PRIMARY      emc_clariion1_296 emc_clariion1 c5              -         -
+sdfv         ENABLED(A)   -          sdfv         other_disks  c6              -         -
+
+
+DATE:2017-04-14 15:33:19
+HOST:l111055
+USER:root
+STDIN:/opt/VRTS/bin/vxdiskunsetup -Cf emc_clariion0_75 && vxdisk rm emc_clariion0_75
+STDOUT:
+
+
+
+====STEP: Make the 1st vg/zpool,then make volume and fs and mount it
+DATE:2017-04-14 15:33:19
+
+***creating native vg/zpool***
+
+
+
+DATE:2017-04-14 15:33:20
+HOST:l111055
+USER:root
+STDIN:[ -f /etc/lvm/lvm.conf.bk ] || cp -pf /etc/lvm/lvm.conf /etc/lvm/lvm.conf.bk
+STDOUT:
+
+
+
+DATE:2017-04-14 15:33:20
+HOST:l111055
+USER:root
+STDIN:multipath -ll > /dev/null 2>&1 && multipath -F > /dev/null 2>&1 || (exit 0)
+STDOUT:
+
+
+
+DATE:2017-04-14 15:33:20
+HOST:l111055
+USER:root
+STDIN:pvcreate -y /dev/sddp
+STDOUT:
+  Physical volume "/dev/sddp" successfully created
+
+
+DATE:2017-04-14 15:33:20
+HOST:l111055
+USER:root
+STDIN:vgcreate autotcvg1 /dev/sddp
+STDOUT:
+  /dev/autotcvg1: already exists in filesystem
+  Run `vgcreate --help' for more information.
+RETURN:3
+RESULT:WARNING
+
+
+DATE:2017-04-14 15:33:21
+HOST:l111055
+USER:root
+STDIN:vgs
+STDOUT:
+
+RETURN:0
+RESULT:WARNING
+
+
+DATE:2017-04-14 15:33:21
+HOST:l111055
+USER:root
+STDIN:(echo o;echo n;echo p;echo 1;echo;echo;echo w)|fdisk /dev/sddp
+STDOUT:
+/dev/sddp: device contains a valid 'LVM2_member' signature, it's strongly recommended to wipe the device by command wipefs(8) if this setup is unexpected to avoid possible collisions.
+
+Welcome to fdisk (util-linux 2.25).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+
+Device does not contain a recognized partition table.
+Created a new DOS disklabel with disk identifier 0x8e7b81e6.
+
+Command (m for help): Created a new DOS disklabel with disk identifier 0x3e8744b5.
+
+Command (m for help): Partition type
+   p   primary (0 primary, 0 extended, 4 free)
+   e   extended (container for logical partitions)
+Select (default p): Partition number (1-4, default 1): First sector (2048-10485759, default 2048): Last sector, +sectors or +size{K,M,G,T,P} (2048-10485759, default 10485759): 
+Created a new partition 1 of type 'Linux' and of size 5 GiB.
+
+Command (m for help): The partition table has been altered.
+Calling ioctl() to re-read partition table.
+Syncing disks.
+
+
+DATE:2017-04-14 15:33:22
+HOST:l111055
+USER:root
+STDIN:fdisk -l /dev/sddp
+STDOUT:
+
+Disk /dev/sddp: 5 GiB, 5368709120 bytes, 10485760 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x3e8744b5
+
+Device     Boot Start      End  Sectors Size Id Type
+/dev/sddp1       2048 10485759 10483712   5G 83 Linux
+
+
+DATE:2017-04-14 15:33:22
+HOST:l111055
+USER:root
+STDIN:pvcreate -y /dev/sddp1
+STDOUT:
+  Physical volume "/dev/sddp1" successfully created
+
+
+DATE:2017-04-14 15:33:22
+HOST:l111055
+USER:root
+STDIN:vgcreate autotcvg1 /dev/sddp1
+STDOUT:
+  /dev/autotcvg1: already exists in filesystem
+  Run `vgcreate --help' for more information.
+RETURN:3
+RESULT:WARNING
+
+
+DATE:2017-04-14 15:33:23
+HOST:l111055
+USER:root
+STDIN:vgs
+STDOUT:
+
+RETURN:0
+RESULT:Failed
+
+
+TCERROR: The output need include autotcvg1
+
+
+
+Case Result:Failed
+DATE:2017-04-14 15:33:23
+Duration:1m2s

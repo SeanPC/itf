@@ -1,0 +1,2193 @@
+
+==================== Operation Log for TC native_vgpool_convert ====================
+DATE:2017-05-24 07:50:16
+Nodes:l111050 l111058
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-05-24 07:50:16
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-05-24 07:50:16
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:8482985 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:3316552 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:1474144239 (1.3 GiB)  TX bytes:924442303 (881.6 MiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:628 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:628 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:83847 (81.8 KiB)  TX bytes:83847 (81.8 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-05-24 07:50:18
+HOST:l111050
+USER:root
+STDIN:ssh -l root l111050
+STDOUT:
+
+
+
+DATE:2017-05-24 07:50:21
+HOST:l111058
+USER:root
+STDIN:ssh -l root l111058
+STDOUT:
+
+
+
+DATE:2017-05-24 07:50:30
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111050,l111058
+STDOUT:
+
+
+
+DATE:2017-05-24 07:50:32
+HOST:l111050
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111050
+l111058
+
+
+DATE:2017-05-24 07:50:33
+HOST:l111058
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111050
+l111058
+
+***Getting hostname of node***
+
+
+
+DATE:2017-05-24 07:50:35
+HOST:l111050
+USER:root
+STDIN:hostname
+STDOUT:
+l111050.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-05-24 07:50:36
+HOST:l111050
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-05-24 07:50:38
+HOST:l111050
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 6.9 (Santiago)
+
+
+DATE:2017-05-24 07:50:39
+HOST:l111050
+USER:root
+STDIN:uname -r
+STDOUT:
+2.6.32-696.1.1.el6.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-05-24 07:50:44
+HOST:l111050
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSspt-7.1.0.000-RHEL6.noarch
+Name        : VRTSspt                      Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 16 Mar 2016 07:15:22 AM UTC
+Install Date: Wed 24 May 2017 06:43:51 AM UTC      Build Host: sfrhel5u3.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSspt-7.1.0.000-RHEL6.src.rpm
+Size        : 38749153                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:04 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Software Support Tools Package
+Description :
+VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSamf-7.1.0.000-RHEL6.x86_64
+Name        : VRTSamf                      Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 29 Mar 2016 04:23:07 PM UTC
+Install Date: Wed 24 May 2017 06:46:50 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : System Environment/Kernel     Source RPM: VRTSamf-7.1.0.000-RHEL6.src.rpm
+Size        : 25294177                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:56:51 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64
+Build Stamp        : 7.1.0.000-2016-03-29_09.16.07
+
+Package INFO: VRTSgms-7.1.0.000-RHEL6.x86_64
+Name        : VRTSgms                      Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 30 Mar 2016 05:37:18 PM UTC
+Install Date: Wed 24 May 2017 06:47:53 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSgms-7.1.0.000-RHEL6.src.rpm
+Size        : 83866                            License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:56:59 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Group Messaging Services
+Description :
+Veritas Group Messaging Sevice (GMS) driver
+
+Package INFO: VRTSvcswiz-7.1.0.000-RHEL6.x86_64
+Name        : VRTSvcswiz                   Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: "Veritas Technologies LLC"
+Release     : RHEL6                         Build Date: Tue 29 Mar 2016 04:33:13 PM UTC
+Install Date: Wed 24 May 2017 06:50:21 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcswiz-7.1.0.000-RHEL6.src.rpm
+Size        : 10676716                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:09 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Veritas Cluster Server Wizards
+Description :
+"The package contains Wizards for Veritas Cluster Server"
+
+Arch : (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_09.33.04
+
+Package INFO: VRTSvxfs-7.1.0.000-RHEL6.x86_64
+Name        : VRTSvxfs                     Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 12 Apr 2016 11:38:42 AM UTC
+Install Date: Wed 24 May 2017 06:45:50 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSvxfs-7.1.0.000-RHEL6.src.rpm
+Size        : 58854758                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:12 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Filesystem
+Description :
+Veritas Filesystem
+
+Package INFO: VRTSvcsag-7.1.0.000-RHEL6.x86_64
+Name        : VRTSvcsag                    Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 29 Mar 2016 04:27:08 PM UTC
+Install Date: Wed 24 May 2017 06:47:25 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsag-7.1.0.000-RHEL6.src.rpm
+Size        : 84015889                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:07 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : VCS Bundled Agents
+Description :
+Veritas Cluster Server Bundled Agents (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+
+Package INFO: VRTSvxvm-7.1.0.100-RHEL6.x86_64
+Name        : VRTSvxvm                     Relocations: (not relocatable)
+Version     : 7.1.0.100                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Fri 10 Jun 2016 05:34:21 AM UTC
+Install Date: Wed 24 May 2017 06:48:23 AM UTC      Build Host: sf-rhel6ga-build.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSvxvm-7.1.0.100-RHEL6.src.rpm
+Size        : 502080785                        License: Veritas Proprietary
+Signature   : (none)
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Volume Manager
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSperl-5.20.1.3-RHEL6.x86_64
+Name        : VRTSperl                     Relocations: (not relocatable)
+Version     : 5.20.1.3                          Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 15 Mar 2016 04:09:13 PM UTC
+Install Date: Wed 24 May 2017 06:43:39 AM UTC      Build Host: rhel6-perl.cdc.veritas.com
+Group       : Applications/System           Source RPM: VRTSperl-5.20.1.3-RHEL6.src.rpm
+Size        : 69606897                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:01 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Perl 5.20.1 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.20.1 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.60
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSaslapm-7.1.0.000-RHEL6.x86_64
+Name        : VRTSaslapm                   Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 06 Apr 2016 12:23:36 PM UTC
+Install Date: Wed 24 May 2017 06:45:41 AM UTC      Build Host: sf-rhel6ga-build.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSaslapm-7.1.0.000-RHEL6.src.rpm
+Size        : 52799573                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:56:52 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTSgab-7.1.0.000-RHEL6.x86_64
+Name        : VRTSgab                      Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 29 Mar 2016 03:58:45 PM UTC
+Install Date: Wed 24 May 2017 06:46:42 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSgab-7.1.0.000-RHEL6.src.rpm
+Size        : 28851976                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:56:57 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Group Membership and Atomic Broadcast
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64
+Build Stamp        : Veritas-7.1.0.000-2016-03-29_04.43.15
+
+Package INFO: VRTScps-7.1.0.000-RHEL6.x86_64
+Name        : VRTScps                      Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 29 Mar 2016 04:32:35 PM UTC
+Install Date: Wed 24 May 2017 06:47:17 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTScps-7.1.0.000-RHEL6.src.rpm
+Size        : 58672409                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:56:53 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Co-ordination Point Server
+Description :
+Veritas Co-ordination Point Server
+Build Stamp: 7.1.0.000-2016-03-29_04.43.15
+
+Package INFO: VRTSglm-7.1.0.000-RHEL6.x86_64
+Name        : VRTSglm                      Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 30 Mar 2016 05:41:36 PM UTC
+Install Date: Wed 24 May 2017 06:47:46 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSglm-7.1.0.000-RHEL6.src.rpm
+Size        : 430444                           License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:56:58 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Group Lock Manager (GLM) driver
+Description :
+Veritas Group Lock Manager (GLM) driver
+Supported kernel(s): 2.6.32-71.el6.x86_64 or later
+
+Package INFO: VRTSdbac-7.1.0.000-RHEL6.x86_64
+Name        : VRTSdbac                     Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 16 Mar 2016 06:16:55 AM UTC
+Install Date: Wed 24 May 2017 06:47:59 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSdbac-7.1.0.000-RHEL6.src.rpm
+Size        : 24409470                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:56:54 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Real Application Cluster Support Package
+Description :
+Veritas Oracle Real Application Cluster Support Package
+Build Stamp	: 7.1.0.000-2016-03-15_23.02.58
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64
+
+Package INFO: VRTSvbs-7.1.0.000-GA_Linux.x86_64
+Name        : VRTSvbs                      Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : GA_Linux                      Build Date: Wed 30 Mar 2016 04:54:45 AM UTC
+Install Date: Wed 24 May 2017 06:50:11 AM UTC      Build Host: snapper53-64.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSvbs-7.1.0.000-GA_Linux.src.rpm
+Size        : 70705720                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:05 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Virtual Business Services by Veritas
+Description :
+Virtual Business Services by Veritas
+Build Stamp : 7.1.0.000-2016-03-29_20.12.21
+
+Package INFO: VRTSvcs-7.1.0.000-RHEL6.x86_64
+Name        : VRTSvcs                      Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 29 Mar 2016 04:28:34 PM UTC
+Install Date: Wed 24 May 2017 06:47:06 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcs-7.1.0.000-RHEL6.src.rpm
+Size        : 215488601                        License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:07 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Server
+Description :
+Veritas Cluster Server and Commands (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+
+Package INFO: VRTSdbed-7.1.0.000-RHEL.x86_64
+Name        : VRTSdbed                     Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL                          Build Date: Wed 16 Mar 2016 06:00:02 AM UTC
+Install Date: Wed 24 May 2017 06:47:37 AM UTC      Build Host: snapper53-64.engba.symantec.com
+Group       : Applications/Databases        Source RPM: VRTSdbed-7.1.0.000-RHEL.src.rpm
+Size        : 262876309                        License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:56:55 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSodm-7.1.0.000-RHEL6.x86_64
+Name        : VRTSodm                      Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC.
+Release     : RHEL6                         Build Date: Tue 12 Apr 2016 11:36:02 AM UTC
+Install Date: Wed 24 May 2017 06:47:55 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSodm-7.1.0.000-RHEL6.src.rpm
+Size        : 1729795                          License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:00 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Disk Manager
+Description :
+Veritas Oracle Disk Manager (ODM)
+
+Package INFO: VRTSsfmh-7.1.0.0-0.x86_64
+Name        : VRTSsfmh                     Relocations: (not relocatable)
+Version     : 7.1.0.0                           Vendor: Veritas Technologies LLC
+Release     : 0                             Build Date: Fri 01 Apr 2016 06:40:20 PM UTC
+Install Date: Wed 24 May 2017 06:49:59 AM UTC      Build Host: vommvsles10-64bld.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSsfmh-7.1.0.0-0.src.rpm
+Size        : 166345919                        License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:03 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+
+Package INFO: VRTSfsadv-7.1.0.000-RHEL6.x86_64
+Name        : VRTSfsadv                    Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 12 Apr 2016 11:39:47 AM UTC
+Install Date: Wed 24 May 2017 06:46:32 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSfsadv-7.1.0.000-RHEL6.src.rpm
+Size        : 14625543                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:56:56 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas File System Advanced Features
+Description :
+Veritas File System Advanced Features
+
+Package INFO: VRTSvcsea-7.1.0.000-RHEL6.x86_64
+Name        : VRTSvcsea                    Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 29 Mar 2016 05:39:55 PM UTC
+Install Date: Wed 24 May 2017 06:47:29 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsea-7.1.0.000-RHEL6.src.rpm
+Size        : 1339357                          License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:08 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+
+Package INFO: VRTSllt-7.1.0.100-RHEL6.x86_64
+Name        : VRTSllt                      Relocations: (not relocatable)
+Version     : 7.1.0.100                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Thu 19 May 2016 01:58:03 PM UTC
+Install Date: Wed 24 May 2017 06:49:45 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSllt-7.1.0.100-RHEL6.src.rpm
+Size        : 70896257                         License: Veritas Proprietary
+Signature   : (none)
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Low Latency Transport
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-614.el6.x86_64 [LINUX_RHEL60]
+Build Stamp: Veritas-7.1.0.100-2016-05-18_23.28.23
+
+Package INFO: VRTSvlic-3.02.71.004-RHEL6.x86_64
+Name        : VRTSvlic                     Relocations: (not relocatable)
+Version     : 3.02.71.004                       Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Thu 10 Mar 2016 05:31:33 PM UTC
+Install Date: Wed 24 May 2017 06:43:45 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvlic-3.02.71.004-RHEL6.src.rpm
+Size        : 1604791                          License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:10 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas License Utilities
+Description :
+These are the Veritas License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSvxfen-7.1.0.000-RHEL6.x86_64
+Name        : VRTSvxfen                    Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 29 Mar 2016 04:09:44 PM UTC
+Install Date: Wed 24 May 2017 06:46:46 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvxfen-7.1.0.000-RHEL6.src.rpm
+Size        : 28032064                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:11 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas I/O Fencing
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64
+Build Stamp        : 7.1.0.000-2016-03-29_04.43.15
+
+Package INFO: VRTScavf-7.1.0.000-RHEL6.x86_64
+Name        : VRTScavf                     Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Thu 31 Mar 2016 12:46:12 PM UTC
+Install Date: Wed 24 May 2017 06:47:50 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTScavf-7.1.0.000-RHEL6.src.rpm
+Size        : 859315                           License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:56:52 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+Veritas Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+Package INFO: VRTSsfcpi-7.1.0.000-GENERIC.noarch
+Name        : VRTSsfcpi                    Relocations: (not relocatable)
+Version     : 7.1.0.000                         Vendor: Veritas Technologies LLC
+Release     : GENERIC                       Build Date: Wed 30 Mar 2016 09:34:14 AM UTC
+Install Date: Wed 24 May 2017 06:50:16 AM UTC      Build Host: vmd2850lx11
+Group       : Applications/System           Source RPM: VRTSsfcpi-7.1.0.000-GENERIC.src.rpm
+Size        : 14121004                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:02 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+
+
+====STEP: checking if exist native vgs or pool,drop them if existing
+DATE:2017-05-24 07:50:44
+
+***Drop native vg/zpool***
+
+
+
+DATE:2017-05-24 07:50:47
+HOST:l111050
+USER:root
+STDIN:pvs|grep autotc
+STDOUT:
+  /dev/sdag: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 4096: Input/output error
+RETURN:1
+RESULT:WARNING
+
+
+====STEP: Copy mf.pl to l111050,filling files into the filesystem
+DATE:2017-05-24 07:50:47
+
+
+DATE:2017-05-24 07:50:48
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/etc/mf.pl l111050:/tmp/tmpfile.17685
+STDOUT:
+
+
+
+====STEP: Checking dmp_native_support status,if it is on,trun it to be off
+DATE:2017-05-24 07:50:48
+
+***setting dmp_native_support to be off***
+
+
+
+DATE:2017-05-24 07:50:50
+HOST:l111050
+USER:root
+STDIN:vxdmpadm gettune dmp_native_support
+STDOUT:
+            Tunable               Current Value  Default Value
+------------------------------    -------------  -------------
+dmp_native_support                      off	         off
+
+
+DATE:2017-05-24 07:50:51
+HOST:l111058
+USER:root
+STDIN:vxdmpadm gettune dmp_native_support
+STDOUT:
+            Tunable               Current Value  Default Value
+------------------------------    -------------  -------------
+dmp_native_support                      off	         off
+
+
+====STEP: Getting disks for the 1st vg or pool
+DATE:2017-05-24 07:50:56
+
+***Getting disk list by specified size***
+
+
+***Getting avaiable disks***
+
+
+
+DATE:2017-05-24 07:50:58
+HOST:l111050
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-05-24 07:51:00
+HOST:l111058
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-05-24 07:51:06
+HOST:l111050
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+emc0              EMC            000492600040         CONNECTED    A/A        31         5876
+ams_25000         AMS_2500       87011286             CONNECTED    A/A        15         0000
+disk              Disk           DISKS                CONNECTED    Disk        1         S528
+
+
+DATE:2017-05-24 07:51:08
+HOST:l111050
+USER:root
+STDIN:vxdisk scandisks;vxdisk list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_261 auto:cdsdisk    -            -            online thinrclm
+ams_25000_268 auto:cdsdisk    -            -            online thinrclm
+ams_25000_269 auto:cdsdisk    -            -            online thinrclm
+ams_25000_270 auto:cdsdisk    -            -            online thinrclm
+ams_25000_306 auto:cdsdisk    -            -            online thinrclm
+ams_25000_307 auto:cdsdisk    -            -            online thinrclm
+ams_25000_308 auto:cdsdisk    -            -            online thinrclm
+ams_25000_309 auto:cdsdisk    -            -            online thinrclm
+ams_25000_310 auto:cdsdisk    -            -            online thinrclm
+ams_25000_311 auto:cdsdisk    -            -            online thinrclm
+ams_25000_312 auto:cdsdisk    -            -            online thinrclm
+ams_25000_313 auto:cdsdisk    -            -            online thinrclm
+ams_25000_314 auto:cdsdisk    -            -            online thinrclm
+ams_25000_318 auto:cdsdisk    -            -            online thinrclm
+ams_25000_320 auto:cdsdisk    -            -            online thinrclm
+emc0_00f4    auto:cdsdisk    -            (fen71)      online
+emc0_04e0    auto:cdsdisk    -            (fen71)      online
+emc0_04ea    auto:cdsdisk    -            (fen71)      online
+emc0_04eb    auto:cdsdisk    -            -            online
+emc0_04ec    auto:cdsdisk    -            -            online
+emc0_04ed    auto:cdsdisk    -            -            online
+emc0_04ee    auto:cdsdisk    -            -            online
+emc0_04ef    auto:cdsdisk    -            -            online
+emc0_04e1    auto:cdsdisk    -            -            online
+emc0_04e2    auto:cdsdisk    -            -            online
+emc0_04e3    auto:cdsdisk    -            -            online
+emc0_04e4    auto:cdsdisk    -            -            online
+emc0_04e5    auto:cdsdisk    -            -            online
+emc0_04e6    auto:cdsdisk    -            -            online
+emc0_04e7    auto:cdsdisk    -            -            online
+emc0_04e8    auto:cdsdisk    -            -            online
+emc0_04e9    auto:cdsdisk    -            -            online
+emc0_04f0    auto:cdsdisk    -            -            online
+emc0_04f1    auto:cdsdisk    -            -            online
+emc0_04f2    auto:cdsdisk    -            -            online
+emc0_04f3    auto:cdsdisk    -            -            online
+emc0_06a0    auto            -            -            error
+emc0_06a1    auto            -            -            error
+emc0_06a2    auto            -            -            error
+emc0_06a3    auto            -            -            error
+emc0_036e    auto            -            -            error
+emc0_036f    auto            -            -            error
+emc0_069f    auto            -            -            error
+emc0_0370    auto            -            -            error
+emc0_0371    auto            -            -            error
+emc0_0372    auto            -            -            error
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-05-24 07:51:11
+HOST:l111050
+USER:root
+STDIN:/opt/VRTSsfmh/adm/dclisetup.sh
+STDOUT:
+
+
+
+DATE:2017-05-24 07:51:14
+HOST:l111050
+USER:root
+STDIN:/opt/VRTS/bin/vxlist disk
+STDOUT:
+TY   DEVICE          DISK   DISKGROUP        SIZE   FREE STATUS
+disk ams_25000_261   -      -               4.96g      - free
+disk ams_25000_268   -      -               4.96g      - free
+disk ams_25000_269   -      -               4.96g      - free
+disk ams_25000_270   -      -               4.96g      - free
+disk ams_25000_306   -      -               4.96g      - free
+disk ams_25000_307   -      -               4.96g      - free
+disk ams_25000_308   -      -               4.96g      - free
+disk ams_25000_309   -      -               4.96g      - free
+disk ams_25000_310   -      -               4.96g      - free
+disk ams_25000_311   -      -               4.96g      - free
+disk ams_25000_312   -      -               4.96g      - free
+disk ams_25000_313   -      -               4.96g      - free
+disk ams_25000_314   -      -               4.96g      - free
+disk ams_25000_318   -      -               4.96g      - free
+disk ams_25000_320   -      -               4.96g      - free
+disk emc0_00f4       -      fen71         199.91g      - deported
+disk emc0_04e0       -      fen71           9.96g      - deported
+disk emc0_04ea       -      fen71           9.96g      - deported
+disk emc0_04eb       -      -               9.96g      - free
+disk emc0_04ec       -      -               9.96g      - free
+disk emc0_04ed       -      -               9.96g      - free
+disk emc0_04ee       -      -               9.96g      - free
+disk emc0_04ef       -      -               9.96g      - free
+disk emc0_04e1       -      -               9.96g      - free
+disk emc0_04e2       -      -               9.96g      - free
+disk emc0_04e3       -      -               9.96g      - free
+disk emc0_04e4       -      -               9.96g      - free
+disk emc0_04e5       -      -               9.96g      - free
+disk emc0_04e6       -      -               9.96g      - free
+disk emc0_04e7       -      -               9.96g      - free
+disk emc0_04e8       -      -               9.96g      - free
+disk emc0_04e9       -      -               9.96g      - free
+disk emc0_04f0       -      -               9.96g      - free
+disk emc0_04f1       -      -               9.96g      - free
+disk emc0_04f2       -      -               9.96g      - free
+disk emc0_04f3       -      -               9.96g      - free
+disk emc0_06a0       -      -                   -      - notsetup
+disk emc0_06a1       -      -                   -      - notsetup
+disk emc0_06a2       -      -                   -      - notsetup
+disk emc0_06a3       -      -                   -      - notsetup
+disk emc0_036e       -      -                   -      - notsetup
+disk emc0_036f       -      -                   -      - notsetup
+disk emc0_069f       -      -                   -      - notsetup
+disk emc0_0370       -      -                   -      - notsetup
+disk emc0_0371       -      -                   -      - notsetup
+disk emc0_0372       -      -                   -      - notsetup
+disk sda             -      -                   -      - uninitialized
+
+
+DATE:2017-05-24 07:51:16
+HOST:l111050
+USER:root
+STDIN:vxdmpadm getsubpaths
+STDOUT:
+NAME         STATE[A]   PATH-TYPE[M] DMPNODENAME  ENCLR-NAME   CTLR           ATTRS      PRIORITY
+=================================================================================================
+sdah         ENABLED(A)   -          ams_25000_261 ams_25000    c1              -         -
+sdcc         ENABLED(A)   -          ams_25000_261 ams_25000    c2              -         -
+sdai         ENABLED(A)   -          ams_25000_268 ams_25000    c1              -         -
+sdcd         ENABLED(A)   -          ams_25000_268 ams_25000    c2              -         -
+sdaj         ENABLED(A)   -          ams_25000_269 ams_25000    c1              -         -
+sdce         ENABLED(A)   -          ams_25000_269 ams_25000    c2              -         -
+sdak         ENABLED(A)   -          ams_25000_270 ams_25000    c1              -         -
+sdcf         ENABLED(A)   -          ams_25000_270 ams_25000    c2              -         -
+sdal         ENABLED(A)   -          ams_25000_306 ams_25000    c1              -         -
+sdcg         ENABLED(A)   -          ams_25000_306 ams_25000    c2              -         -
+sdam         ENABLED(A)   -          ams_25000_307 ams_25000    c1              -         -
+sdch         ENABLED(A)   -          ams_25000_307 ams_25000    c2              -         -
+sdan         ENABLED(A)   -          ams_25000_308 ams_25000    c1              -         -
+sdci         ENABLED(A)   -          ams_25000_308 ams_25000    c2              -         -
+sdao         ENABLED(A)   -          ams_25000_309 ams_25000    c1              -         -
+sdcj         ENABLED(A)   -          ams_25000_309 ams_25000    c2              -         -
+sdap         ENABLED(A)   -          ams_25000_310 ams_25000    c1              -         -
+sdck         ENABLED(A)   -          ams_25000_310 ams_25000    c2              -         -
+sdaq         ENABLED(A)   -          ams_25000_311 ams_25000    c1              -         -
+sdcl         ENABLED(A)   -          ams_25000_311 ams_25000    c2              -         -
+sdar         ENABLED(A)   -          ams_25000_312 ams_25000    c1              -         -
+sdcm         ENABLED(A)   -          ams_25000_312 ams_25000    c2              -         -
+sdas         ENABLED(A)   -          ams_25000_313 ams_25000    c1              -         -
+sdcn         ENABLED(A)   -          ams_25000_313 ams_25000    c2              -         -
+sdat         ENABLED(A)   -          ams_25000_314 ams_25000    c1              -         -
+sdco         ENABLED(A)   -          ams_25000_314 ams_25000    c2              -         -
+sdau         ENABLED(A)   -          ams_25000_318 ams_25000    c1              -         -
+sdcp         ENABLED(A)   -          ams_25000_318 ams_25000    c2              -         -
+sdav         ENABLED(A)   -          ams_25000_320 ams_25000    c1              -         -
+sdcq         ENABLED(A)   -          ams_25000_320 ams_25000    c2              -         -
+sda          ENABLED(A)   -          sda          disk         c0              -         -
+sdax         ENABLED(A)   -          emc0_00f4    emc0         c2              -         -
+sdc          ENABLED(A)   -          emc0_00f4    emc0         c1              -         -
+sday         ENABLED(A)   -          emc0_036e    emc0         c2              -         -
+sdd          ENABLED(A)   -          emc0_036e    emc0         c1              -         -
+sdaz         ENABLED(A)   -          emc0_036f    emc0         c2              -         -
+sde          ENABLED(A)   -          emc0_036f    emc0         c1              -         -
+sdba         ENABLED(A)   -          emc0_0370    emc0         c2              -         -
+sdf          ENABLED(A)   -          emc0_0370    emc0         c1              -         -
+sdbb         ENABLED(A)   -          emc0_0371    emc0         c2              -         -
+sdg          ENABLED(A)   -          emc0_0371    emc0         c1              -         -
+sdbc         ENABLED(A)   -          emc0_0372    emc0         c2              -         -
+sdh          ENABLED(A)   -          emc0_0372    emc0         c1              -         -
+sdbd         ENABLED(A)   -          emc0_04e0    emc0         c2              -         -
+sdi          ENABLED(A)   -          emc0_04e0    emc0         c1              -         -
+sdbe         ENABLED(A)   -          emc0_04e1    emc0         c2              -         -
+sdj          ENABLED(A)   -          emc0_04e1    emc0         c1              -         -
+sdbf         ENABLED(A)   -          emc0_04e2    emc0         c2              -         -
+sdk          ENABLED(A)   -          emc0_04e2    emc0         c1              -         -
+sdbg         ENABLED(A)   -          emc0_04e3    emc0         c2              -         -
+sdl          ENABLED(A)   -          emc0_04e3    emc0         c1              -         -
+sdbh         ENABLED(A)   -          emc0_04e4    emc0         c2              -         -
+sdm          ENABLED(A)   -          emc0_04e4    emc0         c1              -         -
+sdbi         ENABLED(A)   -          emc0_04e5    emc0         c2              -         -
+sdn          ENABLED(A)   -          emc0_04e5    emc0         c1              -         -
+sdbj         ENABLED(A)   -          emc0_04e6    emc0         c2              -         -
+sdo          ENABLED(A)   -          emc0_04e6    emc0         c1              -         -
+sdbk         ENABLED(A)   -          emc0_04e7    emc0         c2              -         -
+sdp          ENABLED(A)   -          emc0_04e7    emc0         c1              -         -
+sdbl         ENABLED(A)   -          emc0_04e8    emc0         c2              -         -
+sdq          ENABLED(A)   -          emc0_04e8    emc0         c1              -         -
+sdbm         ENABLED(A)   -          emc0_04e9    emc0         c2              -         -
+sdr          ENABLED(A)   -          emc0_04e9    emc0         c1              -         -
+sdbn         ENABLED(A)   -          emc0_04ea    emc0         c2              -         -
+sds          ENABLED(A)   -          emc0_04ea    emc0         c1              -         -
+sdbo         ENABLED(A)   -          emc0_04eb    emc0         c2              -         -
+sdt          ENABLED(A)   -          emc0_04eb    emc0         c1              -         -
+sdbp         ENABLED(A)   -          emc0_04ec    emc0         c2              -         -
+sdu          ENABLED(A)   -          emc0_04ec    emc0         c1              -         -
+sdbq         ENABLED(A)   -          emc0_04ed    emc0         c2              -         -
+sdv          ENABLED(A)   -          emc0_04ed    emc0         c1              -         -
+sdbr         ENABLED(A)   -          emc0_04ee    emc0         c2              -         -
+sdw          ENABLED(A)   -          emc0_04ee    emc0         c1              -         -
+sdbs         ENABLED(A)   -          emc0_04ef    emc0         c2              -         -
+sdx          ENABLED(A)   -          emc0_04ef    emc0         c1              -         -
+sdbt         ENABLED(A)   -          emc0_04f0    emc0         c2              -         -
+sdy          ENABLED(A)   -          emc0_04f0    emc0         c1              -         -
+sdbu         ENABLED(A)   -          emc0_04f1    emc0         c2              -         -
+sdz          ENABLED(A)   -          emc0_04f1    emc0         c1              -         -
+sdaa         ENABLED(A)   -          emc0_04f2    emc0         c1              -         -
+sdbv         ENABLED(A)   -          emc0_04f2    emc0         c2              -         -
+sdab         ENABLED(A)   -          emc0_04f3    emc0         c1              -         -
+sdbw         ENABLED(A)   -          emc0_04f3    emc0         c2              -         -
+sdac         ENABLED(A)   -          emc0_069f    emc0         c1              -         -
+sdbx         ENABLED(A)   -          emc0_069f    emc0         c2              -         -
+sdad         ENABLED(A)   -          emc0_06a0    emc0         c1              -         -
+sdby         ENABLED(A)   -          emc0_06a0    emc0         c2              -         -
+sdae         ENABLED(A)   -          emc0_06a1    emc0         c1              -         -
+sdbz         ENABLED(A)   -          emc0_06a1    emc0         c2              -         -
+sdaf         ENABLED(A)   -          emc0_06a2    emc0         c1              -         -
+sdca         ENABLED(A)   -          emc0_06a2    emc0         c2              -         -
+sdag         ENABLED(A)   -          emc0_06a3    emc0         c1              -         -
+sdcb         ENABLED(A)   -          emc0_06a3    emc0         c2              -         -
+
+
+DATE:2017-05-24 07:51:23
+HOST:l111050
+USER:root
+STDIN:/opt/VRTS/bin/vxdiskunsetup -Cf emc0_04f3 && vxdisk rm emc0_04f3
+STDOUT:
+
+
+
+====STEP: Make the 1st vg/zpool,then make volume and fs and mount it
+DATE:2017-05-24 07:51:23
+
+***creating native vg/zpool***
+
+
+
+DATE:2017-05-24 07:51:25
+HOST:l111050
+USER:root
+STDIN:[ -f /etc/lvm/lvm.conf.bk ] || cp -pf /etc/lvm/lvm.conf /etc/lvm/lvm.conf.bk
+STDOUT:
+
+
+
+DATE:2017-05-24 07:51:27
+HOST:l111050
+USER:root
+STDIN:multipath -ll > /dev/null 2>&1 && multipath -F > /dev/null 2>&1 || (exit 0)
+STDOUT:
+
+
+
+DATE:2017-05-24 07:51:29
+HOST:l111050
+USER:root
+STDIN:pvcreate -y /dev/sdab
+STDOUT:
+  /dev/sdag: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 4096: Input/output error
+  Physical volume "/dev/sdab" successfully created
+
+
+DATE:2017-05-24 07:51:32
+HOST:l111050
+USER:root
+STDIN:vgcreate autotcvg1 /dev/sdab
+STDOUT:
+  /dev/sdag: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 4096: Input/output error
+  Found duplicate PV GqVuNkJ2HBaGTitDYs7cicpLPmD21jt4: using /dev/sdbw3 not /dev/sdbw
+  Using duplicate PV /dev/sdbw3 which is last seen, replacing /dev/sdbw
+  Found duplicate PV GqVuNkJ2HBaGTitDYs7cicpLPmD21jt4: using /dev/sdab not /dev/sdbw3
+  Using duplicate PV /dev/sdab which is last seen, replacing /dev/sdbw3
+  /dev/sdbx: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 4096: Input/output error
+  Found duplicate PV GqVuNkJ2HBaGTitDYs7cicpLPmD21jt4: using /dev/sdab3 not /dev/sdab
+  Using duplicate PV /dev/sdab3 which is last seen, replacing /dev/sdab
+  /dev/sdac: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 4096: Input/output error
+  Found duplicate PV GqVuNkJ2HBaGTitDYs7cicpLPmD21jt4: using /dev/sdbw not /dev/sdab3
+  Using duplicate PV /dev/sdbw which is last seen, replacing /dev/sdab3
+  Found duplicate PV GqVuNkJ2HBaGTitDYs7cicpLPmD21jt4: using /dev/sdbw3 not /dev/sdbw
+  Using duplicate PV /dev/sdbw3 which is last seen, replacing /dev/sdbw
+  Found duplicate PV GqVuNkJ2HBaGTitDYs7cicpLPmD21jt4: using /dev/sdab not /dev/sdbw3
+  Using duplicate PV /dev/sdab which is last seen, replacing /dev/sdbw3
+  Found duplicate PV GqVuNkJ2HBaGTitDYs7cicpLPmD21jt4: using /dev/sdab3 not /dev/sdab
+  Using duplicate PV /dev/sdab3 which is last seen, replacing /dev/sdab
+  Physical volume "/dev/sdab" successfully created
+  Volume group "autotcvg1" successfully created
+*** glibc detected *** vgcreate: double free or corruption (fasttop): 0x00007fa471ae1660 ***
+======= Backtrace: =========
+/lib64/libc.so.6(+0x3538875dee)[0x7fa46f335dee]
+/lib64/libc.so.6(+0x3538878c3d)[0x7fa46f338c3d]
+vgcreate(+0x64c2d)[0x7fa47059ac2d]
+/lib64/libdevmapper.so.1.02(dm_hash_iter+0x3a)[0x7fa46faa999a]
+vgcreate(lvmcache_destroy+0x6e)[0x7fa47059a98e]
+vgcreate(destroy_toolcontext+0x55)[0x7fa47059f0f5]
+vgcreate(lvm_fin+0x6b)[0x7fa47057174b]
+vgcreate(lvm2_main+0x59e)[0x7fa47057784e]
+/lib64/libc.so.6(__libc_start_main+0xfd)[0x7fa46f2ded1d]
+vgcreate(+0x26269)[0x7fa47055c269]
+======= Memory map: ========
+7fa464000000-7fa464021000 rw-p 00000000 00:00 0 
+7fa464021000-7fa468000000 ---p 00000000 00:00 0 
+7fa4686f7000-7fa46870d000 r-xp 00000000 08:01 852427                     /lib64/libgcc_s-4.4.7-20120601.so.1
+7fa46870d000-7fa46890c000 ---p 00016000 08:01 852427                     /lib64/libgcc_s-4.4.7-20120601.so.1
+7fa46890c000-7fa46890d000 rw-p 00015000 08:01 852427                     /lib64/libgcc_s-4.4.7-20120601.so.1
+7fa46890d000-7fa46e7a2000 r--p 00000000 08:01 4703941                    /usr/lib/locale/locale-archive
+7fa46e7a2000-7fa46e7bf000 r-xp 00000000 08:01 852447                     /lib64/libtinfo.so.5.7
+7fa46e7bf000-7fa46e9be000 ---p 0001d000 08:01 852447                     /lib64/libtinfo.so.5.7
+7fa46e9be000-7fa46e9c2000 rw-p 0001c000 08:01 852447                     /lib64/libtinfo.so.5.7
+7fa46e9c2000-7fa46e9c3000 rw-p 00000000 00:00 0 
+7fa46e9c3000-7fa46ea46000 r-xp 00000000 08:01 852411                     /lib64/libm-2.12.so
+7fa46ea46000-7fa46ec45000 ---p 00083000 08:01 852411                     /lib64/libm-2.12.so
+7fa46ec45000-7fa46ec46000 r--p 00082000 08:01 852411                     /lib64/libm-2.12.so
+7fa46ec46000-7fa46ec47000 rw-p 00083000 08:01 852411                     /lib64/libm-2.12.so
+7fa46ec47000-7fa46ec5e000 r-xp 00000000 08:01 852403                     /lib64/libpthread-2.12.so
+7fa46ec5e000-7fa46ee5e000 ---p 00017000 08:01 852403                     /lib64/libpthread-2.12.so
+7fa46ee5e000-7fa46ee5f000 r--p 00017000 08:01 852403                     /lib64/libpthread-2.12.so
+7fa46ee5f000-7fa46ee60000 rw-p 00018000 08:01 852403                     /lib64/libpthread-2.12.so
+7fa46ee60000-7fa46ee64000 rw-p 00000000 00:00 0 
+7fa46ee64000-7fa46ee9f000 r-xp 00000000 08:01 852439                     /lib64/libsepol.so.1
+7fa46ee9f000-7fa46f09f000 ---p 0003b000 08:01 852439                     /lib64/libsepol.so.1
+7fa46f09f000-7fa46f0a0000 r--p 0003b000 08:01 852439                     /lib64/libsepol.so.1
+7fa46f0a0000-7fa46f0a1000 rw-p 0003c000 08:01 852439                     /lib64/libsepol.so.1
+7fa46f0a1000-7fa46f0be000 r-xp 00000000 08:01 852413                     /lib64/libselinux.so.1
+7fa46f0be000-7fa46f2bd000 ---p 0001d000 08:01 852413                     /lib64/libselinux.so.1
+7fa46f2bd000-7fa46f2be000 r--p 0001c000 08:01 852413                     /lib64/libselinux.so.1
+7fa46f2be000-7fa46f2bf000 rw-p 0001d000 08:01 852413                     /lib64/libselinux.so.1
+7fa46f2bf000-7fa46f2c0000 rw-p 00000000 00:00 0 
+7fa46f2c0000-7fa46f44a000 r-xp 00000000 08:01 852402                     /lib64/libc-2.12.so
+7fa46f44a000-7fa46f64a000 ---p 0018a000 08:01 852402                     /lib64/libc-2.12.so
+7fa46f64a000-7fa46f64e000 r--p 0018a000 08:01 852402                     /lib64/libc-2.12.so
+7fa46f64e000-7fa46f650000 rw-p 0018e000 08:01 852402                     /lib64/libc-2.12.so
+7fa46f650000-7fa46f654000 rw-p 00000000 00:00 0 
+7fa46f654000-7fa46f65b000 r-xp 00000000 08:01 852404                     /lib64/librt-2.12.so
+7fa46f65b000-7fa46f85a000 ---p 00007000 08:01 852404                     /lib64/librt-2.12.so
+7fa46f85a000-7fa46f85b000 r--p 00006000 08:01 852404                     /lib64/librt-2.12.so
+7fa46f85b000-7fa46f85c000 rw-p 00007000 08:01 852404                     /lib64/librt-2.12.so
+7fa46f85c000-7fa46f896000 r-xp 00000000 08:01 852024                     /lib64/libreadline.so.6.0
+7fa46f896000-7fa46fa96000 ---p 0003a000 08:01 852024                     /lib64/libreadline.so.6.0
+7fa46fa96000-7fa46fa9e000 rw-p 0003a000 08:01 852024                     /lib64/libreadline.so.6.0
+7fa46fa9e000-7fa46fa9f000 rw-p 00000000 00:00 0 
+7fa46fa9f000-7fa46faf5000 r-xp 00000000 08:01 852089                     /lib64/libdevmapper.so.1.02
+7fa46faf5000-7fa46fcf5000 ---p 00056000 08:01 852089                     /lib64/libdevmapper.so.1.02
+7fa46fcf5000-7fa46fcf6000 r--p 00056000 08:01 852089                     /lib64/libdevmapper.so.1.02
+7fa46fcf6000-7fa46fcf9000 rw-p 00057000 08:01 852089                     /lib64/libdevmapper.so.1.02
+7fa46fcf9000-7fa46fcfa000 rw-p 00000000 00:00 0 
+7fa46fcfa000-7fa46fd00000 r-xp 00000000 08:01 852349                     /lib64/libdevmapper-event.so.1.02
+7fa46fd00000-7fa46feff000 ---p 00006000 08:01 852349                     /lib64/libdevmapper-event.so.1.02
+7fa46feff000-7fa46ff00000 r--p 00005000 08:01 852349                     /lib64/libdevmapper-event.so.1.02
+7fa46ff00000-7fa46ff01000 rw-p 00006000 08:01 852349                     /lib64/libdevmapper-event.so.1.02
+7fa46ff01000-7fa46ff03000 r-xp 00000000 08:01 852409                     /lib64/libdl-2.12.so
+7fa46ff03000-7fa470103000 ---p 00002000 08:01 852409                     /lib64/libdl-2.12.so
+7fa470103000-7fa470104000 r--p 00002000 08:01 852409                     /lib64/libdl-2.12.so
+7fa470104000-7fa470105000 rw-p 00003000 08:01 852409                     /lib64/libdl-2.12.so
+7fa470105000-7fa470111000 r-xp 00000000 08:01 852059                     /lib64/libudev.so.0.5.1
+7fa470111000-7fa470311000 ---p 0000c000 08:01 852059                     /lib64/libudev.so.0.5.1
+7fa470311000-7fa470312000 r--p 0000c000 08:01 852059                     /lib64/libudev.so.0.5.1
+7fa470312000-7fa470313000 rw-p 0000d000 08:01 852059                     /lib64/libudev.so.0.5.1
+7fa470313000-7fa470333000 r-xp 00000000 08:01 852401                     /lib64/ld-2.12.so
+7fa470515000-7fa47051c000 r--s 00000000 08:01 4727579                    /usr/lib64/gconv/gconv-modules.cache
+7fa47051c000-7fa470523000 rw-p 00000000 00:00 0 
+7fa470530000-7fa470532000 rw-p 00000000 00:00 0 
+7fa470532000-7fa470534000 r--p 0001f000 08:01 852401                     /lib64/ld-2.12.so
+7fa470534000-7fa470535000 rw-p 00021000 08:01 852401                     /lib64/ld-2.12.so
+7fa470535000-7fa470536000 rw-p 00000000 00:00 0 
+7fa470536000-7fa470699000 r-xp 00000000 08:01 3915996                    /sbin/lvm
+7fa470899000-7fa4708a1000 r--p 00163000 08:01 3915996                    /sbin/lvm
+7fa4708a1000-7fa4708ab000 rw-p 0016b000 08:01 3915996                    /sbin/lvm
+7fa4708ab000-7fa4708c7000 rw-p 00000000 00:00 0 
+7fa471a8b000-7fa471b73000 rw-p 00000000 00:00 0                          [heap]
+7ffe1672e000-7ffe16743000 rw-p 00000000 00:00 0                          [stack]
+7ffe167f7000-7ffe167f8000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+/tmp/exec: line 1:  3874 Aborted                 (core dumped) vgcreate autotcvg1 /dev/sdab
+RETURN:134
+RESULT:WARNING
+
+
+DATE:2017-05-24 07:51:34
+HOST:l111050
+USER:root
+STDIN:vgs
+STDOUT:
+  /dev/sdag: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 4096: Input/output error
+  Found duplicate PV 7IaoWzSj5ibLylDoET567zNEQGZzAhZ6: using /dev/sdbw3 not /dev/sdbw
+  Using duplicate PV /dev/sdbw3 which is last seen, replacing /dev/sdbw
+  Found duplicate PV 7IaoWzSj5ibLylDoET567zNEQGZzAhZ6: using /dev/sdab not /dev/sdbw3
+  Using duplicate PV /dev/sdab which is last seen, replacing /dev/sdbw3
+  /dev/sdbx: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 4096: Input/output error
+  Found duplicate PV 7IaoWzSj5ibLylDoET567zNEQGZzAhZ6: using /dev/sdab3 not /dev/sdab
+  Using duplicate PV /dev/sdab3 which is last seen, replacing /dev/sdab
+  /dev/sdac: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 4096: Input/output error
+  Device /dev/sdab3 has size of 20965472 sectors which is smaller than corresponding PV size of 20966400 sectors. Was device resized?
+  One or more devices used as PVs in VG autotcvg1 have changed sizes.
+  VG        #PV #LV #SN Attr   VSize  VFree 
+  autotcvg1   1   0   0 wz--n- 10.00g 10.00g
+
+***Create native lv and make filesystem***
+
+
+
+DATE:2017-05-24 07:51:37
+HOST:l111050
+USER:root
+STDIN:lvcreate -n autotclv1 -L 2G autotcvg1
+STDOUT:
+  /dev/sdag: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdag: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sday: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdd: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdaz: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sde: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdba: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdf: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbb: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdg: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbc: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdh: read failed after 0 of 4096 at 4096: Input/output error
+  Found duplicate PV 7IaoWzSj5ibLylDoET567zNEQGZzAhZ6: using /dev/sdbw3 not /dev/sdbw
+  Using duplicate PV /dev/sdbw3 which is last seen, replacing /dev/sdbw
+  Found duplicate PV 7IaoWzSj5ibLylDoET567zNEQGZzAhZ6: using /dev/sdab not /dev/sdbw3
+  Using duplicate PV /dev/sdab which is last seen, replacing /dev/sdbw3
+  /dev/sdbx: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbx: read failed after 0 of 4096 at 4096: Input/output error
+  Found duplicate PV 7IaoWzSj5ibLylDoET567zNEQGZzAhZ6: using /dev/sdab3 not /dev/sdab
+  Using duplicate PV /dev/sdab3 which is last seen, replacing /dev/sdab
+  /dev/sdac: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdac: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdby: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdad: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdbz: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdae: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdca: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdaf: read failed after 0 of 4096 at 4096: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 0: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 10734731264: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 10734788608: Input/output error
+  /dev/sdcb: read failed after 0 of 4096 at 4096: Input/output error
+  Device /dev/sdab3 has size of 20965472 sectors which is smaller than corresponding PV size of 20966400 sectors. Was device resized?
+  One or more devices used as PVs in VG autotcvg1 have changed sizes.
+  Logical volume "autotclv1" created.
+
+
+DATE:2017-05-24 07:51:39
+HOST:l111050
+USER:root
+STDIN:mkfs -t ext3 /dev/autotcvg1/autotclv1
+STDOUT:
+mke2fs 1.41.12 (17-May-2010)
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=0 blocks, Stripe width=0 blocks
+131072 inodes, 524288 blocks
+26214 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=536870912
+16 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912
+
+Writing inode tables:  0/16 1/16 2/16 3/16 4/16 5/16 6/16 7/16 8/16 9/1610/1611/1612/1613/1614/1615/16done                            
+Creating journal (16384 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+This filesystem will be automatically checked every 33 mounts or
+180 days, whichever comes first.  Use tune2fs -c or -i to override.
+
+***Mount the native filesystem***
+
+
+
+DATE:2017-05-24 07:51:41
+HOST:l111050
+USER:root
+STDIN:mkdir -p /autotclv1 && mount -t ext3 /dev/autotcvg1/autotclv1 /autotclv1
+STDOUT:
+
+
+
+DATE:2017-05-24 07:51:43
+HOST:l111050
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda1 79G 5.5G 70G 8% /
+tmpfs 3.9G 0 3.9G 0% /dev/shm
+10.198.90.16:/re 2.1T 2.0T 139G 94% /mnt
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/mapper/autotcvg1-autotclv1 2.0G 68M 1.9G 4% /autotclv1
+
+
+====STEP: Convert the 1st native vg/zpool to vxvm dg,free space required by vxfsconvert is approximately 12%-15% of the total file system size
+DATE:2017-05-24 07:51:43
+
+
+DATE:2017-05-24 07:51:56
+HOST:l111050
+USER:root
+STDIN:/tmp/tmpfile.17685 -s 104857600 -n 10 -d /autotclv1;sync
+STDOUT:
+
+
+
+DATE:2017-05-24 07:52:08
+HOST:l111050
+USER:root
+STDIN:find /autotclv1 -type f|grep -v lost|sort -n|xargs cksum
+STDOUT:
+960464595 104857600 /autotclv1/mf/mf_0_0
+445461684 104857600 /autotclv1/mf/mf_0_1
+2216209290 104857600 /autotclv1/mf/mf_0_2
+3643105000 104857600 /autotclv1/mf/mf_0_3
+4257950482 104857600 /autotclv1/mf/mf_0_4
+4204260495 104857600 /autotclv1/mf/mf_1_5
+3911857540 104857600 /autotclv1/mf/mf_1_6
+241969698 104857600 /autotclv1/mf/mf_1_7
+873713157 104857600 /autotclv1/mf/mf_1_8
+2916783782 104857600 /autotclv1/mf/mf_1_9
+
+
+DATE:2017-05-24 07:52:10
+HOST:l111050
+USER:root
+STDIN:umount /autotclv1
+STDOUT:
+
+
+
+DATE:2017-05-24 07:52:11
+HOST:l111050
+USER:root
+STDIN:modprobe dm_mirror
+STDOUT:
+
+
+
+DATE:2017-05-24 07:52:13
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/expect_test.exp l111050
+STDOUT:
+spawn ssh l111050
+Warning: Permanently added 'l111050,10.200.111.50' (RSA) to the list of known hosts.
+Last login: Wed May 24 07:49:55 2017 from 10.198.92.152
+-bash: You: command not found
+[root@l111050 ~]# exit 0
+logout
+Connection to l111050 closed.
+
+
+DATE:2017-05-24 07:52:13
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:cat /opt/itf/tmp/expect.exp.17685
+STDOUT:
+#!/usr/bin/expect
+set timeout 20
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no l111050
+expect {
+	"#" {send "vxvmconvert\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+set timeout 20
+expect {
+	"Select an operation to perform:" {send "2\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Select an operation to perform:'";exit 2}
+}
+set timeout 60
+expect {
+	"list,listvg,q" {send "autotcvg1\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'list,listvg,q'";exit 2}
+}
+set timeout 60
+expect {
+	"Convert this Volume Group?" {send "y\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Convert this Volume Group?'";exit 2}
+}
+set timeout 60
+expect {
+	"Hit RETURN to continue." {send " \r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Hit RETURN to continue.'";exit 2}
+}
+set timeout 600
+expect {
+	"Are you ready to commit to these changes?" {send "y\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Are you ready to commit to these changes?'";exit 2}
+}
+set timeout 600
+expect {
+	"Convert other LVM Volume Groups?" {send "n\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Convert other LVM Volume Groups?'";exit 2}
+}
+set timeout 20
+expect {
+	"Select an operation to perform:" {send "q\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Select an operation to perform:'";exit 2}
+}
+set timeout 20
+expect {
+	"#" {send "exit 0\r"}
+	eof {exit 1}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+expect eof
+
+
+DATE:2017-05-24 07:53:46
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/tmp/expect.exp.17685
+STDOUT:
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no l111050
+Last login: Wed May 24 07:51:49 2017 from 10.198.92.152
+-bash: You: command not found
+[root@l111050 ~]# vxvmconvert
+
+Volume Manager Support Operations
+Menu:: VolumeManager/LVM_Conversion
+
+ 1	Analyze LVM Volume Groups for Conversion
+ 2	Convert LVM Volume Groups to VxVM
+ 3	Roll back from VxVM to LVM
+ list	List disk information
+ listvg	List LVM Volume Group information
+
+
+ ?	Display help about menu
+ ??	Display help about the menuing system
+ q	Exit from menus
+
+Select an operation to perform: 2
+
+
+Convert one or more LVM Volume Groups
+Menu:: VolumeManager/LVM_Conversion/Convert_LVM_VGs
+
+  Use this operation to convert LVM Volume Groups to VxVM disk groups.
+  This adds the disks to a disk group and replaces existing LVM volumes
+  with VxVM volumes.  LVM-VxVM Volume Group conversion may require a
+  reboot for the changes to take effect. For this release, only
+  Non-root LVM Volume Groups can be converted.
+
+  More than one Volume Group or pattern may be entered at the prompt.
+  Here are some LVM Volume Group selection examples:
+
+  all:		convert all LVM Volume Groups (all except Root VG)
+  listvg:	list all LVM Volume Groups
+  list:		list all disk devices
+  vg_name:	a single LVM Volume Group, named vg_name
+  <pattern>:	for example:  vg04 vg08 vg09
+
+Select Volume Groups to convert :
+[<pattern-list>,all,list,listvg,q,?]  autotcvg1
+
+  autotcvg1
+
+Convert this Volume Group? [y,n,q,?] (default: y) y
+Problem: Analysis shows Volume Group autotcvg1 still in use
+
+
+  Conversion Analysis of the following devices indicates that the
+  Volume Group is still in use, which may prevent the completion
+  of the conversion without having to reboot the system. You may
+  want to double check that none of the volumes in the volume
+  group are in use before continuing with the conversion.
+
+  /dev/sdab
+
+Hit RETURN to continue. 
+
+
+
+   Second Stage Conversion Analysis of autotcvg1 
+
+  PV /dev/sdab   VG autotcvg1       lvm2 [10.00 GiB / 8.00 GiB free]
+  Total: 1 [10.00 GiB] / in use: 1 [10.00 GiB] / in no VG: 0 [0   ]
+  Reading all physical volumes.  This may take a while...
+  Found volume group "autotcvg1" using metadata type lvm2
+  inactive          '/dev/autotcvg1/autotclv1' [2.00 GiB] inherit
+  PV /dev/sdab   VG autotcvg1       lvm2 [10.00 GiB / 8.00 GiB free]
+  Total: 1 [10.00 GiB] / in use: 1 [10.00 GiB] / in no VG: 0 [0   ]
+  inactive          '/dev/autotcvg1/autotclv1' [2.00 GiB] inherit
+ls: cannot access /dev/autotcvg1: No such file or directory
+ls: cannot access /dev/autotcvg1: No such file or directory
+
+  Volume Group autotcvg1 has been analyzed and prepared for conversion.
+
+Are you ready to commit to these changes? [y,n,q,?] (default: y) y
+
+  Preparing VG autotcvg1 for conversion, (possibly migrating extents) please wait .
+  /dev/sdab: Moved: 100.0%
+touch: cannot touch `/etc/vx/lvmconv/autotcvg1.d/ready': No such file or directory
+.mv: cannot move `/tmp/createpriv' to `/etc/vx/lvmconv/autotcvg1.d/todo/createpriv': No such file or directory
+mv: cannot move `/tmp/rollpriv' to `/etc/vx/lvmconv/autotcvg1.d/todo/rollpriv': No such file or directory
+.cat: /etc/vx/lvmconv/autotcvg1.d/todo/rollpriv: No such file or directory
+mv: cannot move `/tmp/reversefile.4533' to `/etc/vx/lvmconv/autotcvg1.d/todo/rollpriv': No such file or directory
+.
+touch: cannot touch `/etc/vx/lvmconv/autotcvg1.d/ready': No such file or directory
+no VGs to convert
+
+Convert other LVM Volume Groups? [y,n,q,?] (default: n) n
+
+Volume Manager Support Operations
+Menu:: VolumeManager/LVM_Conversion
+
+ 1	Analyze LVM Volume Groups for Conversion
+ 2	Convert LVM Volume Groups to VxVM
+ 3	Roll back from VxVM to LVM
+ list	List disk information
+ listvg	List LVM Volume Group information
+
+
+ ?	Display help about menu
+ ??	Display help about the menuing system
+ q	Exit from menus
+
+Select an operation to perform: q
+
+Goodbye.
+[root@l111050 ~]# exit 0
+logout
+expectresult:0
+
+
+DATE:2017-05-24 07:53:47
+HOST:l111050
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+RETURN:0
+RESULT:WARNING
+
+
+DATE:2017-05-24 07:53:49
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/expect_test.exp l111050
+STDOUT:
+spawn ssh l111050
+Warning: Permanently added 'l111050,10.200.111.50' (RSA) to the list of known hosts.
+Last login: Wed May 24 07:51:51 2017 from 10.198.92.152
+-bash: You: command not found
+[root@l111050 ~]# exit 0
+logout
+Connection to l111050 closed.
+
+
+DATE:2017-05-24 07:53:49
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:cat /opt/itf/tmp/expect.exp.17685
+STDOUT:
+#!/usr/bin/expect
+set timeout 20
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no l111050
+expect {
+	"#" {send "vxvmconvert\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+set timeout 20
+expect {
+	"Select an operation to perform:" {send "2\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Select an operation to perform:'";exit 2}
+}
+set timeout 60
+expect {
+	"list,listvg,q" {send "autotcvg1\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'list,listvg,q'";exit 2}
+}
+set timeout 60
+expect {
+	"Convert this Volume Group?" {send "y\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Convert this Volume Group?'";exit 2}
+}
+set timeout 60
+expect {
+	"Hit RETURN to continue." {send " \r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Hit RETURN to continue.'";exit 2}
+}
+set timeout 600
+expect {
+	"Are you ready to commit to these changes?" {send "y\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Are you ready to commit to these changes?'";exit 2}
+}
+set timeout 600
+expect {
+	"Convert other LVM Volume Groups?" {send "n\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Convert other LVM Volume Groups?'";exit 2}
+}
+set timeout 20
+expect {
+	"Select an operation to perform:" {send "q\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Select an operation to perform:'";exit 2}
+}
+set timeout 20
+expect {
+	"#" {send "exit 0\r"}
+	eof {exit 1}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+expect eof
+
+
+DATE:2017-05-24 07:55:46
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/tmp/expect.exp.17685
+STDOUT:
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no l111050
+Last login: Wed May 24 07:53:25 2017 from 10.198.92.152
+-bash: You: command not found
+[root@l111050 ~]# vxvmconvert
+
+Volume Manager Support Operations
+Menu:: VolumeManager/LVM_Conversion
+
+ 1	Analyze LVM Volume Groups for Conversion
+ 2	Convert LVM Volume Groups to VxVM
+ 3	Roll back from VxVM to LVM
+ list	List disk information
+ listvg	List LVM Volume Group information
+
+
+ ?	Display help about menu
+ ??	Display help about the menuing system
+ q	Exit from menus
+
+Select an operation to perform: 2
+
+
+Convert one or more LVM Volume Groups
+Menu:: VolumeManager/LVM_Conversion/Convert_LVM_VGs
+
+  Use this operation to convert LVM Volume Groups to VxVM disk groups.
+  This adds the disks to a disk group and replaces existing LVM volumes
+  with VxVM volumes.  LVM-VxVM Volume Group conversion may require a
+  reboot for the changes to take effect. For this release, only
+  Non-root LVM Volume Groups can be converted.
+
+  More than one Volume Group or pattern may be entered at the prompt.
+  Here are some LVM Volume Group selection examples:
+
+  all:		convert all LVM Volume Groups (all except Root VG)
+  listvg:	list all LVM Volume Groups
+  list:		list all disk devices
+  vg_name:	a single LVM Volume Group, named vg_name
+  <pattern>:	for example:  vg04 vg08 vg09
+
+Select Volume Groups to convert :
+[<pattern-list>,all,list,listvg,q,?]  autotcvg1
+
+  autotcvg1
+
+Convert this Volume Group? [y,n,q,?] (default: y) y
+Problem: Analysis shows Volume Group autotcvg1 still in use
+
+
+  Conversion Analysis of the following devices indicates that the
+  Volume Group is still in use, which may prevent the completion
+  of the conversion without having to reboot the system. You may
+  want to double check that none of the volumes in the volume
+  group are in use before continuing with the conversion.
+
+  /dev/sdab
+
+Hit RETURN to continue. 
+
+
+
+   Second Stage Conversion Analysis of autotcvg1 
+
+  PV /dev/sdab   VG autotcvg1       lvm2 [10.00 GiB / 8.00 GiB free]
+  Total: 1 [10.00 GiB] / in use: 1 [10.00 GiB] / in no VG: 0 [0   ]
+  Reading all physical volumes.  This may take a while...
+  Found volume group "autotcvg1" using metadata type lvm2
+  inactive          '/dev/autotcvg1/autotclv1' [2.00 GiB] inherit
+  PV /dev/sdab   VG autotcvg1       lvm2 [10.00 GiB / 8.00 GiB free]
+  Total: 1 [10.00 GiB] / in use: 1 [10.00 GiB] / in no VG: 0 [0   ]
+  inactive          '/dev/autotcvg1/autotclv1' [2.00 GiB] inherit
+ls: cannot access /dev/autotcvg1: No such file or directory
+ls: cannot access /dev/autotcvg1: No such file or directory
+
+  Volume Group autotcvg1 has been analyzed and prepared for conversion.
+
+Are you ready to commit to these changes? [y,n,q,?] (default: y) y
+vxlvmconv: making log directory /etc/vx/lvmconv/autotcvg1.d/log.
+vxlvmconv: starting conversion for VG "autotcvg1" - Wed May 24 07:55:04 UTC 2017
+vxlvmconv: Checking disk connectivity
+Starting Conversion of autotcvg1 to VxVM
+lvmoff .
+fdisk .
+disksetup .
+dginit ..
+make .
+volinit .
+Saving rollback info for autotcvg1 to LVM
+vxlvmconv: Conversion complete.
+
+Convert other LVM Volume Groups? [y,n,q,?] (default: n) n
+
+Volume Manager Support Operations
+Menu:: VolumeManager/LVM_Conversion
+
+ 1	Analyze LVM Volume Groups for Conversion
+ 2	Convert LVM Volume Groups to VxVM
+ 3	Roll back from VxVM to LVM
+ list	List disk information
+ listvg	List LVM Volume Group information
+
+
+ ?	Display help about menu
+ ??	Display help about the menuing system
+ q	Exit from menus
+
+Select an operation to perform: q
+
+Goodbye.
+[root@l111050 ~]# exit 0
+logout
+expectresult:0
+
+
+DATE:2017-05-24 07:55:48
+HOST:l111050
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcvg1    enabled              1495612520.70.l111050.cdc.veritas.com
+
+
+DATE:2017-05-24 07:55:49
+HOST:l111050
+USER:root
+STDIN:mount -t ext3 /dev/vx/dsk/autotcvg1/autotclv1 /autotclv1
+STDOUT:
+
+
+
+DATE:2017-05-24 07:55:51
+HOST:l111050
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda1 79G 5.5G 70G 8% /
+tmpfs 3.9G 0 3.9G 0% /dev/shm
+10.198.90.16:/re 2.1T 2.0T 139G 94% /mnt
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcvg1/autotclv1 2.0G 1.1G 846M 56% /autotclv1
+
+
+DATE:2017-05-24 07:56:06
+HOST:l111050
+USER:root
+STDIN:find /autotclv1 -type f|grep -v lost|sort -n|xargs cksum
+STDOUT:
+960464595 104857600 /autotclv1/mf/mf_0_0
+445461684 104857600 /autotclv1/mf/mf_0_1
+2216209290 104857600 /autotclv1/mf/mf_0_2
+3643105000 104857600 /autotclv1/mf/mf_0_3
+4257950482 104857600 /autotclv1/mf/mf_0_4
+4204260495 104857600 /autotclv1/mf/mf_1_5
+3911857540 104857600 /autotclv1/mf/mf_1_6
+241969698 104857600 /autotclv1/mf/mf_1_7
+873713157 104857600 /autotclv1/mf/mf_1_8
+2916783782 104857600 /autotclv1/mf/mf_1_9
+
+***the cksum value keep the same after doing vm convert.***
+
+
+
+====STEP: Convert the 1st native filessytem to vxfs
+DATE:2017-05-24 07:56:06
+
+
+DATE:2017-05-24 07:56:08
+HOST:l111050
+USER:root
+STDIN:umount /autotclv1
+STDOUT:
+
+
+
+DATE:2017-05-24 07:56:12
+HOST:l111050
+USER:root
+STDIN:/opt/VRTS/bin/vxfsconvert -y /dev/vx/dsk/autotcvg1/autotclv1
+STDOUT:
+Do you wish to commit to conversion? (ynq) UX:vxfs vxfsconvert: INFO: V-3-21852:  CONVERSION WAS SUCCESSFUL
+y
+
+
+DATE:2017-05-24 07:56:13
+HOST:l111050
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/autotcvg1/autotclv1
+STDOUT:
+vxfs
+
+
+DATE:2017-05-24 07:56:16
+HOST:l111050
+USER:root
+STDIN:fsck -t vxfs -y /dev/vx/dsk/autotcvg1/autotclv1
+STDOUT:
+fsck from util-linux-ng 2.17.2
+super-block indicates that intent logging was disabled
+cannot perform log replay
+file system is not clean, full fsck required
+pass0 - checking structural files
+fileset 1 primary-ilist inode 17 (Smapbadino)
+		failed validation clear? (ynq)y
+fileset 1 primary-ilist inode 18 (Emapbadino)
+		failed validation clear? (ynq)y
+pass1 - checking inode sanity and blocks
+rebuild structural files? (ynq)y
+pass0 - checking structural files
+pass1 - checking inode sanity and blocks
+pass2 - checking directory linkage
+pass3 - checking reference counts
+pass4 - checking resource maps
+fileset 1 au 0 imap incorrect - fix (ynq)y
+fileset 1 au 0 iemap incorrect - fix (ynq)y
+fileset 999 au 0 imap incorrect - fix (ynq)y
+fileset 999 au 0 iemap incorrect - fix (ynq)y
+fileset 999 au 1 imap incorrect - fix (ynq)y
+fileset 999 au 1 iemap incorrect - fix (ynq)y
+fileset 999 au 2 imap incorrect - fix (ynq)y
+fileset 999 au 2 iemap incorrect - fix (ynq)y
+fileset 999 au 3 imap incorrect - fix (ynq)y
+fileset 999 au 3 iemap incorrect - fix (ynq)y
+no CUT entry for fileset 1, fix? (ynq)y
+no CUT entry for fileset 999, fix? (ynq)y
+au 0 emap incorrect - fix? (ynq)y
+au 0 summary incorrect - fix? (ynq)y
+au 1 state file incorrect - fix? (ynq)y
+au 1 emap incorrect - fix? (ynq)y
+au 1 summary incorrect - fix? (ynq)y
+au 1 state file incorrect - fix? (ynq)y
+au 2 emap incorrect - fix? (ynq)y
+au 2 summary incorrect - fix? (ynq)y
+au 3 emap incorrect - fix? (ynq)y
+au 3 summary incorrect - fix? (ynq)y
+au 4 emap incorrect - fix? (ynq)y
+au 4 summary incorrect - fix? (ynq)y
+au 5 state file incorrect - fix? (ynq)y
+au 5 emap incorrect - fix? (ynq)y
+au 5 summary incorrect - fix? (ynq)y
+au 5 state file incorrect - fix? (ynq)y
+au 6 emap incorrect - fix? (ynq)y
+au 6 summary incorrect - fix? (ynq)y
+au 7 emap incorrect - fix? (ynq)y
+au 7 summary incorrect - fix? (ynq)y
+au 8 emap incorrect - fix? (ynq)y
+au 8 summary incorrect - fix? (ynq)y
+au 10 emap incorrect - fix? (ynq)y
+au 10 summary incorrect - fix? (ynq)y
+au 11 emap incorrect - fix? (ynq)y
+au 11 summary incorrect - fix? (ynq)y
+au 12 emap incorrect - fix? (ynq)y
+au 12 summary incorrect - fix? (ynq)y
+au 13 state file incorrect - fix? (ynq)y
+au 13 emap incorrect - fix? (ynq)y
+au 13 summary incorrect - fix? (ynq)y
+au 13 state file incorrect - fix? (ynq)y
+au 14 emap incorrect - fix? (ynq)y
+au 14 summary incorrect - fix? (ynq)y
+au 15 emap incorrect - fix? (ynq)y
+au 15 summary incorrect - fix? (ynq)y
+fileset 1 iau 0 summary incorrect - fix? (ynq)y
+fileset 999 iau 0 summary incorrect - fix? (ynq)y
+fileset 999 iau 1 summary incorrect - fix? (ynq)y
+fileset 999 iau 2 summary incorrect - fix? (ynq)y
+fileset 999 iau 3 summary incorrect - fix? (ynq)y
+free block count incorrect 0 expected 257165 fix? (ynq)y
+ fsuuid incorrect fix? (ynq)y
+free extent vector incorrect fix? (ynq)y
+OK to clear log? (ynq)y
+flush fileset headers? (ynq)y
+set state to CLEAN? (ynq)y
+
+
+DATE:2017-05-24 07:56:18
+HOST:l111050
+USER:root
+STDIN:mkdir -p /autotclv1 && mount  -t vxfs /dev/vx/dsk/autotcvg1/autotclv1 /autotclv1
+STDOUT:
+
+
+
+DATE:2017-05-24 07:56:19
+HOST:l111050
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda1 79G 5.5G 70G 8% /
+tmpfs 3.9G 0 3.9G 0% /dev/shm
+10.198.90.16:/re 2.1T 2.0T 139G 94% /mnt
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcvg1/autotclv1 2.0G 1.1G 1005M 51% /autotclv1
+
+
+DATE:2017-05-24 07:56:30
+HOST:l111050
+USER:root
+STDIN:find /autotclv1 -type f|grep -v lost|sort -n|xargs cksum
+STDOUT:
+960464595 104857600 /autotclv1/mf/mf_0_0
+445461684 104857600 /autotclv1/mf/mf_0_1
+2216209290 104857600 /autotclv1/mf/mf_0_2
+3643105000 104857600 /autotclv1/mf/mf_0_3
+4257950482 104857600 /autotclv1/mf/mf_0_4
+4204260495 104857600 /autotclv1/mf/mf_1_5
+3911857540 104857600 /autotclv1/mf/mf_1_6
+241969698 104857600 /autotclv1/mf/mf_1_7
+873713157 104857600 /autotclv1/mf/mf_1_8
+2916783782 104857600 /autotclv1/mf/mf_1_9
+
+***the cksum value keep the same after doing fs convert.***
+
+
+
+Case Result:Passed
+DATE:2017-05-24 07:56:30
+Duration:6m14s

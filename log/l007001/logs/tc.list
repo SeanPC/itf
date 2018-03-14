@@ -1,0 +1,8 @@
+native_vgpool_convert 1
+fs_migration 1
+cfs_smartio 1
+cfs_updown 1
+cvm_scsi3pgr_fault 1
+cvm_volume_encryption 1
+fs_compress 1
+volset_tp_reclaim 1

@@ -1,0 +1,6 @@
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no l111060
+Last failed login: Wed Mar 15 10:55:10 UTC 2017 from 10.200.111.62 on ssh:notty
+There was 1 failed login attempt since the last successful login.
+Last login: Wed Mar 15 03:07:25 2017 from 10.220.128.128
+[1ml111060:~ #[m /autotcinst/7.1/LxRT-7.1-2016-04-12a/dvd2-suselinux/sles12_x86_64/installer 10.200.111.60 10.200.111.61
+expectresult:1

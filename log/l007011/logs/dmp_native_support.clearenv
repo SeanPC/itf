@@ -1,0 +1,280 @@
+
+
+DATE:2017-08-09 14:34:15
+HOST:l007011
+USER:root
+STDIN:for file in /etc/vx/encryption;do [ -d $file ] && rm -rf $file || echo 0;done
+STDOUT:
+0
+
+
+DATE:2017-08-09 14:34:15
+HOST:l007012
+USER:root
+STDIN:for file in /etc/vx/encryption;do [ -d $file ] && rm -rf $file || echo 0;done
+STDOUT:
+0
+
+***Going to clear mount point on the nfsclient***
+
+
+
+DATE:2017-08-09 14:34:17
+HOST:10.200.111.54
+USER:root
+STDIN:ps -ef|grep tmpfile
+STDOUT:
+root     27456 27454  0 06:36 ?        00:00:00 grep tmpfile
+
+
+DATE:2017-08-09 14:34:37
+HOST:l007011
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sfrac11 (
+	SecureClus = 1
+	DefaultGuestAccess = 1
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l007011 (
+	)
+
+system l007012 (
+	)
+
+group cvm (
+	SystemList = { l007011 = 0, l007012 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l007011, l007012 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sfrac11
+		CVMNodeId = { l007011 = 0, l007012 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+***umount vxfs on node l007011***
+
+
+
+DATE:2017-08-09 14:34:37
+HOST:l007011
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 60G 6.0G 51G 11% /
+tmpfs 3.9G 0 3.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+
+***umount vxfs on node l007012***
+
+
+
+DATE:2017-08-09 14:34:38
+HOST:l007012
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 59G 5.6G 50G 11% /
+tmpfs 3.9G 0 3.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/C72531843945527C/r64768378445803r 59G 5.6G 50G 11% /smtf/tmp/t92737109145815t
+
+
+DATE:2017-08-09 14:34:38
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+
+DATE:2017-08-09 14:34:38
+HOST:l007012
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-08-09 14:34:38
+HOST:l007011
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen605
+
+
+DATE:2017-08-09 14:34:39
+HOST:l007011
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_wms0_361 auto:cdsdisk    -            (fen605)     online
+ams_wms0_362 auto:cdsdisk    -            (fen605)     online
+ams_wms0_363 auto:cdsdisk    -            (fen605)     online
+ams_wms0_364 auto:cdsdisk    -            -            online
+ams_wms0_365 auto:cdsdisk    -            -            online
+ams_wms0_366 auto:LVM        -            -            LVM
+ams_wms0_367 auto:LVM        -            -            LVM
+ams_wms0_368 auto:cdsdisk    -            -            online
+ams_wms0_369 auto:cdsdisk    -            -            online
+ams_wms0_370 auto:cdsdisk    -            -            online
+ams_wms0_371 auto:cdsdisk    -            -            online
+ams_wms0_372 auto:cdsdisk    -            -            online
+ams_wms0_373 auto:cdsdisk    -            -            online
+ams_wms0_374 auto:cdsdisk    -            -            online
+ams_wms0_375 auto:cdsdisk    -            -            online
+ams_wms0_376 auto:cdsdisk    -            -            online
+ams_wms0_377 auto:cdsdisk    -            -            online
+ams_wms0_378 auto:cdsdisk    -            -            online
+ams_wms0_379 auto:cdsdisk    -            -            online
+ams_wms0_380 auto:cdsdisk    -            -            online
+ams_wms0_381 auto:cdsdisk    -            -            online
+ams_wms0_382 auto:cdsdisk    -            -            online
+ams_wms0_383 auto:cdsdisk    -            -            online
+ams_wms0_384 auto:cdsdisk    -            -            online
+ams_wms0_385 auto:cdsdisk    -            -            online
+ams_wms0_386 auto:cdsdisk    -            -            online
+ams_wms0_387 auto:cdsdisk    -            -            online
+ams_wms0_388 auto:cdsdisk    -            -            online
+ams_wms0_389 auto:cdsdisk    -            -            online
+ams_wms0_390 auto:cdsdisk    -            -            online
+emc_clariion0_314 auto:cdsdisk    -            -            online
+emc_clariion0_315 auto:cdsdisk    -            -            online
+emc_clariion0_316 auto:cdsdisk    -            -            online
+emc_clariion0_317 auto:cdsdisk    -            -            online
+emc_clariion0_318 auto:cdsdisk    -            -            online
+emc_clariion0_319 auto:cdsdisk    -            -            online
+emc_clariion0_320 auto:cdsdisk    -            -            online
+emc_clariion0_321 auto:cdsdisk    -            -            online
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-08-09 14:34:39
+HOST:l007011
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-08-09 14:34:39
+HOST:l007012
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen605
+
+
+DATE:2017-08-09 14:34:39
+HOST:l007012
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_wms0_361 auto:cdsdisk    -            (fen605)     online
+ams_wms0_362 auto:cdsdisk    -            (fen605)     online
+ams_wms0_363 auto:cdsdisk    -            (fen605)     online
+ams_wms0_364 auto:none       -            -            online invalid
+ams_wms0_365 auto:none       -            -            online invalid
+ams_wms0_366 auto:LVM        -            -            LVM
+ams_wms0_367 auto:LVM        -            -            LVM
+ams_wms0_368 auto:cdsdisk    -            -            online
+ams_wms0_369 auto:cdsdisk    -            -            online
+ams_wms0_370 auto:cdsdisk    -            -            online
+ams_wms0_371 auto:cdsdisk    -            -            online
+ams_wms0_372 auto:cdsdisk    -            -            online
+ams_wms0_373 auto:cdsdisk    -            -            online
+ams_wms0_374 auto:cdsdisk    -            -            online
+ams_wms0_375 auto:cdsdisk    -            -            online
+ams_wms0_376 auto:cdsdisk    -            -            online
+ams_wms0_377 auto:cdsdisk    -            -            online
+ams_wms0_378 auto:cdsdisk    -            -            online
+ams_wms0_379 auto:cdsdisk    -            -            online
+ams_wms0_380 auto:cdsdisk    -            -            online
+ams_wms0_381 auto:cdsdisk    -            -            online
+ams_wms0_382 auto:cdsdisk    -            -            online
+ams_wms0_383 auto:cdsdisk    -            -            online
+ams_wms0_384 auto:cdsdisk    -            -            online
+ams_wms0_385 auto:cdsdisk    -            -            online
+ams_wms0_386 auto:cdsdisk    -            -            online
+ams_wms0_387 auto:cdsdisk    -            -            online
+ams_wms0_388 auto:cdsdisk    -            -            online
+ams_wms0_389 auto:cdsdisk    -            -            online
+ams_wms0_390 auto:cdsdisk    -            -            online
+emc_clariion0_314 auto:cdsdisk    -            -            online
+emc_clariion0_315 auto:cdsdisk    -            -            online
+emc_clariion0_316 auto:cdsdisk    -            -            online
+emc_clariion0_317 auto:cdsdisk    -            -            online
+emc_clariion0_318 auto:cdsdisk    -            -            online
+emc_clariion0_319 auto:cdsdisk    -            -            online
+emc_clariion0_320 auto:cdsdisk    -            -            online
+emc_clariion0_321 auto:cdsdisk    -            -            online
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-08-09 14:34:40
+HOST:l007012
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID

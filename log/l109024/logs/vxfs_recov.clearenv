@@ -1,0 +1,1015 @@
+
+
+DATE:2017-05-26 07:57:43
+HOST:cdcnfsclientcd03
+USER:root
+STDIN:ps -ef|grep tmpfile
+STDOUT:
+root      4002  4000  0 15:57 ?        00:00:00 grep tmpfile
+
+
+DATE:2017-05-26 07:58:03
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:rm -rf /opt/itf/lock/cdcnfsclientcd03
+STDOUT:
+
+
+
+DATE:2017-05-26 07:58:04
+HOST:l109024
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster l10902425 (
+	UserNames = { admin = aLMeLGlIMhMMkUMgLJ }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l109024 (
+	)
+
+system l109025 (
+	)
+
+group cvm (
+	SystemList = { l109024 = 0, l109025 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l109024, l109025 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l109024 = { autotcdg1 = sw }
+		ActivationMode @l109025 = { autotcdg1 = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = l10902425
+		CVMNodeId = { l109024 = 0, l109025 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group nfs_sg (
+	SystemList = { l109024 = 0, l109025 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l109024, l109025 }
+	)
+
+	NFS n1 (
+		)
+
+	Phantom ph1 (
+		)
+
+
+
+	// resource dependency tree
+	//
+	//	group nfs_sg
+	//	{
+	//	NFS n1
+	//	Phantom ph1
+	//	}
+
+
+group sg11 (
+	SystemList = { l109024 = 0, l109025 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l109024, l109025 }
+	)
+
+	CFSMount cfsmount1 (
+		Critical = 0
+		MountPoint = "/autotcdir/ITF_2_autotcdg1_r0_2"
+		BlockDevice = "/dev/vx/dsk/autotcdg1/autotcdg1_r0_2"
+		MountOpt @l109024 = "cluster"
+		MountOpt @l109025 = "cluster"
+		NodeList = { l109024, l109025 }
+		)
+
+	CFSMount cfsmount2 (
+		Critical = 0
+		MountPoint = "/autotcdir/ITF_4_autotcdg1_r10_1"
+		BlockDevice = "/dev/vx/dsk/autotcdg1/autotcdg1_r10_1"
+		MountOpt @l109024 = "cluster"
+		MountOpt @l109025 = "cluster"
+		NodeList = { l109024, l109025 }
+		)
+
+	CVMVolDg cvmvoldg1 (
+		Critical = 0
+		CVMDiskGroup = autotcdg1
+		CVMVolume = { autotcdg1_r0_2, autotcdg1_r10_1 }
+		CVMActivation @l109024 = sw
+		CVMActivation @l109025 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount1 requires cvmvoldg1
+	cfsmount2 requires cvmvoldg1
+
+
+	// resource dependency tree
+	//
+	//	group sg11
+	//	{
+	//	CFSMount cfsmount1
+	//	    {
+	//	    CVMVolDg cvmvoldg1
+	//	    }
+	//	CFSMount cfsmount2
+	//	    {
+	//	    CVMVolDg cvmvoldg1
+	//	    }
+	//	}
+
+
+group sg12 (
+	SystemList = { l109024 = 0, l109025 = 2 }
+	AutoStartList = { l109024 }
+	)
+
+	DiskGroup autotcdg2_sg12 (
+		DiskGroup = autotcdg2
+		StartVolumes = 0
+		StopVolumes = 0
+		)
+
+	IP ip_l109024 (
+		Device @l109024 = eth0
+		Device @l109025 = eth0
+		Address = "10.200.109.88"
+		NetMask = "255.255.255.0"
+		)
+
+	Mount mnt_autotcdg2_r0_2_autotcdg2 (
+		MountPoint = "/autotcdir/ITF_3_autotcdg2_r0_2"
+		BlockDevice = "/dev/vx/dsk/autotcdg2/autotcdg2_r0_2"
+		FSType = vxfs
+		MountOpt = largefiles
+		FsckOpt = "-y"
+		)
+
+	Mount mnt_autotcdg2_r10_1_autotcdg2 (
+		MountPoint = "/autotcdir/ITF_1_autotcdg2_r10_1"
+		BlockDevice = "/dev/vx/dsk/autotcdg2/autotcdg2_r10_1"
+		FSType = vxfs
+		MountOpt = largefiles
+		FsckOpt = "-y"
+		)
+
+	NFSRestart nfsres_sg12 (
+		NFSRes = n1
+		LocksPathName = "/autotcdir/ITF_1_autotcdg2_r10_1"
+		NFSLockFailover = 1
+		)
+
+	NFSRestart nfsres_sg12_l (
+		NFSRes = n1
+		Lower = 1
+		LocksPathName = "/autotcdir/ITF_1_autotcdg2_r10_1"
+		NFSLockFailover = 1
+		)
+
+	NIC nic_sg12_eth0 (
+		Device @l109024 = eth0
+		Device @l109025 = eth0
+		NetworkHosts = { "10.200.109.1" }
+		)
+
+	Proxy proxy_sg12 (
+		TargetResName = n1
+		)
+
+	Share share_autotcdg2_r0_2_autotcdg2 (
+		PathName = "/autotcdir/ITF_3_autotcdg2_r0_2"
+		Options = "rw,no_root_squash"
+		)
+
+	Share share_autotcdg2_r10_1_autotcdg2 (
+		PathName = "/autotcdir/ITF_1_autotcdg2_r10_1"
+		Options = "rw,no_root_squash"
+		)
+
+	Volume vol_autotcdg2_r0_2_autotcdg2 (
+		DiskGroup = autotcdg2
+		Volume = autotcdg2_r0_2
+		)
+
+	Volume vol_autotcdg2_r10_1_autotcdg2 (
+		DiskGroup = autotcdg2
+		Volume = autotcdg2_r10_1
+		)
+
+	ip_l109024 requires nic_sg12_eth0
+	ip_l109024 requires share_autotcdg2_r0_2_autotcdg2
+	ip_l109024 requires share_autotcdg2_r10_1_autotcdg2
+	mnt_autotcdg2_r0_2_autotcdg2 requires vol_autotcdg2_r0_2_autotcdg2
+	mnt_autotcdg2_r10_1_autotcdg2 requires vol_autotcdg2_r10_1_autotcdg2
+	nfsres_sg12 requires ip_l109024
+	nfsres_sg12_l requires mnt_autotcdg2_r0_2_autotcdg2
+	nfsres_sg12_l requires mnt_autotcdg2_r10_1_autotcdg2
+	share_autotcdg2_r0_2_autotcdg2 requires nfsres_sg12_l
+	share_autotcdg2_r0_2_autotcdg2 requires proxy_sg12
+	share_autotcdg2_r10_1_autotcdg2 requires nfsres_sg12_l
+	share_autotcdg2_r10_1_autotcdg2 requires proxy_sg12
+	vol_autotcdg2_r0_2_autotcdg2 requires autotcdg2_sg12
+	vol_autotcdg2_r10_1_autotcdg2 requires autotcdg2_sg12
+
+
+	// resource dependency tree
+	//
+	//	group sg12
+	//	{
+	//	NFSRestart nfsres_sg12
+	//	    {
+	//	    IP ip_l109024
+	//	        {
+	//	        NIC nic_sg12_eth0
+	//	        Share share_autotcdg2_r0_2_autotcdg2
+	//	            {
+	//	            NFSRestart nfsres_sg12_l
+	//	                {
+	//	                Mount mnt_autotcdg2_r0_2_autotcdg2
+	//	                    {
+	//	                    Volume vol_autotcdg2_r0_2_autotcdg2
+	//	                        {
+	//	                        DiskGroup autotcdg2_sg12
+	//	                        }
+	//	                    }
+	//	                Mount mnt_autotcdg2_r10_1_autotcdg2
+	//	                    {
+	//	                    Volume vol_autotcdg2_r10_1_autotcdg2
+	//	                        {
+	//	                        DiskGroup autotcdg2_sg12
+	//	                        }
+	//	                    }
+	//	                }
+	//	            Proxy proxy_sg12
+	//	            }
+	//	        Share share_autotcdg2_r10_1_autotcdg2
+	//	            {
+	//	            NFSRestart nfsres_sg12_l
+	//	                {
+	//	                Mount mnt_autotcdg2_r0_2_autotcdg2
+	//	                    {
+	//	                    Volume vol_autotcdg2_r0_2_autotcdg2
+	//	                        {
+	//	                        DiskGroup autotcdg2_sg12
+	//	                        }
+	//	                    }
+	//	                Mount mnt_autotcdg2_r10_1_autotcdg2
+	//	                    {
+	//	                    Volume vol_autotcdg2_r10_1_autotcdg2
+	//	                        {
+	//	                        DiskGroup autotcdg2_sg12
+	//	                        }
+	//	                    }
+	//	                }
+	//	            Proxy proxy_sg12
+	//	            }
+	//	        }
+	//	    }
+	//	}
+
+
+group sg21 (
+	SystemList = { l109025 = 0, l109024 = 1 }
+	AutoStartList = { l109025 }
+	)
+
+	DiskGroup autotcdg1_sg21 (
+		DiskGroup = autotcdg3
+		StartVolumes = 0
+		StopVolumes = 0
+		)
+
+	IP ip_l109025 (
+		Device @l109025 = eth0
+		Device @l109024 = eth0
+		Address = "10.200.109.89"
+		NetMask = "255.255.255.0"
+		)
+
+	Mount mnt_autotcdg3_r0_2_autotcdg3 (
+		MountPoint = "/autotcdir/ITF_6_autotcdg3_r0_2"
+		BlockDevice = "/dev/vx/dsk/autotcdg3/autotcdg3_r0_2"
+		FSType = vxfs
+		MountOpt = largefiles
+		FsckOpt = "-y"
+		)
+
+	Mount mnt_autotcdg3_r10_1_autotcdg3 (
+		MountPoint = "/autotcdir/ITF_5_autotcdg3_r10_1"
+		BlockDevice = "/dev/vx/dsk/autotcdg3/autotcdg3_r10_1"
+		FSType = vxfs
+		MountOpt = largefiles
+		FsckOpt = "-y"
+		)
+
+	NFSRestart nfsres_sg21 (
+		NFSRes = n1
+		LocksPathName = "/autotcdir/ITF_5_autotcdg3_r10_1"
+		NFSLockFailover = 1
+		)
+
+	NFSRestart nfsres_sg21_l (
+		NFSRes = n1
+		Lower = 1
+		LocksPathName = "/autotcdir/ITF_5_autotcdg3_r10_1"
+		NFSLockFailover = 1
+		)
+
+	NIC nic_sg21_eth0 (
+		Device @l109025 = eth0
+		Device @l109024 = eth0
+		NetworkHosts = { "10.200.109.1" }
+		)
+
+	Proxy proxy_sg21 (
+		TargetResName = n1
+		)
+
+	Share share_autotcdg3_r0_2_autotcdg3 (
+		PathName = "/autotcdir/ITF_6_autotcdg3_r0_2"
+		Options = "rw,no_root_squash"
+		)
+
+	Share share_autotcdg3_r10_1_autotcdg3 (
+		PathName = "/autotcdir/ITF_5_autotcdg3_r10_1"
+		Options = "rw,no_root_squash"
+		)
+
+	Volume vol_autotcdg3_r0_2_autotcdg3 (
+		DiskGroup = autotcdg3
+		Volume = autotcdg3_r0_2
+		)
+
+	Volume vol_autotcdg3_r10_1_autotcdg3 (
+		DiskGroup = autotcdg3
+		Volume = autotcdg3_r10_1
+		)
+
+	ip_l109025 requires nic_sg21_eth0
+	ip_l109025 requires share_autotcdg3_r0_2_autotcdg3
+	ip_l109025 requires share_autotcdg3_r10_1_autotcdg3
+	mnt_autotcdg3_r0_2_autotcdg3 requires vol_autotcdg3_r0_2_autotcdg3
+	mnt_autotcdg3_r10_1_autotcdg3 requires vol_autotcdg3_r10_1_autotcdg3
+	nfsres_sg21 requires ip_l109025
+	nfsres_sg21_l requires mnt_autotcdg3_r0_2_autotcdg3
+	nfsres_sg21_l requires mnt_autotcdg3_r10_1_autotcdg3
+	share_autotcdg3_r0_2_autotcdg3 requires nfsres_sg21_l
+	share_autotcdg3_r0_2_autotcdg3 requires proxy_sg21
+	share_autotcdg3_r10_1_autotcdg3 requires nfsres_sg21_l
+	share_autotcdg3_r10_1_autotcdg3 requires proxy_sg21
+	vol_autotcdg3_r0_2_autotcdg3 requires autotcdg1_sg21
+	vol_autotcdg3_r10_1_autotcdg3 requires autotcdg1_sg21
+
+
+	// resource dependency tree
+	//
+	//	group sg21
+	//	{
+	//	NFSRestart nfsres_sg21
+	//	    {
+	//	    IP ip_l109025
+	//	        {
+	//	        NIC nic_sg21_eth0
+	//	        Share share_autotcdg3_r0_2_autotcdg3
+	//	            {
+	//	            NFSRestart nfsres_sg21_l
+	//	                {
+	//	                Mount mnt_autotcdg3_r0_2_autotcdg3
+	//	                    {
+	//	                    Volume vol_autotcdg3_r0_2_autotcdg3
+	//	                        {
+	//	                        DiskGroup autotcdg1_sg21
+	//	                        }
+	//	                    }
+	//	                Mount mnt_autotcdg3_r10_1_autotcdg3
+	//	                    {
+	//	                    Volume vol_autotcdg3_r10_1_autotcdg3
+	//	                        {
+	//	                        DiskGroup autotcdg1_sg21
+	//	                        }
+	//	                    }
+	//	                }
+	//	            Proxy proxy_sg21
+	//	            }
+	//	        Share share_autotcdg3_r10_1_autotcdg3
+	//	            {
+	//	            NFSRestart nfsres_sg21_l
+	//	                {
+	//	                Mount mnt_autotcdg3_r0_2_autotcdg3
+	//	                    {
+	//	                    Volume vol_autotcdg3_r0_2_autotcdg3
+	//	                        {
+	//	                        DiskGroup autotcdg1_sg21
+	//	                        }
+	//	                    }
+	//	                Mount mnt_autotcdg3_r10_1_autotcdg3
+	//	                    {
+	//	                    Volume vol_autotcdg3_r10_1_autotcdg3
+	//	                        {
+	//	                        DiskGroup autotcdg1_sg21
+	//	                        }
+	//	                    }
+	//	                }
+	//	            Proxy proxy_sg21
+	//	            }
+	//	        }
+	//	    }
+	//	}
+
+***import the maincf /opt/itf/log/l109024/logs/main.cf to cluster***
+
+
+
+DATE:2017-05-26 07:58:05
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastop -all
+STDOUT:
+
+
+
+DATE:2017-05-26 07:58:16
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l109024
+l109025
+
+
+DATE:2017-05-26 07:58:27
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l109024
+l109025
+
+
+DATE:2017-05-26 07:58:38
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-05-26 07:58:44
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-05-26 07:58:45
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/log/l109024/logs/main.cf l109024:/tmp/tmpfile.9070
+STDOUT:
+
+
+
+DATE:2017-05-26 07:58:46
+HOST:l109024
+USER:root
+STDIN:mv /etc/VRTSvcs/conf/config/main.cf /etc/VRTSvcs/conf/config/main.cf.orig;cat /tmp/tmpfile.9070 > /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+
+
+
+DATE:2017-05-26 07:58:47
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-05-26 07:58:58
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l109024    SysState                RUNNING
+l109025    SysState                UNKNOWN
+
+
+DATE:2017-05-26 07:58:59
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l109024    SysState                RUNNING
+l109025    SysState                UNKNOWN
+
+
+DATE:2017-05-26 07:59:01
+HOST:l109025
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-05-26 07:59:12
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l109024    SysState                RUNNING
+l109025    SysState                RUNNING
+
+
+DATE:2017-05-26 07:59:13
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l109024    SysState                RUNNING
+l109025    SysState                RUNNING
+
+***Waiting the group cvm online***
+
+
+
+DATE:2017-05-26 07:59:14
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l109024    |OFFLINE|STARTING|
+cvm          State                 l109025    |OFFLINE|STARTING|
+
+
+DATE:2017-05-26 07:59:15
+HOST:l109024
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster l10902425 (
+	UserNames = { admin = aLMeLGlIMhMMkUMgLJ }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l109024 (
+	)
+
+system l109025 (
+	)
+
+group cvm (
+	SystemList = { l109024 = 0, l109025 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l109024, l109025 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = l10902425
+		CVMNodeId = { l109024 = 0, l109025 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+DATE:2017-05-26 07:59:26
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l109024    |ONLINE|
+cvm          State                 l109025    |OFFLINE|STARTING|
+
+
+DATE:2017-05-26 07:59:37
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l109024    |ONLINE|
+cvm          State                 l109025    |ONLINE|
+
+
+DATE:2017-05-26 07:59:38
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l109024    |ONLINE|
+cvm          State                 l109025    |ONLINE|
+
+***umount vxfs on node l109024***
+
+
+
+DATE:2017-05-26 07:59:39
+HOST:l109024
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+devtmpfs 9.8G 8.0K 9.8G 1% /dev
+tmpfs 9.9G 0 9.9G 0% /dev/shm
+tmpfs 9.9G 21M 9.8G 1% /run
+tmpfs 9.9G 0 9.9G 0% /sys/fs/cgroup
+/dev/sda2 79G 10G 65G 14% /
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 2.0G 0 2.0G 0% /run/user/0
+
+***umount vxfs on node l109025***
+
+
+
+DATE:2017-05-26 07:59:40
+HOST:l109025
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+devtmpfs 9.8G 0 9.8G 0% /dev
+tmpfs 9.9G 0 9.9G 0% /dev/shm
+tmpfs 9.9G 13M 9.8G 1% /run
+tmpfs 9.9G 0 9.9G 0% /sys/fs/cgroup
+/dev/sdb2 79G 4.8G 70G 7% /
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 2.0G 0 2.0G 0% /run/user/0
+
+
+DATE:2017-05-26 07:59:41
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+
+DATE:2017-05-26 07:59:42
+HOST:l109025
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-05-26 07:59:43
+HOST:l109024
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-05-26 07:59:45
+HOST:l109024
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+emc0_02a0    auto:cdsdisk    -            (vxfendg)    online
+emc0_02aa    auto:cdsdisk    -            -            online
+emc0_02ab    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ac    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ad    auto:cdsdisk    -            -            online
+emc0_02ae    auto:cdsdisk    -            -            online
+emc0_02af    auto:cdsdisk    -            -            online
+emc0_02a1    auto:cdsdisk    -            -            online
+emc0_02a2    auto:cdsdisk    -            -            online
+emc0_02a3    auto:cdsdisk    -            -            online
+emc0_02a4    auto:cdsdisk    -            -            online
+emc0_02a5    auto:cdsdisk    -            -            online
+emc0_02a6    auto:cdsdisk    -            -            online
+emc0_02a7    auto:cdsdisk    -            -            online
+emc0_02a8    auto:cdsdisk    -            -            online
+emc0_02a9    auto:cdsdisk    -            -            online
+emc0_02b0    auto:LVM        -            -            LVM
+emc0_02b1    auto:cdsdisk    -            -            online thinrclm
+emc0_02b2    auto:cdsdisk    -            -            online thinrclm
+emc0_02b3    auto:cdsdisk    -            -            online thinrclm
+emc0_02b4    auto:cdsdisk    -            -            online thinrclm
+emc0_02b5    auto:cdsdisk    -            -            online thinrclm
+emc0_02b6    auto:cdsdisk    -            -            online thinrclm
+emc0_02b7    auto:cdsdisk    -            -            online thinrclm
+emc0_02b8    auto:cdsdisk    -            -            online thinrclm
+emc0_02b9    auto:cdsdisk    -            -            online thinrclm
+emc0_02de    auto:cdsdisk    -            -            online
+emc0_02df    auto:cdsdisk    -            -            online
+emc0_02e0    auto:cdsdisk    -            -            online
+emc0_02ea    auto:cdsdisk    -            (autotcdg3)  online
+emc0_02eb    auto:cdsdisk    -            (autotcdg3)  online
+emc0_02ec    auto:cdsdisk    -            (autotcdg3)  online
+emc0_02ed    auto:cdsdisk    -            (autotcdg3)  online
+emc0_02ee    auto:cdsdisk    -            (autotcdg2)  online
+emc0_02ef    auto:cdsdisk    -            (autotcdg2)  online
+emc0_02e1    auto:cdsdisk    -            -            online
+emc0_02e2    auto:cdsdisk    -            (autotcdg3)  online
+emc0_02e3    auto:cdsdisk    -            (autotcdg3)  online
+emc0_02e4    auto:cdsdisk    -            (autotcdg3)  online
+emc0_02e5    auto:cdsdisk    -            (autotcdg3)  online
+emc0_02e6    auto:cdsdisk    -            (autotcdg3)  online
+emc0_02e7    auto:cdsdisk    -            (autotcdg3)  online
+emc0_02e8    auto:cdsdisk    -            (autotcdg3)  online
+emc0_02e9    auto:cdsdisk    -            (autotcdg3)  online
+emc0_02f0    auto:cdsdisk    -            (autotcdg2)  online
+emc0_02fa    auto:cdsdisk    emc0_02fa    autotcdg1    online shared
+emc0_02fb    auto:cdsdisk    emc0_02fb    autotcdg1    online shared
+emc0_02fc    auto:cdsdisk    emc0_02fc    autotcdg1    online shared
+emc0_02fd    auto:cdsdisk    emc0_02fd    autotcdg1    online shared
+emc0_02fe    auto:cdsdisk    emc0_02fe    autotcdg1    online shared
+emc0_02ff    auto:cdsdisk    emc0_02ff    autotcdg1    online shared
+emc0_02f1    auto:cdsdisk    -            (autotcdg2)  online
+emc0_02f2    auto:cdsdisk    -            (autotcdg2)  online
+emc0_02f3    auto:cdsdisk    -            (autotcdg2)  online
+emc0_02f4    auto:cdsdisk    -            (autotcdg2)  online
+emc0_02f5    auto:cdsdisk    -            (autotcdg2)  online
+emc0_02f6    auto:cdsdisk    -            (autotcdg2)  online
+emc0_02f7    auto:cdsdisk    -            (autotcdg2)  online
+emc0_02f8    auto:cdsdisk    -            (autotcdg2)  online
+emc0_02f9    auto:cdsdisk    -            (autotcdg2)  online
+emc0_023a    auto:cdsdisk    -            -            online
+emc0_023b    auto:cdsdisk    -            -            online
+emc0_029c    auto:cdsdisk    -            -            online
+emc0_029d    auto:cdsdisk    -            -            online
+emc0_029e    auto:cdsdisk    -            -            online
+emc0_029f    auto:cdsdisk    -            -            online
+emc0_0234    auto:cdsdisk    -            -            online
+emc0_0235    auto:cdsdisk    -            -            online
+emc0_0236    auto:cdsdisk    -            -            online
+emc0_0237    auto:cdsdisk    -            -            online
+emc0_0238    auto:cdsdisk    -            -            online
+emc0_0239    auto:cdsdisk    -            -            online
+emc0_0300    auto:cdsdisk    emc0_0300    autotcdg1    online shared
+emc0_0301    auto:cdsdisk    emc0_0301    autotcdg1    online shared
+emc0_0302    auto:cdsdisk    emc0_0302    autotcdg1    online shared
+emc0_0303    auto:cdsdisk    emc0_0303    autotcdg1    online shared
+emc0_0304    auto:cdsdisk    emc0_0304    autotcdg1    online shared
+emc0_0305    auto:cdsdisk    emc0_0305    autotcdg1    online shared
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-05-26 07:59:49
+HOST:l109024
+USER:root
+STDIN:vxdg -Cf import autotcdg2
+STDOUT:
+
+
+
+DATE:2017-05-26 07:59:52
+HOST:l109024
+USER:root
+STDIN:vxdg -Cf import autotcdg3
+STDOUT:
+
+
+
+DATE:2017-05-26 07:59:53
+HOST:l109024
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcdg1    enabled,shared,cds   1495777823.142.l109024
+autotcdg2    enabled,cds          1495777827.144.l109024
+autotcdg3    enabled,cds          1495777831.146.l109024
+
+
+DATE:2017-05-26 07:59:54
+HOST:l109024
+USER:root
+STDIN:vxdg destroy autotcdg1
+STDOUT:
+
+
+
+DATE:2017-05-26 07:59:55
+HOST:l109024
+USER:root
+STDIN:vxdg destroy autotcdg2
+STDOUT:
+
+
+
+DATE:2017-05-26 07:59:56
+HOST:l109024
+USER:root
+STDIN:vxdg destroy autotcdg3
+STDOUT:
+
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-05-26 07:59:57
+HOST:l109025
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-05-26 07:59:58
+HOST:l109025
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+emc0_02a0    auto:cdsdisk    -            (vxfendg)    online
+emc0_02aa    auto:cdsdisk    -            -            online
+emc0_02ab    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ac    auto:cdsdisk    -            (vxfendg)    online
+emc0_02ad    auto:cdsdisk    -            -            online
+emc0_02ae    auto:cdsdisk    -            -            online
+emc0_02af    auto:cdsdisk    -            -            online
+emc0_02a1    auto:cdsdisk    -            -            online
+emc0_02a2    auto:cdsdisk    -            -            online
+emc0_02a3    auto:cdsdisk    -            -            online
+emc0_02a4    auto:cdsdisk    -            -            online
+emc0_02a5    auto:cdsdisk    -            -            online
+emc0_02a6    auto:cdsdisk    -            -            online
+emc0_02a7    auto:cdsdisk    -            -            online
+emc0_02a8    auto:cdsdisk    -            -            online
+emc0_02a9    auto:cdsdisk    -            -            online
+emc0_02b0    auto:LVM        -            -            LVM
+emc0_02b1    auto:cdsdisk    -            -            online thinrclm
+emc0_02b2    auto:cdsdisk    -            -            online thinrclm
+emc0_02b3    auto:cdsdisk    -            -            online thinrclm
+emc0_02b4    auto:cdsdisk    -            -            online thinrclm
+emc0_02b5    auto:cdsdisk    -            -            online thinrclm
+emc0_02b6    auto:cdsdisk    -            -            online thinrclm
+emc0_02b7    auto:cdsdisk    -            -            online thinrclm
+emc0_02b8    auto:cdsdisk    -            -            online thinrclm
+emc0_02b9    auto:cdsdisk    -            -            online thinrclm
+emc0_02de    auto:cdsdisk    -            -            online
+emc0_02df    auto:cdsdisk    -            -            online
+emc0_02e0    auto:cdsdisk    -            -            online
+emc0_02ea    auto:cdsdisk    -            -            online
+emc0_02eb    auto:cdsdisk    -            -            online
+emc0_02ec    auto:cdsdisk    -            -            online
+emc0_02ed    auto:cdsdisk    -            -            online
+emc0_02ee    auto:cdsdisk    -            -            online
+emc0_02ef    auto:cdsdisk    -            -            online
+emc0_02e1    auto:cdsdisk    -            -            online
+emc0_02e2    auto:cdsdisk    -            -            online
+emc0_02e3    auto:cdsdisk    -            -            online
+emc0_02e4    auto:cdsdisk    -            -            online
+emc0_02e5    auto:cdsdisk    -            -            online
+emc0_02e6    auto:cdsdisk    -            -            online
+emc0_02e7    auto:cdsdisk    -            -            online
+emc0_02e8    auto:cdsdisk    -            -            online
+emc0_02e9    auto:cdsdisk    -            -            online
+emc0_02f0    auto:cdsdisk    -            -            online
+emc0_02fa    auto:cdsdisk    -            -            online
+emc0_02fb    auto:cdsdisk    -            -            online
+emc0_02fc    auto:cdsdisk    -            -            online
+emc0_02fd    auto:cdsdisk    -            -            online
+emc0_02fe    auto:cdsdisk    -            -            online
+emc0_02ff    auto:cdsdisk    -            -            online
+emc0_02f1    auto:cdsdisk    -            -            online
+emc0_02f2    auto:cdsdisk    -            -            online
+emc0_02f3    auto:cdsdisk    -            -            online
+emc0_02f4    auto:cdsdisk    -            -            online
+emc0_02f5    auto:cdsdisk    -            -            online
+emc0_02f6    auto:cdsdisk    -            -            online
+emc0_02f7    auto:cdsdisk    -            -            online
+emc0_02f8    auto:cdsdisk    -            -            online
+emc0_02f9    auto:cdsdisk    -            -            online
+emc0_023a    auto:cdsdisk    -            -            online
+emc0_023b    auto:cdsdisk    -            -            online
+emc0_029c    auto:cdsdisk    -            -            online
+emc0_029d    auto:cdsdisk    -            -            online
+emc0_029e    auto:cdsdisk    -            -            online
+emc0_029f    auto:cdsdisk    -            -            online
+emc0_0234    auto:cdsdisk    -            -            online
+emc0_0235    auto:cdsdisk    -            -            online
+emc0_0236    auto:cdsdisk    -            -            online
+emc0_0237    auto:cdsdisk    -            -            online
+emc0_0238    auto:cdsdisk    -            -            online
+emc0_0239    auto:cdsdisk    -            -            online
+emc0_0300    auto:cdsdisk    -            -            online
+emc0_0301    auto:cdsdisk    -            -            online
+emc0_0302    auto:cdsdisk    -            -            online
+emc0_0303    auto:cdsdisk    -            -            online
+emc0_0304    auto:cdsdisk    -            -            online
+emc0_0305    auto:cdsdisk    -            -            online
+l109025_disk_1 auto:none       -            -            online invalid
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-05-26 07:59:59
+HOST:l109025
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID

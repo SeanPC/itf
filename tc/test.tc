@@ -1,0 +1,8 @@
+checkNode root
+for node in $NODES
+do
+        getHostnameOSProduct $node
+done
+sleep 20
+oLog flag
+myexit 0

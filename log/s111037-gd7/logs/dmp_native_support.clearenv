@@ -1,0 +1,532 @@
+
+***checking if hosts are wop-sshable with root***
+
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:ssh -l root s111037-gd7
+STDOUT:
+
+
+
+HOST:s111038-gd7
+USER:root
+STDIN:ssh -l root s111038-gd7
+STDOUT:
+
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+s111037-gd7
+s111038-gd7
+
+
+HOST:s111038-gd7
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+s111037-gd7
+s111038-gd7
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster rac111238239 (
+	UserNames = { admin = bopHojOlpKppNxpJom }
+	Administrators = { admin }
+	HacliUserLevel = COMMANDROOT
+	)
+
+system s111037-gd7 (
+	)
+
+system s111038-gd7 (
+	)
+
+group cvm (
+	SystemList = { s111037-gd7 = 0, s111038-gd7 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { s111037-gd7, s111038-gd7 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = rac111238239
+		CVMNodeId = { s111037-gd7 = 0, s111038-gd7 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/sbin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+***umount vxfs on node s111037-gd7***
+
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+rpool/ROOT/solaris 39G 5.8G 20G 23% /
+/devices 0K 0K 0K 0% /devices
+/dev 0K 0K 0K 0% /dev
+ctfs 0K 0K 0K 0% /system/contract
+proc 0K 0K 0K 0% /proc
+mnttab 0K 0K 0K 0% /etc/mnttab
+swap 9.5G 3.0M 9.5G 1% /system/volatile
+objfs 0K 0K 0K 0% /system/object
+sharefs 0K 0K 0K 0% /etc/dfs/sharetab
+fd 0K 0K 0K 0% /dev/fd
+rpool/ROOT/solaris/var 39G 241M 20G 2% /var
+swap 9.5G 192K 9.5G 1% /tmp
+rpool/VARSHARE 39G 2.6M 20G 1% /var/share
+rpool/export 39G 32K 20G 1% /export
+rpool/export/home 39G 32K 20G 1% /export/home
+rpool/export/home/admin 39G 33K 20G 1% /export/home/admin
+rpool 39G 73K 20G 1% /rpool
+rpool/VARSHARE/zones 39G 31K 20G 1% /system/zones
+rpool/VARSHARE/pkg 39G 32K 20G 1% /var/share/pkg
+rpool/VARSHARE/pkg/repositories 39G 31K 20G 1% /var/share/pkg/repositories
+10.200.117.70:/re/release_train/ 2.0T 1.9T 91G 96% /mnt
+swap 9.5G 0K 9.5G 0% /dev/vx/dmp
+swap 9.5G 0K 9.5G 0% /dev/vx/rdmp
+/dev/odm 0K 0K 0K 0% /dev/odm
+
+***umount vxfs on node s111038-gd7***
+
+
+
+HOST:s111038-gd7
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+rpool/ROOT/fresh 44G 5.8G 3.4G 63% /
+/devices 0K 0K 0K 0% /devices
+/dev 0K 0K 0K 0% /dev
+ctfs 0K 0K 0K 0% /system/contract
+proc 0K 0K 0K 0% /proc
+mnttab 0K 0K 0K 0% /etc/mnttab
+swap 10G 2.9M 10G 1% /system/volatile
+objfs 0K 0K 0K 0% /system/object
+sharefs 0K 0K 0K 0% /etc/dfs/sharetab
+fd 0K 0K 0K 0% /dev/fd
+rpool/ROOT/fresh/var 44G 633M 3.4G 16% /var
+swap 10G 96K 10G 1% /tmp
+rpool/VARSHARE 44G 539M 3.4G 14% /var/share
+rpool/export 44G 32K 3.4G 1% /export
+rpool/export/home 44G 42K 3.4G 1% /export/home
+rpool/export/home/admin 44G 33K 3.4G 1% /export/home/admin
+rpool 44G 73K 3.4G 1% /rpool
+rpool/VARSHARE/zones 44G 31K 3.4G 1% /system/zones
+rpool/VARSHARE/pkg 44G 32K 3.4G 1% /var/share/pkg
+rpool/VARSHARE/pkg/repositories 44G 31K 3.4G 1% /var/share/pkg/repositories
+swap 10G 0K 10G 0% /dev/vx/dmp
+swap 10G 0K 10G 0% /dev/vx/rdmp
+/dev/odm 0K 0K 0K 0% /dev/odm
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_323 auto:ZFS        -            -            ZFS
+ams_25000_341 auto:ZFS        -            -            ZFS
+ams_25000_342 auto:ZFS        -            -            ZFS
+ams_25000_343 auto:ZFS        -            -            ZFS
+ams_25000_344 auto:ZFS        -            -            ZFS
+ams_25000_345 auto:ZFS        -            -            ZFS
+ams_25000_346 auto:ZFS        -            -            ZFS
+ams_25000_347 auto:ZFS        -            -            ZFS
+ams_25000_349 auto:ZFS        -            -            ZFS
+ams_25000_350 auto:ZFS        -            -            ZFS
+ams_25000_358 auto:ZFS        -            -            ZFS
+ams_25000_359 auto:ZFS        -            -            ZFS
+dmpdisk_0    auto:ZFS        -            -            ZFS
+emc_clariion0_338 auto:ZFS        -            -            ZFS
+emc_clariion0_339 auto:ZFS        -            -            ZFS
+emc_clariion0_340 auto:ZFS        -            -            ZFS
+emc_clariion0_341 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_342 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_343 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_344 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_345 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_346 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_347 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_348 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_349 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_350 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_351 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_352 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_353 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_354 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_355 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_356 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_357 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_468 auto:cdsdisk    emc_clariion0_468  vxfendg      online
+emc_clariion0_469 auto:cdsdisk    emc_clariion0_469  vxfendg      online
+emc_clariion0_470 auto:cdsdisk    emc_clariion0_470  vxfendg      online
+emc_clariion0_471 auto:cdsdisk    -            -            online
+emc_clariion0_472 auto:cdsdisk    -            -            online
+emc_clariion0_473 auto:cdsdisk    -            -            online
+emc_clariion0_474 auto:cdsdisk    -            -            online
+emc_clariion0_475 auto:cdsdisk    -            -            online
+emc_clariion0_476 auto:cdsdisk    -            -            online
+emc_clariion0_477 auto:cdsdisk    -            -            online
+emc0_0aaa    auto:cdsdisk    -            -            online
+emc0_0aab    auto:cdsdisk    -            -            online
+emc0_0aac    auto:cdsdisk    -            -            online
+emc0_0aad    auto:cdsdisk    -            -            online
+emc0_0aae    auto:cdsdisk    -            -            online
+emc0_0aaf    auto:cdsdisk    -            -            online
+emc0_0aa1    auto:cdsdisk    -            -            online
+emc0_0aa2    auto:cdsdisk    -            -            online
+emc0_0aa3    auto:cdsdisk    -            -            online
+emc0_0aa4    auto:cdsdisk    -            -            online
+emc0_0aa5    auto:cdsdisk    -            -            online
+emc0_0aa6    auto:cdsdisk    -            -            online
+emc0_0aa7    auto:cdsdisk    -            -            online
+emc0_0aa8    auto:cdsdisk    -            -            online
+emc0_0aa9    auto:cdsdisk    -            -            online
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+vxfendg      enabled,cds          1477032379.237.s111037-gd7.cdc.veritas.com
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:vxdg destroy vxfendg
+STDOUT:
+VxVM vxdg ERROR V-5-1-12066  cannot destroy coordinator diskgroup vxfendg
+RESULT:NOEXIT:Failed
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_323 auto:ZFS        -            -            ZFS
+ams_25000_341 auto:ZFS        -            -            ZFS
+ams_25000_342 auto:ZFS        -            -            ZFS
+ams_25000_343 auto:ZFS        -            -            ZFS
+ams_25000_344 auto:ZFS        -            -            ZFS
+ams_25000_345 auto:ZFS        -            -            ZFS
+ams_25000_346 auto:ZFS        -            -            ZFS
+ams_25000_347 auto:ZFS        -            -            ZFS
+ams_25000_349 auto:ZFS        -            -            ZFS
+ams_25000_350 auto:ZFS        -            -            ZFS
+ams_25000_358 auto:ZFS        -            -            ZFS
+ams_25000_359 auto:ZFS        -            -            ZFS
+dmpdisk_0    auto:ZFS        -            -            ZFS
+emc_clariion0_338 auto:ZFS        -            -            ZFS
+emc_clariion0_339 auto:ZFS        -            -            ZFS
+emc_clariion0_340 auto:ZFS        -            -            ZFS
+emc_clariion0_341 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_342 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_343 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_344 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_345 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_346 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_347 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_348 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_349 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_350 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_351 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_352 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_353 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_354 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_355 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_356 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_357 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_468 auto:cdsdisk    emc_clariion0_468  vxfendg      online
+emc_clariion0_469 auto:cdsdisk    emc_clariion0_469  vxfendg      online
+emc_clariion0_470 auto:cdsdisk    emc_clariion0_470  vxfendg      online
+emc_clariion0_471 auto:cdsdisk    -            -            online
+emc_clariion0_472 auto:cdsdisk    -            -            online
+emc_clariion0_473 auto:cdsdisk    -            -            online
+emc_clariion0_474 auto:cdsdisk    -            -            online
+emc_clariion0_475 auto:cdsdisk    -            -            online
+emc_clariion0_476 auto:cdsdisk    -            -            online
+emc_clariion0_477 auto:cdsdisk    -            -            online
+emc0_0aaa    auto:cdsdisk    -            -            online
+emc0_0aab    auto:cdsdisk    -            -            online
+emc0_0aac    auto:cdsdisk    -            -            online
+emc0_0aad    auto:cdsdisk    -            -            online
+emc0_0aae    auto:cdsdisk    -            -            online
+emc0_0aaf    auto:cdsdisk    -            -            online
+emc0_0aa1    auto:cdsdisk    -            -            online
+emc0_0aa2    auto:cdsdisk    -            -            online
+emc0_0aa3    auto:cdsdisk    -            -            online
+emc0_0aa4    auto:cdsdisk    -            -            online
+emc0_0aa5    auto:cdsdisk    -            -            online
+emc0_0aa6    auto:cdsdisk    -            -            online
+emc0_0aa7    auto:cdsdisk    -            -            online
+emc0_0aa8    auto:cdsdisk    -            -            online
+emc0_0aa9    auto:cdsdisk    -            -            online
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:vxfenadm -ak 1 -f /tmp/disk.4351 && vxfenadm -ck 1 -f /tmp/disk.4351
+STDOUT:
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_468
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_470
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_469
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_469
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_470
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_468
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:echo "emc_clariion0_468 emc_clariion0_469 emc_clariion0_470"|xargs -n1 vxdisk -f init
+STDOUT:
+VxVM vxdisk ERROR V-5-1-12067  cannot initialize coordinator disk
+VxVM vxdisk ERROR V-5-1-12067  cannot initialize coordinator disk
+VxVM vxdisk ERROR V-5-1-12067  cannot initialize coordinator disk
+RESULT:NOEXIT:Failed
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+HOST:s111038-gd7
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+
+
+
+HOST:s111038-gd7
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_323 auto:none       -            -            online invalid thinrclm
+ams_25000_341 auto:ZFS        -            -            ZFS
+ams_25000_343 auto:ZFS        -            -            ZFS
+ams_25000_344 auto:ZFS        -            -            ZFS
+ams_25000_345 auto:ZFS        -            -            ZFS
+ams_25000_347 auto:none       -            -            online invalid thinrclm
+ams_25000_350 auto:none       -            -            online invalid thinrclm
+ams_25000_359 auto:none       -            -            online invalid thinrclm
+dmpdisk_0    auto:ZFS        -            -            ZFS
+emc_clariion0_339 auto:ZFS        -            -            ZFS
+emc_clariion0_341 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_342 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_343 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_344 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_345 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_346 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_347 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_348 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_349 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_350 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_351 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_352 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_353 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_354 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_355 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_356 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_357 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_468 auto:cdsdisk    emc_clariion0_468  vxfendg      online
+emc_clariion0_469 auto:cdsdisk    emc_clariion0_469  vxfendg      online
+emc_clariion0_470 auto:cdsdisk    emc_clariion0_470  vxfendg      online
+emc_clariion0_471 auto:cdsdisk    -            -            online
+emc_clariion0_472 auto:cdsdisk    -            -            online
+emc_clariion0_473 auto:cdsdisk    -            -            online
+emc_clariion0_474 auto:cdsdisk    -            -            online
+emc_clariion0_475 auto:cdsdisk    -            -            online
+emc_clariion0_476 auto:cdsdisk    -            -            online
+emc_clariion0_477 auto:cdsdisk    -            -            online
+emc0_0aaa    auto:cdsdisk    -            -            online
+emc0_0aab    auto:cdsdisk    -            -            online
+emc0_0aac    auto:cdsdisk    -            -            online
+emc0_0aad    auto:cdsdisk    -            -            online
+emc0_0aae    auto:cdsdisk    -            -            online
+emc0_0aaf    auto:cdsdisk    -            -            online
+emc0_0aa1    auto:cdsdisk    -            -            online
+emc0_0aa2    auto:cdsdisk    -            -            online
+emc0_0aa3    auto:cdsdisk    -            -            online
+emc0_0aa4    auto:cdsdisk    -            -            online
+emc0_0aa5    auto:cdsdisk    -            -            online
+emc0_0aa6    auto:cdsdisk    -            -            online
+emc0_0aa7    auto:cdsdisk    -            -            online
+emc0_0aa8    auto:cdsdisk    -            -            online
+emc0_0aa9    auto:cdsdisk    -            -            online
+
+
+HOST:s111038-gd7
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+vxfendg      enabled,cds          1477032379.237.s111037-gd7.cdc.veritas.com
+
+
+HOST:s111038-gd7
+USER:root
+STDIN:vxdg destroy vxfendg
+STDOUT:
+VxVM vxdg ERROR V-5-1-12066  cannot destroy coordinator diskgroup vxfendg
+RESULT:NOEXIT:Failed
+
+
+HOST:s111038-gd7
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+
+
+
+HOST:s111038-gd7
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_323 auto:none       -            -            online invalid thinrclm
+ams_25000_341 auto:ZFS        -            -            ZFS
+ams_25000_343 auto:ZFS        -            -            ZFS
+ams_25000_344 auto:ZFS        -            -            ZFS
+ams_25000_345 auto:ZFS        -            -            ZFS
+ams_25000_347 auto:none       -            -            online invalid thinrclm
+ams_25000_350 auto:none       -            -            online invalid thinrclm
+ams_25000_359 auto:none       -            -            online invalid thinrclm
+dmpdisk_0    auto:ZFS        -            -            ZFS
+emc_clariion0_339 auto:ZFS        -            -            ZFS
+emc_clariion0_341 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_342 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_343 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_344 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_345 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_346 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_347 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_348 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_349 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_350 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_351 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_352 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_353 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_354 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_355 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_356 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_357 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_468 auto:cdsdisk    emc_clariion0_468  vxfendg      online
+emc_clariion0_469 auto:cdsdisk    emc_clariion0_469  vxfendg      online
+emc_clariion0_470 auto:cdsdisk    emc_clariion0_470  vxfendg      online
+emc_clariion0_471 auto:cdsdisk    -            -            online
+emc_clariion0_472 auto:cdsdisk    -            -            online
+emc_clariion0_473 auto:cdsdisk    -            -            online
+emc_clariion0_474 auto:cdsdisk    -            -            online
+emc_clariion0_475 auto:cdsdisk    -            -            online
+emc_clariion0_476 auto:cdsdisk    -            -            online
+emc_clariion0_477 auto:cdsdisk    -            -            online
+emc0_0aaa    auto:cdsdisk    -            -            online
+emc0_0aab    auto:cdsdisk    -            -            online
+emc0_0aac    auto:cdsdisk    -            -            online
+emc0_0aad    auto:cdsdisk    -            -            online
+emc0_0aae    auto:cdsdisk    -            -            online
+emc0_0aaf    auto:cdsdisk    -            -            online
+emc0_0aa1    auto:cdsdisk    -            -            online
+emc0_0aa2    auto:cdsdisk    -            -            online
+emc0_0aa3    auto:cdsdisk    -            -            online
+emc0_0aa4    auto:cdsdisk    -            -            online
+emc0_0aa5    auto:cdsdisk    -            -            online
+emc0_0aa6    auto:cdsdisk    -            -            online
+emc0_0aa7    auto:cdsdisk    -            -            online
+emc0_0aa8    auto:cdsdisk    -            -            online
+emc0_0aa9    auto:cdsdisk    -            -            online
+
+
+HOST:s111038-gd7
+USER:root
+STDIN:vxfenadm -ak 1 -f /tmp/disk.4351 && vxfenadm -ck 1 -f /tmp/disk.4351
+STDOUT:
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_468
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_469
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_470
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_468
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_470
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_469
+
+
+HOST:s111038-gd7
+USER:root
+STDIN:echo "emc_clariion0_468 emc_clariion0_469 emc_clariion0_470"|xargs -n1 vxdisk -f init
+STDOUT:
+VxVM vxdisk ERROR V-5-1-12067  cannot initialize coordinator disk
+VxVM vxdisk ERROR V-5-1-12067  cannot initialize coordinator disk
+VxVM vxdisk ERROR V-5-1-12067  cannot initialize coordinator disk
+RESULT:NOEXIT:Failed

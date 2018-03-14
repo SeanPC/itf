@@ -1,0 +1,46 @@
+#!/usr/bin/expect
+set timeout 20
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no l109024
+expect {
+	"#" {send "/opt/VRTS/install/installer -configure 10.200.109.24 10.200.109.25\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+set timeout 1000
+while { 1 } {
+	expect {
+		"Select a component to configure:" {send "5\r"}
+		"The installer has discovered an existing installer process" {send "n\r"}
+		"Do you want to re-configure VCS" {send "y\r"}
+		"Choose option" {send "1\r"}
+		"the unique cluster name" {send "clus2425\r"}
+		"would you like to configure heartbeat" {send "1\r"}
+		"Enter the NIC for the first private heartbeat link on" {send "eth1\r"}
+		"Enter the NIC for the second private heartbeat link on" {send "eth3\r"}
+		"Would you like to configure a second private heartbeat link" {send "y\r"}
+		"Would you like to configure a third private heartbeat link" {send "n\r"}
+		"configure an additional low-priority heartbeat link" {send "n\r"}
+		"Are you using the same NICs for private heartbeat links on all systems" {send "y\r"}
+		"a unique cluster ID number between" {send " \r"}
+		"you like to check if the cluster ID is in use by another cluster" {send "n\r"}
+		"this information correct" {send "y\r"}
+		"you want to configure the Virtual IP" {send "n\r"}
+		"you like to configure the VCS cluster in secure mode" {send "n\r"}
+		"you want to proceed with non-secure installation" {send "y\r"}
+		"you wish to accept the default cluster credentials" {send "y\r"}
+		"want to add another user to the cluster" {send "n\r"}
+		"Is this information correct" {send "y\r"}
+		"you want to configure SMTP notification" {send "n\r"}
+		"want to configure SNMP notification" {send "n\r"}
+		"want to configure the Global Cluster Option" {send "n\r"}
+		"you want to stop*processes now" {send "y\r"}
+		"to continue" {send "y\r"}
+		"you like to do post SFRAC configuration checks" {send "n\r"}
+		"Would you like to send the information" {send "n\r"}
+		"Would you like to view the summary file" {send "n\r"}
+		"Fencing in enabled mode" {send "n\r"}
+		"#" {send "exit 0\r";break}
+		timeout {puts "\nEXPECT ERROR.Unkown Question '_QUESTION_'";exit 2;break}
+	}
+	sleep 0.1
+}
+expect eof

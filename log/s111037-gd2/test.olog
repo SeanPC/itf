@@ -1,0 +1,334 @@
+
+==================== Operation Log for TC test ====================
+DATE:2017-03-03 15:58:13
+Nodes:s111037-gd2
+
+***Getting hostname of node***
+
+
+
+DATE:2017-03-03 15:58:14
+HOST:s111037-gd2
+USER:root
+STDIN:hostname
+STDOUT:
+s111037-gd2.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-03-03 15:58:16
+HOST:s111037-gd2
+USER:root
+STDIN:uname
+STDOUT:
+SunOS
+
+
+DATE:2017-03-03 15:58:17
+HOST:s111037-gd2
+USER:root
+STDIN:cat /etc/release
+STDOUT:
+                            Oracle Solaris 11.3 SPARC
+  Copyright (c) 1983, 2016, Oracle and/or its affiliates.  All rights reserved.
+                            Assembled 03 August 2016
+
+***Getting avaiable disks***
+
+
+
+DATE:2017-03-03 15:58:18
+HOST:s111037-gd2
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-03-03 15:58:19
+HOST:s111037-gd2
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+other_disks       OTHER_DISKS    OTHER_DISKS          CONNECTED    OTHER_DISKS   1            -
+emc_clariion0     EMC_CLARiiON   CETV2140800019       CONNECTED    CLR-ALUA   41         0533
+
+
+DATE:2017-03-03 15:58:22
+HOST:s111037-gd2
+USER:root
+STDIN:vxdisk scandisks;vxdisk list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+c2d0         auto:ZFS        -            -            ZFS
+emc_clariion0_238 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_239 auto:ZFS        -            -            ZFS
+emc_clariion0_240 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_241 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_242 auto:ZFS        -            -            ZFS
+emc_clariion0_243 auto:simple     -            -            online invalid thinrclm
+emc_clariion0_244 auto:simple     -            -            online invalid thinrclm
+emc_clariion0_245 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_246 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_247 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_248 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_249 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_250 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_251 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_252 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_253 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_254 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_255 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_256 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_257 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_418 auto:cdsdisk    -            -            online
+emc_clariion0_419 auto:cdsdisk    -            -            online
+emc_clariion0_420 auto:cdsdisk    -            -            online
+emc_clariion0_421 auto:cdsdisk    -            -            online
+emc_clariion0_422 auto:cdsdisk    -            -            online
+emc_clariion0_423 auto:cdsdisk    -            -            online
+emc_clariion0_424 auto:cdsdisk    -            -            online
+emc_clariion0_425 auto:cdsdisk    -            -            online
+emc_clariion0_426 auto:cdsdisk    -            -            online
+emc_clariion0_427 auto:cdsdisk    -            -            online
+emc_clariion0_515 auto:cdsdisk    -            -            online
+emc_clariion0_516 auto:cdsdisk    -            -            online
+emc_clariion0_517 auto:cdsdisk    -            -            online
+emc_clariion0_518 auto:cdsdisk    -            -            online
+emc_clariion0_519 auto:cdsdisk    -            -            online
+emc_clariion0_520 auto:cdsdisk    -            -            online
+emc_clariion0_521 auto:cdsdisk    -            -            online
+emc_clariion0_522 auto:cdsdisk    -            -            online
+emc_clariion0_523 auto:cdsdisk    -            -            online
+emc_clariion0_524 auto:cdsdisk    -            -            online
+emc_clariion0_525 auto:cdsdisk    -            -            online
+
+
+DATE:2017-03-03 15:58:34
+HOST:s111037-gd2
+USER:root
+STDIN:for i in emc_clariion0_243 emc_clariion0_244;do /opt/VRTS/bin/vxdisksetup -if $i;done
+STDOUT:
+VxVM vxdisk ERROR V-5-1-16528  The device is in use. This device may be a boot disk.  Device has a UFS FS on it. 
+If you still want to initialize this device for VxVM use, ensure that there is no root FS on it.
+Then remove the FS signature from each of the slice(s) as follows: 
+ 	dd if=/dev/zero of=/dev/vx/rdmp/emc_clariion0_243s[n] oseek=18 bs=512 count=1
+ [n] is the slice number.
+ Or alternatively you can rerun the same command with -r option.
+ VxVM vxdisk ERROR V-5-1-16528  The device is in use. This device may be a boot disk.  Device has a UFS FS on it. 
+If you still want to initialize this device for VxVM use, ensure that there is no root FS on it.
+Then remove the FS signature from each of the slice(s) as follows: 
+ 	dd if=/dev/zero of=/dev/vx/rdmp/emc_clariion0_244s[n] oseek=18 bs=512 count=1
+ [n] is the slice number.
+ Or alternatively you can rerun the same command with -r option.
+ 
+RESULT:NOEXIT:Failed
+
+
+DATE:2017-03-03 15:58:35
+HOST:s111037-gd2
+USER:root
+STDIN:vxdisk list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+c2d0         auto:ZFS        -            -            ZFS
+emc_clariion0_238 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_239 auto:ZFS        -            -            ZFS
+emc_clariion0_240 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_241 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_242 auto:ZFS        -            -            ZFS
+emc_clariion0_243 auto:simple     -            -            online invalid thinrclm
+emc_clariion0_244 auto:simple     -            -            online invalid thinrclm
+emc_clariion0_245 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_246 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_247 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_248 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_249 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_250 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_251 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_252 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_253 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_254 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_255 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_256 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_257 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_418 auto:cdsdisk    -            -            online
+emc_clariion0_419 auto:cdsdisk    -            -            online
+emc_clariion0_420 auto:cdsdisk    -            -            online
+emc_clariion0_421 auto:cdsdisk    -            -            online
+emc_clariion0_422 auto:cdsdisk    -            -            online
+emc_clariion0_423 auto:cdsdisk    -            -            online
+emc_clariion0_424 auto:cdsdisk    -            -            online
+emc_clariion0_425 auto:cdsdisk    -            -            online
+emc_clariion0_426 auto:cdsdisk    -            -            online
+emc_clariion0_427 auto:cdsdisk    -            -            online
+emc_clariion0_515 auto:cdsdisk    -            -            online
+emc_clariion0_516 auto:cdsdisk    -            -            online
+emc_clariion0_517 auto:cdsdisk    -            -            online
+emc_clariion0_518 auto:cdsdisk    -            -            online
+emc_clariion0_519 auto:cdsdisk    -            -            online
+emc_clariion0_520 auto:cdsdisk    -            -            online
+emc_clariion0_521 auto:cdsdisk    -            -            online
+emc_clariion0_522 auto:cdsdisk    -            -            online
+emc_clariion0_523 auto:cdsdisk    -            -            online
+emc_clariion0_524 auto:cdsdisk    -            -            online
+emc_clariion0_525 auto:cdsdisk    -            -            online
+
+
+DATE:2017-03-03 15:58:40
+HOST:s111037-gd2
+USER:root
+STDIN:/opt/VRTSsfmh/adm/dclisetup.sh
+STDOUT:
+
+
+
+DATE:2017-03-03 15:58:48
+HOST:s111037-gd2
+USER:root
+STDIN:/opt/VRTS/bin/vxlist disk
+STDOUT:
+TY   DEVICE              DISK   DISKGROUP       SIZE   FREE STATUS
+disk c2d0                -      -                  -      - ZFS
+disk emc_clariion0_238   -      vxfendg        9.96g      - deported
+disk emc_clariion0_239   -      -                  -      - ZFS
+disk emc_clariion0_240   -      vxfendg        9.96g      - deported
+disk emc_clariion0_241   -      vxfendg        9.96g      - deported
+disk emc_clariion0_242   -      -                  -      - ZFS
+disk emc_clariion0_243   -      -                  -      - uninitialized
+disk emc_clariion0_244   -      -                  -      - uninitialized
+disk emc_clariion0_245   -      -              9.96g      - free
+disk emc_clariion0_246   -      -              9.96g      - free
+disk emc_clariion0_247   -      -              9.96g      - free
+disk emc_clariion0_248   -      -              9.96g      - free
+disk emc_clariion0_249   -      -              9.96g      - free
+disk emc_clariion0_250   -      -              9.96g      - free
+disk emc_clariion0_251   -      -              9.96g      - free
+disk emc_clariion0_252   -      -              9.96g      - free
+disk emc_clariion0_253   -      -              9.96g      - free
+disk emc_clariion0_254   -      -              9.96g      - free
+disk emc_clariion0_255   -      -              9.96g      - free
+disk emc_clariion0_256   -      -              9.96g      - free
+disk emc_clariion0_257   -      -              9.96g      - free
+disk emc_clariion0_418   -      -             19.96g      - free
+disk emc_clariion0_419   -      -             19.96g      - free
+disk emc_clariion0_420   -      -             19.96g      - free
+disk emc_clariion0_421   -      -             19.96g      - free
+disk emc_clariion0_422   -      -             19.96g      - free
+disk emc_clariion0_423   -      -             19.96g      - free
+disk emc_clariion0_424   -      -             19.96g      - free
+disk emc_clariion0_425   -      -             19.96g      - free
+disk emc_clariion0_426   -      -             19.96g      - free
+disk emc_clariion0_427   -      -             19.96g      - free
+disk emc_clariion0_515   -      -              9.96g      - free
+disk emc_clariion0_516   -      -              9.96g      - free
+disk emc_clariion0_517   -      -              9.96g      - free
+disk emc_clariion0_518   -      -              9.96g      - free
+disk emc_clariion0_519   -      -              9.96g      - free
+disk emc_clariion0_520   -      -              9.96g      - free
+disk emc_clariion0_521   -      -              9.96g      - free
+disk emc_clariion0_522   -      -              9.96g      - free
+disk emc_clariion0_523   -      -              9.96g      - free
+disk emc_clariion0_524   -      -              9.96g      - free
+disk emc_clariion0_525   -      -              9.96g      - free
+
+
+DATE:2017-03-03 15:58:49
+HOST:s111037-gd2
+USER:root
+STDIN:vxdmpadm getsubpaths
+STDOUT:
+NAME         STATE[A]   PATH-TYPE[M] DMPNODENAME  ENCLR-NAME   CTLR           ATTRS
+========================================================================================
+c2d1s2       ENABLED(A) PRIMARY      emc_clariion0_238 emc_clariion0 c2                -
+c2d21s2      ENABLED    SECONDARY    emc_clariion0_238 emc_clariion0 c2                -
+c2d2         ENABLED(A) PRIMARY      emc_clariion0_239 emc_clariion0 c2                -
+c2d22        ENABLED    SECONDARY    emc_clariion0_239 emc_clariion0 c2                -
+c2d23s2      ENABLED    SECONDARY    emc_clariion0_240 emc_clariion0 c2                -
+c2d3s2       ENABLED(A) PRIMARY      emc_clariion0_240 emc_clariion0 c2                -
+c2d24s2      ENABLED    SECONDARY    emc_clariion0_241 emc_clariion0 c2                -
+c2d4s2       ENABLED(A) PRIMARY      emc_clariion0_241 emc_clariion0 c2                -
+c2d25s2      ENABLED    SECONDARY    emc_clariion0_242 emc_clariion0 c2                -
+c2d5s2       ENABLED(A) PRIMARY      emc_clariion0_242 emc_clariion0 c2                -
+c2d26s2      ENABLED    SECONDARY    emc_clariion0_243 emc_clariion0 c2                -
+c2d6s2       ENABLED(A) PRIMARY      emc_clariion0_243 emc_clariion0 c2                -
+c2d27s2      ENABLED    SECONDARY    emc_clariion0_244 emc_clariion0 c2                -
+c2d7s2       ENABLED(A) PRIMARY      emc_clariion0_244 emc_clariion0 c2                -
+c2d28s2      ENABLED    SECONDARY    emc_clariion0_245 emc_clariion0 c2                -
+c2d8s2       ENABLED(A) PRIMARY      emc_clariion0_245 emc_clariion0 c2                -
+c2d29s2      ENABLED    SECONDARY    emc_clariion0_246 emc_clariion0 c2                -
+c2d9s2       ENABLED(A) PRIMARY      emc_clariion0_246 emc_clariion0 c2                -
+c2d10s2      ENABLED(A) PRIMARY      emc_clariion0_247 emc_clariion0 c2                -
+c2d30s2      ENABLED    SECONDARY    emc_clariion0_247 emc_clariion0 c2                -
+c2d11s2      ENABLED(A) PRIMARY      emc_clariion0_248 emc_clariion0 c2                -
+c2d31s2      ENABLED    SECONDARY    emc_clariion0_248 emc_clariion0 c2                -
+c2d12s2      ENABLED(A) PRIMARY      emc_clariion0_249 emc_clariion0 c2                -
+c2d32s2      ENABLED    SECONDARY    emc_clariion0_249 emc_clariion0 c2                -
+c2d13s2      ENABLED(A) PRIMARY      emc_clariion0_250 emc_clariion0 c2                -
+c2d33s2      ENABLED    SECONDARY    emc_clariion0_250 emc_clariion0 c2                -
+c2d14s2      ENABLED(A) PRIMARY      emc_clariion0_251 emc_clariion0 c2                -
+c2d34s2      ENABLED    SECONDARY    emc_clariion0_251 emc_clariion0 c2                -
+c2d15s2      ENABLED(A) PRIMARY      emc_clariion0_252 emc_clariion0 c2                -
+c2d35s2      ENABLED    SECONDARY    emc_clariion0_252 emc_clariion0 c2                -
+c2d16s2      ENABLED(A) PRIMARY      emc_clariion0_253 emc_clariion0 c2                -
+c2d36s2      ENABLED    SECONDARY    emc_clariion0_253 emc_clariion0 c2                -
+c2d17        ENABLED(A) PRIMARY      emc_clariion0_254 emc_clariion0 c2                -
+c2d37        ENABLED    SECONDARY    emc_clariion0_254 emc_clariion0 c2                -
+c2d18s2      ENABLED(A) PRIMARY      emc_clariion0_255 emc_clariion0 c2                -
+c2d38s2      ENABLED    SECONDARY    emc_clariion0_255 emc_clariion0 c2                -
+c2d19s2      ENABLED(A) PRIMARY      emc_clariion0_256 emc_clariion0 c2                -
+c2d39s2      ENABLED    SECONDARY    emc_clariion0_256 emc_clariion0 c2                -
+c2d20s2      ENABLED(A) PRIMARY      emc_clariion0_257 emc_clariion0 c2                -
+c2d40s2      ENABLED    SECONDARY    emc_clariion0_257 emc_clariion0 c2                -
+c2d41s2      ENABLED    SECONDARY    emc_clariion0_418 emc_clariion0 c2                -
+c2d51s2      ENABLED(A) PRIMARY      emc_clariion0_418 emc_clariion0 c2                -
+c2d42s2      ENABLED    SECONDARY    emc_clariion0_419 emc_clariion0 c2                -
+c2d52s2      ENABLED(A) PRIMARY      emc_clariion0_419 emc_clariion0 c2                -
+c2d43s2      ENABLED    SECONDARY    emc_clariion0_420 emc_clariion0 c2                -
+c2d53s2      ENABLED(A) PRIMARY      emc_clariion0_420 emc_clariion0 c2                -
+c2d44s2      ENABLED    SECONDARY    emc_clariion0_421 emc_clariion0 c2                -
+c2d54s2      ENABLED(A) PRIMARY      emc_clariion0_421 emc_clariion0 c2                -
+c2d45s2      ENABLED    SECONDARY    emc_clariion0_422 emc_clariion0 c2                -
+c2d55s2      ENABLED(A) PRIMARY      emc_clariion0_422 emc_clariion0 c2                -
+c2d46s2      ENABLED    SECONDARY    emc_clariion0_423 emc_clariion0 c2                -
+c2d56s2      ENABLED(A) PRIMARY      emc_clariion0_423 emc_clariion0 c2                -
+c2d47s2      ENABLED    SECONDARY    emc_clariion0_424 emc_clariion0 c2                -
+c2d57s2      ENABLED(A) PRIMARY      emc_clariion0_424 emc_clariion0 c2                -
+c2d48s2      ENABLED    SECONDARY    emc_clariion0_425 emc_clariion0 c2                -
+c2d58s2      ENABLED(A) PRIMARY      emc_clariion0_425 emc_clariion0 c2                -
+c2d49s2      ENABLED    SECONDARY    emc_clariion0_426 emc_clariion0 c2                -
+c2d59s2      ENABLED(A) PRIMARY      emc_clariion0_426 emc_clariion0 c2                -
+c2d50        ENABLED    SECONDARY    emc_clariion0_427 emc_clariion0 c2                -
+c2d60        ENABLED(A) PRIMARY      emc_clariion0_427 emc_clariion0 c2                -
+c2d61s2      ENABLED    SECONDARY    emc_clariion0_515 emc_clariion0 c2                -
+c2d72s2      ENABLED(A) PRIMARY      emc_clariion0_515 emc_clariion0 c2                -
+c2d62        ENABLED    SECONDARY    emc_clariion0_516 emc_clariion0 c2                -
+c2d73        ENABLED(A) PRIMARY      emc_clariion0_516 emc_clariion0 c2                -
+c2d63s2      ENABLED    SECONDARY    emc_clariion0_517 emc_clariion0 c2                -
+c2d74s2      ENABLED(A) PRIMARY      emc_clariion0_517 emc_clariion0 c2                -
+c2d64s2      ENABLED    SECONDARY    emc_clariion0_518 emc_clariion0 c2                -
+c2d75s2      ENABLED(A) PRIMARY      emc_clariion0_518 emc_clariion0 c2                -
+c2d65s2      ENABLED    SECONDARY    emc_clariion0_519 emc_clariion0 c2                -
+c2d76s2      ENABLED(A) PRIMARY      emc_clariion0_519 emc_clariion0 c2                -
+c2d66s2      ENABLED    SECONDARY    emc_clariion0_520 emc_clariion0 c2                -
+c2d77s2      ENABLED(A) PRIMARY      emc_clariion0_520 emc_clariion0 c2                -
+c2d67s2      ENABLED    SECONDARY    emc_clariion0_521 emc_clariion0 c2                -
+c2d78s2      ENABLED(A) PRIMARY      emc_clariion0_521 emc_clariion0 c2                -
+c2d68s2      ENABLED    SECONDARY    emc_clariion0_522 emc_clariion0 c2                -
+c2d79s2      ENABLED(A) PRIMARY      emc_clariion0_522 emc_clariion0 c2                -
+c2d69s2      ENABLED    SECONDARY    emc_clariion0_523 emc_clariion0 c2                -
+c2d80s2      ENABLED(A) PRIMARY      emc_clariion0_523 emc_clariion0 c2                -
+c2d70s2      ENABLED    SECONDARY    emc_clariion0_524 emc_clariion0 c2                -
+c2d81s2      ENABLED(A) PRIMARY      emc_clariion0_524 emc_clariion0 c2                -
+c2d71s2      ENABLED    SECONDARY    emc_clariion0_525 emc_clariion0 c2                -
+c2d82s2      ENABLED(A) PRIMARY      emc_clariion0_525 emc_clariion0 c2                -
+c2d0         ENABLED(A)   -          c2d0         other_disks  c2                -
+
+
+Case Result:Passed
+DATE:2017-03-03 15:58:49
+Duration:0m36s

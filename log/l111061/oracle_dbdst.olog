@@ -1,0 +1,1081 @@
+
+==================== Operation Log for TC oracle_dbdst ====================
+DATE:2017-02-22 10:24:50
+Nodes:l111061 l111060
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-02-22 10:24:50
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-02-22 10:24:50
+HOST:l111061
+USER:root
+STDIN:ssh -l root l111061
+STDOUT:
+
+
+
+DATE:2017-02-22 10:24:51
+HOST:l111060
+USER:root
+STDIN:ssh -l root l111060
+STDOUT:
+
+
+
+DATE:2017-02-22 10:24:52
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111061,l111060
+STDOUT:
+
+
+
+DATE:2017-02-22 10:24:52
+HOST:l111061
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111060
+l111061
+
+
+DATE:2017-02-22 10:24:53
+HOST:l111060
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111060
+l111061
+
+***checking if hosts are wop-sshable with oracle***
+
+
+
+DATE:2017-02-22 10:24:53
+HOST:l111061
+USER:oracle
+STDIN:ssh -l oracle l111061
+STDOUT:
+
+
+
+DATE:2017-02-22 10:24:54
+HOST:l111060
+USER:oracle
+STDIN:ssh -l oracle l111060
+STDOUT:
+
+
+***Getting hostname of node***
+
+
+
+DATE:2017-02-22 10:24:55
+HOST:l111061
+USER:root
+STDIN:hostname
+STDOUT:
+l111061.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-02-22 10:24:55
+HOST:l111061
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-02-22 10:24:55
+HOST:l111061
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 6.9 Beta (Santiago)
+
+
+DATE:2017-02-22 10:24:56
+HOST:l111061
+USER:root
+STDIN:uname -r
+STDOUT:
+2.6.32-688.el6.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-02-22 10:24:59
+HOST:l111061
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSvlic-3.02.62.003-0.x86_64
+Name        : VRTSvlic                     Relocations: (not relocatable)
+Version     : 3.02.62.003                       Vendor: Symantec Corporation
+Release     : 0                             Build Date: Thu 25 Sep 2014 12:07:11 PM CST
+Install Date: Wed 15 Feb 2017 12:21:29 AM CST      Build Host: claymore.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSvlic-3.02.62.003-0.src.rpm
+Size        : 1197089                          License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Symantec License Utilities
+Description :
+These are the Symantec License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSob-3.4.703-0.i686
+Name        : VRTSob                       Relocations: (not relocatable)
+Version     : 3.4.703                           Vendor: Symantec Corporation.
+Release     : 0                             Build Date: Wed 15 Oct 2014 08:24:30 AM CST
+Install Date: Wed 15 Feb 2017 12:22:14 AM CST      Build Host: veaas3bld-04.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSob-3.4.703-0.src.rpm
+Size        : 67960232                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Enterprise Administrator Service by Symantec
+Description :
+Veritas Enterprise Administrator Service by Symantec
+
+Package INFO: VRTSgms-6.2.0.000-RHEL6.x86_64
+Name        : VRTSgms                      Relocations: (not relocatable)
+Version     : 6.2.0.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 14 Oct 2014 11:08:26 AM CST
+Install Date: Wed 15 Feb 2017 12:24:29 AM CST      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSgms-6.2.0.000-RHEL6.src.rpm
+Size        : 84003                            License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Messaging Services by Symantec
+Description :
+Veritas Group Messaging Sevice (GMS) driver by Symantec
+
+Package INFO: VRTSspt-6.2.1.000-RHEL6.noarch
+Name        : VRTSspt                      Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Wed 04 Feb 2015 06:33:08 PM CST
+Install Date: Wed 15 Feb 2017 12:24:51 AM CST      Build Host: redhat92207.cdc.veritas.com
+Group       : Applications/System           Source RPM: VRTSspt-6.2.1.000-RHEL6.src.rpm
+Size        : 33110813                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Software Support Tools Package by Symantec
+Description :
+    VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSllt-6.2.1.600-RHEL6.x86_64
+Name        : VRTSllt                      Relocations: (not relocatable)
+Version     : 6.2.1.600                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Wed 23 Nov 2016 05:57:39 PM CST
+Install Date: Wed 15 Feb 2017 12:25:45 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSllt-6.2.1.600-RHEL6.src.rpm
+Size        : 70517340                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Low Latency Transport by Symantec
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-614.el6.x86_64 [LINUX_RHEL60]
+Build Stamp: Veritas-6.2.1.600-2016-11-22_23.41.19
+
+Package INFO: VRTSvcs-6.2.1.000-RHEL6.i686
+Name        : VRTSvcs                      Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Sat 11 Apr 2015 05:03:09 AM CST
+Install Date: Wed 15 Feb 2017 12:26:14 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcs-6.2.1.000-RHEL6.src.rpm
+Size        : 172928620                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server by Symantec
+Description :
+Veritas Cluster Server and Commands by Symantec (i686)
+Build Stamp : 6.2.1.000-2015-04-10_10.00.00
+
+Package INFO: VRTSdbed-6.2.1.000-RHEL.x86_64
+Name        : VRTSdbed                     Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL                          Build Date: Fri 27 Feb 2015 06:03:09 AM CST
+Install Date: Wed 15 Feb 2017 12:26:43 AM CST      Build Host: snapper53-64.engba.symantec.com
+Group       : Applications/Databases        Source RPM: VRTSdbed-6.2.1.000-RHEL.src.rpm
+Size        : 231965245                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSdbac-6.2.0.100-RHEL6.x86_64
+Name        : VRTSdbac                     Relocations: (not relocatable)
+Version     : 6.2.0.100                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 25 Aug 2015 08:42:50 PM CST
+Install Date: Wed 15 Feb 2017 12:27:04 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSdbac-6.2.0.100-RHEL6.src.rpm
+Size        : 20457206                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Real Application Cluster Support Package by Symantec
+Description :
+Veritas Oracle Real Application Cluster Support Package by Symantec
+Build Stamp	: 6.2.0.100-2015-08-25_05.26.11
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64
+
+Package INFO: VRTSaslapm-6.2.1.000-RHEL6.x86_64
+Name        : VRTSaslapm                   Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 07 Apr 2015 10:35:10 PM CST
+Install Date: Wed 15 Feb 2017 12:22:07 AM CST      Build Host: sf-rhel6ga-build.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSaslapm-6.2.1.000-RHEL6.src.rpm
+Size        : 35263762                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTSfssdk-6.2.0.000-RHEL6.x86_64
+Name        : VRTSfssdk                    Relocations: (not relocatable)
+Version     : 6.2.0.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 24 Oct 2014 03:51:55 PM CST
+Install Date: Wed 15 Feb 2017 12:23:12 AM CST      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSfssdk-6.2.0.000-RHEL6.src.rpm
+Size        : 1119364                          License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas File System Software Developer Kit by Symantec
+Description :
+Veritas File System Software Developer Kit
+
+Package INFO: VRTSvcsdr-6.2.0.000-RHEL6.x86_64
+Name        : VRTSvcsdr                    Relocations: (not relocatable)
+Version     : 6.2.0.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 17 Oct 2014 11:04:57 PM CST
+Install Date: Wed 15 Feb 2017 12:24:05 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsdr-6.2.0.000-RHEL6.src.rpm
+Size        : 4467511                          License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : VCS Disk Reserver by Symantec
+Description :
+Veritas Cluster Server Disk Reservation Modules and Utilities by Symantec
+Arch : (x86_64)
+Build Stamp : 6.2.0.000-2014-10-17_05.00.00
+
+Package INFO: VRTSperl-5.16.1.27-RHEL6.x86_64
+Name        : VRTSperl                     Relocations: (not relocatable)
+Version     : 5.16.1.27                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Wed 04 Mar 2015 09:40:43 PM CST
+Install Date: Wed 15 Feb 2017 12:24:45 AM CST      Build Host: rhel6-perl.cdc.symantec.com
+Group       : Applications/System           Source RPM: VRTSperl-5.16.1.27-RHEL6.src.rpm
+Size        : 70143772                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Perl 5.16.1 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.16.1 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.60
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Devel-Cover-1.16
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSvxvm-6.2.1.300-RHEL6.x86_64
+Name        : VRTSvxvm                     Relocations: (not relocatable)
+Version     : 6.2.1.300                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 30 Dec 2016 12:04:49 PM CST
+Install Date: Wed 15 Feb 2017 12:25:13 AM CST      Build Host: sf-rhel6ga-build.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSvxvm-6.2.1.300-RHEL6.src.rpm
+Size        : 445869303                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Volume Manager by Symantec
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSfsadv-6.2.1.000-RHEL6.x86_64
+Name        : VRTSfsadv                    Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 07 Apr 2015 07:44:05 PM CST
+Install Date: Wed 15 Feb 2017 12:25:37 AM CST      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSfsadv-6.2.1.000-RHEL6.src.rpm
+Size        : 14180743                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas File System Advanced Features by Symantec
+Description :
+Veritas File System Advanced Features by Symantec
+
+Package INFO: VRTSgab-6.2.1.300-RHEL6.x86_64
+Name        : VRTSgab                      Relocations: (not relocatable)
+Version     : 6.2.1.300                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 19 Apr 2016 05:15:09 PM CST
+Install Date: Wed 15 Feb 2017 12:25:50 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSgab-6.2.1.300-RHEL6.src.rpm
+Size        : 33034487                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Membership and Atomic Broadcast by Symantec
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.32-614.el6.x86_64
+Build Stamp        : Veritas-6.2.1.300-2016-04-18_22.55.03
+
+Package INFO: VRTSamf-6.2.1.100-RHEL6.x86_64
+Name        : VRTSamf                      Relocations: (not relocatable)
+Version     : 6.2.1.100                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 24 Aug 2015 10:25:50 PM CST
+Install Date: Wed 15 Feb 2017 12:26:00 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : System Environment/Kernel     Source RPM: VRTSamf-6.2.1.100-RHEL6.src.rpm
+Size        : 24930020                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64
+Build Stamp        : 6.2.1.100-2015-08-24_07.19.28
+
+Package INFO: VRTScps-6.2.1.000-RHEL6.x86_64
+Name        : VRTScps                      Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Sat 11 Apr 2015 05:06:08 AM CST
+Install Date: Wed 15 Feb 2017 12:26:21 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTScps-6.2.1.000-RHEL6.src.rpm
+Size        : 46342831                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Co-ordination Point Server by Symantec
+Description :
+Veritas Co-ordination Point Server by Symantec
+Build Stamp: 6.2.1.000-2015-04-10_10.00.00
+
+Package INFO: VRTSvcsea-6.2.1.000-RHEL6.i686
+Name        : VRTSvcsea                    Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Sat 11 Apr 2015 05:24:32 AM CST
+Install Date: Wed 15 Feb 2017 12:26:34 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsea-6.2.1.000-RHEL6.src.rpm
+Size        : 1169607                          License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents by Symantec
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 6.2.1.000-2015-04-10_10.00.00
+
+Package INFO: VRTSglm-6.2.0.100-RHEL6.x86_64
+Name        : VRTSglm                      Relocations: (not relocatable)
+Version     : 6.2.0.100                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 11 Aug 2015 09:21:29 PM CST
+Install Date: Wed 15 Feb 2017 12:26:49 AM CST      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSglm-6.2.0.100-RHEL6.src.rpm
+Size        : 424373                           License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Lock Manager (GLM) driver by Symantec
+Description :
+Veritas Group Lock Manager (GLM) driver by Symantec
+Supported kernel(s): 2.6.32-71.el6.x86_64 or later
+
+Package INFO: VRTSodm-6.2.1.300-RHEL6.x86_64
+Name        : VRTSodm                      Relocations: (not relocatable)
+Version     : 6.2.1.300                         Vendor: Symantec Corporation.
+Release     : RHEL6                         Build Date: Thu 22 Dec 2016 11:21:43 PM CST
+Install Date: Wed 15 Feb 2017 12:26:58 AM CST      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSodm-6.2.1.300-RHEL6.src.rpm
+Size        : 1690316                          License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Disk Manager by Symantec
+Description :
+Veritas Oracle Disk Manager (ODM) by Symantec
+
+Package INFO: VRTSvcswiz-6.2.0.000-RHEL6.i686
+Name        : VRTSvcswiz                   Relocations: (not relocatable)
+Version     : 6.2.0.000                         Vendor: "Symantec Corporation"
+Release     : RHEL6                         Build Date: Fri 17 Oct 2014 11:52:47 PM CST
+Install Date: Wed 15 Feb 2017 12:27:28 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcswiz-6.2.0.000-RHEL6.src.rpm
+Size        : 10426850                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server Wizards by Symantec
+Description :
+"The package contains Wizards for Veritas Cluster Server by Symantec"
+
+Arch : (i686)
+Build Stamp : 6.2.0.000-2014-10-17_08.52.30
+
+Package INFO: VRTSsfcpi62-6.2.1.000-GENERIC.noarch
+Name        : VRTSsfcpi62                  Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : GENERIC                       Build Date: Wed 15 Apr 2015 08:05:23 AM CST
+Install Date: Wed 15 Feb 2017 12:27:41 AM CST      Build Host: mtvre01.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSsfcpi62-6.2.1.000-GENERIC.src.rpm
+Size        : 13382449                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Storage Foundation Installer
+Description :
+Veritas Storage Foundation Installer. VRTSperl is required.
+
+Package INFO: VRTSvxfs-6.2.1.300-RHEL6.x86_64
+Name        : VRTSvxfs                     Relocations: (not relocatable)
+Version     : 6.2.1.300                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Thu 22 Dec 2016 11:01:43 PM CST
+Install Date: Wed 15 Feb 2017 12:25:28 AM CST      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSvxfs-6.2.1.300-RHEL6.src.rpm
+Size        : 56098866                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Filesystem by Symantec
+Description :
+Veritas Filesystem by Symantec
+
+Package INFO: VRTSvxfen-6.2.1.100-RHEL6.x86_64
+Name        : VRTSvxfen                    Relocations: (not relocatable)
+Version     : 6.2.1.100                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 24 Aug 2015 10:12:52 PM CST
+Install Date: Wed 15 Feb 2017 12:25:55 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvxfen-6.2.1.100-RHEL6.src.rpm
+Size        : 27847494                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas I/O Fencing by Symantec
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64
+Build Stamp        : 6.2.1.100-2015-08-24_02.28.02
+
+Package INFO: VRTSvcsag-6.2.1.000-RHEL6.i686
+Name        : VRTSvcsag                    Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Sat 11 Apr 2015 05:02:06 AM CST
+Install Date: Wed 15 Feb 2017 12:26:29 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsag-6.2.1.000-RHEL6.src.rpm
+Size        : 72139715                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : VCS Bundled Agents by Symantec
+Description :
+Veritas Cluster Server Bundled Agents (i686) by Symantec
+Build Stamp : 6.2.1.000-2015-04-10_10.00.00
+
+Package INFO: VRTScavf-6.2.1.100-RHEL6.i686
+Name        : VRTScavf                     Relocations: (not relocatable)
+Version     : 6.2.1.100                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Wed 29 Jul 2015 03:21:38 PM CST
+Install Date: Wed 15 Feb 2017 12:26:54 AM CST      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTScavf-6.2.1.100-RHEL6.src.rpm
+Size        : 836384                           License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+VERITAS Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+Package INFO: VRTSvbs-6.2.0.000-GA_Linux.i686
+Name        : VRTSvbs                      Relocations: (not relocatable)
+Version     : 6.2.0.000                         Vendor: Symantec Corporation
+Release     : GA_Linux                      Build Date: Sat 18 Oct 2014 01:26:05 AM CST
+Install Date: Wed 15 Feb 2017 12:27:24 AM CST      Build Host: snapper53-64.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSvbs-6.2.0.000-GA_Linux.src.rpm
+Size        : 58029871                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Virtual Business Services by Symantec
+Description :
+Virtual Business Services by Symantec
+Build Stamp : 6.2.0.000-2014-10-17_09.53.25
+
+Package INFO: VRTSsfmh-6.1.0.400-0.x86_64
+Name        : VRTSsfmh                     Relocations: (not relocatable)
+Version     : 6.1.0.400                         Vendor: Symantec Corporation
+Release     : 0                             Build Date: Tue 17 Mar 2015 10:14:40 PM CST
+Install Date: Wed 15 Feb 2017 12:27:59 AM CST      Build Host: vommvsles10-64bld.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSsfmh-6.1.0.400-0.src.rpm
+Size        : 141586344                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Operations Manager Managed Host
+Description :
+Veritas Operations Manager Managed Host
+
+
+DATE:2017-02-22 10:24:59
+HOST:l111061
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster johnny (
+	UserNames = { admin = aHEbECdCEbECdC }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111060 (
+	)
+
+system l111061 (
+	)
+
+group crs_grp (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CSSD cssd (
+		CRSHOME = "/crs/crshome"
+		)
+
+	PrivNIC ora_priv (
+		Device = { eth0 = 0, eth1 = 1 }
+		Address @l111060 = "192.200.111.60"
+		Address @l111061 = "192.200.111.61"
+		NetMask = "255.255.255.0"
+		)
+
+	cssd requires ora_priv
+
+
+	// resource dependency tree
+	//
+	//	group crs_grp
+	//	{
+	//	CSSD cssd
+	//	    {
+	//	    PrivNIC ora_priv
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111060 = { oradg9318_dbarch = sw, oradg9318_ocrvote = sw }
+		ActivationMode @l111061 = { oradg9318_dbarch = sw, oradg9318_ocrvote = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = johnny
+		CVMNodeId = { l111060 = 0, l111061 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group oradb_grp (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CFSMount archivemnt (
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg9318_dbarch/archive"
+		)
+
+	CFSMount dbmnt (
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg9318_dbarch/dbdata"
+		)
+
+	Oracle oradb (
+		Sid @l111060 = orcl2
+		Sid @l111061 = orcl1
+		Owner = oracle
+		Home = "/oracle/orahome"
+		)
+
+	oradb requires archivemnt
+	oradb requires dbmnt
+
+
+	// resource dependency tree
+	//
+	//	group oradb_grp
+	//	{
+	//	Oracle oradb
+	//	    {
+	//	    CFSMount archivemnt
+	//	    CFSMount dbmnt
+	//	    }
+	//	}
+
+
+group sg31 (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CFSMount cfsmount3 (
+		Critical = 0
+		MountPoint = "/ocrvote"
+		BlockDevice = "/dev/vx/dsk/oradg9318_ocrvote/ocrvote"
+		MountOpt @l111060 = "cluster"
+		MountOpt @l111061 = "cluster"
+		NodeList = { l111060, l111061 }
+		)
+
+	CVMVolDg cvmvoldg3 (
+		Critical = 0
+		CVMDiskGroup = oradg9318_ocrvote
+		CVMVolume = { ocrvote }
+		CVMActivation @l111060 = sw
+		CVMActivation @l111061 = sw
+		CVMVolumeIoTest = { ocrvote }
+		)
+
+	requires group cvm online local firm
+	cfsmount3 requires cvmvoldg3
+
+
+	// resource dependency tree
+	//
+	//	group sg31
+	//	{
+	//	CFSMount cfsmount3
+	//	    {
+	//	    CVMVolDg cvmvoldg3
+	//	    }
+	//	}
+
+
+====STEP: Checking status of Oracle database
+DATE:2017-02-22 10:24:59
+
+***Checking if relink oracle odm libray to Veritas odm libray***
+
+
+
+DATE:2017-02-22 10:25:00
+HOST:l111061
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx. 1 oracle oinstall    28 Feb 17 14:31 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib64/libodm.so
+
+
+DATE:2017-02-22 10:25:00
+HOST:l111060
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx. 1 oracle oinstall    28 Feb 17 14:34 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib64/libodm.so
+
+***Checking if Oracle instance is OPEN***
+
+
+
+DATE:2017-02-22 10:25:06
+HOST:l111061
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Feb 22 10:25:00 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+orcl1		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Checking if Archive log mode is enabled***
+
+
+
+DATE:2017-02-22 10:25:12
+HOST:l111061
+USER:oracle
+STDIN:archive log list;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Feb 22 10:25:06 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+Database log mode	       Archive Mode
+Automatic archival	       Enabled
+Archive destination	       /archive
+Oldest online log sequence     32
+Next log sequence to archive   33
+Current log sequence	       33
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Getting datafile path and name***
+
+
+
+DATE:2017-02-22 10:25:18
+HOST:l111061
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Feb 22 10:25:12 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/dbdata/orcl/system01.dbf
+/dbdata/orcl/sysaux01.dbf
+/dbdata/orcl/undotbs01.dbf
+/dbdata/orcl/users01.dbf
+/dbdata/orcl/undotbs02.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+====STEP: Prepare volumes to make volume sets
+DATE:2017-02-22 10:25:18
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /archive***
+
+
+
+DATE:2017-02-22 10:25:18
+HOST:l111061
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6|grep /archive$
+STDOUT:
+/dev/vx/dsk/oradg9318_dbarch/archive 66G 345M 61G 1% /archive
+
+
+DATE:2017-02-22 10:25:18
+HOST:l111061
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg9318_dbarch/archive
+STDOUT:
+vxfs
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /dbdata***
+
+
+
+DATE:2017-02-22 10:25:19
+HOST:l111061
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6|grep /dbdata$
+STDOUT:
+/dev/vx/dsk/oradg9318_dbarch/dbdata 94G 1.7G 86G 2% /dbdata
+
+
+DATE:2017-02-22 10:25:19
+HOST:l111061
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg9318_dbarch/dbdata
+STDOUT:
+vxfs
+
+***Checking and clear existing Environment.***
+
+
+
+DATE:2017-02-22 10:25:25
+HOST:l111061
+USER:oracle
+STDIN:select table_name from dba_tables where table_name='SALES';
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Feb 22 10:25:19 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+no rows selected
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-02-22 10:25:30
+HOST:l111061
+USER:oracle
+STDIN:select name from v$tablespace;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Feb 22 10:25:25 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+------------------------------
+SYSTEM
+SYSAUX
+UNDOTBS1
+USERS
+TEMP
+UNDOTBS2
+
+6 rows selected.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-02-22 10:25:31
+HOST:l111061
+USER:root
+STDIN:/opt/VRTS/bin/fsppadm unassign /dbdata
+STDOUT:
+
+
+
+DATE:2017-02-22 10:25:31
+HOST:l111061
+USER:root
+STDIN:/opt/VRTS/bin/fsppadm unassign /archive
+STDOUT:
+
+
+
+DATE:2017-02-22 10:25:32
+HOST:l111061
+USER:root
+STDIN:vxprint -g oradg9318_dbarch|awk '$2=="dbdata" {print}'
+STDOUT:
+vt dbdata       -            ENABLED  -        -        ACTIVE   -       -
+
+
+DATE:2017-02-22 10:25:38
+HOST:l111061
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /dbdata
+STDOUT:
+SFORA dbdst_show_fs ERROR V-81-6307 Error executing script dbdst_mvfs_components
+SFORA dbdst_show_fs ERROR V-81-6140 Could not get file system information for the mount point '/dbdata'.
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-02-22 10:25:38
+Duration:0m48s

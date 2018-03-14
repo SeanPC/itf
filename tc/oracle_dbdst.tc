@@ -1,0 +1,50 @@
+#tc for oracle dbdst testing
+#des:support aix solars linux platform
+#VALUE:oracle
+#DEFAULT:oracle
+#P:86
+
+
+oLog step "Checking basic environment of testbed"
+#check if login without password by root and oracle user
+checkNode root
+checkNode $oracle
+getHostnameOSProduct $NODE1
+RExec root $NODE1 "cat /etc/VRTSvcs/conf/config/main.cf"
+oracle_group=`echo "$out"|grep -B 100 -P "^\s+Oracle "|grep -oP "(?<=^group )\w+"|tail -1`
+if [ -z "$oracle_group" ]
+then
+	oLog error "Failed to get Oracle Group name"
+	myexit 201
+fi
+oLog step "Checking status of Oracle database"
+checkOdmLink
+checkInstOpen $NODE1
+#instn=`echo "$out"|grep OPEN|wc -l`
+#if [ $instn -lt 2 ]
+#then
+#	oLog error "Please make sure it is oracle RAC and all instances are open"
+#	myexit 201
+#fi
+checkArchEnable $NODE1
+archive_mnt=`echo "$out"|grep -P "^Archive destination"|awk '{print $3}'`
+getDatafile
+dbdata_mnt=`echo "$out"|grep dbf$|awk -v OFS="/" -F / '{$NF="";$(NF-1)="";print}'|head -1|sed -r "s/\/+$//"`
+dbdata_path=`echo "$out"|grep dbf$|awk -v OFS="/" -F / '{$NF="";print}'|head -1|sed -r "s/\/+$//"`
+oLog step "Prepare volumes to make volume sets"
+#add required disks to dg
+archive_array=(`getVolumeDataByMount $NODE1 $archive_mnt`) || exit 201
+dbdata_array=(`getVolumeDataByMount $NODE1 $dbdata_mnt`) || exit 201
+oLog des "Checking and clear existing Environment."
+dbdstCleanEnv
+archive_array=(`getVolumeDataByMount $NODE1 $archive_mnt`) || exit 201
+dbdata_array=(`getVolumeDataByMount $NODE1 $dbdata_mnt`) || exit 201
+#oracleStressStart $NODE1 ${dbdata_array[0]}
+oracleDbdstPrepare
+oLog step "Doing dbdst operation"
+oracleDbdst
+#oracleStressStop $NODE1
+oLog step "Clear test envrionment"
+dbdstCleanEnv
+oLog flag
+myexit 0

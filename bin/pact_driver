@@ -1,0 +1,190 @@
+#!/bin/bash
+db(){
+local sql
+sql=$1
+mysql -h10.200.111.84 -upact -ppact pact << EOF 2>&1
+$sql
+exit
+EOF
+}
+
+formatData(){
+local line data value
+data=$1
+echo "$data"|while read line
+do
+        echo "$line"|grep -P "\*\*\*\*\*\*\*\*\*\*\*" > /dev/null 2>&1 && echo && continue
+        value=`echo "$line"|sed -r "s/^\s*\w+:\s+//"`
+        echo -n "$value,,,"
+done|sed -r "s/,,,$//g"|grep -vP "^$"
+}
+
+log(){
+local file level content date
+file=$1
+level=$2
+content=$3
+date=`date "+%Y-%m-%d %H:%M:%S"`
+echo "$date    $level    $content" >> $logpath/$file
+}
+
+myexit(){
+db "update set state=20 where id=$id;"
+return 1
+}
+
+process(){
+local data line out node1 ret id pid is_release service_id clients user_id envcmd command 
+data=$1
+
+id=`echo "$data"|awk -F ",,," '{print $1}'`
+pid=`echo "$data"|awk -F ",,," '{print $2}'`
+is_release=`echo "$data"|awk -F ",,," '{print $3}'`
+service_id=`echo "$data"|awk -F ",,," '{print $4}'`
+clients=`echo "$data"|awk -F ",,," '{print $5}'`
+user_id=`echo "$data"|awk -F ",,," '{print $6}'`
+envcmd=`echo "$data"|awk -F ",,," '{print $7}'`
+command=`echo "$data"|awk -F ",,," '{print $8}'`
+
+if [ "$command" = NORUN ]
+then
+        log task info "Task "$id" is main task,will skip and go for sub tasks"
+        return 0
+fi
+if [ "$pid" = 0 ]
+then
+        sql="update task set state=2 where id=$id;"
+else
+        sql="update task set state=2 where id=$id;update task set state=2 where id=$pid and state=1;"
+fi
+out=`db "$sql" 2>&1`
+if [ $? -ne 0 ]
+then
+        log $id error "Failed to update status of task when execute sql [$sql] with output [$out]."
+        return 1
+fi
+log $id info "Going to execute the task command [$envcmd;$command]"
+sql="select is_for_tc,critical,task_result from service where id=$service_id\G"
+out=`db "$sql"`
+out=`formatData "$out"`
+node1=`echo "$clients"|cut -d , -f 1`
+is_for_tc=`echo "$out"|awk -F ",,," '{print $1}'`
+critical=`echo "$out"|awk -F ",,," '{print $2}'`
+task_result=`echo "$out"|awk -F ",,," '{print $3}'|sed "s/^cmd://;s/_NODE1_/$node1/"`
+date
+if [ -z "$envcmd" ] || echo "$envcmd"|grep -iP "none|null" > /dev/null 2>&1
+then
+        $command
+else
+        $envcmd;$command
+fi
+date
+#get the result of the task
+out=`$task_result`
+ret=$?
+if [ $is_for_tc = 0 ]
+then  
+        [ $ret -eq 0 ] && result=SUCC || result=FAIL
+else
+        
+        if [ -z "$out" ] 
+        then
+               result=FAIL
+        else
+                echo "$out"|grep Failed > /dev/null 2>&1 && result=FAIL || result=SUCC
+                sql="insert into tc (name,state,start_time,duration,end_time,task_id,task_pid) values "
+                for line in $out
+                do
+                        tcname=`echo "$line"|awk -F ",,," '{print $1}'`
+                        state=`echo "$line"|awk -F ",,," '{print $2}'`
+                        starttime=`echo "$line"|awk -F ",,," '{print $3}'`
+                        duration=`echo "$line"|awk -F ",,," '{print $4}'`
+                        endtime=`echo "$line"|awk -F ",,," '{print $5}'`
+                        sql+="('$tcname','$state','$starttime','$duration','$endtime',$id,$pid),"
+                done
+                sql=`echo "$sql"|sed -r "s/,$/;/"`
+                out=`db "$sql"`
+                if [ $? -ne 0 ]
+                then
+                        log $id error "Failed to update tc status of task when execute sql [$sql] with output [$out]."
+                        #sendmail 
+                fi
+        fi
+fi
+
+#update status of the task
+out=`db "select state from task where id=$pid;"`
+if [ $? -ne 0 ]
+then
+        log $id error "Failed to update tc status of task when execute sql [$sql] with output [$out]."
+        #sendmail
+        #update task to be unkown
+fi
+out=`echo "$out"|sed 1d`       
+if [ $pid = 0 ] || [ "$out" != 2 ]
+then
+        #normal task scenario
+        [ $result = FAIL ] && sql="update task set state=4 where id=$id;" || sql="update task set state=3 where id=$id;"
+else
+        #sub task scenario
+        if [ $result = FAIL ]
+        then
+                if [ $critical = 1 ]
+                then
+                        out=`db "select id from task where pid=$pid and state in (2,5);"`
+                        [ $? -ne 0 ] && log $id error "Failed execute sql [$sql] with output [$out] in scen1." && myexit 1
+                        allid=`echo "$out"|sed 1d|xargs -n1000|sed -r "s/ /,/g;s/$/,$pid/"`
+                        sql="update task set state=4 where id in ($allid);"
+                else
+                        out=`db "select id from task where pid=$pid and state=5 limit 1;"`
+                        [ $? -ne 0 ] && log $id error "Failed execute sql [$sql] with output [$out] in scen2." && myexit 1
+                        out=`echo "$out"|sed 1d`
+                        if [ -n "$out" ]
+                        then
+                                sql="update task set state=4 where id=$id;update task set state=1 where id=$out;"
+                        else
+                                sql="update task set state=4 where id in ($id,$pid);"
+                        fi
+                fi
+        else
+                out=`db "select id from task where pid=$pid and state=5 limit 1;"`
+                [ $? -ne 0 ] && log $id error "Failed execute sql [$sql] with output [$out] in scen3." && myexit 1
+                out=`echo "$out"|sed 1d`
+                if [ -n "$out" ]
+                then
+                        sql="update task set state=3 where id=$id;update task set state=1 where id=$out;"
+                else
+                        out=`db "select state from task where pid=$pid;"`
+                        [ $? -ne 0 ] && log $id error "Failed execute sql [$sql] with output [$out] in scen4." && myexit 1
+                        echo "$out"|sed 1d|grep 4 > /dev/null 2>&1 && pstatus=4 || pstatus=3
+                        sql="update task set state=3 where id=$id;update task set state=$pstatus where id=$pid;"       
+                fi
+        fi
+fi
+
+out=`db "$sql"`
+log $id info "Going to execute sql [$sql]"
+[ $? -ne 0 ] && log $id error "Failed execute sql [$sql] with output [$out] in scen5." && myexit 1     
+}
+
+
+
+
+#main code
+logpath=/var/log/pact
+mkdir -p $logpath
+driver_name=`hostname|cut -d . -f 1`
+driver_id=`db "select id from driver where name like '%$driver_name%';"|sed 1d`
+sql="select id,pid,is_release,service_id,clients,user_id,envcmd,command from task where state=1 and driver_id=$driver_id order by id\G"
+data=`db "$sql"`
+if [ $? -ne 0 ]
+then
+        log task error "Failed to get task list from database"
+        continue
+fi
+formatData "$data"|while read line
+do
+        {
+                process "$line"
+        } &
+done

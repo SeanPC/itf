@@ -1,0 +1,383 @@
+
+
+DATE:2017-02-22 10:25:39
+HOST:l111061
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster johnny (
+	UserNames = { admin = aHEbECdCEbECdC }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111060 (
+	)
+
+system l111061 (
+	)
+
+group crs_grp (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CSSD cssd (
+		CRSHOME = "/crs/crshome"
+		)
+
+	PrivNIC ora_priv (
+		Device = { eth0 = 0, eth1 = 1 }
+		Address @l111060 = "192.200.111.60"
+		Address @l111061 = "192.200.111.61"
+		NetMask = "255.255.255.0"
+		)
+
+	cssd requires ora_priv
+
+
+	// resource dependency tree
+	//
+	//	group crs_grp
+	//	{
+	//	CSSD cssd
+	//	    {
+	//	    PrivNIC ora_priv
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111060 = { oradg9318_dbarch = sw, oradg9318_ocrvote = sw }
+		ActivationMode @l111061 = { oradg9318_dbarch = sw, oradg9318_ocrvote = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = johnny
+		CVMNodeId = { l111060 = 0, l111061 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group oradb_grp (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CFSMount archivemnt (
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg9318_dbarch/archive"
+		)
+
+	CFSMount dbmnt (
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg9318_dbarch/dbdata"
+		)
+
+	Oracle oradb (
+		Sid @l111060 = orcl2
+		Sid @l111061 = orcl1
+		Owner = oracle
+		Home = "/oracle/orahome"
+		)
+
+	oradb requires archivemnt
+	oradb requires dbmnt
+
+
+	// resource dependency tree
+	//
+	//	group oradb_grp
+	//	{
+	//	Oracle oradb
+	//	    {
+	//	    CFSMount archivemnt
+	//	    CFSMount dbmnt
+	//	    }
+	//	}
+
+
+group sg31 (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CFSMount cfsmount3 (
+		Critical = 0
+		MountPoint = "/ocrvote"
+		BlockDevice = "/dev/vx/dsk/oradg9318_ocrvote/ocrvote"
+		MountOpt @l111060 = "cluster"
+		MountOpt @l111061 = "cluster"
+		NodeList = { l111060, l111061 }
+		)
+
+	CVMVolDg cvmvoldg3 (
+		Critical = 0
+		CVMDiskGroup = oradg9318_ocrvote
+		CVMVolume = { ocrvote }
+		CVMActivation @l111060 = sw
+		CVMActivation @l111061 = sw
+		CVMVolumeIoTest = { ocrvote }
+		)
+
+	requires group cvm online local firm
+	cfsmount3 requires cvmvoldg3
+
+
+	// resource dependency tree
+	//
+	//	group sg31
+	//	{
+	//	CFSMount cfsmount3
+	//	    {
+	//	    CVMVolDg cvmvoldg3
+	//	    }
+	//	}
+
+***umount vxfs on node l111061***
+
+
+
+DATE:2017-02-22 10:25:39
+HOST:l111061
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/mapper/vg_l111061-lv_root 50G 14G 33G 30% /
+tmpfs 3.9G 0 3.9G 0% /dev/shm
+/dev/sda1 477M 60M 392M 14% /boot
+/dev/mapper/vg_l111061-lv_home 78G 57M 74G 1% /home
+/dev/vx/dsk/oradg9318_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg9318_dbarch/dbdata 94G 1.7G 86G 2% /dbdata
+/dev/vx/dsk/oradg9318_dbarch/archive 66G 345M 61G 1% /archive
+
+***umount vxfs on node l111060***
+
+
+
+DATE:2017-02-22 10:25:39
+HOST:l111060
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/mapper/vg_l111060-lv_root 50G 14G 33G 30% /
+tmpfs 3.9G 0 3.9G 0% /dev/shm
+/dev/sdb1 477M 60M 392M 14% /boot
+/dev/mapper/vg_l111060-lv_home 78G 59M 74G 1% /home
+/dev/vx/dsk/oradg9318_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg9318_dbarch/dbdata 94G 1.7G 86G 2% /dbdata
+/dev/vx/dsk/oradg9318_dbarch/archive 66G 345M 61G 1% /archive
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-02-22 10:25:40
+HOST:l111061
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxcoorddg
+
+
+DATE:2017-02-22 10:25:40
+HOST:l111061
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_361 auto:cdsdisk    -            (vxcoorddg)  online thinrclm
+ams_25000_362 auto:cdsdisk    -            (vxcoorddg)  online thinrclm
+ams_25000_363 auto:cdsdisk    -            (vxcoorddg)  online thinrclm
+ams_25000_364 auto:cdsdisk    -            -            online thinrclm
+ams_25000_365 auto:cdsdisk    -            -            online thinrclm
+ams_25000_366 auto:cdsdisk    -            -            online thinrclm
+ams_25000_367 auto:cdsdisk    -            -            online thinrclm
+ams_25000_368 auto:cdsdisk    -            -            online thinrclm
+ams_25000_369 auto:cdsdisk    -            -            online thinrclm
+ams_25000_370 auto:cdsdisk    -            -            online thinrclm
+ams_25000_371 auto:cdsdisk    -            -            online thinrclm
+ams_25000_372 auto:cdsdisk    -            -            online thinrclm
+ams_25000_410 auto:cdsdisk    -            -            online thinrclm
+ams_25000_411 auto:cdsdisk    ams_25000_411  oradg9318_dbarch online thinrclm shared
+ams_25000_412 auto:cdsdisk    ams_25000_412  oradg9318_dbarch online thinrclm shared
+ams_25000_413 auto:cdsdisk    ams_25000_413  oradg9318_dbarch online thinrclm shared
+ams_25000_431 auto:cdsdisk    ams_25000_431  oradg9318_dbarch online thinrclm shared
+ams_25000_472 auto:cdsdisk    ams_25000_472  oradg9318_dbarch online thinrclm shared
+ams_25000_509 auto:cdsdisk    ams_25000_509  oradg9318_dbarch online thinrclm shared
+ams_25000_510 auto:cdsdisk    ams_25000_510  oradg9318_dbarch online thinrclm shared
+disk_0       auto:none       -            -            online invalid
+disk_1       auto:LVM        -            -            online invalid
+emc_clariion0_595 auto:cdsdisk    emc_clariion0_595  oradg9318_dbarch online shared
+emc_clariion0_596 auto:cdsdisk    emc_clariion0_596  oradg9318_dbarch online shared
+emc_clariion0_597 auto:cdsdisk    emc_clariion0_597  oradg9318_dbarch online shared
+emc_clariion0_598 auto:cdsdisk    emc_clariion0_598  oradg9318_dbarch online shared
+emc_clariion0_599 auto:cdsdisk    emc_clariion0_599  oradg9318_dbarch online shared
+emc_clariion0_600 auto:cdsdisk    emc_clariion0_600  oradg9318_dbarch online shared
+emc_clariion0_601 auto:cdsdisk    emc_clariion0_601  oradg9318_ocrvote online shared
+emc_clariion0_602 auto:cdsdisk    emc_clariion0_602  oradg9318_ocrvote online shared
+emc_clariion0_603 auto:cdsdisk    emc_clariion0_603  oradg9318_dbarch online shared
+emc_clariion0_604 auto:cdsdisk    emc_clariion0_604  oradg9318_dbarch online shared
+emc_clariion0_605 auto:cdsdisk    emc_clariion0_605  oradg9318_dbarch online shared
+emc_clariion0_606 auto:cdsdisk    emc_clariion0_606  oradg9318_dbarch online shared
+emc_clariion0_607 auto:cdsdisk    emc_clariion0_607  oradg9318_dbarch online shared
+emc_clariion0_608 auto:cdsdisk    emc_clariion0_608  oradg9318_dbarch online shared
+emc_clariion0_609 auto:cdsdisk    emc_clariion0_609  oradg9318_dbarch online shared
+emc_clariion0_610 auto:cdsdisk    emc_clariion0_610  oradg9318_dbarch online shared
+emc_clariion0_611 auto:cdsdisk    emc_clariion0_611  oradg9318_dbarch online shared
+emc_clariion0_612 auto:cdsdisk    emc_clariion0_612  oradg9318_dbarch online shared
+emc_clariion0_613 auto:cdsdisk    emc_clariion0_613  oradg9318_dbarch online shared
+emc_clariion0_614 auto:cdsdisk    emc_clariion0_614  oradg9318_dbarch online shared
+emc_clariion0_1628 auto:cdsdisk    emc_clariion0_1628  oradg9318_dbarch online shared
+emc_clariion0_1649 auto:cdsdisk    emc_clariion0_1649  oradg9318_dbarch online shared
+emc_clariion0_1650 auto:cdsdisk    emc_clariion0_1650  oradg9318_dbarch online shared
+emc_clariion0_1651 auto:cdsdisk    emc_clariion0_1651  oradg9318_dbarch online shared
+
+
+DATE:2017-02-22 10:25:40
+HOST:l111061
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+oradg9318_dbarch enabled,shared,cds   1487142370.76.l111060.cdc.veritas.com
+oradg9318_ocrvote enabled,shared,cds   1487142369.74.l111060.cdc.veritas.com
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-02-22 10:25:41
+HOST:l111060
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxcoorddg
+
+
+DATE:2017-02-22 10:25:41
+HOST:l111060
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_361 auto:cdsdisk    -            (vxcoorddg)  online thinrclm
+ams_25000_362 auto:cdsdisk    -            (vxcoorddg)  online thinrclm
+ams_25000_363 auto:cdsdisk    -            (vxcoorddg)  online thinrclm
+ams_25000_364 auto:cdsdisk    -            -            online thinrclm
+ams_25000_365 auto:cdsdisk    -            -            online thinrclm
+ams_25000_366 auto:cdsdisk    -            -            online thinrclm
+ams_25000_367 auto:cdsdisk    -            -            online thinrclm
+ams_25000_368 auto:cdsdisk    -            -            online thinrclm
+ams_25000_369 auto:cdsdisk    -            -            online thinrclm
+ams_25000_370 auto:cdsdisk    -            -            online thinrclm
+ams_25000_371 auto:cdsdisk    -            -            online thinrclm
+ams_25000_372 auto:cdsdisk    -            -            online thinrclm
+ams_25000_410 auto:cdsdisk    -            -            online thinrclm
+ams_25000_411 auto:cdsdisk    ams_25000_411  oradg9318_dbarch online thinrclm shared
+ams_25000_412 auto:cdsdisk    ams_25000_412  oradg9318_dbarch online thinrclm shared
+ams_25000_413 auto:cdsdisk    ams_25000_413  oradg9318_dbarch online thinrclm shared
+ams_25000_431 auto:cdsdisk    ams_25000_431  oradg9318_dbarch online thinrclm shared
+ams_25000_472 auto:cdsdisk    ams_25000_472  oradg9318_dbarch online thinrclm shared
+ams_25000_509 auto:cdsdisk    ams_25000_509  oradg9318_dbarch online thinrclm shared
+ams_25000_510 auto:cdsdisk    ams_25000_510  oradg9318_dbarch online thinrclm shared
+disk_0       auto:LVM        -            -            online invalid
+emc_clariion0_595 auto:cdsdisk    emc_clariion0_595  oradg9318_dbarch online shared
+emc_clariion0_596 auto:cdsdisk    emc_clariion0_596  oradg9318_dbarch online shared
+emc_clariion0_597 auto:cdsdisk    emc_clariion0_597  oradg9318_dbarch online shared
+emc_clariion0_598 auto:cdsdisk    emc_clariion0_598  oradg9318_dbarch online shared
+emc_clariion0_599 auto:cdsdisk    emc_clariion0_599  oradg9318_dbarch online shared
+emc_clariion0_600 auto:cdsdisk    emc_clariion0_600  oradg9318_dbarch online shared
+emc_clariion0_601 auto:cdsdisk    emc_clariion0_601  oradg9318_ocrvote online shared
+emc_clariion0_602 auto:cdsdisk    emc_clariion0_602  oradg9318_ocrvote online shared
+emc_clariion0_603 auto:cdsdisk    emc_clariion0_603  oradg9318_dbarch online shared
+emc_clariion0_604 auto:cdsdisk    emc_clariion0_604  oradg9318_dbarch online shared
+emc_clariion0_605 auto:cdsdisk    emc_clariion0_605  oradg9318_dbarch online shared
+emc_clariion0_606 auto:cdsdisk    emc_clariion0_606  oradg9318_dbarch online shared
+emc_clariion0_607 auto:cdsdisk    emc_clariion0_607  oradg9318_dbarch online shared
+emc_clariion0_608 auto:cdsdisk    emc_clariion0_608  oradg9318_dbarch online shared
+emc_clariion0_609 auto:cdsdisk    emc_clariion0_609  oradg9318_dbarch online shared
+emc_clariion0_610 auto:cdsdisk    emc_clariion0_610  oradg9318_dbarch online shared
+emc_clariion0_611 auto:cdsdisk    emc_clariion0_611  oradg9318_dbarch online shared
+emc_clariion0_612 auto:cdsdisk    emc_clariion0_612  oradg9318_dbarch online shared
+emc_clariion0_613 auto:cdsdisk    emc_clariion0_613  oradg9318_dbarch online shared
+emc_clariion0_614 auto:cdsdisk    emc_clariion0_614  oradg9318_dbarch online shared
+emc_clariion0_1628 auto:cdsdisk    emc_clariion0_1628  oradg9318_dbarch online shared
+emc_clariion0_1649 auto:cdsdisk    emc_clariion0_1649  oradg9318_dbarch online shared
+emc_clariion0_1650 auto:cdsdisk    emc_clariion0_1650  oradg9318_dbarch online shared
+emc_clariion0_1651 auto:cdsdisk    emc_clariion0_1651  oradg9318_dbarch online shared
+emc_clariion1_1 auto:cdsdisk    -            -            online
+emc_clariion1_3 auto:cdsdisk    -            -            online
+emc_clariion1_4 auto:cdsdisk    -            -            online
+emc_clariion1_7 auto:cdsdisk    -            -            online
+emc_clariion1_12 auto:cdsdisk    -            -            online
+emc_clariion1_13 auto:cdsdisk    -            -            online
+emc_clariion1_15 auto:cdsdisk    -            -            online
+emc_clariion1_20 auto:cdsdisk    -            -            online
+emc_clariion1_22 auto:cdsdisk    -            -            online
+emc_clariion1_25 auto:cdsdisk    -            -            online
+
+
+DATE:2017-02-22 10:25:41
+HOST:l111060
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+oradg9318_dbarch enabled,shared,cds   1487142370.76.l111060.cdc.veritas.com
+oradg9318_ocrvote enabled,shared,cds   1487142369.74.l111060.cdc.veritas.com

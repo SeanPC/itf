@@ -1,0 +1,26 @@
+#tc to test if vxconfigd hang when smi disk changing to efi disk
+#des:support solaris sparc
+#P:55
+
+oLog step "Checking basic environment of testbed"
+#check if login without password by root and oracle user
+checkNode root
+getHostnameOSProduct $NODE1 S
+
+oLog step "Select one vxvm disk with SMI label"
+disks=`getDisk $NODE1 local` || exit 201
+paths=`getPathByDmpNode $NODE1 "$disks"` || exit 201
+for path in $paths
+do
+	[[ "$path" =~ ^[a-zA-Z0-9]+s2$ ]] && break
+done
+if [[ "$path" =~ ^[a-zA-Z0-9]+s2$ ]]
+then
+	:
+else
+	oLog error "Failed to found one SMI disk."
+	myexit 201
+fi
+RExec root $NODE1 "vxdisk list $path"
+disk=`echo "$out"|grep -P "^Device:"|awk '{print $2}'`
+

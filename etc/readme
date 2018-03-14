@@ -1,0 +1,18 @@
+
+code exp
+I reserve retcode 201-249 for you to use in the function if it doesn't need env clear after an exit
+249: failed during checking the basic testbed,so exit all tcs
+250: canceld by user
+0: passed without env clear
+1: failed and clear env
+10 passed and clear env
+
+tc head comments
+#des: to describe what is the purpose of the tc
+#VALUE: to fill the required vaule for the tc,seperated by ","
+#value to take down comments of required value above
+#DEFAULT: to fill the default value,seperated by "," 
+#P: to define the priority of the tc,if not defined,it will be 55
+
+baselog : if you define baselog,baselog will be what you defined
+basetc : if you define basetc,basetc will be what you defined

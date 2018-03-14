@@ -1,0 +1,217 @@
+#This is for filesystem compress testing
+#des:support aix solaris linux platform
+dg=autotcdg1
+mp=/autotcmp
+volset=autotcvolset
+
+oLog step "Checking basic environment of testbed"
+checkNode root
+for node in $NODES
+do
+        getHostnameOSProduct $node
+done
+
+oLog step "check CVM status"
+checkCVMStatus || myexit 201
+
+oLog step "check if could get phsical allocate size"
+RExec root $NODE1 "vxdisk -o thin list"
+thindiskexp=`echo "$out"|awk '$3 ~ /[0-9]+/ {print $1}'|xargs -n10000|sed "s/ /|/g"`
+if [ -z "$thindiskexp" ]
+then
+	oLog error "Invalid thin disks,can not get the phsical allocated size.exiting"
+	myexit 201
+fi
+
+oLog step "create a shared diskgrop"
+disks=`getDisk $NODE1 share` || exit 201
+disks=`echo "$disks"|grep thin|awk '{print $1}'|grep -P "$thindiskexp"|xargs -n10000`
+RExec root $NODE1 "vxdisk reclaim $disks"
+RExec root $NODE1 "vxdg -s init $dg $disks"
+
+oLog step "create 3 volumes and make vxfs filesystem"
+capacity=`makeVolumeByLayout $NODE1 $dg c,m,s 2G` || exit 1
+vols=(`echo "$capacity"|awk '{print $1}'|xargs -n10000`)
+voldiskmap=`getDgVolumeDmpnodeMap $NODE1` || exit 1
+used_disk_exp=`echo "$voldiskmap"|cut -d : -f 3|xargs -n 100|sed "s/ /|/g"`
+
+oLog step "create a volume set only including the 1st volume,and create vxfs filesystem"
+RExec root $NODE1 "/opt/VRTS/bin/vxvset -g $dg make $volset ${vols[0]}"
+mkVxfs $NODE1 $dg $volset
+
+oLog step "mount the volume set on all cluster nodes"
+for node in $NODES
+do
+	mountVxfs $node $dg $volset $mp "-o cluster"
+done
+
+oLog step "Fill 40% of the filesystem $mp and list the usage of thin disks"
+copyFileToRemote $BASE/etc/mf.pl $NODE1
+filenum=`getFillinNum $NODE1 $mp 40%` || exit 1
+filenum=`echo "$filenum/100+1"|bc|cut -d . -f 1`
+RExec root $NODE1 "/tmp/tmpfile.$PID -s 104857600 -n $filenum -d $mp;sync;sync;sync"
+RExec root $NODE1 "$cmd2"
+sleep 5
+RExec root $NODE1 "vxdisk -o thin list | awk '\$1 ~ /$used_disk_exp/ {print}'"
+
+oLog step "Add the other volumes to the volume sets and file system"
+for vol in ${vols[1]} ${vols[2]}
+do
+	cap=`echo "$capacity"|grep -oP "(?<=$vol )\d+"`
+	RExec root $NODE1 "vxvset -g $dg addvol $volset $vol && /opt/VRTS/bin/fsvoladm add $mp $vol ${cap}M"
+done
+sleep 5
+RExec root $NODE1 "$cmd2"
+
+oLog step "Fill about 90% of the filesystem $mp and list the usage of thin disks"
+filenum=`getFillinNum $NODE1 $mp 90%` || exit 1
+filenum=`echo "$filenum/100+1"|bc|cut -d . -f 1`
+RExec root $NODE1 "/tmp/tmpfile.$PID -s 104857600 -n $filenum -d $mp;sync;sync;sync"
+sleep 5
+RExec root $NODE1 "$cmd2"
+
+oLog step "Grow the size of first volume,and verify the physical usage of disk should keep the same"
+voldiskmap=`getDgVolumeDmpnodeMap $NODE1` || exit 1
+used_disk_exp=`echo "$voldiskmap"|grep :${vols[0]}:|cut -d : -f 3|xargs -n 100|sed "s/ /|/g"`
+RExec root $NODE1 "vxdisk -o thin list | awk '\$1 ~ /$used_disk_exp/ {print}'"
+check0="$out"
+cap=`echo "$capacity"|awk '{print $2}'|xargs -n10000|sed -r "s/ /+/g;s/$/+100/"|bc|cut -d . -f 1`
+RExec root $NODE1 "vxassist -g $dg growto ${vols[0]} ${cap}M && /opt/VRTS/bin/fsvoladm resize $mp ${vols[0]} ${cap}M"
+RExec root $NODE1 "vxdisk -o thin list | awk '\$1 ~ /$used_disk_exp/ {print}'"
+check1="$out"
+if [ "$check0" = "$check1" ]
+then
+	oLog des "The physical usage of disk keep the same"
+else
+	oLog des "Warning:The physical usage of disk changed,but it is in acceptable value"
+fi
+
+oLog step "Remove all volumes except the first volume in the volume set,and verify the data"
+getCksum $NODE1 $mp
+check0="$out"
+for vol in ${vols[1]} ${vols[2]}
+do
+	RExec root $NODE1 "/opt/VRTS/bin/fsvoladm remove $mp $vol"
+done
+RExec root $NODE1 "$cmd2"
+getCksum $NODE1 $mp
+check1="$out"
+if [ "$check0" = "$check1" ]
+then
+	oLog des "The data inside keep the same"
+else
+	oLog error "The data inside should keep the same,but changed"
+	myexit 1
+fi
+
+oLog step "Remove some files ( bring CFS to around 50% ) and reclaim the space. Perform Aggressive and Normal Reclaim"
+RExec root $NODE1 "find $mp -type f|grep -v lost"
+num=`echo "$out"|wc -l`
+data=`ListDetailByMountPoint $NODE1 $mp` || exit 1
+num=`echo "$data"|awk '{print $4}'|grep -oP "\d+"|sed -r "s/.*/scale=2;50\/&*$num-$num/"|bc|cut -d . -f 1|cut -d - -f 2`
+RExec root $NODE1 "find $mp -type f|grep -v lost|head -$num|xargs -n1 rm -rf;sync;sync;sync"
+sleep 5
+RExec root $NODE1 "$cmd2"
+voldiskmap=`getDgVolumeDmpnodeMap $NODE1` || exit 1
+used_disk=`echo "$voldiskmap"|cut -d : -f 3|xargs -n 100`
+used_disk_exp=`echo "$used_disk"|sed "s/ /|/g"`
+RExec root $NODE1 "vxdisk -o thin list | awk '\$1 ~ /$used_disk_exp/ {print}'"
+#check0=`echo "$out"|awk '{print $3}'|xargs -n10000|sed "s/ /+/g"|bc`
+
+oLog des "Perform Normal thin reclaimation"
+RExec root $NODE1 "/opt/VRTS/bin/fsadm -R -o analyse $mp"
+sleep 5
+RExec root $NODE1 "/opt/VRTS/bin/fsadm -R $mp"
+sleep 10
+RExec root $NODE1 "vxdisk -o thin list | awk '\$1 ~ /$used_disk_exp/ {print}'"
+
+oLog des "Perform aggressive thin reclaimation"
+RExec root $NODE1 "/opt/VRTS/bin/fsadm -R -o aggressive $mp"
+sleep 10
+RExec root $NODE1 "vxdisk -o thin list | awk '\$1 ~ /$used_disk_exp/ {print}'"
+
+#for i in `seq 60`
+#do
+#	RExec root $NODE1 "vxdisk -o thin list | awk '\$1 ~ /$used_disk_exp/ {print}'"
+#	check1=`echo "$out"|awk '{print $3}'|xargs -n10000|sed "s/ /+/g"|bc`
+#	[ $check1 -lt $check0 ] && break
+#	sleep 5
+#done
+#RExec root $NODE1 "vxdisk -o thin list | awk '\$1 ~ /$used_disk_exp/ {print}'"
+#check1=`echo "$out"|awk '{print $3}'|xargs -n10000|sed "s/ /+/g"|bc`
+#if [ $check1 -lt $check0 ]
+#then
+#	oLog des "The physical size usage turn less"
+#else
+#	oLog error "The physical size usage didn't turn less"
+#	myexit 1
+#fi
+
+oLog step "umount mount point;turn the volset to be volume;mount the 1st volume back,verify the data"
+getCksum $NODE1 $mp
+check0="$out"
+for node in $NODES
+do
+	RExec root $node "umount $mp"	
+done
+for vol in ${vols[*]}
+do
+	RExec root $NODE1 "/opt/VRTS/bin/vxvset -g $dg -f rmvol $volset $vol"
+done
+for node in $NODES
+do
+        mountVxfs $node $dg ${vols[0]} $mp "-o cluster"
+done
+getCksum $NODE1 $mp
+check1="$out"
+if [ "$check0" = "$check1" ]
+then
+        oLog des "The data inside keep the same"
+else
+        oLog error "The data inside should keep the same,but changed"
+        myexit 1
+fi
+
+oLog step "Remove some files ( bring CFS to around 20% ) and reclaim the space. Perform Auto thin Reclaim"
+RExec root $NODE1 "find $mp -type f|grep -v lost"
+num=`echo "$out"|wc -l`
+data=`ListDetailByMountPoint $NODE1 $mp` || exit 1
+num=`echo "$data"|awk '{print $4}'|grep -oP "\d+"|sed -r "s/.*/scale=2;20\/&*$num-$num/"|bc|cut -d . -f 1|cut -d - -f 2`
+RExec root $NODE1 "find $mp -type f|grep -v lost|head -$num|xargs -n1 rm -rf;sync;sync;sync"
+sleep 5
+RExec root $NODE1 "$cmd2"
+voldiskmap=`getDgVolumeDmpnodeMap $NODE1` || exit 1
+used_disk=`echo "$voldiskmap"|cut -d : -f 3|xargs -n 100`
+used_disk_exp=`echo "$used_disk"|sed "s/ /|/g"`
+RExec root $NODE1 "vxdisk -o thin list | awk '\$1 ~ /$used_disk_exp/ {print}'"
+# check0=`echo "$out"|awk '{print $3}'|xargs -n10000|sed "s/ /+/g"|bc`
+
+oLog des "Perform Auto thin reclaimation"
+RExec root $NODE1 "/opt/VRTS/bin/fsadm -R -o analyse $mp"
+sleep 5
+RExec root $NODE1 "/opt/VRTS/bin/fsadm -R -o auto $mp"
+sleep 10
+RExec root $NODE1 "vxdisk -o thin list | awk '\$1 ~ /$used_disk_exp/ {print}'"
+
+oLog des "Perform Normal thin reclaimation"
+RExec root $NODE1 "vxdisk reclaim $used_disk"
+# sleep 5
+# for i in `seq 60`
+# do
+        # RExec root $NODE1 "vxdisk -o thin list | awk '\$1 ~ /$used_disk_exp/ {print}'"
+        # check1=`echo "$out"|awk '{print $3}'|xargs -n10000|sed "s/ /+/g"|bc`
+        # [ $check1 -lt $check0 ] && break
+        # sleep 5
+# done
+RExec root $NODE1 "vxdisk -o thin list | awk '\$1 ~ /$used_disk_exp/ {print}'"
+# check1=`echo "$out"|awk '{print $3}'|xargs -n10000|sed "s/ /+/g"|bc`
+# if [ $check1 -lt $check0 ]
+# then
+        # oLog des "The physical size usage turn less"
+# else
+        # oLog error "The physical size usage didn't turn less"
+	# myexit 1
+# fi
+
+oLog flag
+myexit 10

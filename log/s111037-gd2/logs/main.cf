@@ -1,0 +1,73 @@
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster c_s111037-gd2_s111038-gd2 (
+	UserNames = { admin = dlmElgLimHmmKumGlj }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system s111037-gd2 (
+	)
+
+system s111038-gd2 (
+	)
+
+group cvm (
+	SystemList = { s111037-gd2 = 0, s111038-gd2 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { s111037-gd2, s111038-gd2 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @s111037-gd2 = { autotcdg = sw }
+		ActivationMode @s111038-gd2 = { autotcdg = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = c_s111037-gd2_s111038-gd2
+		CVMNodeId = { s111037-gd2 = 0, s111038-gd2 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/sbin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}

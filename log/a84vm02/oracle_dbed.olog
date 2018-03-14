@@ -1,0 +1,701 @@
+
+==================== Operation Log for TC oracle_dbed ====================
+DATE:2017-04-27 13:23:55
+Nodes:a84vm02 a84vm01
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-04-27 13:23:55
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-04-27 13:23:55
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:12152679 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5565795 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3332461973 (3.1 GiB)  TX bytes:5767952657 (5.3 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:18414 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:18414 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:2433447 (2.3 MiB)  TX bytes:2433447 (2.3 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-04-27 13:23:56
+HOST:a84vm02
+USER:root
+STDIN:ssh -l root a84vm02
+STDOUT:
+
+
+
+DATE:2017-04-27 13:23:57
+HOST:a84vm01
+USER:root
+STDIN:ssh -l root a84vm01
+STDOUT:
+
+
+
+DATE:2017-04-27 13:23:59
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+
+DATE:2017-04-27 13:24:00
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-04-27 13:24:00
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:12152875 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5565961 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3332495864 (3.1 GiB)  TX bytes:5767981355 (5.3 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:18414 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:18414 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:2433447 (2.3 MiB)  TX bytes:2433447 (2.3 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-04-27 13:24:01
+HOST:a84vm02
+USER:root
+STDIN:ssh -l root a84vm02
+STDOUT:
+
+
+
+DATE:2017-04-27 13:24:02
+HOST:a84vm01
+USER:root
+STDIN:ssh -l root a84vm01
+STDOUT:
+
+
+
+DATE:2017-04-27 13:24:04
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+
+DATE:2017-04-27 13:24:05
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+***Getting hostname of node***
+
+
+
+DATE:2017-04-27 13:24:06
+HOST:a84vm02
+USER:root
+STDIN:hostname
+STDOUT:
+a84vm02
+
+***Getting os version***
+
+
+
+DATE:2017-04-27 13:24:07
+HOST:a84vm02
+USER:root
+STDIN:uname
+STDOUT:
+AIX
+
+
+DATE:2017-04-27 13:24:08
+HOST:a84vm02
+USER:root
+STDIN:oslevel -s
+STDOUT:
+7200-01-01-1642
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-04-27 13:24:09
+HOST:a84vm02
+USER:root
+STDIN:lslpp -l|grep -i vrts
+STDOUT:
+  VRTSamf                    7.2.0.0  COMMITTED  Veritas AMF
+  VRTSaslapm                 7.2.0.0  COMMITTED  Array Support Libraries and
+  VRTScavf                   7.2.0.0  COMMITTED  Veritas cfs and cvm agents
+  VRTScps                    7.2.0.0  COMMITTED  Veritas Co-ordination Point
+  VRTSdbac                   7.2.0.0  COMMITTED  Veritas Oracle Real
+  VRTSdbed                   7.2.0.0  COMMITTED  Storage Management Software
+  VRTSfsadv                  7.2.0.0  COMMITTED  Veritas File System Advanced
+  VRTSgab                    7.2.0.0  COMMITTED  Veritas Group Membership and
+  VRTSglm                    7.2.0.0  COMMITTED  Veritas LOCK MGR
+  VRTSgms                    7.2.0.0  COMMITTED  Veritas Global Messaging
+  VRTSllt                    7.2.0.0  COMMITTED  Veritas Low Latency Transport 
+  VRTSodm                    7.2.0.0  COMMITTED  Veritas Extension for Oracle
+  VRTSperl                  5.24.0.0  COMMITTED  Perl 5.24.0 for Veritas
+  VRTSsfcpi                  7.2.0.0  COMMITTED  Veritas InfoScale Installer
+  VRTSsfmh                   7.2.0.0  COMMITTED  Veritas Infoscale Operations
+  VRTSspt                    7.2.0.0  COMMITTED  Veritas Support Tools
+  VRTSvbs                    7.2.0.0  COMMITTED  Virtual Business Services
+  VRTSvcs                    7.2.0.0  COMMITTED  Veritas Cluster Server
+  VRTSvcsag                  7.2.0.0  COMMITTED  Veritas Cluster Server Bundled
+  VRTSvcsea                  7.2.0.0  COMMITTED  Veritas High Availability
+  VRTSvcswiz                 7.2.0.0  COMMITTED  Veritas Cluster Server Wizards
+  VRTSveki                   7.2.0.0  COMMITTED  Veritas Kernel Interface
+  VRTSvlic                  3.2.71.4  COMMITTED  Veritas License Utilities
+  VRTSvxfen                  7.2.0.0  COMMITTED  Veritas I/O Fencing 
+  VRTSvxfs                   7.2.0.0  COMMITTED  Veritas File System
+  VRTSvxvm                   7.2.0.0  COMMITTED  Veritas Volume Manager
+  VRTSamf                    7.2.0.0  COMMITTED  Veritas AMF
+  VRTSaslapm                 7.2.0.0  COMMITTED  Array Support Libraries and
+  VRTScavf                   7.2.0.0  COMMITTED  Veritas cfs and cvm agents
+  VRTScps                    7.2.0.0  COMMITTED  Veritas Co-ordination Point
+  VRTSdbac                   7.2.0.0  COMMITTED  Veritas Oracle Real
+  VRTSgab                    7.2.0.0  COMMITTED  Veritas Group Membership and
+  VRTSglm                    7.2.0.0  COMMITTED  Veritas LOCK MGR
+  VRTSgms                    7.2.0.0  COMMITTED  Veritas Global Messaging
+  VRTSllt                    7.2.0.0  COMMITTED  Veritas Low Latency Transport 
+  VRTSodm                    7.2.0.0  COMMITTED  Veritas Extension for Oracle
+  VRTSperl                  5.24.0.0  COMMITTED  Perl 5.24.0 for Veritas
+  VRTSsfcpi                  7.2.0.0  COMMITTED  Veritas InfoScale Installer
+  VRTSsfmh                   7.2.0.0  COMMITTED  Veritas Infoscale Operations
+  VRTSvbs                    7.2.0.0  COMMITTED  Virtual Business Services
+  VRTSvcs                    7.2.0.0  COMMITTED  Veritas Cluster Server
+  VRTSvcsag                  7.2.0.0  COMMITTED  Veritas Cluster Server Bundled
+  VRTSvcsea                  7.2.0.0  COMMITTED  Veritas High Availability
+  VRTSveki                   7.2.0.0  COMMITTED  Veritas Kernel Interface
+  VRTSvxfen                  7.2.0.0  COMMITTED  Veritas I/O Fencing 
+  VRTSvxfs                   7.2.0.0  COMMITTED  Veritas File System
+  VRTSvxvm                   7.2.0.0  COMMITTED  Veritas Volume Manager
+
+
+====STEP: Checking status of Oracle database
+DATE:2017-04-27 13:24:09
+
+***Checking if relink oracle odm libray to Veritas odm libray***
+
+
+
+DATE:2017-04-27 13:24:10
+HOST:a84vm02
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx    1 root     system           28 Apr 27 13:15 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib/libodm64.so
+
+
+DATE:2017-04-27 13:24:11
+HOST:a84vm01
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx    1 root     system           28 Apr 27 13:14 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib/libodm64.so
+
+***Checking if Oracle instance is OPEN***
+
+
+
+DATE:2017-04-27 13:24:13
+HOST:a84vm02
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 13:24:12 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+orcl2		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Checking if Archive log mode is enabled***
+
+
+
+DATE:2017-04-27 13:24:14
+HOST:a84vm02
+USER:oracle
+STDIN:archive log list;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 13:24:14 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+Database log mode	       Archive Mode
+Automatic archival	       Enabled
+Archive destination	       /archive
+Oldest online log sequence     9
+Next log sequence to archive   10
+Current log sequence	       10
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Getting datafile path and name***
+
+
+
+DATE:2017-04-27 13:24:16
+HOST:a84vm02
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 13:24:15 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/dbdata/orcl/system01.dbf
+/dbdata/orcl/sysaux01.dbf
+/dbdata/orcl/undotbs01.dbf
+/dbdata/orcl/users01.dbf
+/dbdata/orcl/undotbs02.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+====STEP: Prepare snapshot environment
+DATE:2017-04-27 13:24:16
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /archive***
+
+
+
+DATE:2017-04-27 13:24:17
+HOST:a84vm02
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.12 11.01 64% 56609 3% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.80 5% 1139 1% /var
+/dev/hd3 5.00 4.30 14% 1547 1% /tmp
+/dev/hd1 5.00 5.00 1% 58 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.60 29% 8987 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.53 10% 25 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.21 36% 29 1% /dbdata
+
+
+DATE:2017-04-27 13:24:18
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2579_dbarch/archive
+STDOUT:
+vxfs
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /dbdata***
+
+
+
+DATE:2017-04-27 13:24:19
+HOST:a84vm02
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.12 11.01 64% 56609 3% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.80 5% 1139 1% /var
+/dev/hd3 5.00 4.30 14% 1547 1% /tmp
+/dev/hd1 5.00 5.00 1% 58 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.60 29% 8987 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.53 10% 25 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.21 36% 29 1% /dbdata
+
+
+DATE:2017-04-27 13:24:20
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2579_dbarch/dbdata
+STDOUT:
+vxfs
+
+
+====STEP: Clone database testing by flashsnap
+DATE:2017-04-27 13:24:20
+
+***Adding mirror for volume dbdata***
+
+
+
+DATE:2017-04-27 13:24:21
+HOST:a84vm02
+USER:root
+STDIN:vxassist -g oradg2579_dbarch maxsize
+STDOUT:
+Maximum volume size: 95506432 (46634Mb)
+
+
+DATE:2017-04-27 13:24:22
+HOST:a84vm02
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+
+
+DATE:2017-04-27 13:24:23
+HOST:a84vm02
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch prepare dbdata
+STDOUT:
+
+
+
+DATE:2017-04-27 13:28:09
+HOST:a84vm02
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch addmir dbdata
+STDOUT:
+
+
+
+DATE:2017-04-27 13:28:15
+HOST:a84vm02
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+pl dbdata-02    dbdata       ENABLED  10485760 -        SNAPDONE -       -
+sd emc_clariion0_17-01 dbdata-02 ENABLED 73984 0        -        -       -
+sd emc_clariion0_21-01 dbdata-02 ENABLED 10411776 73984 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd emc_clariion0_18-02 dbdata_dcl-01 ENABLED 67840 0    -        -       -
+pl dbdata_dcl-02 dbdata_dcl  DISABLED 67840    -        DCOSNP   -       -
+sd emc_clariion0_17-02 dbdata_dcl-02 ENABLED 67840 0    -        -       -
+
+
+DATE:2017-04-27 13:28:16
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch set putil2=dbed_flashsnap dbdata-02
+STDOUT:
+
+
+***Adding mirror for volume archive***
+
+
+
+DATE:2017-04-27 13:28:17
+HOST:a84vm02
+USER:root
+STDIN:vxassist -g oradg2579_dbarch maxsize
+STDOUT:
+Maximum volume size: 84885504 (41448Mb)
+
+
+DATE:2017-04-27 13:28:18
+HOST:a84vm02
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+pl dbdata-02    dbdata       ENABLED  10485760 -        SNAPDONE -       -
+sd emc_clariion0_17-01 dbdata-02 ENABLED 73984 0        -        -       -
+sd emc_clariion0_21-01 dbdata-02 ENABLED 10411776 73984 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd emc_clariion0_18-02 dbdata_dcl-01 ENABLED 67840 0    -        -       -
+pl dbdata_dcl-02 dbdata_dcl  DISABLED 67840    -        DCOSNP   -       -
+sd emc_clariion0_17-02 dbdata_dcl-02 ENABLED 67840 0    -        -       -
+
+
+DATE:2017-04-27 13:28:19
+HOST:a84vm02
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch prepare archive
+STDOUT:
+
+
+
+DATE:2017-04-27 13:28:23
+HOST:a84vm02
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch addmir archive
+STDOUT:
+
+
+
+DATE:2017-04-27 13:28:29
+HOST:a84vm02
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+pl archive-02   archive      ENABLED  10485760 -        SNAPDONE -       -
+sd emc_clariion0_19-01 archive-02 ENABLED 73984 0       -        -       -
+sd emc_clariion0_22-01 archive-02 ENABLED 10411776 73984 -       -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd emc_clariion0_10-02 archive_dcl-01 ENABLED 67840 0   -        -       -
+pl archive_dcl-02 archive_dcl DISABLED 67840   -        DCOSNP   -       -
+sd emc_clariion0_19-02 archive_dcl-02 ENABLED 67840 0   -        -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+pl dbdata-02    dbdata       ENABLED  10485760 -        SNAPDONE -       -
+sd emc_clariion0_17-01 dbdata-02 ENABLED 73984 0        -        -       -
+sd emc_clariion0_21-01 dbdata-02 ENABLED 10411776 73984 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd emc_clariion0_18-02 dbdata_dcl-01 ENABLED 67840 0    -        -       -
+pl dbdata_dcl-02 dbdata_dcl  DISABLED 67840    -        DCOSNP   -       -
+sd emc_clariion0_17-02 dbdata_dcl-02 ENABLED 67840 0    -        -       -
+
+
+DATE:2017-04-27 13:28:30
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch set putil2=dbed_flashsnap archive-02
+STDOUT:
+
+
+***Clone database and check by using Flashsnap method***
+
+
+
+DATE:2017-04-27 13:28:40
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+SFDB vxsfadm ERROR V-81-0988 Local directories for user oracle could not be created.
+
+Reason: This might have been caused due to incorrect network configuration.
+
+Action: Verify whether following command returns success -
+ping localhost
+Rectify network configuration in case of failure and retry.
+RETURN:1
+RESULT:WARNING
+
+***Waring: Trying to fix it through workaroud***
+
+
+
+DATE:2017-04-27 13:28:41
+HOST:a84vm02
+USER:root
+STDIN:rm -f /var/vx/vxdba/rep_loc;/opt/VRTSdbed/bin/vxdbd stop;rm -rf /var/vx/vxdba/auth /opt/VRTSdbed/at-broker /var/VRTSat /var/VRTSat_lhc;echo "AUTHENTICATION=no" > /etc/vx/vxdbed/admin.properties;/opt/VRTSdbed/bin/vxdbd start
+STDOUT:
+
+RETURN:13
+RESULT:WARNING
+
+
+DATE:2017-04-27 13:29:09
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+No repository found for database orcl2, creating new one.
+
+SFDB vxsfadm ERROR V-81-0593 A repository already exists at /dbdata/orcl/.sfae/dbed-oracle-ORCL-repository.db
+
+Action: Specify a different location for the new repository, or remove the existing files.
+RETURN:1
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-04-27 13:29:09
+Duration:5m14s

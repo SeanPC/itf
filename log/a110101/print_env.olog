@@ -1,0 +1,41 @@
+
+==================== Operation Log for TC print_env ====================
+DATE:2017-01-25 14:20:30
+Nodes:a110101
+
+
+====STEP: Check and Print environment
+DATE:2017-01-25 14:20:30
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-01-25 14:20:32
+HOST:a110101
+USER:root
+STDIN:ssh -l root a110101
+STDOUT:
+
+
+
+DATE:2017-01-25 14:20:33
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh a110101
+STDOUT:
+
+
+
+DATE:2017-01-25 14:20:34
+HOST:a110101
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-01-25 14:20:34
+Duration:0m4s

@@ -1,0 +1,154 @@
+
+==================== Operation Log for TC print_env ====================
+DATE:2017-05-25 02:51:59
+Nodes:a85vm04 a85vm05
+
+
+====STEP: Check and Print environment
+DATE:2017-05-25 02:51:59
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-05-25 02:51:59
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:9595536 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:3699439 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:1676404102 (1.5 GiB)  TX bytes:1035734498 (987.7 MiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:628 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:628 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:83847 (81.8 KiB)  TX bytes:83847 (81.8 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-05-25 02:52:00
+HOST:a85vm04
+USER:root
+STDIN:ssh -l root a85vm04
+STDOUT:
+
+
+
+DATE:2017-05-25 02:52:03
+HOST:a85vm05
+USER:root
+STDIN:ssh -l root a85vm05
+STDOUT:
+
+
+
+DATE:2017-05-25 02:52:06
+HOST:a85vm04
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a85vm04
+a85vm05
+
+
+DATE:2017-05-25 02:52:07
+HOST:a85vm05
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a85vm04
+a85vm05
+
+
+DATE:2017-05-25 02:52:08
+HOST:a85vm04
+USER:root
+STDIN:[ -f /etc/VRTSvcs/conf/config/main.cf ] && cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster lilytest (
+	SecureClus = 1
+	HacliUserLevel = COMMANDROOT
+	)
+
+system a85vm04 (
+	)
+
+system a85vm05 (
+	)
+
+group cvm (
+	SystemList = { a85vm04 = 0, a85vm05 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { a85vm04, a85vm05 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = lilytest
+		CVMNodeId = { a85vm04 = 0, a85vm05 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/usr/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+Case Result:Passed
+DATE:2017-05-25 02:52:08
+Duration:0m9s

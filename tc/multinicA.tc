@@ -1,0 +1,190 @@
+#need to configure third private heartbeat link using public nic
+#des:support aix soliar linux platform
+oLog step "checking basic environment of testbed"
+checkNode root
+for node in $NODES
+do
+	getHostnameOSProduct $node
+done
+checkProductVersByVxvm 5.1 || myexit 201
+checkCVMStatus || myexit 201
+
+oLog step "Obtain low pripority link and IP info configured on it"
+RExec root $NODE1 "cat /etc/llttab"
+num_llt=`echo "$out"|grep link|wc -l`
+[ "$num_llt" -ne 3 ] && oLog error "Need three private heartbeat" && myexit 1
+pub_nic=`echo "$out"|grep link|tail -1|awk '{print $2}'` 
+case $type in
+	L)
+		RExec root $node "ifconfig $pub_nic"
+		ipinfo=`echo "$out"|grep -oP "\d+\.\d+\.\d+\.\d+"|xargs -n100`
+		for ip_info in $ipinfo
+		do
+                        echo "$ip_info" |grep "^255" > /dev/null 2>&1 && mask=$ip_info
+                        echo "$ip_info" |grep "255$" > /dev/null 2>&1 && bcast=$ip_info
+                done
+                RExec root $node "netstat -rn"
+                gw=`echo "$out"|awk '{print $2}'|grep "^[1-9]"`
+		;;
+	A)
+	 	;;
+	S)
+		;;
+esac
+
+oLog step "configure test IPs on all interfaces across all nodes in cluster"	
+#ip1=($autotcip1 $autotcip3 $autotcip5 $autotcip7)
+ip1=(10.200.59.26 10.200.59.28)
+ip2=(10.200.59.27 10.200.59.29)
+autotcvip=10.200.59.30
+#ip2=($autotcip2 $autotcip4 $autotcip6 $autotcip8)
+i=0
+for node in $NODES
+do
+	    
+	RExec root $node "cat /etc/llttab"
+	nic1[$i]=`echo "$out"|grep link|head -1|awk '{print $2}'`
+	nic2[$i]=`echo "$out"|grep link|head -2|tail -1|awk '{print $2}'`
+	RExec root $node "ifconfig ${nic1[$i]} ${ip1[$i]} netmask $mask up"
+	RExec root $node "/bin/ping -c 1 ${ip1[$i]}"
+	RExec root $node "ifconfig ${nic2[$i]} ${ip2[$i]} netmask $mask up"
+	RExec root $node "/bin/ping -c 1 ${ip2[$i]}"
+	RExec root $node "ifconfig -a"
+	i=$[$i+1]
+done		
+
+oLog step "create a MultiNIC failover SG and configure IPMultiNICA and MultinicA resources on it"
+RExec root $NODE1 "/opt/VRTS/bin/hastatus -summ" 
+RExec root $NODE1 "gabconfig -a"
+newmaincf=$BASE/tmp/maincf.$PID
+RExec root $NODE1 "cat /etc/VRTSvcs/conf/config/main.cf"
+echo "$out" > $newmaincf
+RExec root $NODE1 "cat /var/VRTSvcs/log/engine_A.log|wc -l" && engineA_bf=$out
+
+genNicSgConf >> $newmaincf
+echo $flag
+dev=($NODES)
+n=${#dev[*]}
+n=$[$n-1]
+seq="`seq $n|tac` 0"
+for i in $seq
+do
+	line="Device @${dev[$i]} = { ${nic1[$i]} = \"${ip1[$i]}\", ${nic2[$i]} = \"${ip2[$i]}\" }"
+	sed -i -r "/PingOptimize/a\ \t\t$line" $newmaincf
+done
+
+oLog step "bring SG online on first node in the cluster and verify status"
+importMainCf $newmaincf || exit 1
+waitGroupOnline $NODE1 mulNicSG
+
+oLog step "disable first nic and verify multinic SG status. SG should be online"
+getNicByIp
+RExec root $onlinenode "ifconfig $autonic down"
+for i in `seq 30`
+do
+	sleep 10
+	RExec root $onlinenode "ifconfig -a"
+	swnic=`echo "$out"|grep -B 10 "$autotcvip"|grep -oP "^\w+"|tail -1`
+	[ "$swnic" != "$autonic" ] && break
+done 
+RExec root $onlinenode "ifconfig -a"
+checkGroupStatus $NODE1 mulNicSG
+
+oLog step "disable second nic and verify multinic SG status,SG should go offline/faulted state"
+getNicByIp
+RExec root $onlinenode "ifconfig $autonic down"
+RExec root $onlinenode "ifconfig -a"
+for i in `seq 20`
+do
+	sleep 30
+	RExec root $NODE1 "/opt/VRTSvcs/bin/hagrp -state"
+	echo "$out"|grep mulNicSG |grep FAULTED > /dev/null 2>&1 && break
+done
+RExec root $NODE1 "/opt/VRTSvcs/bin/hagrp -state" 
+oLog des "Waiting SG failover completed"
+for i in `seq 20`
+do
+	sleep 10
+	RExec root $NODE1 "/opt/VRTSvcs/bin/hagrp -state" 
+	echo "$out"|grep mulNicSG|grep ONLINE >/dev/null 2>&1 && break
+done
+
+oLog step "enable first node's nics and clear fault"
+RExec root $NODE1 "/opt/VRTSvcs/bin/hagrp -state"
+faultnode=`echo "$out"|grep mulNicSG |grep FAULTED|awk '{print $3}'`
+RExec root $faultnode "cat /etc/llttab"
+for i in `echo "$out"|grep link |head -2 |awk '{print $2}'`
+do
+	RExec root $faultnode "ifconfig $i up"
+done
+clearSgFault $faultnode mulNicSG
+
+oLog des "Waiting clear fualt completed"
+for i in `seq 30`
+do
+	sleep 30
+	RExec root $NODE1 "/opt/VRTSvcs/bin/hagrp -state"
+	echo "$out"|grep mulNicSG |grep FAULTED > /dev/null 2>&1 || break
+done
+
+oLog step "verify SG status and get node name on which SG is currently online"
+checkGroupStatus $NODE1 mulNicSG
+
+oLog step "disbale first nic and verify multinic SG status,SG should be online"
+getNicByIp
+RExec root $onlinenode "ifconfig $autonic down"
+for i in `seq 30`
+do
+        sleep 10
+        RExec root $onlinenode "ifconfig -a"
+        swnic=`echo "$out"|grep -B 10 "$autotcvip"|grep -oP "^\w+"|tail -1`
+        [ "$swnic" != "$autonic" ] && break
+done
+RExec root $onlinenode "ifconfig -a"
+oLog des "Checking the SG status"
+checkGroupStatus $NODE1 mulNicSG
+
+oLog step "disable second nic and verify multinic SG status,SG should go offline/faulted state."
+getNicByIp
+RExec root $onlinenode "ifconfig $autonic down"
+for i in `seq 20`
+do
+        sleep 30
+        RExec root $NODE1 "/opt/VRTSvcs/bin/hagrp -state"
+	echo "$out"|grep mulNicSG |grep FAULTED > /dev/null 2>&1 && break
+done
+
+oLog des "Waiting SG failover completed"
+for i in `seq 20`
+do
+        sleep 10
+        RExec root $NODE1 "/opt/VRTSvcs/bin/hagrp -state"
+        echo "$out"|grep mulNicSG|grep ONLINE >/dev/null 2>&1 && break
+done
+checkGroupStatus $NODE1 mulNicSG
+
+oLog step "enable second node's nics and clear fault"
+RExec root $NODE1 "/opt/VRTSvcs/bin/hagrp -state"
+faultnode=`echo "$out"|grep mulNicSG |grep FAULTED|awk '{print $3}'`
+RExec root $faultnode "cat /etc/llttab"
+for i in `echo "$out"|grep link |head -2 |awk '{print $2}'`
+do
+        RExec root $faultnode "ifconfig $i up"
+done
+clearSgFault $faultnode mulNicSG
+
+oLog des "Waiting clear fualt completed"
+for i in `seq 30`
+do
+        sleep 30
+        RExec root $NODE1 "/opt/VRTSvcs/bin/hagrp -state"
+        echo "$out"|grep mulNicSG |grep FAULTED > /dev/null 2>&1 || break
+done
+
+oLog step "verify SG status and get node name on which SG is currently online"
+RExec root $NODE1 "/opt/VRTSvcs/bin/hastatus -summ"
+RExec root $NODE1 "cat /var/VRTSvcs/log/engine_A.log|wc -l" && engineA_af=$out
+((num=$engineA_af-$engineA_bf))
+RExec root $NODE1 "cat /var/VRTSvcs/log/engine_A.log|tail -$num" 
+oLog flag
+myexit 10

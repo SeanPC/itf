@@ -1,0 +1,262 @@
+
+==================== Operation Log for TC print_env ====================
+DATE:2017-04-27 16:33:50
+Nodes:a84vm01 a84vm02
+
+
+====STEP: Check and Print environment
+DATE:2017-04-27 16:33:50
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-04-27 16:33:50
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:12220272 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5619649 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3338475443 (3.1 GiB)  TX bytes:5821079130 (5.4 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:18492 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:18492 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:2442054 (2.3 MiB)  TX bytes:2442054 (2.3 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-04-27 16:33:51
+HOST:a84vm01
+USER:root
+STDIN:ssh -l root a84vm01
+STDOUT:
+
+
+
+DATE:2017-04-27 16:33:52
+HOST:a84vm02
+USER:root
+STDIN:ssh -l root a84vm02
+STDOUT:
+
+
+
+DATE:2017-04-27 16:33:55
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+
+DATE:2017-04-27 16:33:56
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+
+DATE:2017-04-27 16:33:56
+HOST:a84vm01
+USER:root
+STDIN:[ -f /etc/VRTSvcs/conf/config/main.cf ] && cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster clus201202 (
+	UserNames = { admin = INOgNInKOjOOmWOiNL }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system a84vm01 (
+	)
+
+system a84vm02 (
+	)
+
+group crs_grp (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSMount ocrvote_mnt (
+		Critical = 0
+		MountPoint = "/ocrvote"
+		BlockDevice = "/dev/vx/dsk/oradg2579_ocrvote/ocrvote"
+		)
+
+	CSSD cssd (
+		Critical = 0
+		CRSHOME = "/crs/crshome"
+		OfflineWaitLimit = 3
+		OnlineWaitLimit = 5
+		)
+
+	CVMVolDg ocrvote_voldg (
+		Critical = 0
+		CVMVolume = { ocrvote }
+		CVMDiskGroup = oradg2579_ocrvote
+		CVMActivation = sw
+		)
+
+	requires group cvm online local firm
+	cssd requires ocrvote_mnt
+	ocrvote_mnt requires ocrvote_voldg
+
+
+	// resource dependency tree
+	//
+	//	group crs_grp
+	//	{
+	//	CSSD cssd
+	//	    {
+	//	    CFSMount ocrvote_mnt
+	//	        {
+	//	        CVMVolDg ocrvote_voldg
+	//	        }
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMTransport = gab
+		CVMNodeId = { a84vm01 = 0, a84vm02 = 1 }
+		CVMClustName = clus201202
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/usr/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group oradb_grp (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSMount oraarch_mnt (
+		Critical = 0
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg2579_dbarch/archive"
+		)
+
+	CFSMount oradata_mnt (
+		Critical = 0
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg2579_dbarch/dbdata"
+		)
+
+	CVMVolDg data_voldg (
+		Critical = 0
+		CVMVolume = { dbdata, archive }
+		CVMDiskGroup = oradg2579_dbarch
+		CVMActivation = sw
+		)
+
+	Oracle oradb (
+		Critical = 0
+		Sid @a84vm01 = orcl1
+		Sid @a84vm02 = orcl2
+		Owner = oracle
+		ShutDownOpt = SRVCTLSTOP
+		StartUpOpt = SRVCTLSTART
+		Home = "/oracle/orahome"
+		LevelTwoMonitorFreq = 0
+		)
+
+	requires group crs_grp online local firm
+	oraarch_mnt requires data_voldg
+	oradata_mnt requires data_voldg
+	oradb requires oraarch_mnt
+	oradb requires oradata_mnt
+
+
+	// resource dependency tree
+	//
+	//	group oradb_grp
+	//	{
+	//	Oracle oradb
+	//	    {
+	//	    CFSMount oraarch_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    CFSMount oradata_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    }
+	//	}
+
+
+Case Result:Passed
+DATE:2017-04-27 16:33:56
+Duration:0m6s

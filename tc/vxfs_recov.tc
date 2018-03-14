@@ -1,0 +1,293 @@
+#DES:supported platform(linux aix solaris )
+#required:two nodes cluster,no less than 18 available disks,one nfs client, two vips
+#VALUE:nfsclient,autotcvip1,autotcvip2
+#DEFAULT:cdc-nfs-client-cd-02,,
+echo "nfsclient='$nfsclient'" >> $logs/define
+oLog step "checking basic environment of testbed"
+checkNode root
+for node in $NODES
+do
+        getHostnameOSProduct $node L,A
+        checkProductVersByVxvm 5.1 || myexit 201
+done
+oLog des "lock the $nfsclient for testing"
+if [ -f "$BASE/lock/$nfsclient" ]
+then
+	oLog error "Node $nfsclient is locked by another case!"
+	myexit 201
+else
+	echo "$nfsclient" > $BASE/lock/$nfsclient
+fi
+oLog des "check the $nfsclient is available for testing"
+checkSshAuthorize root $nfsclient
+[ $? -ne 0 ] && oLog error "please check the ssh login host without password" && myexit 1
+dfpid=`nohup ssh -l root $nfsclient "df -h" >/dev/null 2>&1 &`
+sleep 60
+if ps -ef|grep ssh|grep $nfsclient >/dev/null 2>&1 
+then
+	LExec "kill -9  `ps -ef|grep ssh|grep $nfsclient|awk '{print $2}'`"
+	RExec root $nfsclient "nohup reboot -nf > /dev/null 2>&1 &"
+	waitNodeOffline $nfsclient
+	waitNodeOnline $nfsclient
+	
+fi
+checkCVMStatus || myexit 201
+checkFencingStatus  || myexit 201
+
+oLog step "checking the nfs client"
+
+oLog step "create  3 dikgroups"
+makeDgByLayout $NODE1 sm,s 3
+
+oLog step "create volumes and create file system, layout are stripe and stripe-mirror"
+RExec root $NODE1 "vxdg list"
+dgs=`echo "$out"|grep auto|grep -iv NAME|awk '{print $1}'|xargs -n100`
+for dg in $dgs
+do
+#	volinfo="$BASE/tmp/volinfo.$PID"
+	volinfo+=`makeVolumeByLayout $NODE1 $dg sm,s 3g|awk '{print $1}'`
+	RExec root $NODE1 "ls /dev/vx/rdsk/$dg"
+	vols=`echo "$out"|xargs -n1`
+	for vol in $vols
+	do
+		mkVxfs $NODE1 $dg $vol
+	done
+	RExec root $NODE1 "vxdg deport $dg" 
+done
+
+
+oLog step "generate the service group and resource"
+newmaincfmix="$BASE/tmp/maincf.$PID"
+node=($NODES)
+oLog des "get public nic info"
+node1nic=`getNicByIp ${node[0]} ${node[0]}` || exit 1
+nic=$node1nic
+node2nic=`getNicByIp ${node[1]} ${node[1]}` || exit 1
+ip=`turnNodesToIp ${node[0]}` || exit 1
+if [ $type = L ]
+then
+	RExec root ${node[0]} "ifconfig $node1nic"
+	mask=`echo "$out"|xargs -n100|sed -r "s/\:/ /g"|grep -oP "(?<=[Mm]ask )[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"`
+	LExec "ipcalc -n $ip $mask"
+	nw=`echo "$out"|cut -d = -f2|cut -d . -f1-2`
+	RExec root ${node[0]} "netstat -rn"
+	gw=`echo "$out"|awk '$1=="0.0.0.0"{print $2}'|grep $nw`
+else
+	RExec root $NODE1 "ifconfig $node1nic"
+	mask0=`echo "$out"|xargs -n100 |grep -oP "(?<=netmask )[\w]+"`
+	mask=`formatMaskAddress $mask0` || exit 1
+	LExec "ipcalc -n $ip $mask"
+	nw=`echo "$out"|cut -d = -f2|cut -d . -f1-2`
+	RExec root ${node[0]} "netstat -rn"
+	gw=`echo "$out"|grep default|awk '{print $2}'|grep $nw`
+fi
+            
+oLog des "stop VCS on all nodes"
+stopVCSAgentALL 
+oLog des "convert the main.cf to main.cmd"
+RExec root $NODE1 "cp /etc/VRTSvcs/conf/config/main.cf /etc/VRTSvcs/conf/config/main.cf.itf.bk"
+RExec root $NODE1 "/opt/VRTSvcs/bin/hacf -cftocmd /etc/VRTSvcs/conf/config"
+case $type in
+	L)
+		genRacHaSgconfLinux ${node[0]} ${node[1]} $node1nic $node2nic $nic $autotcvip1 $autotcvip2 $mask $gw >$newmaincfmix
+		;;
+	A)
+		genRacHaSgconfAix ${node[0]} ${node[1]} $node1nic $node2nic $nic $autotcvip1 $autotcvip2 $mask $gw >$newmaincfmix
+		;;
+	S)
+		genRacHaSgconfSolaris ${node[0]} ${node[1]} $node1nic $node2nic $nic $autotcvip1 $autotcvip2 $mask $gw >$newmaincfmix
+		;;
+esac
+copyFileToRemote $newmaincfmix $NODE1
+RExec root $NODE1 "cat /tmp/tmpfile.$PID >> /etc/VRTSvcs/conf/config/main.cmd"
+oLog des "make the directory for mountpoint"
+for node in $NODES
+do
+	RExec root $node "ls /"
+	echo "$out"|grep autotcdir >/dev/null 2>&1 && RExec root $node "rm -rf /autotcdir" 
+	RExec root $node "mkdir -p /autotcdir/ITF_3_autotcdg2_r0_2;mkdir -p /autotcdir/ITF_1_autotcdg2_r10_1;mkdir -p /autotcdir/ITF_5_autotcdg3_r10_1;mkdir -p /autotcdir/ITF_6_autotcdg3_r0_2"
+done
+oLog des "convert the main.cmd to main.cf"
+RExec root $NODE1 "/opt/VRTSvcs/bin/hacf -cmdtocf /etc/VRTSvcs/conf/config"
+RExec root $NODE1 "/opt/VRTSvcs/bin/hacf -verify /etc/VRTSvcs/conf/config"
+
+oLog step "start VCS on all nodes with generated service groups"
+for node in $NODES
+do
+	startVCSAgent $node      
+done
+waitGroupOnline $NODE1  cvm
+waitGroupOnline $NODE1 nfs_sg
+waitGroupOnline $NODE1 sg12
+waitGroupOnline $NODE1 sg21
+RExec root $NODE1 "/opt/VRTS/bin/hagrp -state"
+sharedg=autotcdg1
+oLog des "import DG $sharedg in shared mode"
+RExec root $NODE1 "/opt/VRTS/bin/vxdg -s import $sharedg"
+RExec root $NODE1 "/opt/VRTS/bin/vxvol -g $sharedg startall"
+oLog des "adding SG/Resources using cfsmntadm"
+sharevol1=`echo "$volinfo"|sed -r 's/auto/\nauto/g'|grep autotcdg1|sort|head -1`
+sharevol2=`echo "$volinfo"|sed -r 's/auto/\nauto/g'|grep autotcdg1|sort|tail -1`
+RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmntadm add $sharedg $sharevol1 /autotcdir/ITF_2_autotcdg1_r0_2 sg11 all=cluster"
+RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmount /autotcdir/ITF_2_autotcdg1_r0_2"
+RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmntadm add $sharedg $sharevol2 /autotcdir/ITF_4_autotcdg1_r10_1 sg11 all=cluster"
+RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmount /autotcdir/ITF_4_autotcdg1_r10_1"
+waitGroupOnline $NODE1 sg11
+RExec root $NODE1 "/opt/VRTS/bin/hastatus -summ"
+failoversgs=`echo "$out"|grep OFFLINE|awk '{print $2}'|xargs -n10`
+for sg in $failoversgs
+do
+        if echo "$out"|grep ONLINE|grep $sg|grep $NODE1 >/dev/null 2>&1
+        then
+                node1onlinesg=$sg
+        else
+                node2onlinesg=$sg
+        fi
+done
+	
+sleep 120
+oLog step "Mount NFS resource on $nfsclient"
+RExec root $nfsclient "ls /"
+echo "$out"|grep autotcdir >/dev/null 2>&1 && RExec root $nfsclient "rm -rf /autotcdir"
+RExec root $nfsclient "mkdir -p /autotcdir/ITF_3_autotcdg2_r0_2;mkdir -p /autotcdir/ITF_1_autotcdg2_r10_1;mkdir -p /autotcdir/ITF_5_autotcdg3_r10_1;mkdir -p /autotcdir/ITF_6_autotcdg3_r0_2"
+RExec root $nfsclient "showmount -e $autotcvip1"
+mpts=`echo "$out"|grep autotcdir |awk '{print $1}'|xargs -n10`
+for mpt in $mpts
+do
+        if echo $mpt|grep -P r10 >/dev/null 2>&1
+        then
+                RExec root $nfsclient "mount -t nfs $autotcvip1:$mpt /autotcdir/ITF_1_autotcdg2_r10_1"
+        else
+                RExec root $nfsclient "mount -t nfs $autotcvip1:$mpt /autotcdir/ITF_3_autotcdg2_r0_2"
+        fi
+done
+RExec root $nfsclient "showmount -e $autotcvip2"
+mpts=`echo "$out"|grep autotcdir |awk '{print $1}'|xargs -n10`
+for mpt in $mpts
+do
+        if echo $mpt|grep -P r10 >/dev/null 2>&1
+        then
+                RExec root $nfsclient "mount -t nfs $autotcvip2:$mpt /autotcdir/ITF_5_autotcdg3_r10_1"
+        else
+                RExec root $nfsclient "mount -t nfs $autotcvip2:$mpt /autotcdir/ITF_6_autotcdg3_r0_2"
+        fi
+done
+RExec root $nfsclient "df -h|sed 1d|xargs -n 6"
+mnt_count=`echo "$out"|grep autotcdir|wc -l`
+[ "$mnt_count" -ne 4 ]  && oLog error "mounted nfs is not enough, please check again" && myexit 1
+
+sleep 60
+oLog step "Copy thrash to $NODES and $nfsclient,providing io action"
+case $type in
+L)
+	iotool=thrash_linux
+	;;
+A)
+	iotool=thrash_aix
+	;;
+S)
+	iotool=thrash_solaris
+	;;
+esac
+copyFileToRemote $BASE/etc/$iotool ${node[0]}
+copyFileToRemote $BASE/etc/$iotool ${node[1]}
+copyFileToRemote $BASE/etc/thrash_linux $nfsclient
+
+for node in $NODES
+do
+	RExec root $node "$cmd2"
+	[ $type = A ] && mpts=`echo "$out"|grep autotcdg1|awk '{print $7}'|xargs -n100` || mpts=`echo "$out"|grep autotcdg1|awk '{print $6}'|xargs -n100`
+	for mp in $mpts
+	do
+		fsStressStartWithThrash $node $mp
+	done
+done
+RExec root $nfsclient "df -h|sed 1d|xargs -n 6"
+mpts=`echo "$out"|grep autotcdir |awk '{print $6}'|xargs -n100`
+for mp in $mpts
+do
+	fsStressStartWithThrash $nfsclient $mp
+done
+
+sleep 60
+oLog step "Check I/O is running on expected dmpnodes."
+for node in $NODES
+do
+	RExec root $node "$cmd2"
+	[ $type = A ] && mps=`echo "$out"|grep autotcdir|awk '{print $7}'` || mps=`echo "$out"|grep autotcdir|awk '{print $6}'`
+	for mp in $mps
+	do
+		checkFsStressByMountpoint $node $mp
+	done
+done
+for nd in $NODES  
+do
+	oLog step "disconnect llt on \"$nd\", another node will panic"
+	oLog des "disconnect llt on \"$nd\""
+	lltLinkConfig $nd disable
+	oLog des "check the one node is panic"
+	nodestatus=`getNodeStatusAfterPanic` || exit 0
+	activenode=`echo "$nodestatus" |grep Active|sed -r "s/ //g"|cut -d : -f 2`
+	panicnode=`echo "$nodestatus" |grep Panic|sed -r "s/ //g"|cut -d : -f 2`
+	[ "$activenode" == "$NODE1" ] && swsg=$node2onlinesg || swsg=$node1onlinesg
+	waitNodeOffline $panicnode
+	
+	oLog step "check the panic node's sg failover to \"$activenode\""
+	for i in `seq 60`
+	do
+		sleep 10
+		RExec root $activenode "/opt/VRTS/bin/hagrp -state"
+		echo "$out"|grep $swsg|grep $activenode|grep ONLINE >/dev/null 2>&1 && break
+	done
+
+	oLog step "Check local I/O and remote I/O on nfsclient are still running."
+	RExec root $activenode "$cmd2"
+	[ $type = A ] && mps=`echo "$out"|grep autotcdir|awk '{print $7}'` || mps=`echo "$out"|grep autotcdir|awk '{print $6}'`
+	for mp in $mps
+	do
+		checkFsStressByMountpoint $activenode $mp
+	done
+
+
+	oLog step "after the panic node come up, enable the llt, wait for the cluster reconfiguration and services come up, then switch node's local SG back"
+	waitNodeOnline $panicnode
+ 
+	oLog des "connect llt on \"$nd\""
+	lltLinkConfig $nd enable 
+
+	oLog step "Waiting for sg to be online"
+	waitVCSAgentOnline $panicnode
+	waitGroupOnline $panicnode cvm
+	waitGroupOnline $panicnode nfs_sg
+	waitGroupOnline $panicnode sg11
+	oLog des "switch the sg $swsg to original node"
+	RExec root $panicnode "/opt/VRTS/bin/hagrp -display $swsg|grep AutoDisabled"
+	for node in $NODES
+	do
+		echo "$out"|grep $node|awk '{print $4}'|grep 1 > /dev/null 2>&1 && RExec root $node "/opt/VRTS/bin/hagrp -autoenable $swsg -sys $node"
+	done
+	switchGroup $panicnode $swsg
+	RExec root $NODE1 "/opt/VRTS/bin/hastatus -summ"
+
+	oLog step " restart the local I/O, verify I/O continues successfully"
+	fsStressStartWithThrash $panicnode /autotcdir/ITF_2_autotcdg1_r0_2
+	fsStressStartWithThrash $panicnode /autotcdir/ITF_4_autotcdg1_r10_1
+	for node in $NODES
+	do
+        	RExec root $node "$cmd2"
+        	[ $type = A ] && mps=`echo "$out"|grep autotcdir|awk '{print $7}'` || mps=`echo "$out"|grep autotcdir|awk '{print $6}'`
+        	for mp in $mps
+        	do
+                	checkFsStressByMountpoint $node $mp
+        	done
+	done
+done
+oLog flag
+oLog step "stress stop on all nodes"
+for node in $NODES
+do
+	fsStressStopWithThrash $node
+done
+fsStressStopWithThrash $nfsclient
+oLog flag
+myexit 10

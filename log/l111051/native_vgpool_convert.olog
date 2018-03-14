@@ -1,0 +1,1743 @@
+
+==================== Operation Log for TC native_vgpool_convert ====================
+DATE:2017-08-10 11:03:48
+Nodes:l111051 l111052
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-08-10 11:03:48
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-08-10 11:03:48
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:62015508 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:10890310 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:9491364501 (8.8 GiB)  TX bytes:2560659494 (2.3 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:2182 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:2182 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:353544 (345.2 KiB)  TX bytes:353544 (345.2 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-08-10 11:03:49
+HOST:l111051
+USER:root
+STDIN:ssh -l root l111051
+STDOUT:
+
+
+
+DATE:2017-08-10 11:03:51
+HOST:l111052
+USER:root
+STDIN:ssh -l root l111052
+STDOUT:
+
+
+
+DATE:2017-08-10 11:03:56
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111051,l111052
+STDOUT:
+
+
+
+DATE:2017-08-10 11:03:57
+HOST:l111051
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111051
+l111052
+
+
+DATE:2017-08-10 11:03:58
+HOST:l111052
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111051
+l111052
+
+***Getting hostname of node***
+
+
+
+DATE:2017-08-10 11:03:59
+HOST:l111051
+USER:root
+STDIN:hostname
+STDOUT:
+l111051.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-08-10 11:04:00
+HOST:l111051
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-08-10 11:04:01
+HOST:l111051
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 7.2 (Maipo)
+
+
+DATE:2017-08-10 11:04:01
+HOST:l111051
+USER:root
+STDIN:uname -r
+STDOUT:
+3.10.0-327.55.3.el7.x86_64
+
+
+DATE:2017-08-10 11:04:02
+HOST:l111051
+USER:root
+STDIN:uname -r
+STDOUT:
+3.10.0-327.55.3.el7.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-08-10 11:04:07
+HOST:l111051
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSperl-5.24.0.0-RHEL7.x86_64
+Name        : VRTSperl
+Version     : 5.24.0.0
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:51:55 AM UTC
+Group       : Applications/System
+Size        : 72272167
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:52 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSperl-5.24.0.0-RHEL7.src.rpm
+Build Date  : Wed 07 Sep 2016 01:27:52 PM UTC
+Build Host  : rhel6-perl.cdc.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Perl 5.24.0 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.24.0 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.71
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSllt-7.2.0.000-RHEL7.x86_64
+Name        : VRTSllt
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:53:44 AM UTC
+Group       : Applications/System
+Size        : 33485224
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:50 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSllt-7.2.0.000-RHEL7.src.rpm
+Build Date  : Mon 17 Oct 2016 04:51:06 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Low Latency Transport
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64 [LINUX_RHEL70]
+Build Stamp: Veritas-7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSdbed-7.2.0.000-RHEL.x86_64
+Name        : VRTSdbed
+Version     : 7.2.0.000
+Release     : RHEL
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:55:38 AM UTC
+Group       : Applications/Databases
+Size        : 278952613
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:44:08 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSdbed-7.2.0.000-RHEL.src.rpm
+Build Date  : Mon 03 Oct 2016 01:38:19 AM UTC
+Build Host  : snapper53-64.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSsfcpi-7.2.0.000-GENERIC.noarch
+Name        : VRTSsfcpi
+Version     : 7.2.0.000
+Release     : GENERIC
+Architecture: noarch
+Install Date: Mon 07 Aug 2017 07:56:50 AM UTC
+Group       : Applications/System
+Size        : 14572111
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:55 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSsfcpi-7.2.0.000-GENERIC.src.rpm
+Build Date  : Fri 30 Sep 2016 03:50:10 PM UTC
+Build Host  : vmd2850lx11
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+
+Package INFO: VRTSaslapm-7.2.0.000-RHEL7.x86_64
+Name        : VRTSaslapm
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:52:35 AM UTC
+Group       : Applications/System
+Size        : 27726897
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:44:02 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSaslapm-7.2.0.000-RHEL7.src.rpm
+Build Date  : Sun 16 Oct 2016 11:40:54 AM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTScps-7.2.0.000-RHEL7.x86_64
+Name        : VRTScps
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:54:18 AM UTC
+Group       : Applications/System
+Size        : 63266684
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:42 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTScps-7.2.0.000-RHEL7.src.rpm
+Build Date  : Mon 17 Oct 2016 05:00:19 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Co-ordination Point Server
+Description :
+Veritas Co-ordination Point Server
+Build Stamp: 7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSdbac-7.2.0.000-RHEL7.x86_64
+Name        : VRTSdbac
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:56:23 AM UTC
+Group       : Applications/System
+Size        : 9119958
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:42 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSdbac-7.2.0.000-RHEL7.src.rpm
+Build Date  : Wed 05 Oct 2016 07:05:56 AM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Real Application Cluster Support Package
+Description :
+Veritas Oracle Real Application Cluster Support Package
+Build Stamp	: 7.2.0.000-2016-10-04_23.56.09
+Supported kernel(s): 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64
+
+Package INFO: VRTSspt-7.2.0.000-rhel7.noarch
+Name        : VRTSspt
+Version     : 7.2.0.000
+Release     : rhel7
+Architecture: noarch
+Install Date: Mon 07 Aug 2017 07:52:03 AM UTC
+Group       : Applications/System
+Size        : 42691235
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:44:21 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSspt-7.2.0.000-rhel7.src.rpm
+Build Date  : Tue 04 Oct 2016 05:49:12 AM UTC
+Build Host  : sptpunrhel5bld1.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Software Support Tools Package
+Description :
+VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSvxfs-7.2.0.000-RHEL7.x86_64
+Name        : VRTSvxfs
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:52:40 AM UTC
+Group       : Applications/System
+Size        : 36990855
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:44:31 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvxfs-7.2.0.000-RHEL7.src.rpm
+Build Date  : Mon 17 Oct 2016 07:49:37 AM UTC
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Filesystem
+Description :
+Veritas Filesystem
+
+Package INFO: VRTSvxfen-7.2.0.000-RHEL7.x86_64
+Name        : VRTSvxfen
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:53:50 AM UTC
+Group       : Applications/System
+Size        : 15676344
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:44:31 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvxfen-7.2.0.000-RHEL7.src.rpm
+Build Date  : Thu 13 Oct 2016 11:17:44 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas I/O Fencing
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64
+Build Stamp        : 7.2.0.000-2016-10-13_10.00.00
+
+Package INFO: VRTSvcsag-7.2.0.000-RHEL7.x86_64
+Name        : VRTSvcsag
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:54:25 AM UTC
+Group       : Applications/System
+Size        : 84616290
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:44:25 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcsag-7.2.0.000-RHEL7.src.rpm
+Build Date  : Thu 13 Oct 2016 11:21:36 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : VCS Bundled Agents
+Description :
+Veritas Cluster Server Bundled Agents (x86_64)
+Build Stamp : 7.2.0.000-2016-10-13_10.00.00
+
+Package INFO: VRTScavf-7.2.0.000-RHEL7.x86_64
+Name        : VRTScavf
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:55:48 AM UTC
+Group       : Applications/System
+Size        : 874335
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:44:03 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTScavf-7.2.0.000-RHEL7.src.rpm
+Build Date  : Mon 17 Oct 2016 07:32:02 AM UTC
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+Veritas Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+Package INFO: VRTSsfmh-7.2.0.0-0.x86_64
+Name        : VRTSsfmh
+Version     : 7.2.0.0
+Release     : 0
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:56:35 AM UTC
+Group       : Applications/System
+Size        : 169913413
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:43:16 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSsfmh-7.2.0.0-0.src.rpm
+Build Date  : Wed 05 Oct 2016 10:12:52 AM UTC
+Build Host  : vommvsles10-64bld.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+
+Package INFO: VRTSveki-7.2.0.000-RHEL7.x86_64
+Name        : VRTSveki
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:52:05 AM UTC
+Group       : Applications/System
+Size        : 143305
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:38:03 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSveki-7.2.0.000-RHEL7.src.rpm
+Build Date  : Mon 17 Oct 2016 04:47:12 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Veki
+Description :
+Veritas Veki
+
+Package INFO: VRTSfsadv-7.2.0.000-RHEL7.x86_64
+Name        : VRTSfsadv
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:53:40 AM UTC
+Group       : Applications/System
+Size        : 15079373
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:45 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSfsadv-7.2.0.000-RHEL7.src.rpm
+Build Date  : Mon 17 Oct 2016 07:50:12 AM UTC
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas File System Advanced Features
+Description :
+Veritas File System Advanced Features
+
+Package INFO: VRTSamf-7.2.0.000-RHEL7.x86_64
+Name        : VRTSamf
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:53:54 AM UTC
+Group       : System Environment/Kernel
+Size        : 14253983
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:40 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSamf-7.2.0.000-RHEL7.src.rpm
+Build Date  : Mon 17 Oct 2016 04:57:48 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64
+Build Stamp        : 7.2.0.000-2016-10-17_09.57.14
+
+Package INFO: VRTSvcsea-7.2.0.000-RHEL7.x86_64
+Name        : VRTSvcsea
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:54:29 AM UTC
+Group       : Applications/System
+Size        : 1364587
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:38:00 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcsea-7.2.0.000-RHEL7.src.rpm
+Build Date  : Mon 17 Oct 2016 05:00:50 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSgms-7.2.0.000-RHEL7.x86_64
+Name        : VRTSgms
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:55:51 AM UTC
+Group       : Applications/System
+Size        : 76955
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:49 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSgms-7.2.0.000-RHEL7.src.rpm
+Build Date  : Mon 17 Oct 2016 07:31:42 AM UTC
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Messaging Services
+Description :
+Veritas Group Messaging Sevice (GMS) driver
+
+Package INFO: VRTSvbs-7.2.0.000-GA_Linux.x86_64
+Name        : VRTSvbs
+Version     : 7.2.0.000
+Release     : GA_Linux
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:56:46 AM UTC
+Group       : Applications/System
+Size        : 74478677
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:56 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvbs-7.2.0.000-GA_Linux.src.rpm
+Build Date  : Wed 05 Oct 2016 08:44:13 AM UTC
+Build Host  : snapper53-64.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Virtual Business Services by Veritas
+Description :
+Virtual Business Services by Veritas
+Build Stamp : 7.2.0.000-2016-10-05_00.18.20
+
+Package INFO: VRTSvxvm-7.2.0.000-RHEL7.x86_64
+Name        : VRTSvxvm
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:52:25 AM UTC
+Group       : Applications/System
+Size        : 410880107
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:44:33 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvxvm-7.2.0.000-RHEL7.src.rpm
+Build Date  : Sun 16 Oct 2016 11:39:57 AM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Volume Manager
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSvcs-7.2.0.000-RHEL7.x86_64
+Name        : VRTSvcs
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:54:08 AM UTC
+Group       : Applications/System
+Size        : 228239443
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:44:23 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcs-7.2.0.000-RHEL7.src.rpm
+Build Date  : Thu 13 Oct 2016 11:21:58 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Server
+Description :
+Veritas Cluster Server and Commands (x86_64)
+Build Stamp : 7.2.0.000-2016-10-13_10.00.00
+
+Package INFO: VRTSodm-7.2.0.000-RHEL7.x86_64
+Name        : VRTSodm
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:55:54 AM UTC
+Group       : Applications/System
+Size        : 1183417
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:51 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSodm-7.2.0.000-RHEL7.src.rpm
+Build Date  : Mon 17 Oct 2016 07:33:40 AM UTC
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC.
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Disk Manager
+Description :
+Veritas Oracle Disk Manager (ODM)
+
+Package INFO: VRTSvlic-3.02.71.004-RHEL6.x86_64
+Name        : VRTSvlic
+Version     : 3.02.71.004
+Release     : RHEL6
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:51:59 AM UTC
+Group       : Applications/System
+Size        : 1609373
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:38:03 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvlic-3.02.71.004-RHEL6.src.rpm
+Build Date  : Wed 12 Oct 2016 09:10:43 AM UTC
+Build Host  : vcsbuildrhel6x8664
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas License Utilities
+Description :
+These are the Veritas License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSgab-7.2.0.000-RHEL7.x86_64
+Name        : VRTSgab
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:53:47 AM UTC
+Group       : Applications/System
+Size        : 15755676
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:47 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSgab-7.2.0.000-RHEL7.src.rpm
+Build Date  : Mon 17 Oct 2016 04:52:50 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Membership and Atomic Broadcast
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64
+Build Stamp        : Veritas-7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSglm-7.2.0.000-RHEL7.x86_64
+Name        : VRTSglm
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:55:45 AM UTC
+Group       : Applications/System
+Size        : 761992
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:48 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSglm-7.2.0.000-RHEL7.src.rpm
+Build Date  : Mon 17 Oct 2016 07:36:08 AM UTC
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Lock Manager (GLM) driver
+Description :
+Veritas Group Lock Manager (GLM) driver
+Supported kernel(s): 3.10.0-123.el7.x86_64, 3.10.0-229.el7.x86_64 or later
+
+Package INFO: VRTSvcswiz-7.2.0.000-RHEL7.x86_64
+Name        : VRTSvcswiz
+Version     : 7.2.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 07 Aug 2017 07:56:56 AM UTC
+Group       : Applications/System
+Size        : 8882724
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:38:02 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcswiz-7.2.0.000-RHEL7.src.rpm
+Build Date  : Mon 17 Oct 2016 05:00:31 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : "Veritas Technologies LLC"
+URL         : http://www.veritas.com/support
+Summary     : Veritas Cluster Server Wizards
+Description :
+"The package contains Wizards for Veritas Cluster Server"
+
+Arch : (x86_64)
+Build Stamp : 7.2.0.000-2016-10-17_10.00.30
+
+
+====STEP: checking if exist native vgs or pool,drop them if existing
+DATE:2017-08-10 11:04:07
+
+***Drop native vg/zpool***
+
+
+
+DATE:2017-08-10 11:04:08
+HOST:l111051
+USER:root
+STDIN:pvs|grep autotc
+STDOUT:
+  /dev/sdbc1 autotcvg1 lvm2 a--  5.00g 5.00g
+
+
+DATE:2017-08-10 11:04:08
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:cat /opt/itf/tmp/dropnativevg.13701
+STDOUT:
+vgremove -f autotcvg1
+pvremove /dev/sdbc1
+
+
+DATE:2017-08-10 11:04:09
+HOST:l111051
+USER:root
+STDIN:/opt/itf/tmp/dropnativevg.13701
+STDOUT:
+  Volume group "autotcvg1" successfully removed
+  Labels on physical volume "/dev/sdbc1" successfully wiped
+
+
+DATE:2017-08-10 11:04:10
+HOST:l111051
+USER:root
+STDIN:vxdisk list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+emc_clariion0_565 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_566 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_567 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_568 auto:cdsdisk    -            -            online
+emc_clariion0_569 auto:cdsdisk    -            -            online
+emc_clariion0_570 auto:cdsdisk    -            -            online
+emc_clariion0_571 auto:cdsdisk    -            -            online
+emc_clariion0_572 auto:cdsdisk    -            -            error
+emc_clariion0_573 auto:cdsdisk    -            -            online
+emc_clariion0_574 auto:cdsdisk    -            -            online
+emc_clariion0_592 auto:cdsdisk    -            -            online
+emc_clariion0_593 auto:cdsdisk    -            -            online
+emc_clariion0_594 auto:cdsdisk    -            -            online
+emc_clariion0_750 auto:cdsdisk    -            -            online
+emc_clariion0_751 auto:cdsdisk    -            -            online
+emc_clariion0_752 auto:cdsdisk    -            -            online
+emc_clariion0_753 auto:cdsdisk    -            -            online
+emc_clariion0_754 auto:cdsdisk    -            -            online
+emc_clariion0_755 auto:cdsdisk    -            -            online
+emc_clariion0_756 auto:cdsdisk    -            -            online
+emc_clariion0_808 auto:cdsdisk    -            -            online
+emc_clariion0_809 auto:cdsdisk    -            -            online
+emc_clariion0_810 auto:cdsdisk    -            -            online
+emc_clariion0_811 auto:cdsdisk    -            -            online
+emc_clariion0_812 auto:cdsdisk    -            -            online
+emc_clariion0_1599 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1600 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1601 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1602 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1603 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1604 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1605 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1606 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1607 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1608 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1609 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1610 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1611 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1612 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1613 auto:cdsdisk    -            -            online thinrclm
+sdcj         auto:none       -            -            online invalid
+
+
+DATE:2017-08-10 11:04:11
+HOST:l111051
+USER:root
+STDIN:for disk in ; do dd if=/dev/zero of=/dev/vx/dmp/$disk bs=1024k count=100; done
+STDOUT:
+
+
+
+====STEP: Copy mf.pl to l111051,filling files into the filesystem
+DATE:2017-08-10 11:04:11
+
+
+DATE:2017-08-10 11:04:12
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/etc/mf.pl l111051:/tmp/tmpfile.13701
+STDOUT:
+
+
+
+====STEP: Checking dmp_native_support status,if it is on,trun it to be off
+DATE:2017-08-10 11:04:12
+
+***setting dmp_native_support to be off***
+
+
+
+DATE:2017-08-10 11:04:13
+HOST:l111051
+USER:root
+STDIN:vxdmpadm gettune dmp_native_support
+STDOUT:
+            Tunable               Current Value  Default Value
+------------------------------    -------------  -------------
+dmp_native_support                      off	         off
+
+
+DATE:2017-08-10 11:04:14
+HOST:l111052
+USER:root
+STDIN:vxdmpadm gettune dmp_native_support
+STDOUT:
+            Tunable               Current Value  Default Value
+------------------------------    -------------  -------------
+dmp_native_support                      off	         off
+
+
+====STEP: Getting disks for the 1st vg or pool
+DATE:2017-08-10 11:04:19
+
+***Getting disk list by specified size***
+
+
+***Getting avaiable disks***
+
+
+
+DATE:2017-08-10 11:04:20
+HOST:l111051
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-08-10 11:04:21
+HOST:l111052
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-08-10 11:04:22
+HOST:l111051
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+emc_clariion0     EMC_CLARiiON   CETV2140800019       CONNECTED    CLR-ALUA   40         0533
+disk              Disk           DISKS                CONNECTED    Disk        1         HS0A
+
+
+DATE:2017-08-10 11:04:23
+HOST:l111051
+USER:root
+STDIN:vxdisk scandisks;vxdisk list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+emc_clariion0_565 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_566 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_567 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_568 auto:cdsdisk    -            -            online
+emc_clariion0_569 auto:cdsdisk    -            -            online
+emc_clariion0_570 auto:cdsdisk    -            -            online
+emc_clariion0_571 auto:cdsdisk    -            -            online
+emc_clariion0_572 auto:cdsdisk    -            -            error
+emc_clariion0_573 auto:cdsdisk    -            -            online
+emc_clariion0_574 auto:cdsdisk    -            -            online
+emc_clariion0_592 auto:cdsdisk    -            -            online
+emc_clariion0_593 auto:cdsdisk    -            -            online
+emc_clariion0_594 auto:cdsdisk    -            -            online
+emc_clariion0_750 auto:cdsdisk    -            -            online
+emc_clariion0_751 auto:cdsdisk    -            -            online
+emc_clariion0_752 auto:cdsdisk    -            -            online
+emc_clariion0_753 auto:cdsdisk    -            -            online
+emc_clariion0_754 auto:cdsdisk    -            -            online
+emc_clariion0_755 auto:cdsdisk    -            -            online
+emc_clariion0_756 auto:cdsdisk    -            -            online
+emc_clariion0_808 auto:cdsdisk    -            -            online
+emc_clariion0_809 auto:cdsdisk    -            -            online
+emc_clariion0_810 auto:cdsdisk    -            -            online
+emc_clariion0_811 auto:cdsdisk    -            -            online
+emc_clariion0_812 auto:cdsdisk    -            -            online
+emc_clariion0_1599 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1600 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1601 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1602 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1603 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1604 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1605 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1606 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1607 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1608 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1609 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1610 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1611 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1612 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1613 auto:cdsdisk    -            -            online thinrclm
+sdcj         auto:none       -            -            online invalid
+
+
+DATE:2017-08-10 11:04:25
+HOST:l111051
+USER:root
+STDIN:/opt/VRTSsfmh/adm/dclisetup.sh
+STDOUT:
+
+
+
+DATE:2017-08-10 11:04:26
+HOST:l111051
+USER:root
+STDIN:/opt/VRTS/bin/vxlist disk
+STDOUT:
+TY   DEVICE               DISK   DISKGROUP      SIZE   FREE STATUS
+disk emc_clariion0_565    -      vxfendg       4.96g      - deported
+disk emc_clariion0_566    -      vxfendg       4.96g      - deported
+disk emc_clariion0_567    -      vxfendg       4.96g      - deported
+disk emc_clariion0_568    -      -             4.96g      - free
+disk emc_clariion0_569    -      -             4.96g      - free
+disk emc_clariion0_570    -      -             4.96g      - free
+disk emc_clariion0_571    -      -             4.96g      - free
+disk emc_clariion0_572    -      -                 -      - notsetup
+disk emc_clariion0_573    -      -             4.96g      - free
+disk emc_clariion0_574    -      -             4.96g      - free
+disk emc_clariion0_592    -      -             4.96g      - free
+disk emc_clariion0_593    -      -             4.96g      - free
+disk emc_clariion0_594    -      -             4.96g      - free
+disk emc_clariion0_750    -      -             4.96g      - free
+disk emc_clariion0_751    -      -             4.96g      - free
+disk emc_clariion0_752    -      -             4.96g      - free
+disk emc_clariion0_753    -      -             4.96g      - free
+disk emc_clariion0_754    -      -             4.96g      - free
+disk emc_clariion0_755    -      -             4.96g      - free
+disk emc_clariion0_756    -      -             4.96g      - free
+disk emc_clariion0_808    -      -             4.96g      - free
+disk emc_clariion0_809    -      -             4.96g      - free
+disk emc_clariion0_810    -      -             4.96g      - free
+disk emc_clariion0_811    -      -             4.96g      - free
+disk emc_clariion0_812    -      -             4.96g      - free
+disk emc_clariion0_1599   -      -             4.96g      - free
+disk emc_clariion0_1600   -      -             4.96g      - free
+disk emc_clariion0_1601   -      -             4.96g      - free
+disk emc_clariion0_1602   -      -             4.96g      - free
+disk emc_clariion0_1603   -      -             4.96g      - free
+disk emc_clariion0_1604   -      -             4.96g      - free
+disk emc_clariion0_1605   -      -             4.96g      - free
+disk emc_clariion0_1606   -      -             4.96g      - free
+disk emc_clariion0_1607   -      -             4.96g      - free
+disk emc_clariion0_1608   -      -             4.96g      - free
+disk emc_clariion0_1609   -      -             4.96g      - free
+disk emc_clariion0_1610   -      -             4.96g      - free
+disk emc_clariion0_1611   -      -             4.96g      - free
+disk emc_clariion0_1612   -      -             4.96g      - free
+disk emc_clariion0_1613   -      -             4.96g      - free
+disk sdcj                 -      -                 -      - LVM
+
+
+DATE:2017-08-10 11:04:27
+HOST:l111051
+USER:root
+STDIN:vxdmpadm getsubpaths
+STDOUT:
+NAME         STATE[A]   PATH-TYPE[M] DMPNODENAME  ENCLR-NAME   CTLR           ATTRS      PRIORITY
+=================================================================================================
+sdcj         ENABLED(A)   -          sdcj         disk         c8              -         -
+sdaf         ENABLED    Active/Non-Optimized emc_clariion0_1599 emc_clariion0 c4              -         -
+sdbu         ENABLED(A) Active/Optimized(P) emc_clariion0_1599 emc_clariion0 c7              -         -
+sdag         ENABLED    Active/Non-Optimized emc_clariion0_1600 emc_clariion0 c4              -         -
+sdbv         ENABLED(A) Active/Optimized(P) emc_clariion0_1600 emc_clariion0 c7              -         -
+sdah         ENABLED    Active/Non-Optimized emc_clariion0_1601 emc_clariion0 c4              -         -
+sdbw         ENABLED(A) Active/Optimized(P) emc_clariion0_1601 emc_clariion0 c7              -         -
+sdai         ENABLED    Active/Non-Optimized emc_clariion0_1602 emc_clariion0 c4              -         -
+sdbx         ENABLED(A) Active/Optimized(P) emc_clariion0_1602 emc_clariion0 c7              -         -
+sdaj         ENABLED    Active/Non-Optimized emc_clariion0_1603 emc_clariion0 c4              -         -
+sdby         ENABLED(A) Active/Optimized(P) emc_clariion0_1603 emc_clariion0 c7              -         -
+sdak         ENABLED    Active/Non-Optimized emc_clariion0_1604 emc_clariion0 c4              -         -
+sdbz         ENABLED(A) Active/Optimized(P) emc_clariion0_1604 emc_clariion0 c7              -         -
+sdal         ENABLED    Active/Non-Optimized emc_clariion0_1605 emc_clariion0 c4              -         -
+sdca         ENABLED(A) Active/Optimized(P) emc_clariion0_1605 emc_clariion0 c7              -         -
+sdam         ENABLED    Active/Non-Optimized emc_clariion0_1606 emc_clariion0 c4              -         -
+sdcb         ENABLED(A) Active/Optimized(P) emc_clariion0_1606 emc_clariion0 c7              -         -
+sdan         ENABLED    Active/Non-Optimized emc_clariion0_1607 emc_clariion0 c4              -         -
+sdcc         ENABLED(A) Active/Optimized(P) emc_clariion0_1607 emc_clariion0 c7              -         -
+sdao         ENABLED    Active/Non-Optimized emc_clariion0_1608 emc_clariion0 c4              -         -
+sdcd         ENABLED(A) Active/Optimized(P) emc_clariion0_1608 emc_clariion0 c7              -         -
+sdap         ENABLED    Active/Non-Optimized emc_clariion0_1609 emc_clariion0 c4              -         -
+sdce         ENABLED(A) Active/Optimized(P) emc_clariion0_1609 emc_clariion0 c7              -         -
+sdaq         ENABLED    Active/Non-Optimized emc_clariion0_1610 emc_clariion0 c4              -         -
+sdcf         ENABLED(A) Active/Optimized(P) emc_clariion0_1610 emc_clariion0 c7              -         -
+sdar         ENABLED    Active/Non-Optimized emc_clariion0_1611 emc_clariion0 c4              -         -
+sdcg         ENABLED(A) Active/Optimized(P) emc_clariion0_1611 emc_clariion0 c7              -         -
+sdas         ENABLED    Active/Non-Optimized emc_clariion0_1612 emc_clariion0 c4              -         -
+sdch         ENABLED(A) Active/Optimized(P) emc_clariion0_1612 emc_clariion0 c7              -         -
+sdat         ENABLED    Active/Non-Optimized emc_clariion0_1613 emc_clariion0 c4              -         -
+sdci         ENABLED(A) Active/Optimized(P) emc_clariion0_1613 emc_clariion0 c7              -         -
+sdav         ENABLED(A) Active/Optimized(P) emc_clariion0_565 emc_clariion0 c7              -         -
+sdg          ENABLED(A) Active/Optimized emc_clariion0_565 emc_clariion0 c4              -         -
+sdaw         ENABLED(A) Active/Optimized(P) emc_clariion0_566 emc_clariion0 c7              -         -
+sdh          ENABLED(A) Active/Optimized emc_clariion0_566 emc_clariion0 c4              -         -
+sdax         ENABLED(A) Active/Optimized(P) emc_clariion0_567 emc_clariion0 c7              -         -
+sdi          ENABLED(A) Active/Optimized emc_clariion0_567 emc_clariion0 c4              -         -
+sday         ENABLED(A) Active/Optimized(P) emc_clariion0_568 emc_clariion0 c7              -         -
+sdj          ENABLED(A) Active/Optimized emc_clariion0_568 emc_clariion0 c4              -         -
+sdaz         ENABLED(A) Active/Optimized(P) emc_clariion0_569 emc_clariion0 c7              -         -
+sdk          ENABLED(A) Active/Optimized emc_clariion0_569 emc_clariion0 c4              -         -
+sdba         ENABLED(A) Active/Optimized(P) emc_clariion0_570 emc_clariion0 c7              -         -
+sdl          ENABLED(A) Active/Optimized emc_clariion0_570 emc_clariion0 c4              -         -
+sdbb         ENABLED(A) Active/Optimized(P) emc_clariion0_571 emc_clariion0 c7              -         -
+sdm          ENABLED(A) Active/Optimized emc_clariion0_571 emc_clariion0 c4              -         -
+sdbc         ENABLED(A) Active/Optimized(P) emc_clariion0_572 emc_clariion0 c7              -         -
+sdn          ENABLED(A) Active/Optimized emc_clariion0_572 emc_clariion0 c4              -         -
+sdbd         ENABLED(A) Active/Optimized(P) emc_clariion0_573 emc_clariion0 c7              -         -
+sdo          ENABLED(A) Active/Optimized emc_clariion0_573 emc_clariion0 c4              -         -
+sdbe         ENABLED(A) Active/Optimized(P) emc_clariion0_574 emc_clariion0 c7              -         -
+sdp          ENABLED(A) Active/Optimized emc_clariion0_574 emc_clariion0 c4              -         -
+sdbf         ENABLED(A) Active/Optimized(P) emc_clariion0_592 emc_clariion0 c7              -         -
+sdq          ENABLED(A) Active/Optimized emc_clariion0_592 emc_clariion0 c4              -         -
+sdbg         ENABLED(A) Active/Optimized(P) emc_clariion0_593 emc_clariion0 c7              -         -
+sdr          ENABLED(A) Active/Optimized emc_clariion0_593 emc_clariion0 c4              -         -
+sdbh         ENABLED(A) Active/Optimized(P) emc_clariion0_594 emc_clariion0 c7              -         -
+sds          ENABLED(A) Active/Optimized emc_clariion0_594 emc_clariion0 c4              -         -
+sdbi         ENABLED(A) Active/Optimized(P) emc_clariion0_750 emc_clariion0 c7              -         -
+sdt          ENABLED(A) Active/Optimized emc_clariion0_750 emc_clariion0 c4              -         -
+sdbj         ENABLED(A) Active/Optimized(P) emc_clariion0_751 emc_clariion0 c7              -         -
+sdu          ENABLED(A) Active/Optimized emc_clariion0_751 emc_clariion0 c4              -         -
+sdbk         ENABLED(A) Active/Optimized(P) emc_clariion0_752 emc_clariion0 c7              -         -
+sdv          ENABLED(A) Active/Optimized emc_clariion0_752 emc_clariion0 c4              -         -
+sdbl         ENABLED(A) Active/Optimized(P) emc_clariion0_753 emc_clariion0 c7              -         -
+sdw          ENABLED(A) Active/Optimized emc_clariion0_753 emc_clariion0 c4              -         -
+sdbm         ENABLED(A) Active/Optimized(P) emc_clariion0_754 emc_clariion0 c7              -         -
+sdx          ENABLED(A) Active/Optimized emc_clariion0_754 emc_clariion0 c4              -         -
+sdbn         ENABLED(A) Active/Optimized(P) emc_clariion0_755 emc_clariion0 c7              -         -
+sdy          ENABLED(A) Active/Optimized emc_clariion0_755 emc_clariion0 c4              -         -
+sdbo         ENABLED(A) Active/Optimized(P) emc_clariion0_756 emc_clariion0 c7              -         -
+sdz          ENABLED(A) Active/Optimized emc_clariion0_756 emc_clariion0 c4              -         -
+sdaa         ENABLED(A) Active/Optimized emc_clariion0_808 emc_clariion0 c4              -         -
+sdbp         ENABLED(A) Active/Optimized(P) emc_clariion0_808 emc_clariion0 c7              -         -
+sdab         ENABLED(A) Active/Optimized emc_clariion0_809 emc_clariion0 c4              -         -
+sdbq         ENABLED(A) Active/Optimized(P) emc_clariion0_809 emc_clariion0 c7              -         -
+sdac         ENABLED(A) Active/Optimized emc_clariion0_810 emc_clariion0 c4              -         -
+sdbr         ENABLED(A) Active/Optimized(P) emc_clariion0_810 emc_clariion0 c7              -         -
+sdad         ENABLED(A) Active/Optimized emc_clariion0_811 emc_clariion0 c4              -         -
+sdbs         ENABLED(A) Active/Optimized(P) emc_clariion0_811 emc_clariion0 c7              -         -
+sdae         ENABLED(A) Active/Optimized emc_clariion0_812 emc_clariion0 c4              -         -
+sdbt         ENABLED(A) Active/Optimized(P) emc_clariion0_812 emc_clariion0 c7              -         -
+
+
+DATE:2017-08-10 11:04:29
+HOST:l111051
+USER:root
+STDIN:/opt/VRTS/bin/vxdiskunsetup -Cf emc_clariion0_812 && vxdisk rm emc_clariion0_812
+STDOUT:
+
+
+
+====STEP: Make the 1st vg/zpool,then make volume and fs and mount it
+DATE:2017-08-10 11:04:29
+
+***creating native vg/zpool***
+
+
+
+DATE:2017-08-10 11:04:30
+HOST:l111051
+USER:root
+STDIN:[ -f /etc/lvm/lvm.conf.bk ] || cp -pf /etc/lvm/lvm.conf /etc/lvm/lvm.conf.bk
+STDOUT:
+
+
+
+DATE:2017-08-10 11:04:31
+HOST:l111051
+USER:root
+STDIN:multipath -ll > /dev/null 2>&1 && multipath -F > /dev/null 2>&1 || (exit 0)
+STDOUT:
+
+
+
+DATE:2017-08-10 11:04:32
+HOST:l111051
+USER:root
+STDIN:pvcreate -y /dev/sdbt
+STDOUT:
+  Wiping sun signature on /dev/sdbt.
+  Physical volume "/dev/sdbt" successfully created
+
+
+DATE:2017-08-10 11:04:33
+HOST:l111051
+USER:root
+STDIN:vgcreate autotcvg1 /dev/sdbt
+STDOUT:
+  Volume group "autotcvg1" successfully created
+
+
+DATE:2017-08-10 11:04:34
+HOST:l111051
+USER:root
+STDIN:vgs
+STDOUT:
+  VG        #PV #LV #SN Attr   VSize VFree
+  autotcvg1   1   0   0 wz--n- 5.00g 5.00g
+
+***Create native lv and make filesystem***
+
+
+
+DATE:2017-08-10 11:04:35
+HOST:l111051
+USER:root
+STDIN:lvcreate -n autotclv1 -L 2G autotcvg1
+STDOUT:
+  Logical volume "autotclv1" created.
+
+
+DATE:2017-08-10 11:04:36
+HOST:l111051
+USER:root
+STDIN:mkfs -t ext3 /dev/autotcvg1/autotclv1
+STDOUT:
+mke2fs 1.42.9 (28-Dec-2013)
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=0 blocks, Stripe width=0 blocks
+131072 inodes, 524288 blocks
+26214 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=536870912
+16 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912
+
+Allocating group tables:  0/16     done                            
+Writing inode tables:  0/16     done                            
+Creating journal (16384 blocks): done
+Writing superblocks and filesystem accounting information:  0/16     done
+
+***Mount the native filesystem***
+
+
+
+DATE:2017-08-10 11:04:37
+HOST:l111051
+USER:root
+STDIN:mkdir -p /autotclv1 && mount -t ext3 /dev/autotcvg1/autotclv1 /autotclv1
+STDOUT:
+
+
+
+DATE:2017-08-10 11:04:38
+HOST:l111051
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sdcj2 127G 5.0G 116G 5% /
+devtmpfs 1.9G 0 1.9G 0% /dev
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 1.9G 11M 1.9G 1% /run
+tmpfs 1.9G 0 1.9G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 379M 0 379M 0% /run/user/0
+/dev/mapper/autotcvg1-autotclv1 2.0G 3.1M 1.9G 1% /autotclv1
+
+
+====STEP: Convert the 1st native vg/zpool to vxvm dg,free space required by vxfsconvert is approximately 12%-15% of the total file system size
+DATE:2017-08-10 11:04:38
+
+
+DATE:2017-08-10 11:04:45
+HOST:l111051
+USER:root
+STDIN:/tmp/tmpfile.13701 -s 104857600 -n 10 -d /autotclv1;sync
+STDOUT:
+
+
+
+DATE:2017-08-10 11:04:51
+HOST:l111051
+USER:root
+STDIN:find /autotclv1 -type f|grep -v lost|sort -n|xargs cksum
+STDOUT:
+873713157 104857600 /autotclv1/mf/mf_0_0
+154201535 104857600 /autotclv1/mf/mf_0_1
+3732511093 104857600 /autotclv1/mf/mf_0_2
+1667150892 104857600 /autotclv1/mf/mf_0_3
+1089209931 104857600 /autotclv1/mf/mf_0_4
+1410144477 104857600 /autotclv1/mf/mf_1_5
+2009049786 104857600 /autotclv1/mf/mf_1_6
+3643105000 104857600 /autotclv1/mf/mf_1_7
+3452190846 104857600 /autotclv1/mf/mf_1_8
+860817816 104857600 /autotclv1/mf/mf_1_9
+
+
+DATE:2017-08-10 11:04:52
+HOST:l111051
+USER:root
+STDIN:umount /autotclv1
+STDOUT:
+
+
+
+DATE:2017-08-10 11:04:53
+HOST:l111051
+USER:root
+STDIN:modprobe dm_mirror
+STDOUT:
+
+
+
+DATE:2017-08-10 11:04:54
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/expect_test.exp l111051
+STDOUT:
+spawn ssh l111051
+Warning: Permanently added 'l111051,10.200.111.51' (RSA) to the list of known hosts.
+Last login: Thu Aug 10 03:05:52 2017 from 10.198.92.152
+[root@l111051 ~]# exit 0
+logout
+Connection to l111051 closed.
+
+
+DATE:2017-08-10 11:04:54
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:cat /opt/itf/tmp/expect.exp.13701
+STDOUT:
+#!/usr/bin/expect
+set timeout 20
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no l111051
+expect {
+	"#" {send "vxvmconvert\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+set timeout 20
+expect {
+	"Select an operation to perform:" {send "2\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Select an operation to perform:'";exit 2}
+}
+set timeout 60
+expect {
+	"list,listvg,q" {send "autotcvg1\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'list,listvg,q'";exit 2}
+}
+set timeout 60
+expect {
+	"Convert this Volume Group?" {send "y\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Convert this Volume Group?'";exit 2}
+}
+set timeout 60
+expect {
+	"Hit RETURN to continue." {send " \r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Hit RETURN to continue.'";exit 2}
+}
+set timeout 600
+expect {
+	"Are you ready to commit to these changes?" {send "y\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Are you ready to commit to these changes?'";exit 2}
+}
+set timeout 600
+expect {
+	"Convert other LVM Volume Groups?" {send "n\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Convert other LVM Volume Groups?'";exit 2}
+}
+set timeout 20
+expect {
+	"Select an operation to perform:" {send "q\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Select an operation to perform:'";exit 2}
+}
+set timeout 20
+expect {
+	"#" {send "exit 0\r"}
+	eof {exit 1}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+expect eof
+
+
+DATE:2017-08-10 11:05:34
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/tmp/expect.exp.13701
+STDOUT:
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no l111051
+Last login: Thu Aug 10 03:06:57 2017 from 10.198.92.152
+[root@l111051 ~]# vxvmconvert
+
+Volume Manager Support Operations
+Menu:: VolumeManager/LVM_Conversion
+
+ 1	Analyze LVM Volume Groups for Conversion
+ 2	Convert LVM Volume Groups to VxVM
+ 3	Roll back from VxVM to LVM
+ list	List disk information
+ listvg	List LVM Volume Group information
+
+
+ ?	Display help about menu
+ ??	Display help about the menuing system
+ q	Exit from menus
+
+Select an operation to perform: 2
+
+
+Convert one or more LVM Volume Groups
+Menu:: VolumeManager/LVM_Conversion/Convert_LVM_VGs
+
+  Use this operation to convert LVM Volume Groups to VxVM disk groups.
+  This adds the disks to a disk group and replaces existing LVM volumes
+  with VxVM volumes.  LVM-VxVM Volume Group conversion may require a
+  reboot for the changes to take effect. For this release, only
+  Non-root LVM Volume Groups can be converted.
+
+  More than one Volume Group or pattern may be entered at the prompt.
+  Here are some LVM Volume Group selection examples:
+
+  all:		convert all LVM Volume Groups (all except Root VG)
+  listvg:	list all LVM Volume Groups
+  list:		list all disk devices
+  vg_name:	a single LVM Volume Group, named vg_name
+  <pattern>:	for example:  vg04 vg08 vg09
+
+Select Volume Groups to convert :
+[<pattern-list>,all,list,listvg,q,?]  autotcvg1
+
+  autotcvg1
+
+Convert this Volume Group? [y,n,q,?] (default: y) y
+Problem: Analysis shows Volume Group autotcvg1 still in use
+
+
+  Conversion Analysis of the following devices indicates that the
+  Volume Group is still in use, which may prevent the completion
+  of the conversion without having to reboot the system. You may
+  want to double check that none of the volumes in the volume
+  group are in use before continuing with the conversion.
+
+  /dev/sdbt
+
+Hit RETURN to continue. 
+
+
+
+   Second Stage Conversion Analysis of autotcvg1 
+
+  PV /dev/sdbt   VG autotcvg1   lvm2 [5.00 GiB / 3.00 GiB free]
+  Total: 1 [5.00 GiB] / in use: 1 [5.00 GiB] / in no VG: 0 [0   ]
+  Reading all physical volumes.  This may take a while...
+  Found volume group "autotcvg1" using metadata type lvm2
+  inactive          '/dev/autotcvg1/autotclv1' [2.00 GiB] inherit
+  PV /dev/sdbt   VG autotcvg1   lvm2 [5.00 GiB / 3.00 GiB free]
+  Total: 1 [5.00 GiB] / in use: 1 [5.00 GiB] / in no VG: 0 [0   ]
+  inactive          '/dev/autotcvg1/autotclv1' [2.00 GiB] inherit
+ls: cannot access /dev/autotcvg1: No such file or directory
+ls: cannot access /dev/autotcvg1: No such file or directory
+
+  Volume Group autotcvg1 has been analyzed and prepared for conversion.
+
+Are you ready to commit to these changes? [y,n,q,?] (default: y) y
+
+  Preparing VG autotcvg1 for conversion, (possibly migrating extents) please wait .
+  /dev/sdbt: Moved: 100.0%
+...
+vxlvmconv: making log directory /etc/vx/lvmconv/autotcvg1.d/log.
+vxlvmconv: starting conversion for VG "autotcvg1" - Thu Aug 10 03:07:33 UTC 2017
+vxlvmconv: Checking disk connectivity
+Starting Conversion of autotcvg1 to VxVM
+lvmoff .
+fdisk .
+disksetup .
+dginit ..
+make .
+volinit .
+Saving rollback info for autotcvg1 to LVM
+vxlvmconv: Conversion complete.
+
+Convert other LVM Volume Groups? [y,n,q,?] (default: n) n
+
+Volume Manager Support Operations
+Menu:: VolumeManager/LVM_Conversion
+
+ 1	Analyze LVM Volume Groups for Conversion
+ 2	Convert LVM Volume Groups to VxVM
+ 3	Roll back from VxVM to LVM
+ list	List disk information
+ listvg	List LVM Volume Group information
+
+
+ ?	Display help about menu
+ ??	Display help about the menuing system
+ q	Exit from menus
+
+Select an operation to perform: q
+
+Goodbye.
+[root@l111051 ~]# exit 0
+logout
+expectresult:0
+
+
+DATE:2017-08-10 11:05:34
+HOST:l111051
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcvg1    enabled              1502334456.77.l111051.cdc.veritas.com
+
+
+DATE:2017-08-10 11:05:35
+HOST:l111051
+USER:root
+STDIN:vxprint -g autotcvg1
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg autotcvg1    autotcvg1    -        -        -        -        -       -
+
+dm autotcvg101  emc_clariion0_812 -   10467328 -        -        -       -
+
+v  autotclv1    fsgen        ENABLED  4194304  -        ACTIVE   -       -
+pl autotclv1-01 autotclv1    ENABLED  4194304  -        ACTIVE   -       -
+sd autotcvg101-01 autotclv1-01 ENABLED 8192    0        -        -       -
+sd autotcvg101-02 autotclv1-01 ENABLED 4186112 8192     -        -       -
+
+
+DATE:2017-08-10 11:05:36
+HOST:l111051
+USER:root
+STDIN:mount -t ext3 /dev/vx/dsk/autotcvg1/autotclv1 /autotclv1
+STDOUT:
+
+
+
+DATE:2017-08-10 11:05:37
+HOST:l111051
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sdcj2 127G 5.0G 116G 5% /
+devtmpfs 1.9G 0 1.9G 0% /dev
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 1.9G 11M 1.9G 1% /run
+tmpfs 1.9G 0 1.9G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 379M 0 379M 0% /run/user/0
+/dev/vx/dsk/autotcvg1/autotclv1 2.0G 1005M 846M 55% /autotclv1
+
+
+DATE:2017-08-10 11:05:44
+HOST:l111051
+USER:root
+STDIN:find /autotclv1 -type f|grep -v lost|sort -n|xargs cksum
+STDOUT:
+873713157 104857600 /autotclv1/mf/mf_0_0
+154201535 104857600 /autotclv1/mf/mf_0_1
+3732511093 104857600 /autotclv1/mf/mf_0_2
+1667150892 104857600 /autotclv1/mf/mf_0_3
+1089209931 104857600 /autotclv1/mf/mf_0_4
+1410144477 104857600 /autotclv1/mf/mf_1_5
+2009049786 104857600 /autotclv1/mf/mf_1_6
+3643105000 104857600 /autotclv1/mf/mf_1_7
+3452190846 104857600 /autotclv1/mf/mf_1_8
+860817816 104857600 /autotclv1/mf/mf_1_9
+
+***the cksum value keep the same after doing vm convert.***
+
+
+
+====STEP: Convert the 1st native filessytem to vxfs
+DATE:2017-08-10 11:05:44
+
+
+DATE:2017-08-10 11:05:45
+HOST:l111051
+USER:root
+STDIN:umount /autotclv1
+STDOUT:
+
+
+
+DATE:2017-08-10 11:05:46
+HOST:l111051
+USER:root
+STDIN:/opt/VRTS/bin/vxfsconvert -y /dev/vx/dsk/autotcvg1/autotclv1
+STDOUT:
+Do you wish to commit to conversion? (ynq) UX:vxfs vxfsconvert: INFO: V-3-21852:  CONVERSION WAS SUCCESSFUL
+y
+
+
+DATE:2017-08-10 11:05:47
+HOST:l111051
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/autotcvg1/autotclv1
+STDOUT:
+vxfs
+
+
+DATE:2017-08-10 11:05:48
+HOST:l111051
+USER:root
+STDIN:fsck -t vxfs -y /dev/vx/dsk/autotcvg1/autotclv1
+STDOUT:
+fsck from util-linux 2.23.2
+super-block indicates that intent logging was disabled
+cannot perform log replay
+file system is not clean, full fsck required
+pass0 - checking structural files
+fileset 1 primary-ilist inode 17 (Smapbadino)
+		failed validation clear? (ynq)y
+fileset 1 primary-ilist inode 18 (Emapbadino)
+		failed validation clear? (ynq)y
+pass1 - checking inode sanity and blocks
+rebuild structural files? (ynq)y
+pass0 - checking structural files
+pass1 - checking inode sanity and blocks
+pass2 - checking directory linkage
+pass3 - checking reference counts
+pass4 - checking resource maps
+fileset 1 au 0 imap incorrect - fix (ynq)y
+fileset 999 au 0 imap incorrect - fix (ynq)y
+no CUT entry for fileset 1, fix? (ynq)y
+no CUT entry for fileset 999, fix? (ynq)y
+au 0 emap incorrect - fix? (ynq)y
+au 0 summary incorrect - fix? (ynq)y
+au 1 emap incorrect - fix? (ynq)y
+au 1 summary incorrect - fix? (ynq)y
+au 2 emap incorrect - fix? (ynq)y
+au 2 summary incorrect - fix? (ynq)y
+au 3 emap incorrect - fix? (ynq)y
+au 3 summary incorrect - fix? (ynq)y
+au 4 emap incorrect - fix? (ynq)y
+au 4 summary incorrect - fix? (ynq)y
+au 5 emap incorrect - fix? (ynq)y
+au 5 summary incorrect - fix? (ynq)y
+au 6 emap incorrect - fix? (ynq)y
+au 6 summary incorrect - fix? (ynq)y
+au 7 emap incorrect - fix? (ynq)y
+au 7 summary incorrect - fix? (ynq)y
+au 8 emap incorrect - fix? (ynq)y
+au 8 summary incorrect - fix? (ynq)y
+au 9 emap incorrect - fix? (ynq)y
+au 9 summary incorrect - fix? (ynq)y
+au 10 emap incorrect - fix? (ynq)y
+au 10 summary incorrect - fix? (ynq)y
+au 11 emap incorrect - fix? (ynq)y
+au 11 summary incorrect - fix? (ynq)y
+au 12 emap incorrect - fix? (ynq)y
+au 12 summary incorrect - fix? (ynq)y
+au 13 emap incorrect - fix? (ynq)y
+au 13 summary incorrect - fix? (ynq)y
+au 14 emap incorrect - fix? (ynq)y
+au 14 summary incorrect - fix? (ynq)y
+au 15 emap incorrect - fix? (ynq)y
+au 15 summary incorrect - fix? (ynq)y
+fileset 1 iau 0 summary incorrect - fix? (ynq)y
+fileset 999 iau 0 summary incorrect - fix? (ynq)y
+free block count incorrect 0 expected 263321 fix? (ynq)y
+ fsuuid incorrect fix? (ynq)y
+free extent vector incorrect fix? (ynq)y
+OK to clear log? (ynq)y
+flush fileset headers? (ynq)y
+set state to CLEAN? (ynq)y
+
+
+DATE:2017-08-10 11:05:49
+HOST:l111051
+USER:root
+STDIN:mkdir -p /autotclv1 && mount  -t vxfs /dev/vx/dsk/autotcvg1/autotclv1 /autotclv1
+STDOUT:
+
+
+
+DATE:2017-08-10 11:05:50
+HOST:l111051
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sdcj2 127G 5.0G 116G 5% /
+devtmpfs 1.9G 0 1.9G 0% /dev
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 1.9G 11M 1.9G 1% /run
+tmpfs 1.9G 0 1.9G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 379M 0 379M 0% /run/user/0
+/dev/vx/dsk/autotcvg1/autotclv1 2.0G 1020M 1015M 51% /autotclv1
+
+
+DATE:2017-08-10 11:05:57
+HOST:l111051
+USER:root
+STDIN:find /autotclv1 -type f|grep -v lost|sort -n|xargs cksum
+STDOUT:
+873713157 104857600 /autotclv1/mf/mf_0_0
+154201535 104857600 /autotclv1/mf/mf_0_1
+3732511093 104857600 /autotclv1/mf/mf_0_2
+1667150892 104857600 /autotclv1/mf/mf_0_3
+1089209931 104857600 /autotclv1/mf/mf_0_4
+1410144477 104857600 /autotclv1/mf/mf_1_5
+2009049786 104857600 /autotclv1/mf/mf_1_6
+3643105000 104857600 /autotclv1/mf/mf_1_7
+3452190846 104857600 /autotclv1/mf/mf_1_8
+860817816 104857600 /autotclv1/mf/mf_1_9
+
+***the cksum value keep the same after doing fs convert.***
+
+
+
+
+Flag line to indicate case is completed.
+
+
+
+
+
+Case Result:Passed
+DATE:2017-08-10 11:05:57
+Duration:2m9s

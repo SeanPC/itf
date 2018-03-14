@@ -1,0 +1,321 @@
+
+==================== Operation Log for TC print_env ====================
+DATE:2017-05-12 15:27:03
+Nodes:l111013 l111014
+
+
+====STEP: Check and Print environment
+DATE:2017-05-12 15:27:03
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-05-12 15:27:03
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:19208940 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:11832833 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3877447633 (3.6 GiB)  TX bytes:13439477260 (12.5 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:28320 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:28320 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:3539205 (3.3 MiB)  TX bytes:3539205 (3.3 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-05-12 15:27:04
+HOST:l111013
+USER:root
+STDIN:ssh -l root l111013
+STDOUT:
+
+
+
+DATE:2017-05-12 15:27:07
+HOST:l111014
+USER:root
+STDIN:ssh -l root l111014
+STDOUT:
+
+
+
+DATE:2017-05-12 15:27:13
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111013,l111014
+STDOUT:
+
+
+
+DATE:2017-05-12 15:27:14
+HOST:l111013
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111013
+l111014
+
+
+DATE:2017-05-12 15:27:15
+HOST:l111014
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111013
+l111014
+
+
+DATE:2017-05-12 15:27:16
+HOST:l111013
+USER:root
+STDIN:[ -f /etc/VRTSvcs/conf/config/main.cf ] && cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster clus1314 (
+	UserNames = { admin = bIJbIDiFJeJJhRJdIG }
+	Administrators = { admin }
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111013 (
+	)
+
+system l111014 (
+	)
+
+group cfsgrp1 (
+	SystemList = { l111013 = 0, l111014 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111013, l111014 }
+	)
+
+	CFSMount cfsmount5 (
+		Critical = 0
+		MountPoint = "/autotc1"
+		BlockDevice = "/dev/vx/dsk/autotcdg/autotcvset1"
+		MountOpt @l111013 = rw
+		MountOpt @l111014 = rw
+		NodeList = { l111013, l111014 }
+		)
+
+	CVMVolDg cvmvoldg5 (
+		Critical = 0
+		CVMDiskGroup = autotcdg
+		CVMVolume = { autotcvol1, autotcvol2 }
+		CVMActivation @l111013 = sw
+		CVMActivation @l111014 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount5 requires cvmvoldg5
+
+
+	// resource dependency tree
+	//
+	//	group cfsgrp1
+	//	{
+	//	CFSMount cfsmount5
+	//	    {
+	//	    CVMVolDg cvmvoldg5
+	//	    }
+	//	}
+
+
+group cfsgrp2 (
+	SystemList = { l111013 = 0, l111014 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111013, l111014 }
+	)
+
+	CFSMount cfsmount6 (
+		Critical = 0
+		MountPoint = "/autotc2"
+		BlockDevice = "/dev/vx/dsk/autotcdg/autotcvset2"
+		MountOpt @l111013 = rw
+		MountOpt @l111014 = rw
+		NodeList = { l111013, l111014 }
+		)
+
+	CVMVolDg cvmvoldg6 (
+		Critical = 0
+		CVMDiskGroup = autotcdg
+		CVMVolume = { autotcvol3, autotcvol4 }
+		CVMActivation @l111013 = sw
+		CVMActivation @l111014 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount6 requires cvmvoldg6
+
+
+	// resource dependency tree
+	//
+	//	group cfsgrp2
+	//	{
+	//	CFSMount cfsmount6
+	//	    {
+	//	    CVMVolDg cvmvoldg6
+	//	    }
+	//	}
+
+
+group cfsgrp3 (
+	SystemList = { l111013 = 0, l111014 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111013, l111014 }
+	)
+
+	CFSMount cfsmount7 (
+		Critical = 0
+		MountPoint = "/autotc3"
+		BlockDevice = "/dev/vx/dsk/autotcdg/autotcvset3"
+		MountOpt @l111013 = rw
+		MountOpt @l111014 = rw
+		NodeList = { l111013, l111014 }
+		)
+
+	CVMVolDg cvmvoldg7 (
+		Critical = 0
+		CVMDiskGroup = autotcdg
+		CVMVolume = { autotcvol5, autotcvol6 }
+		CVMActivation @l111013 = sw
+		CVMActivation @l111014 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount7 requires cvmvoldg7
+
+
+	// resource dependency tree
+	//
+	//	group cfsgrp3
+	//	{
+	//	CFSMount cfsmount7
+	//	    {
+	//	    CVMVolDg cvmvoldg7
+	//	    }
+	//	}
+
+
+group cfsgrp4 (
+	SystemList = { l111013 = 0, l111014 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111013, l111014 }
+	)
+
+	CFSMount cfsmount8 (
+		Critical = 0
+		MountPoint = "/autotc4"
+		BlockDevice = "/dev/vx/dsk/autotcdg/autotcvset4"
+		MountOpt @l111013 = rw
+		MountOpt @l111014 = rw
+		NodeList = { l111013, l111014 }
+		)
+
+	CVMVolDg cvmvoldg8 (
+		Critical = 0
+		CVMDiskGroup = autotcdg
+		CVMVolume = { autotcvol7 }
+		CVMActivation @l111013 = sw
+		CVMActivation @l111014 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount8 requires cvmvoldg8
+
+
+	// resource dependency tree
+	//
+	//	group cfsgrp4
+	//	{
+	//	CFSMount cfsmount8
+	//	    {
+	//	    CVMVolDg cvmvoldg8
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { l111013 = 0, l111014 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111013, l111014 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111013 = { autotcdg = sw }
+		ActivationMode @l111014 = { autotcdg = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = clus1314
+		CVMNodeId = { l111013 = 0, l111014 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+Case Result:Passed
+DATE:2017-05-12 15:27:16
+Duration:0m13s

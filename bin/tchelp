@@ -1,0 +1,284 @@
+#!/bin/bash
+
+usage(){
+cat << EOF
+Usage:
+	tchelp -get status -node NODE0,[NODE1,NODE2..]
+	tchelp -get result -node NODE0,[NODE1,NODE2..]
+	tchelp -get olog -node NODE0,[NODE1,NODE2..]
+	tchelp -step num|all -tc TCNAME
+	tchelp -showfunc [Func Name]|reset
+	tchelp -showtc [-p]
+	tchelp -killbynode NodeName
+	tchelp -check tc1[,tc2...] [-genfile NODE1]
+EOF
+}
+
+GetArg(){
+local opts opt i key1 key2
+key1=$1
+key2=$2
+opts=`echo "$ARGS"|sed -r "s/ -$key1 | -$key2 /\n&/g"|sed -r "s/^\s+//"`
+i=0
+for opt in $key1 $key2
+do
+        arg[$i]=`echo "$opts"|grep "^-$opt"|awk '{print $2}'`
+        if [[ "${arg[$i]}" =~ ^$|^-|,$ ]]
+        then
+                usage
+		exit 1
+        fi
+        i=$[$i+1]
+done
+}
+getNode1(){
+local node
+node=$1
+if [ -f $BASE/lock/$node ]
+then
+	node1=`cat $BASE/lock/$node`
+fi
+}
+changeTime(){
+[ "$api" != yes ] && return 0
+stime=`date +%s -d "$stime"`
+ltime=`echo "$ltime"|sed -r "s/m/*60+/;s/s//"|bc`
+etime=`date +%s -d "$etime"`
+}
+getStatus(){
+local step1 step0 tc olog stime
+getResult
+if [ ! -f $baselog/.tcrun ]
+then
+	#echo "There is no tc running on ${arg[1]}"
+	exit 10
+fi
+tc=`cat $baselog/.tcrun`
+olog=`cat $baselog/$tc.olog`
+echo "$olog"|grep "Case Result:" > /dev/null 2>&1 && return 0
+step0=`cat $BASE/tc/$tc.tc |grep "oLog step"|grep -n oLog|tail -1|cut -d : -f 1`
+step1=`echo "$olog" |grep "====STEP"|grep -n STEP|tail -1|cut -d : -f 1`
+[ -z "$step1" ] && step1=1
+stime=`echo "$olog"|head -5|grep -oP "(?<=DATE:).*"|head -1`
+echo "$tc,,,In Process:$step1/$step0,,,$stime,,,-,,,-"
+}
+
+getResult(){
+local tc olog ologs stime ltime etime result
+if [ ! -f $baselog/logs/tc.list ]
+then
+	echo "Missing tc.list file"	
+	exit 1
+fi
+ologs=`cat $baselog/logs/tc.list|awk '$2=="1" {print "'$baselog'/" $1 ".olog"}'`
+for olog in $ologs
+do
+	cat $olog|grep "Case Result:" > /dev/null 2>&1 || continue
+	tc=`basename $olog|cut -d . -f 1`
+	stime=`cat "$olog"|head -5|grep -oP "(?<=DATE:).*"|head -1`
+        etime=`cat "$olog"|tail -10|grep -oP "(?<=DATE:).*"|tail -1`
+        ltime=`cat "$olog"|tail -10|grep -oP "(?<=Duration:).*"`
+        result=`cat "$olog"|tail -10|grep -oP "(?<=Case Result:).*"`
+	changeTime
+        echo "$tc,,,Finished:$result,,,$stime,,,$ltime,,,$etime"
+done
+}
+
+checkError(){
+local firsttc
+if [ -f $baselog/log ]
+then
+	echo "Found Error:"
+	cat $baselog/log
+	exit 1
+else
+	firsttc=`cat $baselog/.printenv`
+	if cat $baselog/$firsttc.olog |grep 'Case Result:Failed' > /dev/null 2>&1
+	then
+		echo "Found Error:"
+		cat $baselog/$firsttc.olog
+		exit 1
+	fi
+fi
+}
+
+getOlog(){
+local tc j
+j=1
+while true
+do
+	if [ ! -f $baselog/.tcrun ]
+	then
+		if [ $j = 0 ]
+		then
+			clear && tail -100 $baselog/$tc.olog
+		else
+			echo "There is no tc running on ${arg[1]}"
+			checkError
+		fi
+        	exit 10
+	else
+		j=0
+		tc=`cat $baselog/.tcrun`
+		clear
+		tail -100 $baselog/$tc.olog
+		sleep 1
+	fi
+done
+}
+
+GetFuncContent(){
+local n n0 n1 key file
+key=$1
+file=`grep -nlP "^$key\(" $BASE/lib/*`
+if [ -z "$file" ]
+then
+	echo "Invalid Func Name"
+	exit 1
+fi
+
+n=`cat $file|grep -nP "^$key\(\){"|cut -d : -f 1`
+[ -z "$n" ] && return 1
+n1=`cat $file|grep -n "^}"|cut -d : -f 1`
+n0=`echo "$n $n1"|xargs -n1|sort -n|grep -A 1 "^$n$"|tail -1`
+cat $file|sed -n "$n,$n0"p
+}
+
+listFunc(){
+local funcs func des 
+[ -f $file ] && cat $file && return 0
+funcs=`cat $BASE/lib/*|grep -oP "^\w+(?=\()"`
+for func in $funcs
+do
+	des=`GetFuncContent $func|grep -P "\#DES:"|cut -d : -f 2`
+	[ -n "$des" ] && echo "$func:$des"|awk -F ":" '{printf "%-35s %-1s %-60s\n",$1,":",$2}'
+done|sort -n | tee $file
+}
+listFuncDetail(){
+local content opts
+GetArg showfunc
+content=`GetFuncContent ${arg[0]}`
+#opts=`echo "$content"|grep -P "\w+=\\\$[1-9]{1}" |cut -d = -f 1|xargs -n 100`
+echo "$content"|grep -oP "\w+(?=\=\\\$[1-9]{1})" > $BASE/tmp/listopt.$pid
+opts=`cat $BASE/tmp/listopt.$pid|xargs -n 100|tr [a-z] [A-Z]` && rm -f $BASE/tmp/listopt.$pid || exit 1
+echo -e "\nUsage: ${arg[0]} $opts\n\nSource:\n"
+echo "$content"
+echo 
+}
+
+ARGS=$*
+pid=$$
+BASE=/opt/itf
+if [[ "$ARGS" =~ -get ]]
+then
+	echo "$ARGS"|grep API > /dev/null 2>&1 && api=yes || api=no
+	GetArg get node
+	node1=`echo "${arg[1]}"|cut -d , -f 1`
+	[ -z "$baselog" ] && baselog=$BASE/log/$node1
+	if [ "${arg[0]}" = status ]
+	then
+		getStatus
+	elif [ "${arg[0]}" = result ]
+	then
+		getResult
+	else
+		getOlog
+	fi
+elif [[ "$ARGS" =~ -step ]]
+then
+	GetArg step tc
+	tc=${arg[1]}
+	[[ "$tc" =~ \.tc$ ]] && tc=`echo $tc|cut -d . -f 1` 
+	tc=$BASE/tc/$tc.tc
+	[ ! -f $tc ] && echo "Invalid case $tc" && exit 1
+	if [ "${arg[0]}" = all ]
+	then
+		cat $tc |grep "^#des:"
+		cat $tc |grep "oLog step"|grep -n oLog|sed -r "s/oLog|step|\"//g;s/:\s+/: /"
+	elif [[ "${arg[0]}" =~ ^[0-9]+$ ]] 
+	then
+		 cat $tc |grep "oLog step"|grep -n oLog|sed -r "s/oLog|step|\"//g;s/:\s+/: /"|grep ^${arg[0]}
+	else
+		usage
+		exit 1
+	fi
+elif [[ "$ARGS" =~ -showfunc ]]
+then
+	file=$BASE/tmp/listfunc
+	if [ $# = 1 ]
+	then
+		listFunc
+	elif [ "$2" = reset ]
+	then
+		rm -f $file
+	else
+		listFuncDetail
+	fi
+elif [[ "$ARGS" =~ -showtc ]]
+then
+	if [ $# = 1 ]
+	then
+		ls $BASE/tc|grep -vP "print_env|test"|sort -n
+	else
+		for tc in `ls $BASE/tc|grep -vP "print_env|test"`
+		do
+			prio=`cat $BASE/tc/$tc|grep "#P"` && echo "$tc:$prio"|sed 's/#P:/ /'  || echo "$tc: 55"
+		done|sort -k 2 -n|awk '{printf "%-40s %-9s\n",$1,$2}'
+	fi
+elif [[ "$ARGS" =~ -killbynode ]]
+then
+	GetArg killbynode
+	process=`ps -ef|grep tcstart|grep ${arg[0]}`
+	pid=`echo "$process"|awk '{print $2}'|xargs -n1000`
+	[ -z "$pid" ] && echo "Failed to get process by node(s) \"${arg[0]}\"" && exit 1
+	kill -9 $pid
+	nodes=`echo "$process"|grep -oP "(?<=\-node)\s+[\w-,]+"|sed "s/,/ /g"|xargs -n1|sort -n|sort -u`
+	node1=`echo $nodes|awk '{print $1}'`
+	[ -z "$baselog" ] && baselog=$BASE/log/$node1
+	cd $baselog;rm -f .pid .tcrun
+	for node in $nodes
+	do
+		rm -rf $BASE/lock/$node
+	done
+elif [[ "$ARGS" =~ -check ]]
+then
+	file=$BASE/tmp/define.$pid
+	[[ "$ARGS" =~ -genfile ]] && GetArg check genfile || GetArg check
+	cd $BASE/tc
+	tcs=`echo "${arg[0]}"|sed "s/,/ /g"|xargs -n1|sed -r "s/([^\.][^t][^c])$/&.tc/g"|xargs -n1000`
+	for tc in $tcs
+	do
+		cat $tc > /dev/null 2>&1
+		[ $? -ne 0 ] && echo "ERROR.Invalid TC name: $tc" && exit 1
+	done
+	echo "Please excute below before tcstart or fill below into \$baselog/define" >&2
+	cat $tcs|grep "#value" >&2
+	for tc in $tcs
+	do
+		string=`cat $tc|grep "#VALUE"|cut -d : -f 2`
+		default=`cat $tc|grep "#DEFAULT"|cut -d : -f 2`
+		n1=`echo "$string"|awk -F "," '{print NF}'`
+		n2=`echo "$default"|awk -F "," '{print NF}'`
+		[ $n1 -ne $n2 ] && echo "ERROR.Missing default value in TC $tc" && exit 1
+		for i in `seq $n1`
+		do
+			s0=`echo "$string"|cut -d , -f $i`
+			d0=`echo "$default"|cut -d , -f $i`
+			echo "export $s0=\"$d0\""
+		done
+	done |sort -n|sort -u > $file
+	if [ -n "${arg[1]}" ]
+	then
+		definenode=`echo "${arg[1]}"|cut -d , -f 1`
+		[ -z "$baselog" ] && baselog=$BASE/log/$definenode && mkdir -p $baselog
+		define=$baselog/define
+		cat $file | tee $define
+		vi $define
+	else
+		cat $file
+	fi
+	rm -f $file
+else
+	usage
+	exit 1
+fi

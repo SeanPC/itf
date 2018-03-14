@@ -1,0 +1,158 @@
+
+==================== Operation Log for TC print_env ====================
+DATE:2017-07-03 06:21:33
+Nodes:l111050 l111058
+
+
+====STEP: Check and Print environment
+DATE:2017-07-03 06:21:33
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-07-03 06:21:33
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:13200908 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:2658292 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:2050382117 (1.9 GiB)  TX bytes:553755953 (528.1 MiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:298 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:298 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:48002 (46.8 KiB)  TX bytes:48002 (46.8 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-07-03 06:21:34
+HOST:l111050
+USER:root
+STDIN:ssh -l root l111050
+STDOUT:
+
+
+
+DATE:2017-07-03 06:21:36
+HOST:l111058
+USER:root
+STDIN:ssh -l root l111058
+STDOUT:
+
+
+
+DATE:2017-07-03 06:21:46
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111050,l111058
+STDOUT:
+
+
+
+DATE:2017-07-03 06:21:47
+HOST:l111050
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111050
+l111058
+
+
+DATE:2017-07-03 06:21:48
+HOST:l111058
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111050
+l111058
+
+
+DATE:2017-07-03 06:21:49
+HOST:l111050
+USER:root
+STDIN:[ -f /etc/VRTSvcs/conf/config/main.cf ] && cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster cluster5058 (
+	UserNames = { admin = cmnFmhMjnInnLvnHmk }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111050 (
+	)
+
+system l111058 (
+	)
+
+group cvm (
+	SystemList = { l111050 = 0, l111058 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111050, l111058 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111050 = { e28316345105431e = sw }
+		ActivationMode @l111058 = { e28316345105431e = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = cluster5058
+		CVMNodeId = { l111050 = 0, l111058 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+Case Result:Failed
+DATE:2017-07-03 06:21:49
+Duration:0m16s

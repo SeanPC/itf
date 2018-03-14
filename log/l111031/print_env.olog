@@ -1,0 +1,174 @@
+
+==================== Operation Log for TC print_env ====================
+DATE:2017-09-27 12:16:04
+Nodes:l111031 l111032
+
+
+====STEP: Check and Print environment
+DATE:2017-09-27 12:16:04
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-09-27 12:16:04
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:45540170 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:103041399 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3581034854 (3.3 GiB)  TX bytes:140127200589 (130.5 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:107140 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:107140 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:13727534 (13.0 MiB)  TX bytes:13727534 (13.0 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-09-27 12:16:06
+HOST:l111031
+USER:root
+STDIN:ssh -l root l111031
+STDOUT:
+
+
+
+DATE:2017-09-27 12:16:09
+HOST:l111032
+USER:root
+STDIN:ssh -l root l111032
+STDOUT:
+
+
+
+DATE:2017-09-27 12:16:15
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111031,l111032
+STDOUT:
+
+
+
+DATE:2017-09-27 12:16:16
+HOST:l111031
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+
+DATE:2017-09-27 12:16:17
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+
+DATE:2017-09-27 12:16:18
+HOST:l111031
+USER:root
+STDIN:[ -f /etc/VRTSvcs/conf/config/main.cf ] && cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sfrac31 (
+	SecureClus = 1
+	DefaultGuestAccess = 1
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111031 (
+	)
+
+system l111032 (
+	)
+
+group cvm (
+	SystemList = { l111031 = 0, l111032 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111031, l111032 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sfrac31
+		CVMNodeId = { l111031 = 0, l111032 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+
+Flag line to indicate case is completed.
+
+
+
+
+***Test case exit with code 0***
+
+
+
+Case Result:Passed
+DATE:2017-09-27 12:16:18
+Duration:0m14s

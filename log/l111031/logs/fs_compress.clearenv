@@ -1,0 +1,310 @@
+
+
+DATE:2017-05-25 05:55:42
+HOST:l111065
+USER:root
+STDIN:ps -ef|grep tmpfile
+STDOUT:
+root     21192 21190  0 13:55 ?        00:00:00 grep tmpfile
+
+
+DATE:2017-05-25 05:56:04
+HOST:l111031
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sfrac31 (
+	SecureClus = 1
+	DefaultGuestAccess = 1
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111031 (
+	)
+
+system l111032 (
+	)
+
+group cvm (
+	SystemList = { l111031 = 0, l111032 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111031, l111032 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sfrac31
+		CVMNodeId = { l111031 = 0, l111032 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+***umount vxfs on node l111031***
+
+
+
+DATE:2017-05-25 05:56:06
+HOST:l111031
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda1 79G 5.1G 70G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 19M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+10.198.90.16:/re 2.1T 2.0T 136G 94% /mnt
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 669M 334M 67% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 786M 224M 78% /autotcmnt1
+
+
+DATE:2017-05-25 05:56:08
+HOST:l111031
+USER:root
+STDIN:umount /autotcmnt0;umount /autotcmnt1;
+STDOUT:
+
+
+***umount vxfs on node l111032***
+
+
+
+DATE:2017-05-25 05:56:10
+HOST:l111032
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda1 79G 4.6G 71G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 27M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 786M 224M 78% /autotcmnt1
+
+
+DATE:2017-05-25 05:56:12
+HOST:l111032
+USER:root
+STDIN:umount /autotcmnt1;
+STDOUT:
+
+
+
+DATE:2017-05-25 05:56:14
+HOST:l111031
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      DEVICE
+
+
+DATE:2017-05-25 05:56:15
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      DEVICE
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-05-25 05:56:17
+HOST:l111031
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen621
+
+
+DATE:2017-05-25 05:56:19
+HOST:l111031
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_102 auto:cdsdisk    -            -            online thinrclm
+ams_25000_103 auto:LVM        -            -            LVM
+ams_25000_104 auto:cdsdisk    -            -            online thinrclm
+ams_25000_105 auto:cdsdisk    -            (fen621)     online thinrclm
+ams_25000_106 auto:cdsdisk    -            (fen621)     online thinrclm
+ams_25000_107 auto:cdsdisk    -            (fen621)     online thinrclm
+ams_25000_108 auto:cdsdisk    -            -            online thinrclm
+ams_25000_109 auto:cdsdisk    -            -            online thinrclm
+ams_25000_110 auto:cdsdisk    -            -            online thinrclm
+ams_25000_111 auto:cdsdisk    -            -            online thinrclm
+ams_25000_221 auto:cdsdisk    -            -            online thinrclm
+ams_25000_222 auto:cdsdisk    -            -            online thinrclm
+ams_25000_233 auto:cdsdisk    -            -            online thinrclm
+ams_25000_234 auto:cdsdisk    -            -            online thinrclm
+ams_25000_235 auto:cdsdisk    -            -            online thinrclm
+ams_25000_245 auto:cdsdisk    -            -            online thinrclm
+ams_25000_246 auto:cdsdisk    -            -            online thinrclm
+ams_25000_247 auto:cdsdisk    -            -            online thinrclm
+ams_25000_248 auto:cdsdisk    -            -            online thinrclm
+ams_25000_249 auto:cdsdisk    -            -            online thinrclm
+ams_25000_383 auto:cdsdisk    -            -            online
+ams_25000_384 auto:cdsdisk    -            -            online
+ams_25000_385 auto:cdsdisk    -            -            online
+ams_25000_386 auto:cdsdisk    -            -            online
+ams_25000_387 auto:cdsdisk    -            -            online
+ams_25000_393 auto:cdsdisk    -            -            online
+ams_25000_394 auto:cdsdisk    -            -            online
+ams_25000_395 auto:cdsdisk    -            -            online
+ams_25000_396 auto:cdsdisk    -            -            online
+ams_25000_397 auto:cdsdisk    -            -            online
+ams_25000_398 auto:cdsdisk    -            -            online
+ams_25000_399 auto:cdsdisk    -            -            online
+ams_25000_400 auto:cdsdisk    -            -            online
+ams_25000_401 auto:cdsdisk    -            -            online
+ams_25000_402 auto:cdsdisk    -            -            online
+ams_25000_403 auto:cdsdisk    -            -            online
+ams_25000_404 auto:cdsdisk    -            -            online
+ams_25000_405 auto:cdsdisk    -            -            online
+ams_25000_406 auto:cdsdisk    ams_25000_406  autotcdg1    online shared
+ams_25000_407 auto:cdsdisk    ams_25000_407  autotcdg0    online
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-05-25 05:56:20
+HOST:l111031
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcdg0    enabled,cds          1495691548.71.l111031.cdc.veritas.com
+autotcdg1    enabled,shared,cds   1495691552.73.l111031.cdc.veritas.com
+
+
+DATE:2017-05-25 05:56:22
+HOST:l111031
+USER:root
+STDIN:vxdg destroy autotcdg0
+STDOUT:
+
+
+
+DATE:2017-05-25 05:56:25
+HOST:l111031
+USER:root
+STDIN:vxdg destroy autotcdg1
+STDOUT:
+
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-05-25 05:56:27
+HOST:l111032
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen621
+
+
+DATE:2017-05-25 05:56:28
+HOST:l111032
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_102 auto:cdsdisk    -            -            online thinrclm
+ams_25000_103 auto:LVM        -            -            LVM
+ams_25000_104 auto:cdsdisk    -            -            online thinrclm
+ams_25000_105 auto:cdsdisk    -            (fen621)     online thinrclm
+ams_25000_106 auto:cdsdisk    -            (fen621)     online thinrclm
+ams_25000_107 auto:cdsdisk    -            (fen621)     online thinrclm
+ams_25000_108 auto:cdsdisk    -            -            online thinrclm
+ams_25000_109 auto:cdsdisk    -            -            online thinrclm
+ams_25000_110 auto:cdsdisk    -            -            online thinrclm
+ams_25000_111 auto:cdsdisk    -            -            online thinrclm
+ams_25000_221 auto:cdsdisk    -            -            online thinrclm
+ams_25000_222 auto:cdsdisk    -            -            online thinrclm
+ams_25000_233 auto:cdsdisk    -            -            online thinrclm
+ams_25000_234 auto:cdsdisk    -            -            online thinrclm
+ams_25000_235 auto:cdsdisk    -            -            online thinrclm
+ams_25000_245 auto:cdsdisk    -            -            online thinrclm
+ams_25000_246 auto:cdsdisk    -            -            online thinrclm
+ams_25000_247 auto:cdsdisk    -            -            online thinrclm
+ams_25000_248 auto:cdsdisk    -            -            online thinrclm
+ams_25000_249 auto:cdsdisk    -            -            online thinrclm
+ams_25000_383 auto:cdsdisk    -            -            online
+ams_25000_384 auto:cdsdisk    -            -            online
+ams_25000_385 auto:cdsdisk    -            -            online
+ams_25000_386 auto:cdsdisk    -            -            online
+ams_25000_387 auto:cdsdisk    -            -            online
+ams_25000_393 auto:cdsdisk    -            -            online
+ams_25000_394 auto:cdsdisk    -            -            online
+ams_25000_395 auto:cdsdisk    -            -            online
+ams_25000_396 auto:cdsdisk    -            -            online
+ams_25000_397 auto:cdsdisk    -            -            online
+ams_25000_398 auto:cdsdisk    -            -            online
+ams_25000_399 auto:cdsdisk    -            -            online
+ams_25000_400 auto:cdsdisk    -            -            online
+ams_25000_401 auto:cdsdisk    -            -            online
+ams_25000_402 auto:cdsdisk    -            -            online
+ams_25000_403 auto:cdsdisk    -            -            online
+ams_25000_404 auto:cdsdisk    -            -            online
+ams_25000_405 auto:cdsdisk    -            -            online
+ams_25000_406 auto:cdsdisk    -            -            online
+ams_25000_407 auto:cdsdisk    -            -            online
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-05-25 05:56:30
+HOST:l111032
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID

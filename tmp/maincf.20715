@@ -1,0 +1,210 @@
+hagrp -add nfs_sg
+hagrp -modify nfs_sg SystemList  l007011 0 l007012 1
+hagrp -modify nfs_sg AutoFailOver 0
+hagrp -modify nfs_sg Parallel 1
+hagrp -modify nfs_sg AutoStartList  l007011 l007012
+hagrp -modify nfs_sg SourceFile "./main.cf"
+hares -add n1 NFS nfs_sg
+hares -modify n1 Nproc 8
+hares -modify n1 GracePeriod 90
+hares -modify n1 NFSSecurity 0
+hares -modify n1 NFSv4Support 0
+hares -modify n1 LockFileTimeout 180
+hares -modify n1 Protocol all
+hares -modify n1 Enabled 1
+hares -add ph1 Phantom nfs_sg
+hares -modify ph1 Enabled 1
+hagrp -add sg12
+hagrp -modify sg12 SystemList  l007011 0 l007012 2
+hagrp -modify sg12 AutoStartList  l007011
+hagrp -modify sg12 SourceFile "./main.cf"
+hares -add autotcdg2_sg12 DiskGroup sg12
+hares -modify autotcdg2_sg12 DiskGroup autotcdg2
+hares -modify autotcdg2_sg12 StartVolumes 0
+hares -modify autotcdg2_sg12 StopVolumes 0
+hares -modify autotcdg2_sg12 MonitorReservation 0
+hares -modify autotcdg2_sg12 tempUseFence INVALID
+hares -modify autotcdg2_sg12 Reservation ClusterDefault
+hares -modify autotcdg2_sg12 ClearClone 0
+hares -modify autotcdg2_sg12 Enabled 1
+hares -add ip_l007011 IP sg12
+hares -local ip_l007011 Device
+hares -modify ip_l007011 Device eth0 -sys l007011
+hares -modify ip_l007011 Device eth0 -sys l007012
+hares -modify ip_l007011 Address "10.200.7.23"
+hares -modify ip_l007011 NetMask "255.255.240.0"
+hares -modify ip_l007011 PrefixLen 1000
+hares -modify ip_l007011 Enabled 1
+hares -add mnt_autotcdg2_r0_2_autotcdg2 Mount sg12
+hares -modify mnt_autotcdg2_r0_2_autotcdg2 MountPoint "/autotcdir/ITF_3_autotcdg2_r0_2"
+hares -modify mnt_autotcdg2_r0_2_autotcdg2 BlockDevice "/dev/vx/dsk/autotcdg2/autotcdg2_r0_2"
+hares -modify mnt_autotcdg2_r0_2_autotcdg2 FSType vxfs
+hares -modify mnt_autotcdg2_r0_2_autotcdg2 MountOpt largefiles
+hares -modify mnt_autotcdg2_r0_2_autotcdg2 FsckOpt "%-y"
+hares -modify mnt_autotcdg2_r0_2_autotcdg2 SnapUmount 0
+hares -modify mnt_autotcdg2_r0_2_autotcdg2 CkptUmount 1
+hares -modify mnt_autotcdg2_r0_2_autotcdg2 RecursiveMnt 0
+hares -modify mnt_autotcdg2_r0_2_autotcdg2 VxFSMountLock 1
+hares -modify mnt_autotcdg2_r0_2_autotcdg2 Enabled 1
+hares -add mnt_autotcdg2_r10_1_autotcdg2 Mount sg12
+hares -modify mnt_autotcdg2_r10_1_autotcdg2 MountPoint "/autotcdir/ITF_1_autotcdg2_r10_1"
+hares -modify mnt_autotcdg2_r10_1_autotcdg2 BlockDevice "/dev/vx/dsk/autotcdg2/autotcdg2_r10_1"
+hares -modify mnt_autotcdg2_r10_1_autotcdg2 FSType vxfs
+hares -modify mnt_autotcdg2_r10_1_autotcdg2 MountOpt largefiles
+hares -modify mnt_autotcdg2_r10_1_autotcdg2 FsckOpt "%-y"
+hares -modify mnt_autotcdg2_r10_1_autotcdg2 SnapUmount 0
+hares -modify mnt_autotcdg2_r10_1_autotcdg2 CkptUmount 1
+hares -modify mnt_autotcdg2_r10_1_autotcdg2 RecursiveMnt 0
+hares -modify mnt_autotcdg2_r10_1_autotcdg2 VxFSMountLock 1
+hares -modify mnt_autotcdg2_r10_1_autotcdg2 Enabled 1
+hares -add nfsres_sg12 NFSRestart sg12
+hares -modify nfsres_sg12 NFSRes n1
+hares -modify nfsres_sg12 LocksPathName "/autotcdir/ITF_1_autotcdg2_r10_1"
+hares -modify nfsres_sg12 NFSLockFailover 1
+hares -modify nfsres_sg12 Enabled 1
+hares -add nfsres_sg12_l NFSRestart sg12
+hares -modify nfsres_sg12_l NFSRes n1
+hares -modify nfsres_sg12_l Lower 1
+hares -modify nfsres_sg12_l LocksPathName "/autotcdir/ITF_1_autotcdg2_r10_1"
+hares -modify nfsres_sg12_l NFSLockFailover 1
+hares -modify nfsres_sg12_l Enabled 1
+hares -add nic_sg12_eth0 NIC sg12
+hares -local nic_sg12_eth0 Device
+hares -modify nic_sg12_eth0 Device eth0 -sys l007011
+hares -modify nic_sg12_eth0 Device eth0 -sys l007012
+hares -modify nic_sg12_eth0 NetworkHosts  "10.200.15.254"
+hares -modify nic_sg12_eth0 PingOptimize 1
+hares -modify nic_sg12_eth0 Mii 1
+hares -modify nic_sg12_eth0 Enabled 1
+hares -add proxy_sg12 Proxy sg12
+hares -modify proxy_sg12 TargetResName n1
+hares -modify proxy_sg12 Enabled 1
+hares -add share_autotcdg2_r0_2_autotcdg2 Share sg12
+hares -modify share_autotcdg2_r0_2_autotcdg2 PathName "/autotcdir/ITF_3_autotcdg2_r0_2"
+hares -modify share_autotcdg2_r0_2_autotcdg2 Options "rw,no_root_squash"
+hares -modify share_autotcdg2_r0_2_autotcdg2 OtherClients -delete -keys
+hares -modify share_autotcdg2_r0_2_autotcdg2 Enabled 1
+hares -add share_autotcdg2_r10_1_autotcdg2 Share sg12
+hares -modify share_autotcdg2_r10_1_autotcdg2 PathName "/autotcdir/ITF_1_autotcdg2_r10_1"
+hares -modify share_autotcdg2_r10_1_autotcdg2 Options "rw,no_root_squash"
+hares -modify share_autotcdg2_r10_1_autotcdg2 OtherClients -delete -keys
+hares -modify share_autotcdg2_r10_1_autotcdg2 Enabled 1
+hares -add vol_autotcdg2_r0_2_autotcdg2 Volume sg12
+hares -modify vol_autotcdg2_r0_2_autotcdg2 DiskGroup autotcdg2
+hares -modify vol_autotcdg2_r0_2_autotcdg2 Volume autotcdg2_r0_2
+hares -modify vol_autotcdg2_r0_2_autotcdg2 Enabled 1
+hares -add vol_autotcdg2_r10_1_autotcdg2 Volume sg12
+hares -modify vol_autotcdg2_r10_1_autotcdg2 DiskGroup autotcdg2
+hares -modify vol_autotcdg2_r10_1_autotcdg2 Volume autotcdg2_r10_1
+hares -modify vol_autotcdg2_r10_1_autotcdg2 Enabled 1
+hagrp -add sg21
+hagrp -modify sg21 SystemList  l007012 0 l007011 1
+hagrp -modify sg21 AutoStartList  l007012
+hagrp -modify sg21 SourceFile "./main.cf"
+hares -add autotcdg1_sg21 DiskGroup sg21
+hares -modify autotcdg1_sg21 DiskGroup autotcdg3
+hares -modify autotcdg1_sg21 StartVolumes 0
+hares -modify autotcdg1_sg21 StopVolumes 0
+hares -modify autotcdg1_sg21 MonitorReservation 0
+hares -modify autotcdg1_sg21 tempUseFence INVALID
+hares -modify autotcdg1_sg21 Reservation ClusterDefault
+hares -modify autotcdg1_sg21 ClearClone 0
+hares -modify autotcdg1_sg21 Enabled 1
+hares -add ip_l007012 IP sg21
+hares -local ip_l007012 Device
+hares -modify ip_l007012 Device eth0 -sys l007012
+hares -modify ip_l007012 Device eth0 -sys l007011
+hares -modify ip_l007012 Address "10.200.7.24"
+hares -modify ip_l007012 NetMask "255.255.240.0"
+hares -modify ip_l007012 PrefixLen 1000
+hares -modify ip_l007012 Enabled 1
+hares -add mnt_autotcdg3_r0_2_autotcdg3 Mount sg21
+hares -modify mnt_autotcdg3_r0_2_autotcdg3 MountPoint "/autotcdir/ITF_6_autotcdg3_r0_2"
+hares -modify mnt_autotcdg3_r0_2_autotcdg3 BlockDevice "/dev/vx/dsk/autotcdg3/autotcdg3_r0_2"
+hares -modify mnt_autotcdg3_r0_2_autotcdg3 FSType vxfs
+hares -modify mnt_autotcdg3_r0_2_autotcdg3 MountOpt largefiles
+hares -modify mnt_autotcdg3_r0_2_autotcdg3 FsckOpt "%-y"
+hares -modify mnt_autotcdg3_r0_2_autotcdg3 SnapUmount 0
+hares -modify mnt_autotcdg3_r0_2_autotcdg3 CkptUmount 1
+hares -modify mnt_autotcdg3_r0_2_autotcdg3 RecursiveMnt 0
+hares -modify mnt_autotcdg3_r0_2_autotcdg3 VxFSMountLock 1
+hares -modify mnt_autotcdg3_r0_2_autotcdg3 Enabled 1
+hares -add mnt_autotcdg3_r10_1_autotcdg3 Mount sg21
+hares -modify mnt_autotcdg3_r10_1_autotcdg3 MountPoint "/autotcdir/ITF_5_autotcdg3_r10_1"
+hares -modify mnt_autotcdg3_r10_1_autotcdg3 BlockDevice "/dev/vx/dsk/autotcdg3/autotcdg3_r10_1"
+hares -modify mnt_autotcdg3_r10_1_autotcdg3 FSType vxfs
+hares -modify mnt_autotcdg3_r10_1_autotcdg3 MountOpt largefiles
+hares -modify mnt_autotcdg3_r10_1_autotcdg3 FsckOpt "%-y"
+hares -modify mnt_autotcdg3_r10_1_autotcdg3 SnapUmount 0
+hares -modify mnt_autotcdg3_r10_1_autotcdg3 CkptUmount 1
+hares -modify mnt_autotcdg3_r10_1_autotcdg3 RecursiveMnt 0
+hares -modify mnt_autotcdg3_r10_1_autotcdg3 VxFSMountLock 1
+hares -modify mnt_autotcdg3_r10_1_autotcdg3 Enabled 1
+hares -add nfsres_sg21 NFSRestart sg21
+hares -modify nfsres_sg21 NFSRes n1
+hares -modify nfsres_sg21 LocksPathName "/autotcdir/ITF_5_autotcdg3_r10_1"
+hares -modify nfsres_sg21 NFSLockFailover 1
+hares -modify nfsres_sg21 Enabled 1
+hares -add nfsres_sg21_l NFSRestart sg21
+hares -modify nfsres_sg21_l NFSRes n1
+hares -modify nfsres_sg21_l Lower 1
+hares -modify nfsres_sg21_l LocksPathName "/autotcdir/ITF_5_autotcdg3_r10_1"
+hares -modify nfsres_sg21_l NFSLockFailover 1
+hares -modify nfsres_sg21_l Enabled 1
+hares -add nic_sg21_eth0 NIC sg21
+hares -local nic_sg21_eth0 Device
+hares -modify nic_sg21_eth0 Device eth0 -sys l007012
+hares -modify nic_sg21_eth0 Device eth0 -sys l007011
+hares -modify nic_sg21_eth0 NetworkHosts  "10.200.15.254"
+hares -modify nic_sg21_eth0 PingOptimize 1
+hares -modify nic_sg21_eth0 Mii 1
+hares -modify nic_sg21_eth0 Enabled 1
+hares -add proxy_sg21 Proxy sg21
+hares -modify proxy_sg21 TargetResName n1
+hares -modify proxy_sg21 Enabled 1
+hares -add share_autotcdg3_r0_2_autotcdg3 Share sg21
+hares -modify share_autotcdg3_r0_2_autotcdg3 PathName "/autotcdir/ITF_6_autotcdg3_r0_2"
+hares -modify share_autotcdg3_r0_2_autotcdg3 Options "rw,no_root_squash"
+hares -modify share_autotcdg3_r0_2_autotcdg3 OtherClients -delete -keys
+hares -modify share_autotcdg3_r0_2_autotcdg3 Enabled 1
+hares -add share_autotcdg3_r10_1_autotcdg3 Share sg21
+hares -modify share_autotcdg3_r10_1_autotcdg3 PathName "/autotcdir/ITF_5_autotcdg3_r10_1"
+hares -modify share_autotcdg3_r10_1_autotcdg3 Options "rw,no_root_squash"
+hares -modify share_autotcdg3_r10_1_autotcdg3 OtherClients -delete -keys
+hares -modify share_autotcdg3_r10_1_autotcdg3 Enabled 1
+hares -add vol_autotcdg3_r0_2_autotcdg3 Volume sg21
+hares -modify vol_autotcdg3_r0_2_autotcdg3 DiskGroup autotcdg3
+hares -modify vol_autotcdg3_r0_2_autotcdg3 Volume autotcdg3_r0_2
+hares -modify vol_autotcdg3_r0_2_autotcdg3 Enabled 1
+hares -add vol_autotcdg3_r10_1_autotcdg3 Volume sg21
+hares -modify vol_autotcdg3_r10_1_autotcdg3 DiskGroup autotcdg3
+hares -modify vol_autotcdg3_r10_1_autotcdg3 Volume autotcdg3_r10_1
+hares -modify vol_autotcdg3_r10_1_autotcdg3 Enabled 1
+hares -link ip_l007011 nic_sg12_eth0
+hares -link ip_l007011 share_autotcdg2_r0_2_autotcdg2
+hares -link ip_l007011 share_autotcdg2_r10_1_autotcdg2
+hares -link mnt_autotcdg2_r0_2_autotcdg2 vol_autotcdg2_r0_2_autotcdg2
+hares -link mnt_autotcdg2_r10_1_autotcdg2 vol_autotcdg2_r10_1_autotcdg2
+hares -link nfsres_sg12 ip_l007011
+hares -link nfsres_sg12_l mnt_autotcdg2_r0_2_autotcdg2
+hares -link nfsres_sg12_l mnt_autotcdg2_r10_1_autotcdg2
+hares -link share_autotcdg2_r0_2_autotcdg2 nfsres_sg12_l
+hares -link share_autotcdg2_r0_2_autotcdg2 proxy_sg12
+hares -link share_autotcdg2_r10_1_autotcdg2 nfsres_sg12_l
+hares -link share_autotcdg2_r10_1_autotcdg2 proxy_sg12
+hares -link vol_autotcdg2_r0_2_autotcdg2 autotcdg2_sg12
+hares -link vol_autotcdg2_r10_1_autotcdg2 autotcdg2_sg12
+hares -link ip_l007012 nic_sg21_eth0
+hares -link ip_l007012 share_autotcdg3_r0_2_autotcdg3
+hares -link ip_l007012 share_autotcdg3_r10_1_autotcdg3
+hares -link mnt_autotcdg3_r0_2_autotcdg3 vol_autotcdg3_r0_2_autotcdg3
+hares -link mnt_autotcdg3_r10_1_autotcdg3 vol_autotcdg3_r10_1_autotcdg3
+hares -link nfsres_sg21 ip_l007012
+hares -link nfsres_sg21_l mnt_autotcdg3_r0_2_autotcdg3
+hares -link nfsres_sg21_l mnt_autotcdg3_r10_1_autotcdg3
+hares -link share_autotcdg3_r0_2_autotcdg3 nfsres_sg21_l
+hares -link share_autotcdg3_r0_2_autotcdg3 proxy_sg21
+hares -link share_autotcdg3_r10_1_autotcdg3 nfsres_sg21_l
+hares -link share_autotcdg3_r10_1_autotcdg3 proxy_sg21
+hares -link vol_autotcdg3_r0_2_autotcdg3 autotcdg1_sg21
+hares -link vol_autotcdg3_r10_1_autotcdg3 autotcdg1_sg21

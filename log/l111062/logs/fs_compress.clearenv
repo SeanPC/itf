@@ -1,0 +1,375 @@
+
+
+HOST:l111062
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster cluster6263 (
+	UserNames = { admin = aHIaHChEIdIIgQIcHF }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111062 (
+	)
+
+system l111063 (
+	)
+
+group cvm (
+	SystemList = { l111062 = 0, l111063 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111062, l111063 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111062 = { testdg = sw }
+		ActivationMode @l111063 = { testdg = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = cluster6263
+		CVMNodeId = { l111062 = 0, l111063 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+***umount vxfs on node l111062***
+
+
+
+HOST:l111062
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sdda1 99G 27G 67G 29% /
+devtmpfs 12G 0 12G 0% /dev
+tmpfs 12G 0 12G 0% /dev/shm
+tmpfs 12G 27M 12G 1% /run
+tmpfs 12G 0 12G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 2.4G 0 2.4G 0% /run/user/0
+
+***umount vxfs on node l111063***
+
+
+
+HOST:l111063
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sdda1 99G 27G 67G 29% /
+devtmpfs 12G 0 12G 0% /dev
+tmpfs 12G 0 12G 0% /dev/shm
+tmpfs 12G 19M 12G 1% /run
+tmpfs 12G 0 12G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 2.4G 0 2.4G 0% /run/user/0
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+HOST:l111062
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+HOST:l111062
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc0_0ada    auto:cdsdisk    -            -            online thinrclm
+emc0_0adb    auto:cdsdisk    -            -            online thinrclm
+emc0_0adc    auto:cdsdisk    -            -            online thinrclm
+emc0_0add    auto:cdsdisk    -            -            online thinrclm
+emc0_0ade    auto:cdsdisk    -            -            online thinrclm
+emc0_0adf    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae0    auto:cdsdisk    -            -            online thinrclm
+emc0_0aea    auto:cdsdisk    -            -            online thinrclm
+emc0_0aeb    auto:cdsdisk    -            -            online thinrclm
+emc0_0aec    auto:cdsdisk    -            -            online thinrclm
+emc0_0aed    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae1    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae2    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae3    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae4    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae5    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae6    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae7    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae8    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae9    auto:cdsdisk    -            -            online thinrclm
+emc0_0a6a    auto:cdsdisk    -            (vxfendg)    online
+emc0_0a6b    auto:cdsdisk    -            (vxfendg)    online
+emc0_0a6c    auto:cdsdisk    -            (vxfendg)    online
+emc0_0a6d    auto:cdsdisk    -            -            online
+emc0_0a6e    auto:cdsdisk    -            -            online
+emc0_0a6f    auto:cdsdisk    -            -            online
+emc0_0a7a    auto:cdsdisk    -            -            online
+emc0_0a7b    auto:cdsdisk    -            -            online
+emc0_0a7c    auto:cdsdisk    -            -            online
+emc0_0a7d    auto:cdsdisk    -            -            online
+emc0_0a7e    auto:cdsdisk    emc0_0a7e    oradg1923_dbarch online shared
+emc0_0a7f    auto:cdsdisk    emc0_0a7f    oradg1923_dbarch online shared
+emc0_0a70    auto:cdsdisk    -            -            online
+emc0_0a71    auto:cdsdisk    -            -            online
+emc0_0a72    auto:cdsdisk    -            -            online
+emc0_0a73    auto:cdsdisk    -            -            online
+emc0_0a74    auto:cdsdisk    -            -            online
+emc0_0a75    auto:LVM        -            -            LVM
+emc0_0a76    auto:cdsdisk    emc0_0a76    tdg          online shared
+emc0_0a77    auto:cdsdisk    -            -            online
+emc0_0a78    auto:LVM        -            -            LVM
+emc0_0a79    auto:cdsdisk    -            -            online
+emc0_0a80    auto:cdsdisk    emc0_0a80    oradg1923_dbarch online shared
+emc0_0a81    auto:cdsdisk    emc0_0a81    oradg1923_dbarch online shared
+emc0_0a82    auto:cdsdisk    emc0_0a82    oradg1923_ocrvote online shared
+emc0_0a83    auto:cdsdisk    emc0_0a83    oradg1923_ocrvote online shared
+emc0_0a84    auto:cdsdisk    -            -            online
+emc0_0a85    auto:cdsdisk    -            -            online
+emc0_0a86    auto:cdsdisk    -            -            online
+emc0_0a87    auto:cdsdisk    emc0_0a87    autotcdg0    online
+emc0_0438    auto:sliced     -            -            online
+sdda         auto:sliced     -            -            online
+
+
+HOST:l111062
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+oradg1923_dbarch enabled,shared,cds   1483003952.975.l111063.cdc.veritas.com
+autotcdg0    enabled,cds          1483950571.1231.l111062.cdc.veritas.com
+oradg1923_ocrvote enabled,shared,cds   1483003950.973.l111063.cdc.veritas.com
+tdg          enabled,shared,cds   1483950470.1229.l111062.cdc.veritas.com
+
+
+HOST:l111062
+USER:root
+STDIN:vxdg destroy autotcdg0
+STDOUT:
+
+
+
+HOST:l111062
+USER:root
+STDIN:vxdg destroy tdg
+STDOUT:
+VxVM vxdg ERROR V-5-1-586 Disk group tdg: deport failed: Operation must be executed on master
+RESULT:NOEXIT:Failed
+
+
+HOST:l111062
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+HOST:l111062
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc0_0ada    auto:cdsdisk    -            -            online thinrclm
+emc0_0adb    auto:cdsdisk    -            -            online thinrclm
+emc0_0adc    auto:cdsdisk    -            -            online thinrclm
+emc0_0add    auto:cdsdisk    -            -            online thinrclm
+emc0_0ade    auto:cdsdisk    -            -            online thinrclm
+emc0_0adf    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae0    auto:cdsdisk    -            -            online thinrclm
+emc0_0aea    auto:cdsdisk    -            -            online thinrclm
+emc0_0aeb    auto:cdsdisk    -            -            online thinrclm
+emc0_0aec    auto:cdsdisk    -            -            online thinrclm
+emc0_0aed    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae1    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae2    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae3    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae4    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae5    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae6    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae7    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae8    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae9    auto:cdsdisk    -            -            online thinrclm
+emc0_0a6a    auto:cdsdisk    -            (vxfendg)    online
+emc0_0a6b    auto:cdsdisk    -            (vxfendg)    online
+emc0_0a6c    auto:cdsdisk    -            (vxfendg)    online
+emc0_0a6d    auto:cdsdisk    -            -            online
+emc0_0a6e    auto:cdsdisk    -            -            online
+emc0_0a6f    auto:cdsdisk    -            -            online
+emc0_0a7a    auto:cdsdisk    -            -            online
+emc0_0a7b    auto:cdsdisk    -            -            online
+emc0_0a7c    auto:cdsdisk    -            -            online
+emc0_0a7d    auto:cdsdisk    -            -            online
+emc0_0a7e    auto:cdsdisk    emc0_0a7e    oradg1923_dbarch online shared
+emc0_0a7f    auto:cdsdisk    emc0_0a7f    oradg1923_dbarch online shared
+emc0_0a70    auto:cdsdisk    -            -            online
+emc0_0a71    auto:cdsdisk    -            -            online
+emc0_0a72    auto:cdsdisk    -            -            online
+emc0_0a73    auto:cdsdisk    -            -            online
+emc0_0a74    auto:cdsdisk    -            -            online
+emc0_0a75    auto:LVM        -            -            LVM
+emc0_0a76    auto:cdsdisk    emc0_0a76    tdg          online shared
+emc0_0a77    auto:cdsdisk    -            -            online
+emc0_0a78    auto:LVM        -            -            LVM
+emc0_0a79    auto:cdsdisk    -            -            online
+emc0_0a80    auto:cdsdisk    emc0_0a80    oradg1923_dbarch online shared
+emc0_0a81    auto:cdsdisk    emc0_0a81    oradg1923_dbarch online shared
+emc0_0a82    auto:cdsdisk    emc0_0a82    oradg1923_ocrvote online shared
+emc0_0a83    auto:cdsdisk    emc0_0a83    oradg1923_ocrvote online shared
+emc0_0a84    auto:cdsdisk    -            -            online
+emc0_0a85    auto:cdsdisk    -            -            online
+emc0_0a86    auto:cdsdisk    -            -            online
+emc0_0a87    auto:cdsdisk    -            -            online
+emc0_0438    auto:sliced     -            -            online
+sdda         auto:sliced     -            -            online
+
+
+HOST:l111062
+USER:root
+STDIN:vxfenadm -ak 1 -f /tmp/disk.23307 && vxfenadm -ck 1 -f /tmp/disk.23307
+STDOUT:
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc0_0a76
+DMP Clear completed for disk path: /dev/vx/rdmp/emc0_0a76
+
+
+HOST:l111062
+USER:root
+STDIN:echo "emc0_0a76"|xargs -n1 vxdisk -f init
+STDOUT:
+VxVM vxdisk ERROR V-5-1-534 Device emc0_0a76: Device is in use
+RESULT:NOEXIT:Failed
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+HOST:l111063
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+HOST:l111063
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc0_0ada    auto:cdsdisk    -            -            online thinrclm
+emc0_0adb    auto:cdsdisk    -            -            online thinrclm
+emc0_0adc    auto:cdsdisk    -            -            online thinrclm
+emc0_0add    auto:cdsdisk    -            -            online thinrclm
+emc0_0ade    auto:cdsdisk    -            -            online thinrclm
+emc0_0adf    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae0    auto:cdsdisk    -            -            online thinrclm
+emc0_0aea    auto:cdsdisk    -            -            online thinrclm
+emc0_0aeb    auto:cdsdisk    -            -            online thinrclm
+emc0_0aec    auto:cdsdisk    -            -            online thinrclm
+emc0_0aed    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae1    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae2    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae3    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae4    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae5    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae6    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae7    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae8    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae9    auto:cdsdisk    -            -            online thinrclm
+emc0_0a6a    auto:cdsdisk    -            (vxfendg)    online
+emc0_0a6b    auto:cdsdisk    -            (vxfendg)    online
+emc0_0a6c    auto:cdsdisk    -            (vxfendg)    online
+emc0_0a6d    auto:cdsdisk    -            -            online
+emc0_0a6e    auto:cdsdisk    -            -            online
+emc0_0a6f    auto:cdsdisk    -            -            online
+emc0_0a7a    auto:cdsdisk    -            -            online
+emc0_0a7b    auto:cdsdisk    -            -            online
+emc0_0a7c    auto:cdsdisk    -            -            online
+emc0_0a7d    auto:cdsdisk    -            -            online
+emc0_0a7e    auto:cdsdisk    emc0_0a7e    oradg1923_dbarch online shared
+emc0_0a7f    auto:cdsdisk    emc0_0a7f    oradg1923_dbarch online shared
+emc0_0a70    auto:cdsdisk    -            -            online
+emc0_0a71    auto:cdsdisk    -            -            online
+emc0_0a72    auto:cdsdisk    -            -            online
+emc0_0a73    auto:cdsdisk    -            -            online
+emc0_0a74    auto:cdsdisk    -            -            online
+emc0_0a75    auto:LVM        -            -            LVM
+emc0_0a76    auto:cdsdisk    emc0_0a76    tdg          online shared
+emc0_0a77    auto:cdsdisk    -            -            online
+emc0_0a78    auto:LVM        -            -            LVM
+emc0_0a79    auto:cdsdisk    -            -            online
+emc0_0a80    auto:cdsdisk    emc0_0a80    oradg1923_dbarch online shared
+emc0_0a81    auto:cdsdisk    emc0_0a81    oradg1923_dbarch online shared
+emc0_0a82    auto:cdsdisk    emc0_0a82    oradg1923_ocrvote online shared
+emc0_0a83    auto:cdsdisk    emc0_0a83    oradg1923_ocrvote online shared
+emc0_0a84    auto:cdsdisk    -            -            online
+emc0_0a85    auto:cdsdisk    -            -            online
+emc0_0a86    auto:cdsdisk    -            -            online
+emc0_0a87    auto:cdsdisk    -            -            online
+emc0_0438    auto:sliced     -            -            online
+l111063_disk_0 auto:none       -            -            online invalid
+sdda         auto:none       -            -            online invalid
+
+
+HOST:l111063
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+oradg1923_dbarch enabled,shared,cds   1483003952.975.l111063.cdc.veritas.com
+oradg1923_ocrvote enabled,shared,cds   1483003950.973.l111063.cdc.veritas.com
+tdg          enabled,shared,cds   1483950470.1229.l111062.cdc.veritas.com
+
+
+HOST:l111063
+USER:root
+STDIN:vxdg destroy tdg
+STDOUT:
+

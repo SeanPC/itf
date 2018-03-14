@@ -1,0 +1,1346 @@
+
+==================== Operation Log for TC encapsulate_root ====================
+DATE:2017-05-15 03:12:54
+Nodes:l109024 l109025
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-05-15 03:12:54
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-05-15 03:12:54
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:4127397 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:230577 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:923025175 (880.2 MiB)  TX bytes:22801688 (21.7 MiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:86 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:86 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:13809 (13.4 KiB)  TX bytes:13809 (13.4 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-05-15 03:12:56
+HOST:l109024
+USER:root
+STDIN:ssh -l root l109024
+STDOUT:
+
+
+
+DATE:2017-05-15 03:13:00
+HOST:l109025
+USER:root
+STDIN:ssh -l root l109025
+STDOUT:
+
+
+
+DATE:2017-05-15 03:13:08
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l109024,l109025
+STDOUT:
+
+
+
+DATE:2017-05-15 03:13:10
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l109024
+l109025
+
+
+DATE:2017-05-15 03:13:11
+HOST:l109025
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l109024
+l109025
+
+***Getting os version***
+
+
+
+DATE:2017-05-15 03:13:15
+HOST:l109024
+USER:root
+STDIN:cat /etc/issue;uname -r
+STDOUT:
+Red Hat Enterprise Linux Server release 5.11 (Tikanga)
+Kernel \r on an \m
+
+2.6.18-419.el5
+
+***Getting InfoScale Product version***
+
+
+
+DATE:2017-05-15 03:13:17
+HOST:l109024
+USER:root
+STDIN:rpm -qi `rpm -qa|grep -i vxvm`
+STDOUT:
+Name        : VRTSvxvm                     Relocations: (not relocatable)
+Version     : 6.0.500.000                       Vendor: Symantec Corporation
+Release     : RHEL5                         Build Date: Sun 30 Mar 2014 09:42:20 PM UTC
+Install Date: Fri 05 May 2017 08:58:31 AM UTC      Build Host: sf-rhel5u3-64-build.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSvxvm-6.0.500.000-RHEL5.src.rpm
+Size        : 89851345                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : support@symantec.com
+URL         : http://support.symantec.com
+Summary     : Veritas Volume Manager by Symantec
+Description :
+Veritas Volume Manager for Linux
+
+***Getting the local disk***
+
+
+
+DATE:2017-05-15 03:13:18
+HOST:l109024
+USER:root
+STDIN:df -h
+STDOUT:
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/sda1             125G  7.6G  111G   7% /
+tmpfs                 9.8G     0  9.8G   0% /dev/shm
+tmpfs                 4.0K     0  4.0K   0% /dev/vx
+
+***checking if cvm is configured and online***
+
+
+
+DATE:2017-05-15 03:13:20
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l109024    |ONLINE|
+cvm          State                 l109025    |ONLINE|
+
+***CVM of all nodes "l109024 l109025"are all online***
+
+
+
+DATE:2017-05-15 03:13:22
+HOST:l109024
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+====STEP: checking the dmp_native_support
+DATE:2017-05-15 03:13:22
+
+
+DATE:2017-05-15 03:13:23
+HOST:l109024
+USER:root
+STDIN:vxdmpadm gettune
+STDOUT:
+            Tunable               Current Value  Default Value
+------------------------------    -------------  -------------
+dmp_cache_open                           on	          on
+dmp_daemon_count                         10	          10
+dmp_delayq_interval                      15	          15
+dmp_fast_recovery                        on	          on
+dmp_health_time                          60	          60
+dmp_log_level                             1	           1
+dmp_low_impact_probe                     on	          on
+dmp_lun_retry_timeout                     0	           0
+dmp_path_age                            300	         300
+dmp_pathswitch_blks_shift                 9	           9
+dmp_probe_idle_lun                       on	          on
+dmp_probe_threshold                       5	           5
+dmp_restore_cycles                       10	          10
+dmp_restore_interval                    300	         300
+dmp_restore_policy             check_disabled	check_disabled
+dmp_restore_state                   enabled	     enabled
+dmp_retry_count                           5	           5
+dmp_scsi_timeout                         20	          20
+dmp_sfg_threshold                         1	           1
+dmp_stat_interval                         1	           1
+dmp_monitor_ownership                    on	          on
+dmp_monitor_fabric                       on	          on
+dmp_monitor_osevent                      on	          on
+dmp_native_support                      off	         off
+
+
+====STEP: encapsulate the disk
+DATE:2017-05-15 03:13:23
+
+
+DATE:2017-05-15 03:13:49
+HOST:l109024
+USER:root
+STDIN:(echo;echo y)|/etc/vx/bin/vxencap -c -g rootdg rootdisk=sda
+STDOUT:
+
+  VxVM vxencap INFO V-5-2-1923 Encapsulating root disk...
+
+  VxVM vxencap INFO V-5-2-2123 Verifying generated partition-table...
+
+  VxVM vxencap INFO V-5-2-4086 Checking private region location of root disk ...
+
+  VxVM vxencap INFO V-5-2-1946 Generating VxVM initrd image...
+Created /tmp/vx.17560.9649.20197.24347/vx.5319.26799.5372.24347
+
+  NOTE: Until the next reboot has completed, do not modify any 'grub'
+  settings, otherwise your system might become unbootable!
+
+  VxVM vxencap INFO V-5-2-2414 Adding vxvm_root entry to 'grub'...
+
+  VxVM vxencap INFO V-5-2-2605 The grub 'default' boot entry is:
+  
+	0. "title Red Hat Enterprise Linux Server (2.6.18-419.el5)"
+
+  Do you want to use this menu entry for the encapsulation process?
+[y,n,q,?] (default: y) 
+  VxVM vxencap INFO V-5-2-2689 saving /boot/grub/menu.lst to backup file /boot/grub/menu.lst.b4vxvm ...
+
+  VxVM vxencap INFO V-5-2-4487 converting volume labels in /boot/grub/menu.lst to explicit devices ...
+
+  VxVM vxencap INFO V-5-2-2696 updating /boot/grub/menu.lst ...
+
+  VxVM vxencap INFO V-5-2-2377 Please save /etc/vx/rootdisk_info.l109024.cdc.veritas.com 
+  on some other server. Information in this file can be useful for recovery in
+  case of unknown failures.
+
+  The sda disk has been configured for encapsulation.
+
+***reboot the l109024***
+
+
+
+DATE:2017-05-15 03:13:51
+HOST:l109024
+USER:root
+STDIN:sync;sync;sync;sync;nohup reboot > /dev/null 2>&1 &
+STDOUT:
+
+
+***Waiting node "l109024" offline***
+
+
+
+DATE:2017-05-15 03:13:53
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:13 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.401 seconds
+
+
+DATE:2017-05-15 03:13:54
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:13 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.504 seconds
+
+
+DATE:2017-05-15 03:13:55
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:13 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.398 seconds
+
+
+DATE:2017-05-15 03:13:57
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:13 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.395 seconds
+
+
+DATE:2017-05-15 03:13:58
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:13 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.401 seconds
+
+
+DATE:2017-05-15 03:14:00
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:13 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.399 seconds
+
+
+DATE:2017-05-15 03:14:01
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.400 seconds
+
+
+DATE:2017-05-15 03:14:03
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.400 seconds
+
+
+DATE:2017-05-15 03:14:04
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.395 seconds
+
+
+DATE:2017-05-15 03:14:05
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.399 seconds
+
+
+DATE:2017-05-15 03:14:07
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.397 seconds
+
+
+DATE:2017-05-15 03:14:08
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.396 seconds
+
+
+DATE:2017-05-15 03:14:10
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.402 seconds
+
+
+DATE:2017-05-15 03:14:11
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.401 seconds
+
+
+DATE:2017-05-15 03:14:12
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.399 seconds
+
+
+DATE:2017-05-15 03:14:14
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.399 seconds
+
+
+DATE:2017-05-15 03:14:15
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.395 seconds
+
+
+DATE:2017-05-15 03:14:17
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.400 seconds
+
+
+DATE:2017-05-15 03:14:18
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.397 seconds
+
+
+DATE:2017-05-15 03:14:19
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.395 seconds
+
+
+DATE:2017-05-15 03:14:21
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:14 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE  SERVICE
+22/tcp closed ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.396 seconds
+
+***Node "l109024" is offline***
+
+
+***Waiting node "l109024" online***
+
+
+
+DATE:2017-05-15 03:16:21
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+
+
+
+DATE:2017-05-15 03:18:22
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+
+
+
+DATE:2017-05-15 03:19:22
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+
+
+
+DATE:2017-05-15 03:21:22
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+
+
+
+DATE:2017-05-15 03:23:07
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+
+
+
+DATE:2017-05-15 03:24:07
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+
+
+
+DATE:2017-05-15 03:26:08
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+
+
+
+DATE:2017-05-15 03:27:53
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+
+
+
+DATE:2017-05-15 03:28:55
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+l109024.cdc.veritas.com
+
+***Node "l109024" is online***
+
+
+
+DATE:2017-05-15 03:29:07
+HOST:l109024
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6|grep /$
+STDOUT:
+/dev/vx/dsk/rootdg/rootvol 125G 7.6G 111G 7% /
+
+
+====STEP: Checking boot disk is controlled by VxVM
+DATE:2017-05-15 03:29:07
+
+
+DATE:2017-05-15 03:29:13
+HOST:l109024
+USER:root
+STDIN:df -h
+STDOUT:
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/vx/dsk/rootdg/rootvol
+                      125G  7.6G  111G   7% /
+tmpfs                 9.8G     0  9.8G   0% /dev/shm
+tmpfs                 4.0K     0  4.0K   0% /dev/vx
+
+***Check and wait vcs agent online on all nodes***
+
+
+
+DATE:2017-05-15 03:29:25
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state l109024
+STDOUT:
+RUNNING
+
+***Waiting the group cvm online***
+
+
+
+DATE:2017-05-15 03:29:27
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l109024    |PARTIAL|STARTING|
+cvm          State                 l109025    |ONLINE|
+
+
+DATE:2017-05-15 03:29:28
+HOST:l109024
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster kernellily (
+	UserNames = { admin = ePQiPKpMQlQQoYQkPN }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l109024 (
+	)
+
+system l109025 (
+	)
+
+group cvm (
+	SystemList = { l109024 = 0, l109025 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l109024, l109025 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l109024 = { T92405286232970T = sw, P29383513134148P = sw,
+			 n42094891535177n = sw }
+		ActivationMode @l109025 = { T92405286232970T = sw, P29383513134148P = sw,
+			 n42094891535177n = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = kernellily
+		CVMNodeId = { l109024 = 0, l109025 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+DATE:2017-05-15 03:29:40
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l109024    |ONLINE|
+cvm          State                 l109025    |ONLINE|
+
+
+DATE:2017-05-15 03:29:42
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l109024    |ONLINE|
+cvm          State                 l109025    |ONLINE|
+
+***Checking the root volume***
+
+
+
+DATE:2017-05-15 03:29:43
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/vxprint
+STDOUT:
+Disk group: rootdg
+
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg rootdg       rootdg       -        -        -        -        -       -
+
+dm rootdisk     sda          -        286728057 -       -        -       -
+
+sd rootdiskPriv -            ENABLED  80325    -        -        -       PRIVATE
+
+v  rootvol      root         ENABLED  269956197 -       ACTIVE   -       -
+pl rootvol-01   rootvol      ENABLED  269956197 -       ACTIVE   -       -
+sd rootdisk-02  rootvol-01   ENABLED  269956197 0       -        -       -
+
+v  swapvol      swap         ENABLED  16691535 -        ACTIVE   -       -
+pl swapvol-01   swapvol      ENABLED  16691535 -        ACTIVE   -       -
+sd rootdisk-01  swapvol-01   ENABLED  16691535 0        -        -       -
+
+Disk group: test
+
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg test         test         -        -        -        -        -       -
+
+dm emc0_0302    emc0_0302    -        10407680 -        -        -       -
+dm emc0_0303    emc0_0303    -        10407680 -        -        -       -
+dm emc0_0304    emc0_0304    -        10407680 -        -        -       -
+dm emc0_0305    emc0_0305    -        10464896 -        -        -       -
+
+vt vset         -            ENABLED  -        -        ACTIVE   -       -
+v  vol          vset         ENABLED  204800   -        ACTIVE   -       -
+pl vol-01       vol          ENABLED  204800   -        ACTIVE   -       -
+sd emc0_0305-01 vol-01       ENABLED  204800   0        -        -       -
+v  vol2         vset         ENABLED  409600   -        ACTIVE   -       -
+pl vol2-01      vol2         ENABLED  409600   -        ACTIVE   -       -
+sd emc0_0304-01 vol2-01      ENABLED  409600   0        -        -       -
+
+
+====STEP: Un-encasulated the root disk
+DATE:2017-05-15 03:29:43
+
+
+DATE:2017-05-15 03:29:46
+HOST:l109024
+USER:root
+STDIN:(echo;echo;echo y)|/etc/vx/bin/vxunroot
+STDOUT:
+Following Volumes are currently present on the root disk:
+rootvol
+swapvol
+
+
+  VxVM vxunroot INFO V-5-2-2315
+This operation will convert the above file systems from
+  volumes to regular partitions
+
+  VxVM vxunroot INFO V-5-2-6140 Replace volume rootvol with sda1.
+
+  This operation will require a system reboot.  If you choose to
+  continue with this operation, system configuration will be updated
+  to discontinue use of the volume manager for your root and swap
+  devices.
+
+Do you wish to do this now [y,n,q,?] (default: y) 
+  VxVM vxunroot INFO V-5-2-287 Restoring kernel configuration...
+
+  VxVM vxunroot INFO V-5-2-2608 The grub menu entry originally selected for the vxvm_root operation was:
+  
+	0. "title Red Hat Enterprise Linux Server (2.6.18-419.el5)"
+
+  Do you want to use this menu entry as the default boot entry after the
+  unroot?
+[y,n,q,?] (default: y) 
+  VxVM vxunroot INFO V-5-2-6135
+A shutdown is now required to install the new kernel.
+          You can choose to shutdown now, or you can shutdown later, at your
+         convenience.
+
+
+  VxVM vxunroot NOTICE V-5-2-2536 IMPORTANT NOTE:
+
+  o DON'T TAMPER WITH 'grub' SETTINGS. REBOOT AS SOON AS POSSIBLE.
+    Please reboot as soon as possible without tampering with current
+   'grub' settings - otherwise your system may not boot!
+
+
+
+Do you wish to shutdown now [y,n,q,?] (default: n) 
+  sync; reboot
+
+
+====STEP: Reboot the os to effective the change
+DATE:2017-05-15 03:29:46
+
+***Waiting node "l109024" offline***
+
+
+
+DATE:2017-05-15 03:29:48
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:29 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.466 seconds
+
+
+DATE:2017-05-15 03:29:49
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:29 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.402 seconds
+
+
+DATE:2017-05-15 03:29:51
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:29 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.454 seconds
+
+
+DATE:2017-05-15 03:29:52
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:29 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.397 seconds
+
+
+DATE:2017-05-15 03:29:54
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:29 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.396 seconds
+
+
+DATE:2017-05-15 03:29:55
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:29 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.414 seconds
+
+
+DATE:2017-05-15 03:29:56
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:29 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.406 seconds
+
+
+DATE:2017-05-15 03:29:58
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:29 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.398 seconds
+
+
+DATE:2017-05-15 03:29:59
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:29 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.426 seconds
+
+
+DATE:2017-05-15 03:30:01
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:30 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.399 seconds
+
+
+DATE:2017-05-15 03:30:02
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:30 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.400 seconds
+
+
+DATE:2017-05-15 03:30:04
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:30 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.417 seconds
+
+
+DATE:2017-05-15 03:30:05
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:30 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.397 seconds
+
+
+DATE:2017-05-15 03:30:06
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:30 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.397 seconds
+
+
+DATE:2017-05-15 03:30:08
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:30 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.404 seconds
+
+
+DATE:2017-05-15 03:30:09
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:30 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.441 seconds
+
+
+DATE:2017-05-15 03:30:11
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:30 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.393 seconds
+
+
+DATE:2017-05-15 03:30:12
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:30 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.400 seconds
+
+
+DATE:2017-05-15 03:30:13
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:30 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.402 seconds
+
+
+DATE:2017-05-15 03:30:15
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:30 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.397 seconds
+
+
+DATE:2017-05-15 03:30:17
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:nmap -p 22 l109024 2>&1
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-05-15 03:30 UTC
+Interesting ports on l109024.cdc.veritas.com (10.200.109.24):
+PORT   STATE  SERVICE
+22/tcp closed ssh
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.403 seconds
+
+***Node "l109024" is offline***
+
+
+***Waiting node "l109024" online***
+
+
+
+DATE:2017-05-15 03:32:17
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+
+
+
+DATE:2017-05-15 03:34:17
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+
+
+
+DATE:2017-05-15 03:35:18
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+
+
+
+DATE:2017-05-15 03:37:18
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+
+
+
+DATE:2017-05-15 03:38:39
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+
+
+
+DATE:2017-05-15 03:39:41
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ssh root@l109024 "hostname"
+STDOUT:
+l109024.cdc.veritas.com
+
+***Node "l109024" is online***
+
+
+
+====STEP: Checking the system is boot up with the original boot disk
+DATE:2017-05-15 03:40:52
+
+
+DATE:2017-05-15 03:40:53
+HOST:l109024
+USER:root
+STDIN:df -h
+STDOUT:
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/sda1             125G  7.6G  111G   7% /
+tmpfs                 9.8G     0  9.8G   0% /dev/shm
+tmpfs                 4.0K     0  4.0K   0% /dev/vx
+
+***Waiting the group cvm online***
+
+
+
+DATE:2017-05-15 03:40:55
+HOST:l109024
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l109024    |ONLINE|
+cvm          State                 l109025    |ONLINE|
+
+
+DATE:2017-05-15 03:40:57
+HOST:l109024
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster kernellily (
+	UserNames = { admin = ePQiPKpMQlQQoYQkPN }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l109024 (
+	)
+
+system l109025 (
+	)
+
+group cvm (
+	SystemList = { l109024 = 0, l109025 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l109024, l109025 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l109024 = { T92405286232970T = sw, P29383513134148P = sw,
+			 n42094891535177n = sw }
+		ActivationMode @l109025 = { T92405286232970T = sw, P29383513134148P = sw,
+			 n42094891535177n = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = kernellily
+		CVMNodeId = { l109024 = 0, l109025 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+DATE:2017-05-15 03:41:08
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l109024    |ONLINE|
+cvm          State                 l109025    |ONLINE|
+
+
+DATE:2017-05-15 03:41:10
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l109024    |ONLINE|
+cvm          State                 l109025    |ONLINE|
+
+
+Case Result:Passed
+DATE:2017-05-15 03:41:10
+Duration:28m16s

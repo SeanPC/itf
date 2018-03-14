@@ -1,0 +1,792 @@
+
+***umount vxfs on node l111055***
+
+
+
+DATE:2017-04-14 15:33:23
+HOST:l111055
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sdfv2 89G 5.3G 79G 7% /
+devtmpfs 3.9G 0 3.9G 0% /dev
+tmpfs 4.0G 0 4.0G 0% /dev/shm
+tmpfs 4.0G 21M 3.9G 1% /run
+tmpfs 4.0G 0 4.0G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg2/autotcdg2_r10_1 3.0G 39M 2.8G 2% /autotcdir/ITF_1_autotcdg2_r10_1
+/dev/vx/dsk/autotcdg2/autotcdg2_r0_2 3.0G 46M 2.8G 2% /autotcdir/ITF_3_autotcdg2_r0_2
+/dev/vx/dsk/autotcdg1/autotcdg1_r0_2 3.0G 153M 2.7G 6% /autotcdir/ITF_2_autotcdg1_r0_2
+/dev/vx/dsk/autotcdg1/autotcdg1_r10_1 3.0G 66M 2.8G 3% /autotcdir/ITF_4_autotcdg1_r10_1
+/dev/vx/dsk/autotcdg3/autotcdg3_r0_2 3.0G 389M 2.5G 14% /autotcdir/ITF_6_autotcdg3_r0_2
+/dev/vx/dsk/autotcdg3/autotcdg3_r10_1 3.0G 243M 2.6G 9% /autotcdir/ITF_5_autotcdg3_r10_1
+
+
+DATE:2017-04-14 15:33:23
+HOST:l111055
+USER:root
+STDIN:umount /autotcdir/ITF_1_autotcdg2_r10_1;umount /autotcdir/ITF_3_autotcdg2_r0_2;umount /autotcdir/ITF_2_autotcdg1_r0_2;umount /autotcdir/ITF_4_autotcdg1_r10_1;umount /autotcdir/ITF_6_autotcdg3_r0_2;umount /autotcdir/ITF_5_autotcdg3_r10_1;
+STDOUT:
+umount: /autotcdir/ITF_1_autotcdg2_r10_1: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /autotcdir/ITF_3_autotcdg2_r0_2: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /autotcdir/ITF_2_autotcdg1_r0_2: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /autotcdir/ITF_4_autotcdg1_r10_1: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /autotcdir/ITF_6_autotcdg3_r0_2: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /autotcdir/ITF_5_autotcdg3_r10_1: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+RETURN:32
+RESULT:WARNING
+
+
+DATE:2017-04-14 15:33:24
+HOST:l111055
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-04-14 15:33:24
+HOST:l111055
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen72
+
+
+DATE:2017-04-14 15:33:25
+HOST:l111055
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+ams_25000_316 auto:cdsdisk    -            (fen72)      online
+ams_25000_317 auto:cdsdisk    -            (fen72)      online
+ams_25000_724 auto:cdsdisk    -            (fen72)      online
+ams_25000_733 auto:cdsdisk    -            -            online
+ams_25000_734 auto:cdsdisk    -            -            online
+ams_25000_735 auto:cdsdisk    -            -            online
+ams_25000_736 auto:cdsdisk    -            -            online
+ams_25000_1734 auto:cdsdisk    -            -            online
+ams_25000_1735 auto:cdsdisk    -            -            online
+ams_25000_1736 auto:cdsdisk    -            -            online
+ams_25000_1737 auto:cdsdisk    -            -            online
+ams_25000_1738 auto:cdsdisk    -            -            online
+ams_25000_1739 auto:cdsdisk    -            -            online
+ams_25000_1740 auto:cdsdisk    -            -            online
+ams_25000_1741 auto:cdsdisk    -            -            online
+ams_25000_1742 auto:cdsdisk    -            -            online
+ams_25000_1743 auto:cdsdisk    -            -            online
+ams_25000_1781 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1782 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1783 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1784 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1785 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1786 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1787 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1788 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1789 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1790 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1791 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1792 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1793 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1794 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1795 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1796 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1797 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1798 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1844 auto:cdsdisk    -            -            online
+ams_25000_1845 auto:cdsdisk    -            -            online
+ams_25000_1846 auto:cdsdisk    -            -            online
+ams_25000_1847 auto:cdsdisk    -            -            online
+ams_25000_1848 auto:cdsdisk    -            -            online
+ams_25000_1849 auto:cdsdisk    -            -            online
+ams_25000_1850 auto:cdsdisk    -            -            online
+ams_25000_1851 auto:cdsdisk    -            -            online
+emc_clariion0_70 auto:cdsdisk    -            -            online
+emc_clariion0_71 auto:cdsdisk    -            -            online
+emc_clariion0_72 auto:cdsdisk    -            -            online
+emc_clariion0_73 auto:cdsdisk    -            -            online
+emc_clariion0_74 auto:cdsdisk    -            -            online
+emc_clariion0_76 auto:cdsdisk    emc_clariion0_76  autotcdg3    online
+emc_clariion0_77 auto:cdsdisk    emc_clariion0_77  autotcdg3    online
+emc_clariion0_78 auto:cdsdisk    emc_clariion0_78  autotcdg3    online
+emc_clariion0_79 auto:cdsdisk    emc_clariion0_79  autotcdg3    online
+emc_clariion0_80 auto:cdsdisk    emc_clariion0_80  autotcdg3    online
+emc_clariion0_81 auto:cdsdisk    emc_clariion0_81  autotcdg3    online
+emc_clariion0_82 auto:cdsdisk    emc_clariion0_82  autotcdg3    online
+emc_clariion0_83 auto:cdsdisk    emc_clariion0_83  autotcdg3    online
+emc_clariion0_84 auto:cdsdisk    emc_clariion0_84  autotcdg3    online
+emc_clariion0_85 auto:cdsdisk    emc_clariion0_85  autotcdg3    online
+emc_clariion0_86 auto:cdsdisk    emc_clariion0_86  autotcdg3    online
+emc_clariion0_87 auto:cdsdisk    emc_clariion0_87  autotcdg3    online
+emc_clariion0_88 auto:cdsdisk    emc_clariion0_88  autotcdg2    online
+emc_clariion0_89 auto:cdsdisk    emc_clariion0_89  autotcdg2    online
+emc_clariion1_277 auto:cdsdisk    emc_clariion1_277  autotcdg2    online
+emc_clariion1_278 auto:cdsdisk    emc_clariion1_278  autotcdg2    online
+emc_clariion1_279 auto:cdsdisk    emc_clariion1_279  autotcdg2    online
+emc_clariion1_280 auto:cdsdisk    emc_clariion1_280  autotcdg2    online
+emc_clariion1_281 auto:cdsdisk    emc_clariion1_281  autotcdg2    online
+emc_clariion1_282 auto:cdsdisk    emc_clariion1_282  autotcdg2    online
+emc_clariion1_283 auto:cdsdisk    emc_clariion1_283  autotcdg2    online
+emc_clariion1_284 auto:cdsdisk    emc_clariion1_284  autotcdg2    online
+emc_clariion1_285 auto:cdsdisk    emc_clariion1_285  autotcdg2    online
+emc_clariion1_286 auto:cdsdisk    emc_clariion1_286  autotcdg2    online
+emc_clariion1_287 auto:cdsdisk    emc_clariion1_287  autotcdg1    online shared
+emc_clariion1_288 auto:cdsdisk    emc_clariion1_288  autotcdg1    online shared
+emc_clariion1_289 auto:cdsdisk    emc_clariion1_289  autotcdg1    online shared
+emc_clariion1_290 auto:cdsdisk    emc_clariion1_290  autotcdg1    online shared
+emc_clariion1_291 auto:cdsdisk    emc_clariion1_291  autotcdg1    online shared
+emc_clariion1_292 auto:cdsdisk    emc_clariion1_292  autotcdg1    online shared
+emc_clariion1_293 auto:cdsdisk    emc_clariion1_293  autotcdg1    online shared
+emc_clariion1_294 auto:cdsdisk    emc_clariion1_294  autotcdg1    online shared
+emc_clariion1_295 auto:cdsdisk    emc_clariion1_295  autotcdg1    online shared
+emc_clariion1_296 auto:cdsdisk    emc_clariion1_296  autotcdg1    online shared
+emc0_0244    auto:cdsdisk    emc0_0244    autotcdg1    online shared
+emc0_0246    auto:cdsdisk    emc0_0246    autotcdg1    online shared
+sdfv         auto:none       -            -            online invalid
+
+
+DATE:2017-04-14 15:33:25
+HOST:l111055
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcdg2    enabled,cds          1492153634.355.l111059
+autotcdg1    enabled,shared,cds   1492153628.353.l111059
+autotcdg3    enabled,cds          1492153638.357.l111059
+
+
+DATE:2017-04-14 15:33:25
+HOST:l111055
+USER:root
+STDIN:vxdg destroy autotcdg2
+STDOUT:
+VxVM vxdg ERROR V-5-1-584 Disk group autotcdg2: Some volumes in the disk group are in use
+RETURN:31
+RESULT:WARNING
+
+
+DATE:2017-04-14 15:33:26
+HOST:l111055
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen72
+
+
+DATE:2017-04-14 15:33:26
+HOST:l111055
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+ams_25000_316 auto:cdsdisk    -            (fen72)      online
+ams_25000_317 auto:cdsdisk    -            (fen72)      online
+ams_25000_724 auto:cdsdisk    -            (fen72)      online
+ams_25000_733 auto:cdsdisk    -            -            online
+ams_25000_734 auto:cdsdisk    -            -            online
+ams_25000_735 auto:cdsdisk    -            -            online
+ams_25000_736 auto:cdsdisk    -            -            online
+ams_25000_1734 auto:cdsdisk    -            -            online
+ams_25000_1735 auto:cdsdisk    -            -            online
+ams_25000_1736 auto:cdsdisk    -            -            online
+ams_25000_1737 auto:cdsdisk    -            -            online
+ams_25000_1738 auto:cdsdisk    -            -            online
+ams_25000_1739 auto:cdsdisk    -            -            online
+ams_25000_1740 auto:cdsdisk    -            -            online
+ams_25000_1741 auto:cdsdisk    -            -            online
+ams_25000_1742 auto:cdsdisk    -            -            online
+ams_25000_1743 auto:cdsdisk    -            -            online
+ams_25000_1781 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1782 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1783 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1784 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1785 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1786 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1787 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1788 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1789 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1790 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1791 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1792 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1793 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1794 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1795 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1796 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1797 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1798 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1844 auto:cdsdisk    -            -            online
+ams_25000_1845 auto:cdsdisk    -            -            online
+ams_25000_1846 auto:cdsdisk    -            -            online
+ams_25000_1847 auto:cdsdisk    -            -            online
+ams_25000_1848 auto:cdsdisk    -            -            online
+ams_25000_1849 auto:cdsdisk    -            -            online
+ams_25000_1850 auto:cdsdisk    -            -            online
+ams_25000_1851 auto:cdsdisk    -            -            online
+emc_clariion0_70 auto:cdsdisk    -            -            online
+emc_clariion0_71 auto:cdsdisk    -            -            online
+emc_clariion0_72 auto:cdsdisk    -            -            online
+emc_clariion0_73 auto:cdsdisk    -            -            online
+emc_clariion0_74 auto:cdsdisk    -            -            online
+emc_clariion0_76 auto:cdsdisk    emc_clariion0_76  autotcdg3    online
+emc_clariion0_77 auto:cdsdisk    emc_clariion0_77  autotcdg3    online
+emc_clariion0_78 auto:cdsdisk    emc_clariion0_78  autotcdg3    online
+emc_clariion0_79 auto:cdsdisk    emc_clariion0_79  autotcdg3    online
+emc_clariion0_80 auto:cdsdisk    emc_clariion0_80  autotcdg3    online
+emc_clariion0_81 auto:cdsdisk    emc_clariion0_81  autotcdg3    online
+emc_clariion0_82 auto:cdsdisk    emc_clariion0_82  autotcdg3    online
+emc_clariion0_83 auto:cdsdisk    emc_clariion0_83  autotcdg3    online
+emc_clariion0_84 auto:cdsdisk    emc_clariion0_84  autotcdg3    online
+emc_clariion0_85 auto:cdsdisk    emc_clariion0_85  autotcdg3    online
+emc_clariion0_86 auto:cdsdisk    emc_clariion0_86  autotcdg3    online
+emc_clariion0_87 auto:cdsdisk    emc_clariion0_87  autotcdg3    online
+emc_clariion0_88 auto:cdsdisk    emc_clariion0_88  autotcdg2    online
+emc_clariion0_89 auto:cdsdisk    emc_clariion0_89  autotcdg2    online
+emc_clariion1_277 auto:cdsdisk    emc_clariion1_277  autotcdg2    online
+emc_clariion1_278 auto:cdsdisk    emc_clariion1_278  autotcdg2    online
+emc_clariion1_279 auto:cdsdisk    emc_clariion1_279  autotcdg2    online
+emc_clariion1_280 auto:cdsdisk    emc_clariion1_280  autotcdg2    online
+emc_clariion1_281 auto:cdsdisk    emc_clariion1_281  autotcdg2    online
+emc_clariion1_282 auto:cdsdisk    emc_clariion1_282  autotcdg2    online
+emc_clariion1_283 auto:cdsdisk    emc_clariion1_283  autotcdg2    online
+emc_clariion1_284 auto:cdsdisk    emc_clariion1_284  autotcdg2    online
+emc_clariion1_285 auto:cdsdisk    emc_clariion1_285  autotcdg2    online
+emc_clariion1_286 auto:cdsdisk    emc_clariion1_286  autotcdg2    online
+emc_clariion1_287 auto:cdsdisk    emc_clariion1_287  autotcdg1    online shared
+emc_clariion1_288 auto:cdsdisk    emc_clariion1_288  autotcdg1    online shared
+emc_clariion1_289 auto:cdsdisk    emc_clariion1_289  autotcdg1    online shared
+emc_clariion1_290 auto:cdsdisk    emc_clariion1_290  autotcdg1    online shared
+emc_clariion1_291 auto:cdsdisk    emc_clariion1_291  autotcdg1    online shared
+emc_clariion1_292 auto:cdsdisk    emc_clariion1_292  autotcdg1    online shared
+emc_clariion1_293 auto:cdsdisk    emc_clariion1_293  autotcdg1    online shared
+emc_clariion1_294 auto:cdsdisk    emc_clariion1_294  autotcdg1    online shared
+emc_clariion1_295 auto:cdsdisk    emc_clariion1_295  autotcdg1    online shared
+emc_clariion1_296 auto:cdsdisk    emc_clariion1_296  autotcdg1    online shared
+emc0_0244    auto:cdsdisk    emc0_0244    autotcdg1    online shared
+emc0_0246    auto:cdsdisk    emc0_0246    autotcdg1    online shared
+sdfv         auto:none       -            -            online invalid
+
+
+DATE:2017-04-14 15:33:27
+HOST:l111055
+USER:root
+STDIN:vxfenadm -ak 1 -f /tmp/disk.6274 && vxfenadm -ck 1 -f /tmp/disk.6274
+STDOUT:
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_89
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_88
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_277
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_278
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_280
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_279
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_281
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_282
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_283
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_285
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_284
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_286
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_88
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_89
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_277
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_280
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_278
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_279
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_281
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_282
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_283
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_284
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_285
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_286
+
+
+DATE:2017-04-14 15:33:27
+HOST:l111055
+USER:root
+STDIN:echo "emc_clariion0_88 emc_clariion0_89 emc_clariion1_277 emc_clariion1_278 emc_clariion1_279 emc_clariion1_280 emc_clariion1_281 emc_clariion1_282 emc_clariion1_283 emc_clariion1_284 emc_clariion1_285 emc_clariion1_286"|xargs -n1 vxdisk -f init
+STDOUT:
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion0_88: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion0_89: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_277: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_278: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_279: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_280: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_281: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_282: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_283: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_284: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_285: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_286: Device is in use
+RETURN:123
+RESULT:WARNING
+
+
+DATE:2017-04-14 15:33:27
+HOST:l111055
+USER:root
+STDIN:rm -f /tmp/disk.6274
+STDOUT:
+
+
+
+DATE:2017-04-14 15:33:28
+HOST:l111055
+USER:root
+STDIN:vxdg destroy autotcdg1
+STDOUT:
+VxVM vxdg ERROR V-5-1-584 Disk group autotcdg1: Some volumes in the disk group are in use
+RETURN:31
+RESULT:WARNING
+
+
+DATE:2017-04-14 15:33:28
+HOST:l111055
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen72
+
+
+DATE:2017-04-14 15:33:28
+HOST:l111055
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+ams_25000_316 auto:cdsdisk    -            (fen72)      online
+ams_25000_317 auto:cdsdisk    -            (fen72)      online
+ams_25000_724 auto:cdsdisk    -            (fen72)      online
+ams_25000_733 auto:cdsdisk    -            -            online
+ams_25000_734 auto:cdsdisk    -            -            online
+ams_25000_735 auto:cdsdisk    -            -            online
+ams_25000_736 auto:cdsdisk    -            -            online
+ams_25000_1734 auto:cdsdisk    -            -            online
+ams_25000_1735 auto:cdsdisk    -            -            online
+ams_25000_1736 auto:cdsdisk    -            -            online
+ams_25000_1737 auto:cdsdisk    -            -            online
+ams_25000_1738 auto:cdsdisk    -            -            online
+ams_25000_1739 auto:cdsdisk    -            -            online
+ams_25000_1740 auto:cdsdisk    -            -            online
+ams_25000_1741 auto:cdsdisk    -            -            online
+ams_25000_1742 auto:cdsdisk    -            -            online
+ams_25000_1743 auto:cdsdisk    -            -            online
+ams_25000_1781 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1782 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1783 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1784 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1785 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1786 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1787 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1788 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1789 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1790 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1791 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1792 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1793 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1794 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1795 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1796 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1797 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1798 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1844 auto:cdsdisk    -            -            online
+ams_25000_1845 auto:cdsdisk    -            -            online
+ams_25000_1846 auto:cdsdisk    -            -            online
+ams_25000_1847 auto:cdsdisk    -            -            online
+ams_25000_1848 auto:cdsdisk    -            -            online
+ams_25000_1849 auto:cdsdisk    -            -            online
+ams_25000_1850 auto:cdsdisk    -            -            online
+ams_25000_1851 auto:cdsdisk    -            -            online
+emc_clariion0_70 auto:cdsdisk    -            -            online
+emc_clariion0_71 auto:cdsdisk    -            -            online
+emc_clariion0_72 auto:cdsdisk    -            -            online
+emc_clariion0_73 auto:cdsdisk    -            -            online
+emc_clariion0_74 auto:cdsdisk    -            -            online
+emc_clariion0_76 auto:cdsdisk    emc_clariion0_76  autotcdg3    online
+emc_clariion0_77 auto:cdsdisk    emc_clariion0_77  autotcdg3    online
+emc_clariion0_78 auto:cdsdisk    emc_clariion0_78  autotcdg3    online
+emc_clariion0_79 auto:cdsdisk    emc_clariion0_79  autotcdg3    online
+emc_clariion0_80 auto:cdsdisk    emc_clariion0_80  autotcdg3    online
+emc_clariion0_81 auto:cdsdisk    emc_clariion0_81  autotcdg3    online
+emc_clariion0_82 auto:cdsdisk    emc_clariion0_82  autotcdg3    online
+emc_clariion0_83 auto:cdsdisk    emc_clariion0_83  autotcdg3    online
+emc_clariion0_84 auto:cdsdisk    emc_clariion0_84  autotcdg3    online
+emc_clariion0_85 auto:cdsdisk    emc_clariion0_85  autotcdg3    online
+emc_clariion0_86 auto:cdsdisk    emc_clariion0_86  autotcdg3    online
+emc_clariion0_87 auto:cdsdisk    emc_clariion0_87  autotcdg3    online
+emc_clariion0_88 auto:cdsdisk    emc_clariion0_88  autotcdg2    online
+emc_clariion0_89 auto:cdsdisk    emc_clariion0_89  autotcdg2    online
+emc_clariion1_277 auto:cdsdisk    emc_clariion1_277  autotcdg2    online
+emc_clariion1_278 auto:cdsdisk    emc_clariion1_278  autotcdg2    online
+emc_clariion1_279 auto:cdsdisk    emc_clariion1_279  autotcdg2    online
+emc_clariion1_280 auto:cdsdisk    emc_clariion1_280  autotcdg2    online
+emc_clariion1_281 auto:cdsdisk    emc_clariion1_281  autotcdg2    online
+emc_clariion1_282 auto:cdsdisk    emc_clariion1_282  autotcdg2    online
+emc_clariion1_283 auto:cdsdisk    emc_clariion1_283  autotcdg2    online
+emc_clariion1_284 auto:cdsdisk    emc_clariion1_284  autotcdg2    online
+emc_clariion1_285 auto:cdsdisk    emc_clariion1_285  autotcdg2    online
+emc_clariion1_286 auto:cdsdisk    emc_clariion1_286  autotcdg2    online
+emc_clariion1_287 auto:cdsdisk    emc_clariion1_287  autotcdg1    online shared
+emc_clariion1_288 auto:cdsdisk    emc_clariion1_288  autotcdg1    online shared
+emc_clariion1_289 auto:cdsdisk    emc_clariion1_289  autotcdg1    online shared
+emc_clariion1_290 auto:cdsdisk    emc_clariion1_290  autotcdg1    online shared
+emc_clariion1_291 auto:cdsdisk    emc_clariion1_291  autotcdg1    online shared
+emc_clariion1_292 auto:cdsdisk    emc_clariion1_292  autotcdg1    online shared
+emc_clariion1_293 auto:cdsdisk    emc_clariion1_293  autotcdg1    online shared
+emc_clariion1_294 auto:cdsdisk    emc_clariion1_294  autotcdg1    online shared
+emc_clariion1_295 auto:cdsdisk    emc_clariion1_295  autotcdg1    online shared
+emc_clariion1_296 auto:cdsdisk    emc_clariion1_296  autotcdg1    online shared
+emc0_0244    auto:cdsdisk    emc0_0244    autotcdg1    online shared
+emc0_0246    auto:cdsdisk    emc0_0246    autotcdg1    online shared
+sdfv         auto:none       -            -            online invalid
+
+
+DATE:2017-04-14 15:33:29
+HOST:l111055
+USER:root
+STDIN:vxfenadm -ak 1 -f /tmp/disk.6274 && vxfenadm -ck 1 -f /tmp/disk.6274
+STDOUT:
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_287
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_288
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_291
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_289
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_294
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_290
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_292
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_293
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_295
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion1_296
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc0_0244
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc0_0246
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_287
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_288
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_291
+DMP Clear completed for disk path: /dev/vx/rdmp/emc0_0244
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_289
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_294
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_290
+DMP Clear completed for disk path: /dev/vx/rdmp/emc0_0246
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_292
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_293
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_295
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion1_296
+
+
+DATE:2017-04-14 15:33:29
+HOST:l111055
+USER:root
+STDIN:echo "emc_clariion1_287 emc_clariion1_288 emc_clariion1_289 emc_clariion1_290 emc_clariion1_291 emc_clariion1_292 emc_clariion1_293 emc_clariion1_294 emc_clariion1_295 emc_clariion1_296 emc0_0244 emc0_0246"|xargs -n1 vxdisk -f init
+STDOUT:
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_287: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_288: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_289: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_290: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_291: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_292: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_293: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_294: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_295: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion1_296: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc0_0244: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc0_0246: Device is in use
+RETURN:123
+RESULT:WARNING
+
+
+DATE:2017-04-14 15:33:30
+HOST:l111055
+USER:root
+STDIN:rm -f /tmp/disk.6274
+STDOUT:
+
+
+
+DATE:2017-04-14 15:33:30
+HOST:l111055
+USER:root
+STDIN:vxdg destroy autotcdg3
+STDOUT:
+VxVM vxdg ERROR V-5-1-584 Disk group autotcdg3: Some volumes in the disk group are in use
+RETURN:31
+RESULT:WARNING
+
+
+DATE:2017-04-14 15:33:30
+HOST:l111055
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen72
+
+
+DATE:2017-04-14 15:33:31
+HOST:l111055
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+ams_25000_316 auto:cdsdisk    -            (fen72)      online
+ams_25000_317 auto:cdsdisk    -            (fen72)      online
+ams_25000_724 auto:cdsdisk    -            (fen72)      online
+ams_25000_733 auto:cdsdisk    -            -            online
+ams_25000_734 auto:cdsdisk    -            -            online
+ams_25000_735 auto:cdsdisk    -            -            online
+ams_25000_736 auto:cdsdisk    -            -            online
+ams_25000_1734 auto:cdsdisk    -            -            online
+ams_25000_1735 auto:cdsdisk    -            -            online
+ams_25000_1736 auto:cdsdisk    -            -            online
+ams_25000_1737 auto:cdsdisk    -            -            online
+ams_25000_1738 auto:cdsdisk    -            -            online
+ams_25000_1739 auto:cdsdisk    -            -            online
+ams_25000_1740 auto:cdsdisk    -            -            online
+ams_25000_1741 auto:cdsdisk    -            -            online
+ams_25000_1742 auto:cdsdisk    -            -            online
+ams_25000_1743 auto:cdsdisk    -            -            online
+ams_25000_1781 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1782 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1783 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1784 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1785 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1786 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1787 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1788 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1789 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1790 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1791 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1792 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1793 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1794 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1795 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1796 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1797 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1798 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1844 auto:cdsdisk    -            -            online
+ams_25000_1845 auto:cdsdisk    -            -            online
+ams_25000_1846 auto:cdsdisk    -            -            online
+ams_25000_1847 auto:cdsdisk    -            -            online
+ams_25000_1848 auto:cdsdisk    -            -            online
+ams_25000_1849 auto:cdsdisk    -            -            online
+ams_25000_1850 auto:cdsdisk    -            -            online
+ams_25000_1851 auto:cdsdisk    -            -            online
+emc_clariion0_70 auto:cdsdisk    -            -            online
+emc_clariion0_71 auto:cdsdisk    -            -            online
+emc_clariion0_72 auto:cdsdisk    -            -            online
+emc_clariion0_73 auto:cdsdisk    -            -            online
+emc_clariion0_74 auto:cdsdisk    -            -            online
+emc_clariion0_76 auto:cdsdisk    emc_clariion0_76  autotcdg3    online
+emc_clariion0_77 auto:cdsdisk    emc_clariion0_77  autotcdg3    online
+emc_clariion0_78 auto:cdsdisk    emc_clariion0_78  autotcdg3    online
+emc_clariion0_79 auto:cdsdisk    emc_clariion0_79  autotcdg3    online
+emc_clariion0_80 auto:cdsdisk    emc_clariion0_80  autotcdg3    online
+emc_clariion0_81 auto:cdsdisk    emc_clariion0_81  autotcdg3    online
+emc_clariion0_82 auto:cdsdisk    emc_clariion0_82  autotcdg3    online
+emc_clariion0_83 auto:cdsdisk    emc_clariion0_83  autotcdg3    online
+emc_clariion0_84 auto:cdsdisk    emc_clariion0_84  autotcdg3    online
+emc_clariion0_85 auto:cdsdisk    emc_clariion0_85  autotcdg3    online
+emc_clariion0_86 auto:cdsdisk    emc_clariion0_86  autotcdg3    online
+emc_clariion0_87 auto:cdsdisk    emc_clariion0_87  autotcdg3    online
+emc_clariion0_88 auto:cdsdisk    emc_clariion0_88  autotcdg2    online
+emc_clariion0_89 auto:cdsdisk    emc_clariion0_89  autotcdg2    online
+emc_clariion1_277 auto:cdsdisk    emc_clariion1_277  autotcdg2    online
+emc_clariion1_278 auto:cdsdisk    emc_clariion1_278  autotcdg2    online
+emc_clariion1_279 auto:cdsdisk    emc_clariion1_279  autotcdg2    online
+emc_clariion1_280 auto:cdsdisk    emc_clariion1_280  autotcdg2    online
+emc_clariion1_281 auto:cdsdisk    emc_clariion1_281  autotcdg2    online
+emc_clariion1_282 auto:cdsdisk    emc_clariion1_282  autotcdg2    online
+emc_clariion1_283 auto:cdsdisk    emc_clariion1_283  autotcdg2    online
+emc_clariion1_284 auto:cdsdisk    emc_clariion1_284  autotcdg2    online
+emc_clariion1_285 auto:cdsdisk    emc_clariion1_285  autotcdg2    online
+emc_clariion1_286 auto:cdsdisk    emc_clariion1_286  autotcdg2    online
+emc_clariion1_287 auto:cdsdisk    emc_clariion1_287  autotcdg1    online shared
+emc_clariion1_288 auto:cdsdisk    emc_clariion1_288  autotcdg1    online shared
+emc_clariion1_289 auto:cdsdisk    emc_clariion1_289  autotcdg1    online shared
+emc_clariion1_290 auto:cdsdisk    emc_clariion1_290  autotcdg1    online shared
+emc_clariion1_291 auto:cdsdisk    emc_clariion1_291  autotcdg1    online shared
+emc_clariion1_292 auto:cdsdisk    emc_clariion1_292  autotcdg1    online shared
+emc_clariion1_293 auto:cdsdisk    emc_clariion1_293  autotcdg1    online shared
+emc_clariion1_294 auto:cdsdisk    emc_clariion1_294  autotcdg1    online shared
+emc_clariion1_295 auto:cdsdisk    emc_clariion1_295  autotcdg1    online shared
+emc_clariion1_296 auto:cdsdisk    emc_clariion1_296  autotcdg1    online shared
+emc0_0244    auto:cdsdisk    emc0_0244    autotcdg1    online shared
+emc0_0246    auto:cdsdisk    emc0_0246    autotcdg1    online shared
+sdfv         auto:none       -            -            online invalid
+
+
+DATE:2017-04-14 15:33:31
+HOST:l111055
+USER:root
+STDIN:vxfenadm -ak 1 -f /tmp/disk.6274 && vxfenadm -ck 1 -f /tmp/disk.6274
+STDOUT:
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_76
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_77
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_79
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_80
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_78
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_81
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_82
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_83
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_84
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_85
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_86
+DMP Registration and Ignore completed for disk path: /dev/vx/rdmp/emc_clariion0_87
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_76
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_77
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_78
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_79
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_80
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_81
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_82
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_83
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_84
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_85
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_86
+DMP Clear completed for disk path: /dev/vx/rdmp/emc_clariion0_87
+
+
+DATE:2017-04-14 15:33:32
+HOST:l111055
+USER:root
+STDIN:echo "emc_clariion0_76 emc_clariion0_77 emc_clariion0_78 emc_clariion0_79 emc_clariion0_80 emc_clariion0_81 emc_clariion0_82 emc_clariion0_83 emc_clariion0_84 emc_clariion0_85 emc_clariion0_86 emc_clariion0_87"|xargs -n1 vxdisk -f init
+STDOUT:
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion0_76: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion0_77: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion0_78: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion0_79: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion0_80: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion0_81: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion0_82: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion0_83: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion0_84: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion0_85: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion0_86: Device is in use
+VxVM vxdisk ERROR V-5-1-534 Device emc_clariion0_87: Device is in use
+RETURN:123
+RESULT:WARNING
+
+
+DATE:2017-04-14 15:33:32
+HOST:l111055
+USER:root
+STDIN:rm -f /tmp/disk.6274
+STDOUT:
+
+
+
+DATE:2017-04-14 15:33:32
+HOST:l111055
+USER:root
+STDIN:vxdisk list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+ams_25000_316 auto:cdsdisk    -            (fen72)      online
+ams_25000_317 auto:cdsdisk    -            (fen72)      online
+ams_25000_724 auto:cdsdisk    -            (fen72)      online
+ams_25000_733 auto:cdsdisk    -            -            online
+ams_25000_734 auto:cdsdisk    -            -            online
+ams_25000_735 auto:cdsdisk    -            -            online
+ams_25000_736 auto:cdsdisk    -            -            online
+ams_25000_1734 auto:cdsdisk    -            -            online
+ams_25000_1735 auto:cdsdisk    -            -            online
+ams_25000_1736 auto:cdsdisk    -            -            online
+ams_25000_1737 auto:cdsdisk    -            -            online
+ams_25000_1738 auto:cdsdisk    -            -            online
+ams_25000_1739 auto:cdsdisk    -            -            online
+ams_25000_1740 auto:cdsdisk    -            -            online
+ams_25000_1741 auto:cdsdisk    -            -            online
+ams_25000_1742 auto:cdsdisk    -            -            online
+ams_25000_1743 auto:cdsdisk    -            -            online
+ams_25000_1781 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1782 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1783 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1784 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1785 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1786 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1787 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1788 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1789 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1790 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1791 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1792 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1793 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1794 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1795 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1796 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1797 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1798 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1844 auto:cdsdisk    -            -            online
+ams_25000_1845 auto:cdsdisk    -            -            online
+ams_25000_1846 auto:cdsdisk    -            -            online
+ams_25000_1847 auto:cdsdisk    -            -            online
+ams_25000_1848 auto:cdsdisk    -            -            online
+ams_25000_1849 auto:cdsdisk    -            -            online
+ams_25000_1850 auto:cdsdisk    -            -            online
+ams_25000_1851 auto:cdsdisk    -            -            online
+emc_clariion0_70 auto:cdsdisk    -            -            online
+emc_clariion0_71 auto:cdsdisk    -            -            online
+emc_clariion0_72 auto:cdsdisk    -            -            online
+emc_clariion0_73 auto:cdsdisk    -            -            online
+emc_clariion0_74 auto:cdsdisk    -            -            online
+emc_clariion0_76 auto:cdsdisk    emc_clariion0_76  autotcdg3    online
+emc_clariion0_77 auto:cdsdisk    emc_clariion0_77  autotcdg3    online
+emc_clariion0_78 auto:cdsdisk    emc_clariion0_78  autotcdg3    online
+emc_clariion0_79 auto:cdsdisk    emc_clariion0_79  autotcdg3    online
+emc_clariion0_80 auto:cdsdisk    emc_clariion0_80  autotcdg3    online
+emc_clariion0_81 auto:cdsdisk    emc_clariion0_81  autotcdg3    online
+emc_clariion0_82 auto:cdsdisk    emc_clariion0_82  autotcdg3    online
+emc_clariion0_83 auto:cdsdisk    emc_clariion0_83  autotcdg3    online
+emc_clariion0_84 auto:cdsdisk    emc_clariion0_84  autotcdg3    online
+emc_clariion0_85 auto:cdsdisk    emc_clariion0_85  autotcdg3    online
+emc_clariion0_86 auto:cdsdisk    emc_clariion0_86  autotcdg3    online
+emc_clariion0_87 auto:cdsdisk    emc_clariion0_87  autotcdg3    online
+emc_clariion0_88 auto:cdsdisk    emc_clariion0_88  autotcdg2    online
+emc_clariion0_89 auto:cdsdisk    emc_clariion0_89  autotcdg2    online
+emc_clariion1_277 auto:cdsdisk    emc_clariion1_277  autotcdg2    online
+emc_clariion1_278 auto:cdsdisk    emc_clariion1_278  autotcdg2    online
+emc_clariion1_279 auto:cdsdisk    emc_clariion1_279  autotcdg2    online
+emc_clariion1_280 auto:cdsdisk    emc_clariion1_280  autotcdg2    online
+emc_clariion1_281 auto:cdsdisk    emc_clariion1_281  autotcdg2    online
+emc_clariion1_282 auto:cdsdisk    emc_clariion1_282  autotcdg2    online
+emc_clariion1_283 auto:cdsdisk    emc_clariion1_283  autotcdg2    online
+emc_clariion1_284 auto:cdsdisk    emc_clariion1_284  autotcdg2    online
+emc_clariion1_285 auto:cdsdisk    emc_clariion1_285  autotcdg2    online
+emc_clariion1_286 auto:cdsdisk    emc_clariion1_286  autotcdg2    online
+emc_clariion1_287 auto:cdsdisk    emc_clariion1_287  autotcdg1    online shared
+emc_clariion1_288 auto:cdsdisk    emc_clariion1_288  autotcdg1    online shared
+emc_clariion1_289 auto:cdsdisk    emc_clariion1_289  autotcdg1    online shared
+emc_clariion1_290 auto:cdsdisk    emc_clariion1_290  autotcdg1    online shared
+emc_clariion1_291 auto:cdsdisk    emc_clariion1_291  autotcdg1    online shared
+emc_clariion1_292 auto:cdsdisk    emc_clariion1_292  autotcdg1    online shared
+emc_clariion1_293 auto:cdsdisk    emc_clariion1_293  autotcdg1    online shared
+emc_clariion1_294 auto:cdsdisk    emc_clariion1_294  autotcdg1    online shared
+emc_clariion1_295 auto:cdsdisk    emc_clariion1_295  autotcdg1    online shared
+emc_clariion1_296 auto:cdsdisk    emc_clariion1_296  autotcdg1    online shared
+emc0_0244    auto:cdsdisk    emc0_0244    autotcdg1    online shared
+emc0_0246    auto:cdsdisk    emc0_0246    autotcdg1    online shared
+sdfv         auto:none       -            -            online invalid
+
+
+DATE:2017-04-14 15:33:33
+HOST:l111055
+USER:root
+STDIN:cat -n /etc/vx/vxvm.exclude
+STDOUT:
+     1	exclude_all 0
+     2	paths
+     3	#
+     4	controllers
+     5	#
+     6	product
+     7	#

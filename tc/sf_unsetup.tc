@@ -1,0 +1,26 @@
+#tc for Infoscale unsetup testing
+#des:support aix soliar linux platform
+#P:99
+source $BASE/etc/install/install.conf
+checkNode root novcs
+for node in $NODES
+do
+        getHostnameOSProduct $node
+	! checkSFPkgStatus install $node && oLog error "Have not found InfoScale product installed" && myexit 201
+done
+IPS=`turnNodesToIp` || exit 201
+setNodeEquivalence
+RExec root $NODE1 "ls /opt/VRTS/install/install*"
+installcmd=`echo "$out"|grep -P "$installcmdfilter"|xargs basename`
+response=`cat $BASE/etc/install/uninstall.rsp|sed "s/_INSTALL_CMD_/$installcmd/;s/_IP_/$IPS/"`
+interactByResponse 1 $NODE1 "$response"
+for node in $NODES
+do
+	a=`getVRTSPkgList $node|xargs -n10000` || myexit 201
+	if [ -n "$a" ]
+	then
+		oLog error "Found packages left on $node: $a"
+	fi
+done
+oLog flag
+myexit 0

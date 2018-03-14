@@ -1,0 +1,2374 @@
+
+==================== Operation Log for TC oracle_dbdst ====================
+DATE:2017-02-21 16:22:44
+Nodes:l111060 l111061
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-02-21 16:22:44
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-02-21 16:22:44
+HOST:l111060
+USER:root
+STDIN:ssh -l root l111060
+STDOUT:
+
+
+
+DATE:2017-02-21 16:22:45
+HOST:l111061
+USER:root
+STDIN:ssh -l root l111061
+STDOUT:
+
+
+
+DATE:2017-02-21 16:22:46
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111060,l111061
+STDOUT:
+
+
+
+DATE:2017-02-21 16:22:46
+HOST:l111060
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111060
+l111061
+
+
+DATE:2017-02-21 16:22:47
+HOST:l111061
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111060
+l111061
+
+***checking if hosts are wop-sshable with oracle***
+
+
+
+DATE:2017-02-21 16:22:47
+HOST:l111060
+USER:oracle
+STDIN:ssh -l oracle l111060
+STDOUT:
+
+
+
+DATE:2017-02-21 16:22:48
+HOST:l111061
+USER:oracle
+STDIN:ssh -l oracle l111061
+STDOUT:
+
+
+***Getting hostname of node***
+
+
+
+DATE:2017-02-21 16:22:49
+HOST:l111060
+USER:root
+STDIN:hostname
+STDOUT:
+l111060.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-02-21 16:22:49
+HOST:l111060
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-02-21 16:22:49
+HOST:l111060
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 6.9 Beta (Santiago)
+
+
+DATE:2017-02-21 16:22:49
+HOST:l111060
+USER:root
+STDIN:uname -r
+STDOUT:
+2.6.32-688.el6.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-02-21 16:22:52
+HOST:l111060
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSvlic-3.02.62.003-0.x86_64
+Name        : VRTSvlic                     Relocations: (not relocatable)
+Version     : 3.02.62.003                       Vendor: Symantec Corporation
+Release     : 0                             Build Date: Thu 25 Sep 2014 12:07:11 PM CST
+Install Date: Wed 15 Feb 2017 12:21:28 AM CST      Build Host: claymore.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSvlic-3.02.62.003-0.src.rpm
+Size        : 1197089                          License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Symantec License Utilities
+Description :
+These are the Symantec License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSob-3.4.703-0.i686
+Name        : VRTSob                       Relocations: (not relocatable)
+Version     : 3.4.703                           Vendor: Symantec Corporation.
+Release     : 0                             Build Date: Wed 15 Oct 2014 08:24:30 AM CST
+Install Date: Wed 15 Feb 2017 12:22:12 AM CST      Build Host: veaas3bld-04.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSob-3.4.703-0.src.rpm
+Size        : 67960232                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Enterprise Administrator Service by Symantec
+Description :
+Veritas Enterprise Administrator Service by Symantec
+
+Package INFO: VRTSgms-6.2.0.000-RHEL6.x86_64
+Name        : VRTSgms                      Relocations: (not relocatable)
+Version     : 6.2.0.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 14 Oct 2014 11:08:26 AM CST
+Install Date: Wed 15 Feb 2017 12:24:28 AM CST      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSgms-6.2.0.000-RHEL6.src.rpm
+Size        : 84003                            License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Messaging Services by Symantec
+Description :
+Veritas Group Messaging Sevice (GMS) driver by Symantec
+
+Package INFO: VRTSspt-6.2.1.000-RHEL6.noarch
+Name        : VRTSspt                      Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Wed 04 Feb 2015 06:33:08 PM CST
+Install Date: Wed 15 Feb 2017 12:24:49 AM CST      Build Host: redhat92207.cdc.veritas.com
+Group       : Applications/System           Source RPM: VRTSspt-6.2.1.000-RHEL6.src.rpm
+Size        : 33110813                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Software Support Tools Package by Symantec
+Description :
+    VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSllt-6.2.1.600-RHEL6.x86_64
+Name        : VRTSllt                      Relocations: (not relocatable)
+Version     : 6.2.1.600                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Wed 23 Nov 2016 05:57:39 PM CST
+Install Date: Wed 15 Feb 2017 12:25:43 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSllt-6.2.1.600-RHEL6.src.rpm
+Size        : 70517340                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Low Latency Transport by Symantec
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-614.el6.x86_64 [LINUX_RHEL60]
+Build Stamp: Veritas-6.2.1.600-2016-11-22_23.41.19
+
+Package INFO: VRTSvcs-6.2.1.000-RHEL6.i686
+Name        : VRTSvcs                      Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Sat 11 Apr 2015 05:03:09 AM CST
+Install Date: Wed 15 Feb 2017 12:26:12 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcs-6.2.1.000-RHEL6.src.rpm
+Size        : 172928620                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server by Symantec
+Description :
+Veritas Cluster Server and Commands by Symantec (i686)
+Build Stamp : 6.2.1.000-2015-04-10_10.00.00
+
+Package INFO: VRTSdbed-6.2.1.000-RHEL.x86_64
+Name        : VRTSdbed                     Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL                          Build Date: Fri 27 Feb 2015 06:03:09 AM CST
+Install Date: Wed 15 Feb 2017 12:26:41 AM CST      Build Host: snapper53-64.engba.symantec.com
+Group       : Applications/Databases        Source RPM: VRTSdbed-6.2.1.000-RHEL.src.rpm
+Size        : 231965245                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSdbac-6.2.0.100-RHEL6.x86_64
+Name        : VRTSdbac                     Relocations: (not relocatable)
+Version     : 6.2.0.100                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 25 Aug 2015 08:42:50 PM CST
+Install Date: Wed 15 Feb 2017 12:27:03 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSdbac-6.2.0.100-RHEL6.src.rpm
+Size        : 20457206                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Real Application Cluster Support Package by Symantec
+Description :
+Veritas Oracle Real Application Cluster Support Package by Symantec
+Build Stamp	: 6.2.0.100-2015-08-25_05.26.11
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64
+
+Package INFO: VRTSaslapm-6.2.1.000-RHEL6.x86_64
+Name        : VRTSaslapm                   Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 07 Apr 2015 10:35:10 PM CST
+Install Date: Wed 15 Feb 2017 12:22:06 AM CST      Build Host: sf-rhel6ga-build.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSaslapm-6.2.1.000-RHEL6.src.rpm
+Size        : 35263762                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTSfssdk-6.2.0.000-RHEL6.x86_64
+Name        : VRTSfssdk                    Relocations: (not relocatable)
+Version     : 6.2.0.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 24 Oct 2014 03:51:55 PM CST
+Install Date: Wed 15 Feb 2017 12:23:10 AM CST      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSfssdk-6.2.0.000-RHEL6.src.rpm
+Size        : 1119364                          License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas File System Software Developer Kit by Symantec
+Description :
+Veritas File System Software Developer Kit
+
+Package INFO: VRTSvcsdr-6.2.0.000-RHEL6.x86_64
+Name        : VRTSvcsdr                    Relocations: (not relocatable)
+Version     : 6.2.0.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 17 Oct 2014 11:04:57 PM CST
+Install Date: Wed 15 Feb 2017 12:24:03 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsdr-6.2.0.000-RHEL6.src.rpm
+Size        : 4467511                          License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : VCS Disk Reserver by Symantec
+Description :
+Veritas Cluster Server Disk Reservation Modules and Utilities by Symantec
+Arch : (x86_64)
+Build Stamp : 6.2.0.000-2014-10-17_05.00.00
+
+Package INFO: VRTSperl-5.16.1.27-RHEL6.x86_64
+Name        : VRTSperl                     Relocations: (not relocatable)
+Version     : 5.16.1.27                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Wed 04 Mar 2015 09:40:43 PM CST
+Install Date: Wed 15 Feb 2017 12:24:46 AM CST      Build Host: rhel6-perl.cdc.symantec.com
+Group       : Applications/System           Source RPM: VRTSperl-5.16.1.27-RHEL6.src.rpm
+Size        : 70143772                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Perl 5.16.1 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.16.1 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.60
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Devel-Cover-1.16
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSvxvm-6.2.1.300-RHEL6.x86_64
+Name        : VRTSvxvm                     Relocations: (not relocatable)
+Version     : 6.2.1.300                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 30 Dec 2016 12:04:49 PM CST
+Install Date: Wed 15 Feb 2017 12:25:12 AM CST      Build Host: sf-rhel6ga-build.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSvxvm-6.2.1.300-RHEL6.src.rpm
+Size        : 445869303                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Volume Manager by Symantec
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSfsadv-6.2.1.000-RHEL6.x86_64
+Name        : VRTSfsadv                    Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 07 Apr 2015 07:44:05 PM CST
+Install Date: Wed 15 Feb 2017 12:25:37 AM CST      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSfsadv-6.2.1.000-RHEL6.src.rpm
+Size        : 14180743                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas File System Advanced Features by Symantec
+Description :
+Veritas File System Advanced Features by Symantec
+
+Package INFO: VRTSgab-6.2.1.300-RHEL6.x86_64
+Name        : VRTSgab                      Relocations: (not relocatable)
+Version     : 6.2.1.300                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 19 Apr 2016 05:15:09 PM CST
+Install Date: Wed 15 Feb 2017 12:25:49 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSgab-6.2.1.300-RHEL6.src.rpm
+Size        : 33034487                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Membership and Atomic Broadcast by Symantec
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.32-614.el6.x86_64
+Build Stamp        : Veritas-6.2.1.300-2016-04-18_22.55.03
+
+Package INFO: VRTSamf-6.2.1.100-RHEL6.x86_64
+Name        : VRTSamf                      Relocations: (not relocatable)
+Version     : 6.2.1.100                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 24 Aug 2015 10:25:50 PM CST
+Install Date: Wed 15 Feb 2017 12:25:58 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : System Environment/Kernel     Source RPM: VRTSamf-6.2.1.100-RHEL6.src.rpm
+Size        : 24930020                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64
+Build Stamp        : 6.2.1.100-2015-08-24_07.19.28
+
+Package INFO: VRTScps-6.2.1.000-RHEL6.x86_64
+Name        : VRTScps                      Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Sat 11 Apr 2015 05:06:08 AM CST
+Install Date: Wed 15 Feb 2017 12:26:20 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTScps-6.2.1.000-RHEL6.src.rpm
+Size        : 46342831                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Co-ordination Point Server by Symantec
+Description :
+Veritas Co-ordination Point Server by Symantec
+Build Stamp: 6.2.1.000-2015-04-10_10.00.00
+
+Package INFO: VRTSvcsea-6.2.1.000-RHEL6.i686
+Name        : VRTSvcsea                    Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Sat 11 Apr 2015 05:24:32 AM CST
+Install Date: Wed 15 Feb 2017 12:26:33 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsea-6.2.1.000-RHEL6.src.rpm
+Size        : 1169607                          License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents by Symantec
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 6.2.1.000-2015-04-10_10.00.00
+
+Package INFO: VRTSglm-6.2.0.100-RHEL6.x86_64
+Name        : VRTSglm                      Relocations: (not relocatable)
+Version     : 6.2.0.100                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 11 Aug 2015 09:21:29 PM CST
+Install Date: Wed 15 Feb 2017 12:26:48 AM CST      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSglm-6.2.0.100-RHEL6.src.rpm
+Size        : 424373                           License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Lock Manager (GLM) driver by Symantec
+Description :
+Veritas Group Lock Manager (GLM) driver by Symantec
+Supported kernel(s): 2.6.32-71.el6.x86_64 or later
+
+Package INFO: VRTSodm-6.2.1.300-RHEL6.x86_64
+Name        : VRTSodm                      Relocations: (not relocatable)
+Version     : 6.2.1.300                         Vendor: Symantec Corporation.
+Release     : RHEL6                         Build Date: Thu 22 Dec 2016 11:21:43 PM CST
+Install Date: Wed 15 Feb 2017 12:26:57 AM CST      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSodm-6.2.1.300-RHEL6.src.rpm
+Size        : 1690316                          License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Disk Manager by Symantec
+Description :
+Veritas Oracle Disk Manager (ODM) by Symantec
+
+Package INFO: VRTSvcswiz-6.2.0.000-RHEL6.i686
+Name        : VRTSvcswiz                   Relocations: (not relocatable)
+Version     : 6.2.0.000                         Vendor: "Symantec Corporation"
+Release     : RHEL6                         Build Date: Fri 17 Oct 2014 11:52:47 PM CST
+Install Date: Wed 15 Feb 2017 12:27:27 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcswiz-6.2.0.000-RHEL6.src.rpm
+Size        : 10426850                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server Wizards by Symantec
+Description :
+"The package contains Wizards for Veritas Cluster Server by Symantec"
+
+Arch : (i686)
+Build Stamp : 6.2.0.000-2014-10-17_08.52.30
+
+Package INFO: VRTSsfcpi62-6.2.1.000-GENERIC.noarch
+Name        : VRTSsfcpi62                  Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : GENERIC                       Build Date: Wed 15 Apr 2015 08:05:23 AM CST
+Install Date: Wed 15 Feb 2017 12:27:40 AM CST      Build Host: mtvre01.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSsfcpi62-6.2.1.000-GENERIC.src.rpm
+Size        : 13382449                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Storage Foundation Installer
+Description :
+Veritas Storage Foundation Installer. VRTSperl is required.
+
+Package INFO: VRTSvxfs-6.2.1.300-RHEL6.x86_64
+Name        : VRTSvxfs                     Relocations: (not relocatable)
+Version     : 6.2.1.300                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Thu 22 Dec 2016 11:01:43 PM CST
+Install Date: Wed 15 Feb 2017 12:25:26 AM CST      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSvxfs-6.2.1.300-RHEL6.src.rpm
+Size        : 56098866                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Filesystem by Symantec
+Description :
+Veritas Filesystem by Symantec
+
+Package INFO: VRTSvxfen-6.2.1.100-RHEL6.x86_64
+Name        : VRTSvxfen                    Relocations: (not relocatable)
+Version     : 6.2.1.100                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 24 Aug 2015 10:12:52 PM CST
+Install Date: Wed 15 Feb 2017 12:25:54 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvxfen-6.2.1.100-RHEL6.src.rpm
+Size        : 27847494                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas I/O Fencing by Symantec
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64
+Build Stamp        : 6.2.1.100-2015-08-24_02.28.02
+
+Package INFO: VRTSvcsag-6.2.1.000-RHEL6.i686
+Name        : VRTSvcsag                    Relocations: (not relocatable)
+Version     : 6.2.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Sat 11 Apr 2015 05:02:06 AM CST
+Install Date: Wed 15 Feb 2017 12:26:27 AM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsag-6.2.1.000-RHEL6.src.rpm
+Size        : 72139715                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : VCS Bundled Agents by Symantec
+Description :
+Veritas Cluster Server Bundled Agents (i686) by Symantec
+Build Stamp : 6.2.1.000-2015-04-10_10.00.00
+
+Package INFO: VRTScavf-6.2.1.100-RHEL6.i686
+Name        : VRTScavf                     Relocations: (not relocatable)
+Version     : 6.2.1.100                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Wed 29 Jul 2015 03:21:38 PM CST
+Install Date: Wed 15 Feb 2017 12:26:53 AM CST      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTScavf-6.2.1.100-RHEL6.src.rpm
+Size        : 836384                           License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+VERITAS Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+Package INFO: VRTSvbs-6.2.0.000-GA_Linux.i686
+Name        : VRTSvbs                      Relocations: (not relocatable)
+Version     : 6.2.0.000                         Vendor: Symantec Corporation
+Release     : GA_Linux                      Build Date: Sat 18 Oct 2014 01:26:05 AM CST
+Install Date: Wed 15 Feb 2017 12:27:22 AM CST      Build Host: snapper53-64.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSvbs-6.2.0.000-GA_Linux.src.rpm
+Size        : 58029871                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Virtual Business Services by Symantec
+Description :
+Virtual Business Services by Symantec
+Build Stamp : 6.2.0.000-2014-10-17_09.53.25
+
+Package INFO: VRTSsfmh-6.1.0.400-0.x86_64
+Name        : VRTSsfmh                     Relocations: (not relocatable)
+Version     : 6.1.0.400                         Vendor: Symantec Corporation
+Release     : 0                             Build Date: Tue 17 Mar 2015 10:14:40 PM CST
+Install Date: Wed 15 Feb 2017 12:27:56 AM CST      Build Host: vommvsles10-64bld.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSsfmh-6.1.0.400-0.src.rpm
+Size        : 141586344                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Operations Manager Managed Host
+Description :
+Veritas Operations Manager Managed Host
+
+
+DATE:2017-02-21 16:22:52
+HOST:l111060
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster johnny (
+	UserNames = { admin = aHEbECdCEbECdC }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111060 (
+	)
+
+system l111061 (
+	)
+
+group crs_grp (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CSSD cssd (
+		CRSHOME = "/crs/crshome"
+		)
+
+	PrivNIC ora_priv (
+		Device = { eth0 = 0, eth1 = 1 }
+		Address @l111060 = "192.200.111.60"
+		Address @l111061 = "192.200.111.61"
+		NetMask = "255.255.255.0"
+		)
+
+	cssd requires ora_priv
+
+
+	// resource dependency tree
+	//
+	//	group crs_grp
+	//	{
+	//	CSSD cssd
+	//	    {
+	//	    PrivNIC ora_priv
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111060 = { oradg9318_dbarch = sw, oradg9318_ocrvote = sw }
+		ActivationMode @l111061 = { oradg9318_dbarch = sw, oradg9318_ocrvote = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = johnny
+		CVMNodeId = { l111060 = 0, l111061 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group oradb_grp (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CFSMount archivemnt (
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg9318_dbarch/archive"
+		)
+
+	CFSMount dbmnt (
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg9318_dbarch/dbdata"
+		)
+
+	Oracle oradb (
+		Sid @l111060 = orcl2
+		Sid @l111061 = orcl1
+		Owner = oracle
+		Home = "/oracle/orahome"
+		)
+
+	oradb requires archivemnt
+	oradb requires dbmnt
+
+
+	// resource dependency tree
+	//
+	//	group oradb_grp
+	//	{
+	//	Oracle oradb
+	//	    {
+	//	    CFSMount dbmnt
+	//	    CFSMount archivemnt
+	//	    }
+	//	}
+
+
+group sg31 (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CFSMount cfsmount3 (
+		Critical = 0
+		MountPoint = "/ocrvote"
+		BlockDevice = "/dev/vx/dsk/oradg9318_ocrvote/ocrvote"
+		MountOpt @l111060 = "cluster"
+		MountOpt @l111061 = "cluster"
+		NodeList = { l111060, l111061 }
+		)
+
+	CVMVolDg cvmvoldg3 (
+		Critical = 0
+		CVMDiskGroup = oradg9318_ocrvote
+		CVMVolume = { ocrvote }
+		CVMActivation @l111060 = sw
+		CVMActivation @l111061 = sw
+		CVMVolumeIoTest = { ocrvote }
+		)
+
+	requires group cvm online local firm
+	cfsmount3 requires cvmvoldg3
+
+
+	// resource dependency tree
+	//
+	//	group sg31
+	//	{
+	//	CFSMount cfsmount3
+	//	    {
+	//	    CVMVolDg cvmvoldg3
+	//	    }
+	//	}
+
+
+====STEP: Checking status of Oracle database
+DATE:2017-02-21 16:22:52
+
+***Checking if relink oracle odm libray to Veritas odm libray***
+
+
+
+DATE:2017-02-21 16:22:53
+HOST:l111060
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx. 1 oracle oinstall    28 Feb 17 14:34 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib64/libodm.so
+
+
+DATE:2017-02-21 16:22:53
+HOST:l111061
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx. 1 oracle oinstall    28 Feb 17 14:31 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib64/libodm.so
+
+***Checking if Oracle instance is OPEN***
+
+
+
+DATE:2017-02-21 16:22:59
+HOST:l111060
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Tue Feb 21 16:22:54 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+orcl2		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Checking if Archive log mode is enabled***
+
+
+
+DATE:2017-02-21 16:23:05
+HOST:l111060
+USER:oracle
+STDIN:archive log list;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Tue Feb 21 16:23:00 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+Database log mode	       Archive Mode
+Automatic archival	       Enabled
+Archive destination	       /archive
+Oldest online log sequence     11
+Next log sequence to archive   12
+Current log sequence	       12
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Getting datafile path and name***
+
+
+
+DATE:2017-02-21 16:23:11
+HOST:l111060
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Tue Feb 21 16:23:06 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/dbdata/orcl/system01.dbf
+/dbdata/orcl/sysaux01.dbf
+/dbdata/orcl/undotbs01.dbf
+/dbdata/orcl/users01.dbf
+/dbdata/orcl/undotbs02.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+====STEP: Prepare volumes to make volume sets
+DATE:2017-02-21 16:23:11
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /archive***
+
+
+
+DATE:2017-02-21 16:23:12
+HOST:l111060
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6|grep /archive$
+STDOUT:
+/dev/vx/dsk/oradg9318_dbarch/archive 9.0G 128M 8.4G 2% /archive
+
+
+DATE:2017-02-21 16:23:12
+HOST:l111060
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg9318_dbarch/archive
+STDOUT:
+vxfs
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /dbdata***
+
+
+
+DATE:2017-02-21 16:23:12
+HOST:l111060
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6|grep /dbdata$
+STDOUT:
+/dev/vx/dsk/oradg9318_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+
+
+DATE:2017-02-21 16:23:13
+HOST:l111060
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg9318_dbarch/dbdata
+STDOUT:
+vxfs
+
+***Checking and clear existing Environment.***
+
+
+
+DATE:2017-02-21 16:23:18
+HOST:l111060
+USER:oracle
+STDIN:select table_name from dba_tables where table_name='SALES';
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Tue Feb 21 16:23:13 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+no rows selected
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-02-21 16:23:24
+HOST:l111060
+USER:oracle
+STDIN:select name from v$tablespace;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Tue Feb 21 16:23:19 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+------------------------------
+SYSTEM
+SYSAUX
+UNDOTBS1
+USERS
+TEMP
+UNDOTBS2
+
+6 rows selected.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-02-21 16:23:25
+HOST:l111060
+USER:root
+STDIN:/opt/VRTS/bin/fsppadm unassign /dbdata
+STDOUT:
+
+
+
+DATE:2017-02-21 16:23:25
+HOST:l111060
+USER:root
+STDIN:/opt/VRTS/bin/fsppadm unassign /archive
+STDOUT:
+
+
+
+DATE:2017-02-21 16:23:25
+HOST:l111060
+USER:root
+STDIN:vxprint -g oradg9318_dbarch|awk '$2=="dbdata" {print}'
+STDOUT:
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+
+
+DATE:2017-02-21 16:23:26
+HOST:l111060
+USER:root
+STDIN:vxprint -g oradg9318_dbarch|awk '$2=="archive" {print}'
+STDOUT:
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+
+***Removing volumes which begin with autotcvol from oradg9318_dbarch "oradg9318_dbarch" on node "l111060" ***
+
+
+
+DATE:2017-02-21 16:23:26
+HOST:l111060
+USER:root
+STDIN:vxprint -g oradg9318_dbarch|awk '$1=="v" && $2 ~ /^autotcvol/ {print}'
+STDOUT:
+v  autotcvol1   fsgen        ENABLED  19079168 -        ACTIVE   -       -
+v  autotcvol2   fsgen        ENABLED  19079168 -        ACTIVE   -       -
+v  autotcvol3   fsgen        ENABLED  19079168 -        ACTIVE   -       -
+v  autotcvol4   fsgen        ENABLED  19079168 -        ACTIVE   -       -
+v  autotcvol5   fsgen        ENABLED  19079168 -        ACTIVE   -       -
+v  autotcvol6   fsgen        ENABLED  19079168 -        ACTIVE   -       -
+v  autotcvol7   fsgen        ENABLED  19079168 -        ACTIVE   -       -
+v  autotcvol8   fsgen        ENABLED  19079168 -        ACTIVE   -       -
+
+
+DATE:2017-02-21 16:23:26
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch -rf rm autotcvol1
+STDOUT:
+
+
+
+DATE:2017-02-21 16:23:27
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch -rf rm autotcvol2
+STDOUT:
+
+
+
+DATE:2017-02-21 16:23:27
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch -rf rm autotcvol3
+STDOUT:
+
+
+
+DATE:2017-02-21 16:23:28
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch -rf rm autotcvol4
+STDOUT:
+
+
+
+DATE:2017-02-21 16:23:28
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch -rf rm autotcvol5
+STDOUT:
+
+
+
+DATE:2017-02-21 16:23:28
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch -rf rm autotcvol6
+STDOUT:
+
+
+
+DATE:2017-02-21 16:23:29
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch -rf rm autotcvol7
+STDOUT:
+
+
+
+DATE:2017-02-21 16:23:29
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch -rf rm autotcvol8
+STDOUT:
+
+
+***Removing volumes which begin with autotcvol from oradg9318_dbarch "oradg9318_dbarch" on node "l111060" ***
+
+
+
+DATE:2017-02-21 16:23:29
+HOST:l111060
+USER:root
+STDIN:vxprint -g oradg9318_dbarch|awk '$1=="v" && $2 ~ /^autotcvol/ {print}'
+STDOUT:
+
+
+***Removing free disk of node "l111060"***
+
+
+
+DATE:2017-02-21 16:23:30
+HOST:l111060
+USER:root
+STDIN:vxprint|grep dm
+STDOUT:
+dm emc_clariion0_601 emc_clariion0_601 - 10411776 -     -        -       -
+dm emc_clariion0_602 emc_clariion0_602 - 10411776 -     -        -       -
+dm emc_clariion0_597 emc_clariion0_597 - 10411776 -     -        -       -
+dm emc_clariion0_598 emc_clariion0_598 - 10411776 -     -        -       -
+dm emc_clariion0_599 emc_clariion0_599 - 10411776 -     -        -       -
+dm emc_clariion0_600 emc_clariion0_600 - 10411776 -     -        -       -
+dm emc_clariion0_1628 emc_clariion0_1628 - 335463952 -  -        -       -
+
+
+DATE:2017-02-21 16:23:30
+HOST:l111060
+USER:root
+STDIN:vxdisk reclaim emc_clariion0_601 emc_clariion0_602 emc_clariion0_597 emc_clariion0_598 emc_clariion0_599 emc_clariion0_600 emc_clariion0_1628
+STDOUT:
+Disk emc_clariion0_601 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_602 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_597 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_598 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_599 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_600 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_1628 : Skipped. Disk not reclaimable or wrong media type.
+
+
+DATE:2017-02-21 16:23:30
+HOST:l111060
+USER:root
+STDIN:vxdg -qa free|awk '$5==0 {print}'
+STDOUT:
+
+
+***Online Group oradb_grp on all active nodes***
+
+
+
+DATE:2017-02-21 16:23:31
+HOST:l111060
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111060    SysState                RUNNING
+l111061    SysState                RUNNING
+
+
+DATE:2017-02-21 16:23:31
+HOST:l111060
+USER:root
+STDIN:cat /var/VRTSvcs/log/engine_A.log|awk '{print NR}'|tail -1
+STDOUT:
+1742
+
+
+DATE:2017-02-21 16:23:31
+HOST:l111060
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -online oradb_grp -any
+STDOUT:
+VCS NOTICE V-16-1-50996 All instances of the parallel group (oradb_grp) are online in cluster
+
+
+DATE:2017-02-21 16:23:42
+HOST:l111060
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp|grep ^oradb_grp|grep ONLINE|wc -l|awk '{print $1}'
+STDOUT:
+2
+
+
+DATE:2017-02-21 16:23:42
+HOST:l111060
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp|grep ^oradb_grp|grep ONLINE|wc -l|awk '{print $1}'
+STDOUT:
+2
+
+***Add IO for oracle database***
+
+
+
+DATE:2017-02-21 16:23:42
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/etc/io_oracle.sh l111060:/tmp/tmpfile.24191
+STDOUT:
+
+
+
+DATE:2017-02-21 16:23:43
+HOST:l111060
+USER:oracle
+STDIN:ps -ef
+STDOUT:
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 Feb16 ?        00:00:02 /sbin/init
+root         2     0  0 Feb16 ?        00:00:00 [kthreadd]
+root         3     2  0 Feb16 ?        00:00:00 [migration/0]
+root         4     2  0 Feb16 ?        00:00:02 [ksoftirqd/0]
+root         5     2  0 Feb16 ?        00:00:00 [stopper/0]
+root         6     2  0 Feb16 ?        00:00:00 [watchdog/0]
+root         7     2  0 Feb16 ?        00:00:00 [migration/1]
+root         8     2  0 Feb16 ?        00:00:00 [stopper/1]
+root         9     2  0 Feb16 ?        00:00:01 [ksoftirqd/1]
+root        10     2  0 Feb16 ?        00:00:00 [watchdog/1]
+root        11     2  0 Feb16 ?        00:00:00 [migration/2]
+root        12     2  0 Feb16 ?        00:00:00 [stopper/2]
+root        13     2  0 Feb16 ?        00:00:01 [ksoftirqd/2]
+root        14     2  0 Feb16 ?        00:00:00 [watchdog/2]
+root        15     2  0 Feb16 ?        00:00:00 [migration/3]
+root        16     2  0 Feb16 ?        00:00:00 [stopper/3]
+root        17     2  0 Feb16 ?        00:00:01 [ksoftirqd/3]
+root        18     2  0 Feb16 ?        00:00:00 [watchdog/3]
+root        19     2  0 Feb16 ?        00:00:06 [migration/4]
+root        20     2  0 Feb16 ?        00:00:00 [stopper/4]
+root        21     2  0 Feb16 ?        00:00:04 [ksoftirqd/4]
+root        22     2  0 Feb16 ?        00:00:00 [watchdog/4]
+root        23     2  0 Feb16 ?        00:00:07 [migration/5]
+root        24     2  0 Feb16 ?        00:00:00 [stopper/5]
+root        25     2  0 Feb16 ?        00:00:04 [ksoftirqd/5]
+root        26     2  0 Feb16 ?        00:00:00 [watchdog/5]
+root        27     2  0 Feb16 ?        00:00:06 [migration/6]
+root        28     2  0 Feb16 ?        00:00:00 [stopper/6]
+root        29     2  0 Feb16 ?        00:00:04 [ksoftirqd/6]
+root        30     2  0 Feb16 ?        00:00:00 [watchdog/6]
+root        31     2  0 Feb16 ?        00:00:06 [migration/7]
+root        32     2  0 Feb16 ?        00:00:00 [stopper/7]
+root        33     2  0 Feb16 ?        00:00:03 [ksoftirqd/7]
+root        34     2  0 Feb16 ?        00:00:00 [watchdog/7]
+root        35     2  0 Feb16 ?        00:00:17 [events/0]
+root        36     2  0 Feb16 ?        00:00:15 [events/1]
+root        37     2  0 Feb16 ?        00:00:27 [events/2]
+root        38     2  0 Feb16 ?        00:00:19 [events/3]
+root        39     2  0 Feb16 ?        00:00:24 [events/4]
+root        40     2  0 Feb16 ?        00:00:28 [events/5]
+root        41     2  0 Feb16 ?        00:00:20 [events/6]
+root        42     2  0 Feb16 ?        00:00:32 [events/7]
+root        43     2  0 Feb16 ?        00:00:00 [events/0]
+root        44     2  0 Feb16 ?        00:00:00 [events/1]
+root        45     2  0 Feb16 ?        00:00:00 [events/2]
+root        46     2  0 Feb16 ?        00:00:00 [events/3]
+root        47     2  0 Feb16 ?        00:00:00 [events/4]
+root        48     2  0 Feb16 ?        00:00:00 [events/5]
+root        49     2  0 Feb16 ?        00:00:00 [events/6]
+root        50     2  0 Feb16 ?        00:00:00 [events/7]
+root        51     2  0 Feb16 ?        00:00:00 [events_long/0]
+root        52     2  0 Feb16 ?        00:00:00 [events_long/1]
+root        53     2  0 Feb16 ?        00:00:00 [events_long/2]
+root        54     2  0 Feb16 ?        00:00:00 [events_long/3]
+root        55     2  0 Feb16 ?        00:00:00 [events_long/4]
+root        56     2  0 Feb16 ?        00:00:00 [events_long/5]
+root        57     2  0 Feb16 ?        00:00:00 [events_long/6]
+root        58     2  0 Feb16 ?        00:00:00 [events_long/7]
+root        59     2  0 Feb16 ?        00:00:00 [events_power_ef]
+root        60     2  0 Feb16 ?        00:00:00 [events_power_ef]
+root        61     2  0 Feb16 ?        00:00:00 [events_power_ef]
+root        62     2  0 Feb16 ?        00:00:00 [events_power_ef]
+root        63     2  0 Feb16 ?        00:00:00 [events_power_ef]
+root        64     2  0 Feb16 ?        00:00:00 [events_power_ef]
+root        65     2  0 Feb16 ?        00:00:00 [events_power_ef]
+root        66     2  0 Feb16 ?        00:00:00 [events_power_ef]
+root        67     2  0 Feb16 ?        00:00:00 [cgroup]
+root        68     2  0 Feb16 ?        00:00:00 [khelper]
+root        69     2  0 Feb16 ?        00:00:00 [netns]
+root        70     2  0 Feb16 ?        00:00:00 [async/mgr]
+root        71     2  0 Feb16 ?        00:00:00 [pm]
+root        72     2  0 Feb16 ?        00:00:01 [sync_supers]
+root        73     2  0 Feb16 ?        00:00:00 [bdi-default]
+root        74     2  0 Feb16 ?        00:00:00 [kintegrityd/0]
+root        75     2  0 Feb16 ?        00:00:00 [kintegrityd/1]
+root        76     2  0 Feb16 ?        00:00:00 [kintegrityd/2]
+root        77     2  0 Feb16 ?        00:00:00 [kintegrityd/3]
+root        78     2  0 Feb16 ?        00:00:00 [kintegrityd/4]
+root        79     2  0 Feb16 ?        00:00:00 [kintegrityd/5]
+root        80     2  0 Feb16 ?        00:00:00 [kintegrityd/6]
+root        81     2  0 Feb16 ?        00:00:00 [kintegrityd/7]
+root        82     2  0 Feb16 ?        00:00:03 [kblockd/0]
+root        83     2  0 Feb16 ?        00:00:04 [kblockd/1]
+root        84     2  0 Feb16 ?        00:00:03 [kblockd/2]
+root        85     2  0 Feb16 ?        00:00:04 [kblockd/3]
+root        86     2  0 Feb16 ?        00:00:01 [kblockd/4]
+root        87     2  0 Feb16 ?        00:00:00 [kblockd/5]
+root        88     2  0 Feb16 ?        00:00:02 [kblockd/6]
+root        89     2  0 Feb16 ?        00:00:00 [kblockd/7]
+root        90     2  0 Feb16 ?        00:00:00 [kacpid]
+root        91     2  0 Feb16 ?        00:00:00 [kacpi_notify]
+root        92     2  0 Feb16 ?        00:00:00 [kacpi_hotplug]
+root        93     2  0 Feb16 ?        00:00:00 [ata_aux]
+root        94     2  0 Feb16 ?        00:00:00 [ata_sff/0]
+root        95     2  0 Feb16 ?        00:00:00 [ata_sff/1]
+root        96     2  0 Feb16 ?        00:00:00 [ata_sff/2]
+root        97     2  0 Feb16 ?        00:00:00 [ata_sff/3]
+root        98     2  0 Feb16 ?        00:00:00 [ata_sff/4]
+root        99     2  0 Feb16 ?        00:00:00 [ata_sff/5]
+root       100     2  0 Feb16 ?        00:00:00 [ata_sff/6]
+root       101     2  0 Feb16 ?        00:00:00 [ata_sff/7]
+root       102     2  0 Feb16 ?        00:00:00 [ksuspend_usbd]
+root       103     2  0 Feb16 ?        00:00:00 [khubd]
+root       104     2  0 Feb16 ?        00:00:00 [kseriod]
+root       105     2  0 Feb16 ?        00:00:00 [md/0]
+root       106     2  0 Feb16 ?        00:00:00 [md/1]
+root       107     2  0 Feb16 ?        00:00:00 [md/2]
+root       108     2  0 Feb16 ?        00:00:00 [md/3]
+root       109     2  0 Feb16 ?        00:00:00 [md/4]
+root       110     2  0 Feb16 ?        00:00:00 [md/5]
+root       111     2  0 Feb16 ?        00:00:00 [md/6]
+root       112     2  0 Feb16 ?        00:00:00 [md/7]
+root       113     2  0 Feb16 ?        00:00:00 [md_misc/0]
+root       114     2  0 Feb16 ?        00:00:00 [md_misc/1]
+root       115     2  0 Feb16 ?        00:00:00 [md_misc/2]
+root       116     2  0 Feb16 ?        00:00:00 [md_misc/3]
+root       117     2  0 Feb16 ?        00:00:00 [md_misc/4]
+root       118     2  0 Feb16 ?        00:00:00 [md_misc/5]
+root       119     2  0 Feb16 ?        00:00:00 [md_misc/6]
+root       120     2  0 Feb16 ?        00:00:00 [md_misc/7]
+root       121     2  0 Feb16 ?        00:00:00 [linkwatch]
+root       123     2  0 Feb16 ?        00:00:00 [khungtaskd]
+root       124     2  0 Feb16 ?        00:00:00 [kswapd0]
+root       125     2  0 Feb16 ?        00:00:00 [ksmd]
+root       126     2  0 Feb16 ?        00:00:01 [khugepaged]
+root       127     2  0 Feb16 ?        00:00:00 [aio/0]
+root       128     2  0 Feb16 ?        00:00:00 [aio/1]
+root       129     2  0 Feb16 ?        00:00:00 [aio/2]
+root       130     2  0 Feb16 ?        00:00:00 [aio/3]
+root       131     2  0 Feb16 ?        00:00:00 [aio/4]
+root       132     2  0 Feb16 ?        00:00:00 [aio/5]
+root       133     2  0 Feb16 ?        00:00:00 [aio/6]
+root       134     2  0 Feb16 ?        00:00:00 [aio/7]
+root       135     2  0 Feb16 ?        00:00:00 [crypto/0]
+root       136     2  0 Feb16 ?        00:00:00 [crypto/1]
+root       137     2  0 Feb16 ?        00:00:00 [crypto/2]
+root       138     2  0 Feb16 ?        00:00:00 [crypto/3]
+root       139     2  0 Feb16 ?        00:00:00 [crypto/4]
+root       140     2  0 Feb16 ?        00:00:00 [crypto/5]
+root       141     2  0 Feb16 ?        00:00:00 [crypto/6]
+root       142     2  0 Feb16 ?        00:00:00 [crypto/7]
+root       149     2  0 Feb16 ?        00:00:00 [kthrotld/0]
+root       150     2  0 Feb16 ?        00:00:00 [kthrotld/1]
+root       151     2  0 Feb16 ?        00:00:00 [kthrotld/2]
+root       152     2  0 Feb16 ?        00:00:00 [kthrotld/3]
+root       153     2  0 Feb16 ?        00:00:00 [kthrotld/4]
+root       154     2  0 Feb16 ?        00:00:00 [kthrotld/5]
+root       155     2  0 Feb16 ?        00:00:00 [kthrotld/6]
+root       156     2  0 Feb16 ?        00:00:00 [kthrotld/7]
+root       158     2  0 Feb16 ?        00:00:00 [kpsmoused]
+root       159     2  0 Feb16 ?        00:00:00 [usbhid_resumer]
+root       160     2  0 Feb16 ?        00:00:00 [deferwq]
+root       206     2  0 Feb16 ?        00:00:00 [kdmremove]
+root       207     2  0 Feb16 ?        00:00:00 [kstriped]
+root       238     2  0 Feb16 ?        00:00:00 [ttm_swap]
+root       245     2  0 Feb16 ?        00:00:00 [radeon-crtc]
+root       402     2  0 Feb16 ?        00:00:00 [iscsi_eh]
+root       403     2  0 Feb16 ?        00:00:04 [mpt_poll_0]
+root       404     2  0 Feb16 ?        00:00:00 [mpt/0]
+root       408     2  0 Feb16 ?        00:00:00 [ib_addr]
+root       409     2  0 Feb16 ?        00:00:00 [infiniband/0]
+root       410     2  0 Feb16 ?        00:00:00 [infiniband/1]
+root       411     2  0 Feb16 ?        00:00:00 [infiniband/2]
+root       412     2  0 Feb16 ?        00:00:00 [infiniband/3]
+root       413     2  0 Feb16 ?        00:00:00 [infiniband/4]
+root       414     2  0 Feb16 ?        00:00:00 [infiniband/5]
+root       415     2  0 Feb16 ?        00:00:00 [infiniband/6]
+root       416     2  0 Feb16 ?        00:00:00 [infiniband/7]
+root       417     2  0 Feb16 ?        00:00:00 [iw_cxgb3]
+root       421     2  0 Feb16 ?        00:00:00 [iw_cm_wq]
+root       422     2  0 Feb16 ?        00:00:00 [iw_cxgb4]
+root       423     2  0 Feb16 ?        00:00:00 [cnic_wq]
+root       424     2  0 Feb16 ?        00:00:00 [bnx2i_thread/0]
+root       425     2  0 Feb16 ?        00:00:00 [bnx2i_thread/1]
+root       426     2  0 Feb16 ?        00:00:00 [bnx2i_thread/2]
+root       427     2  0 Feb16 ?        00:00:00 [bnx2i_thread/3]
+root       428     2  0 Feb16 ?        00:00:00 [bnx2i_thread/4]
+root       429     2  0 Feb16 ?        00:00:00 [bnx2i_thread/5]
+root       430     2  0 Feb16 ?        00:00:00 [bnx2i_thread/6]
+root       431     2  0 Feb16 ?        00:00:00 [bnx2i_thread/7]
+root       435     2  0 Feb16 ?        00:00:00 [scsi_eh_0]
+root       437     2  0 Feb16 ?        00:00:00 [scsi_tgtd/0]
+root       438     2  0 Feb16 ?        00:00:00 [scsi_tgtd/1]
+root       439     2  0 Feb16 ?        00:00:00 [scsi_tgtd/2]
+root       440     2  0 Feb16 ?        00:00:00 [scsi_tgtd/3]
+root       441     2  0 Feb16 ?        00:00:00 [scsi_tgtd/4]
+root       442     2  0 Feb16 ?        00:00:00 [scsi_tgtd/5]
+root       443     2  0 Feb16 ?        00:00:00 [scsi_tgtd/6]
+root       444     2  0 Feb16 ?        00:00:00 [scsi_tgtd/7]
+root       445     2  0 Feb16 ?        00:00:00 [scsi_eh_1]
+root       452     2  0 Feb16 ?        00:00:00 [qla2xxx_1_dpc]
+root       453     2  0 Feb16 ?        00:00:00 [scsi_wq_1]
+root       454     2  0 Feb16 ?        00:00:00 [fc_wq_1]
+root       455     2  0 Feb16 ?        00:00:00 [fc_dl_1]
+root       457     2  0 Feb16 ?        00:00:00 [scsi_eh_2]
+root       458     2  0 Feb16 ?        00:00:00 [qla2xxx_2_dpc]
+root       459     2  0 Feb16 ?        00:00:00 [scsi_wq_2]
+root       460     2  0 Feb16 ?        00:00:00 [fc_wq_2]
+root       461     2  0 Feb16 ?        00:00:00 [fc_dl_2]
+root       499     2  0 Feb16 ?        00:00:00 [scsi_eh_3]
+root       500     2  0 Feb16 ?        00:00:00 [scsi_eh_4]
+root       567 23087  0 16:05 ?        00:00:00 sleep 3600
+root       571     2  0 Feb16 ?        00:00:00 [scsi_eh_5]
+root       572     2  0 Feb16 ?        00:00:00 [scsi_wq_5]
+root       573     2  0 Feb16 ?        00:00:00 [scsi_eh_6]
+root       574     2  0 Feb16 ?        00:00:00 [scsi_wq_6]
+root       880     1  0 16:05 ?        00:00:03 /crs/crshome/bin/ohasd.bin reboot
+oracle    1054     1  0 16:05 ?        00:00:00 /crs/crshome/bin/oraagent.bin
+oracle    1065     1  0 16:05 ?        00:00:00 /crs/crshome/bin/mdnsd.bin
+oracle    1075     1  0 16:05 ?        00:00:00 /crs/crshome/bin/gpnpd.bin
+oracle    1299     1  0 16:05 ?        00:00:02 /crs/crshome/bin/gipcd.bin
+root      1300     1  0 16:05 ?        00:00:03 /crs/crshome/bin/orarootagent.bin
+root      1314     1  2 16:05 ?        00:00:29 /crs/crshome/bin/osysmond.bin
+root      1351     1  0 16:05 ?        00:00:00 /crs/crshome/bin/cssdmonitor
+root      1369     1  0 16:05 ?        00:00:00 /crs/crshome/bin/cssdagent
+oracle    1385     1  0 16:05 ?        00:00:03 /crs/crshome/bin/ocssd.bin 
+root      1449     1  0 16:05 ?        00:00:01 /crs/crshome/bin/ologgerd -m l111061 -r -d /crs/crshome/crf/db/l111060
+root      1695     1  0 16:06 ?        00:00:01 /crs/crshome/bin/octssd.bin reboot
+root      1719     1  0 16:06 ?        00:00:04 /crs/crshome/bin/crsd.bin reboot
+oracle    1721     1  0 16:06 ?        00:00:01 /crs/crshome/bin/evmd.bin
+oracle    1800  1721  0 16:06 ?        00:00:00 /crs/crshome/bin/evmlogger.bin -o /crs/crshome/evm/log/evmlogger.info -l /crs/crshome/evm/log/evmlogger.log
+root      1882     1  0 16:06 ?        00:00:03 /crs/crshome/bin/orarootagent.bin
+oracle    2284     1  0 16:06 ?        00:00:02 /crs/crshome/bin/oraagent.bin
+oracle    2296     1  0 16:06 ?        00:00:00 /crs/crshome/bin/tnslsnr LISTENER -inherit
+oracle    2954     1  0 16:08 ?        00:00:00 /crs/crshome/opmn/bin/ons -d
+oracle    2955  2954  0 16:08 ?        00:00:00 /crs/crshome/opmn/bin/ons -d
+postfix   3869 25148  0 15:35 ?        00:00:00 pickup -l -t fifo -u
+root      4770     2  0 Feb16 ?        00:00:00 [kdmflush]
+root      4772     2  0 Feb16 ?        00:00:00 [kdmflush]
+root      4838     2  0 Feb16 ?        00:00:23 [jbd2/dm-0-8]
+root      4839     2  0 Feb16 ?        00:00:00 [ext4-dio-unwrit]
+root      4999     1  0 Feb16 ?        00:00:05 /sbin/udevd -d
+root      6439     2  0 Feb16 ?        00:00:00 [kipmi0]
+root      7811  4999  0 Feb18 ?        00:00:00 /sbin/udevd -d
+root      7813  4999  0 Feb18 ?        00:00:00 /sbin/udevd -d
+oracle    8192     1  0 16:16 ?        00:00:00 ora_pmon_orcl2
+oracle    8195     1  0 16:16 ?        00:00:00 ora_psp0_orcl2
+oracle    8199     1  0 16:16 ?        00:00:02 ora_vktm_orcl2
+oracle    8203     1  0 16:16 ?        00:00:00 ora_gen0_orcl2
+oracle    8205     1  0 16:16 ?        00:00:00 ora_diag_orcl2
+oracle    8207     1  0 16:16 ?        00:00:00 ora_dbrm_orcl2
+oracle    8209     1  0 16:16 ?        00:00:00 ora_ping_orcl2
+oracle    8211     1  0 16:16 ?        00:00:00 ora_acms_orcl2
+oracle    8213     1  0 16:16 ?        00:00:00 ora_dia0_orcl2
+oracle    8215     1  0 16:16 ?        00:00:00 ora_lmon_orcl2
+oracle    8217     1  0 16:16 ?        00:00:01 ora_lmd0_orcl2
+oracle    8223     1  0 16:16 ?        00:00:00 ora_lms0_orcl2
+oracle    8227     1  0 16:16 ?        00:00:00 ora_lms1_orcl2
+oracle    8231     1  0 16:16 ?        00:00:00 ora_rms0_orcl2
+oracle    8233     1  0 16:16 ?        00:00:00 ora_lmhb_orcl2
+oracle    8235     1  0 16:16 ?        00:00:00 ora_mman_orcl2
+oracle    8237     1  0 16:16 ?        00:00:00 ora_dbw0_orcl2
+oracle    8240     1  0 16:16 ?        00:00:00 ora_lgwr_orcl2
+oracle    8243     1  0 16:16 ?        00:00:00 ora_ckpt_orcl2
+oracle    8245     1  0 16:16 ?        00:00:00 ora_smon_orcl2
+oracle    8248     1  0 16:16 ?        00:00:00 ora_reco_orcl2
+oracle    8250     1  0 16:16 ?        00:00:00 ora_mmon_orcl2
+oracle    8252     1  0 16:16 ?        00:00:00 ora_mmnl_orcl2
+oracle    8254     1  0 16:16 ?        00:00:00 ora_d000_orcl2
+oracle    8256     1  0 16:16 ?        00:00:00 ora_s000_orcl2
+oracle    8258     1  0 16:16 ?        00:00:01 ora_lck0_orcl2
+oracle    8260     1  0 16:16 ?        00:00:00 ora_rsmn_orcl2
+oracle    8548     1  0 16:16 ?        00:00:00 ora_arc0_orcl2
+oracle    8561     1  0 16:16 ?        00:00:00 ora_arc1_orcl2
+oracle    8563     1  0 16:16 ?        00:00:00 ora_arc2_orcl2
+oracle    8565     1  0 16:16 ?        00:00:00 ora_arc3_orcl2
+oracle    8759     1  0 16:17 ?        00:00:00 ora_gtx0_orcl2
+oracle    8761     1  0 16:17 ?        00:00:00 ora_rcbg_orcl2
+oracle    8773     1  0 16:17 ?        00:00:00 ora_qmnc_orcl2
+oracle    8778     1  0 16:17 ?        00:00:00 oracleorcl2 (DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))
+oracle    8827     1  0 16:17 ?        00:00:00 ora_cjq0_orcl2
+oracle    8833     1  0 16:17 ?        00:00:00 ora_q000_orcl2
+oracle    8835     1  0 16:17 ?        00:00:00 ora_q001_orcl2
+root      9663     2  0 Feb16 ?        00:00:08 [edac-poller]
+root      9940     2  0 Feb16 ?        00:00:00 [kmpathd/0]
+root      9941     2  0 Feb16 ?        00:00:00 [kmpathd/1]
+root      9942     2  0 Feb16 ?        00:00:00 [kmpathd/2]
+root      9943     2  0 Feb16 ?        00:00:00 [kmpathd/3]
+root      9944     2  0 Feb16 ?        00:00:00 [kmpathd/4]
+root      9945     2  0 Feb16 ?        00:00:00 [kmpathd/5]
+root      9946     2  0 Feb16 ?        00:00:00 [kmpathd/6]
+root      9947     2  0 Feb16 ?        00:00:00 [kmpathd/7]
+root      9948     2  0 Feb16 ?        00:00:00 [kmpath_handlerd]
+root     10060     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10068     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10073     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10076     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10079     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10083     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10088     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10092     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10096     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10100     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10105     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10110     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10115     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10119     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10125     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10130     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10137     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10144     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10148     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10153     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10160     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10170     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10174     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10175     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10176     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10177     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10180     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10181     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10182     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10183     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10188     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10190     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10191     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10202     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10209     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10214     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10219     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10221     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10227     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10229     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10230     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10232     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10236     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10237     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10240     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10243     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10245     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10246     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10247     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10257     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10262     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10263     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10268     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10270     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10279     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10280     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10283     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10284     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10296     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10297     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10306     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10309     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10310     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10312     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10321     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10323     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10347     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10371     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10382     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10383     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10387     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10392     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10409     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10414     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10432     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10445     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10501     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10508     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10541     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10544     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10549     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10559     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10583     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10602     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10617     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10632     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10634     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10637     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10666     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10676     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10679     1  0 Feb17 ?        00:01:46 /opt/VRTSvcs/bin/CSSD/CSSDAgent -type CSSD
+root     10687     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10709     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10711     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10713     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10716     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10725     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10734     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10739     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10758     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10770     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10799     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10801     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10804     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10817     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10821     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10826     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10844     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10863     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10891     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10892     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10893     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10906     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10954     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10963     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10964     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10969     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10973     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10974     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10975     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     10989     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11011     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11026     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11027     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11028     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11029     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11032     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11033     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11042     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11044     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11060     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11080     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11088     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11089     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11117     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11142     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11149     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11161     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11171     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11172     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11204     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11233     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11268     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11269     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11270     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11328     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11333     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11364     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11373     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11408     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11414     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11465     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11466     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11477     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11482     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11517     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11523     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11544     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11564     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11575     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11588     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11624     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     11652     2  0 Feb16 ?        00:00:00 [kdmflush]
+oracle   11994     1  0 16:22 ?        00:00:00 ora_smco_orcl2
+oracle   12006     1  0 16:22 ?        00:00:00 ora_w000_orcl2
+root     12562     2  0 16:22 ?        00:00:00 [flush-253:164]
+root     12670     2  0 Feb16 ?        00:00:00 [kdmflush]
+root     12710     2  0 Feb16 ?        00:00:00 [jbd2/sdb1-8]
+root     12711     2  0 Feb16 ?        00:00:00 [ext4-dio-unwrit]
+root     12712     2  0 Feb16 ?        00:00:00 [jbd2/dm-164-8]
+root     12713     2  0 Feb16 ?        00:00:00 [ext4-dio-unwrit]
+root     12749     2  0 Feb16 ?        00:00:23 [flush-253:0]
+root     12762     2  0 Feb16 ?        00:00:00 [kauditd]
+root     12765     1  0 Feb16 ?        00:00:28 /bin/sh /etc/init.d/init.tfa run
+root     12766     1  0 Feb16 ?        00:00:00 /bin/sh /etc/init.d/init.ohasd run
+root     12819     2  0 Feb16 ?        00:04:47 [vxfs_thread]
+root     12820     2  0 Feb16 ?        00:00:24 [vx_sched_thread]
+root     12948     1  0 Feb17 ?        00:02:20 /opt/VRTSvcs/bin/PrivNIC/PrivNICAgent -type PrivNIC
+root     13017     2  0 Feb16 ?        00:00:00 [ib_mcast]
+root     13025     2  0 Feb16 ?        00:00:00 [ib_cm/0]
+root     13026     2  0 Feb16 ?        00:00:00 [ib_cm/1]
+root     13027     2  0 Feb16 ?        00:00:00 [ib_cm/2]
+root     13028     2  0 Feb16 ?        00:00:00 [ib_cm/3]
+root     13029     2  0 Feb16 ?        00:00:00 [ib_cm/4]
+root     13030     2  0 Feb16 ?        00:00:00 [ib_cm/5]
+root     13031     2  0 Feb16 ?        00:00:00 [ib_cm/6]
+root     13032     2  0 Feb16 ?        00:00:00 [ib_cm/7]
+root     13037     2  0 Feb16 ?        00:00:00 [rdma_cm]
+root     13058     2  0 Feb16 ?        00:00:00 [ipoib_flush]
+root     13095     1  0 Feb16 ?        00:05:52 /sbin/multipathd
+root     13557 12765 10 16:23 ?        00:00:00 /usr/bin/perl /crs/crshome/tfa/l111060/tfa_home/bin/tfactl.pl -check
+root     13572 13557  5 16:23 ?        00:00:00 /crs/crshome/jdk/jre/bin/java -Xms64m -Xmx256m -Djavax.net.ssl.trustStore=/crs/crshome/tfa/l111060/tfa_home/public.jks -classpath /crs/crshome/tfa/l111060/tfa_home/jar/RATFA.jar:/crs/crshome/tfa/l111060/tfa_home/jar/je-4.0.103.jar:/crs/crshome/tfa/l111060/tfa_home/jar/ojdbc6.jar oracle.rat.tfa.CommandLine l111060:checkTFAMain -port 5000
+root     13670 23162 10 16:23 ?        00:00:00 sshd: oracle [priv]
+oracle   13673 13670  1 16:23 ?        00:00:00 sshd: oracle@notty
+oracle   13674 13673  0 16:23 ?        00:00:00 bash -c cat > /tmp/exec1 && source /home/oracle/.bash_profile && sh /tmp/exec1 2>&1 && rm -f /tmp/exec1
+oracle   13692 13674  0 16:23 ?        00:00:00 sh /tmp/exec1
+oracle   13693 13692  6 16:23 ?        00:00:00 ps -ef
+root     16441     1  0 Feb16 ?        00:00:00 auditd
+root     16475     1  0 Feb16 ?        00:00:02 /sbin/rsyslogd -i /var/run/syslogd.pid -c 5
+root     16509     1  0 Feb16 ?        00:00:26 irqbalance --pid=/var/run/irqbalance.pid
+rpc      16534     1  0 Feb16 ?        00:00:00 rpcbind
+rpcuser  16556     1  0 Feb16 ?        00:00:00 rpc.statd
+root     16609     2  0 Feb16 ?        00:00:04 [dmpdaemon]
+root     16610     2  0 Feb16 ?        00:00:07 [dmpdaemon]
+root     16611     2  0 Feb16 ?        00:00:09 [dmpdaemon]
+root     16612     2  0 Feb16 ?        00:00:08 [dmpdaemon]
+root     16613     2  0 Feb16 ?        00:00:04 [dmpdaemon]
+root     16614     2  0 Feb16 ?        00:00:07 [dmpdaemon]
+root     16615     2  0 Feb16 ?        00:00:00 [dmpdaemon]
+root     16616     2  0 Feb16 ?        00:00:04 [dmpdaemon]
+root     16617     2  0 Feb16 ?        00:00:05 [dmpdaemon]
+root     16618     2  0 Feb16 ?        00:00:00 [dmpdaemon]
+root     16660     2  0 Feb16 ?        00:00:01 [voltuned]
+root     16661     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16662     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16663     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16664     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16665     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16666     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16667     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16668     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16669     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16670     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16671     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16672     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16673     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16674     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16675     2  0 Feb16 ?        00:00:01 [vxiod]
+root     16676     2  0 Feb16 ?        00:00:00 [vxiod]
+root     16686     1  0 Feb16 ?        00:02:23 vxconfigd -x syslog
+dbus     17204     1  0 Feb16 ?        00:00:00 dbus-daemon --system
+root     17226     1  0 Feb16 ?        00:00:00 cupsd -C /etc/cups/cupsd.conf
+root     17258     1  0 Feb16 ?        00:00:00 /usr/sbin/acpid
+68       17270     1  0 Feb16 ?        00:00:33 hald
+root     17271 17270  0 Feb16 ?        00:00:00 hald-runner
+root     17303 17271  0 Feb16 ?        00:00:00 hald-addon-input: Listening on /dev/input/event2 /dev/input/event0
+68       18408 17271  0 Feb16 ?        00:00:00 hald-addon-acpi: listening on acpid socket /var/run/acpid.socket
+root     19836     1  0 Feb16 ?        00:00:05 automount --pid-file /var/run/autofs.pid
+root     19879     1  0 Feb16 ?        00:10:03 /crs/crshome/jdk/jre/bin/java -Xms64m -Xmx256m -classpath /crs/crshome/tfa/l111060/tfa_home/jar/RATFA.jar:/crs/crshome/tfa/l111060/tfa_home/jar/je-4.0.103.jar:/crs/crshome/tfa/l111060/tfa_home/jar/ojdbc6.jar oracle.rat.tfa.TFAMain /crs/crshome/tfa/l111060/tfa_home
+root     19938     2  0 Feb16 ?        00:00:00 [rpciod/0]
+root     19939     2  0 Feb16 ?        00:00:00 [rpciod/1]
+root     19940     2  0 Feb16 ?        00:00:00 [rpciod/2]
+root     19941     2  0 Feb16 ?        00:00:00 [rpciod/3]
+root     19942     2  0 Feb16 ?        00:00:00 [rpciod/4]
+root     19943     2  0 Feb16 ?        00:00:00 [rpciod/5]
+root     19944     2  0 Feb16 ?        00:00:00 [rpciod/6]
+root     19945     2  0 Feb16 ?        00:00:00 [rpciod/7]
+root     19954     1  0 Feb16 ?        00:00:00 rpc.rquotad
+root     19959     1  0 Feb16 ?        00:00:00 rpc.mountd
+root     19965     2  0 Feb16 ?        00:00:00 [lockd]
+root     19966     2  0 Feb16 ?        00:00:00 [nfsd4]
+root     19967     2  0 Feb16 ?        00:00:00 [nfsd4_callbacks]
+root     19968     2  0 Feb16 ?        00:00:00 [nfsd]
+root     19969     2  0 Feb16 ?        00:00:00 [nfsd]
+root     19970     2  0 Feb16 ?        00:00:00 [nfsd]
+root     19971     2  0 Feb16 ?        00:00:00 [nfsd]
+root     19972     2  0 Feb16 ?        00:00:00 [nfsd]
+root     19973     2  0 Feb16 ?        00:00:00 [nfsd]
+root     19974     2  0 Feb16 ?        00:00:00 [nfsd]
+root     19975     2  0 Feb16 ?        00:00:00 [nfsd]
+root     20004     1  0 Feb16 ?        00:00:00 rpc.idmapd
+root     20372     1  0 Feb16 ?        00:00:00 /usr/sbin/mcelog --daemon
+root     21149 23162  0 15:52 ?        00:00:00 sshd: root@pts/0 
+root     21153 21149  0 15:52 pts/0    00:00:00 -bash
+root     22736     1  0 Feb16 ?        00:00:07 /sbin/vxesd
+root     22806     1  0 Feb16 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxrelocd root
+root     22820 22806  0 Feb16 ?        00:00:00 vxnotify -T -f -w 15
+root     22821 22806  0 Feb16 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxrelocd root
+root     22848     1  0 Feb16 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxattachd root
+root     22867 22848  0 Feb16 ?        00:00:00 /usr/sbin/vxnotify -m -l -S -i -k -w 150
+root     22868 22848  0 Feb16 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxattachd root
+root     22957     1  0 Feb16 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxcached root
+root     22974 22957  0 Feb16 ?        00:00:00 vxnotify -C -w 15
+root     22975 22957  0 Feb16 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxcached root
+root     23024     1  0 Feb16 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxconfigbackupd
+root     23086 23024  0 Feb16 ?        00:00:00 vxnotify
+root     23087 23024  0 Feb16 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxconfigbackupd
+root     23125     1  0 Feb16 ?        00:00:00 /sbin/vxcloudd-shadow
+root     23138     1  0 Feb16 ?        00:00:00 vxcloudd
+root     23162     1  0 Feb16 ?        00:00:00 /usr/sbin/sshd
+ntp      23173     1  0 Feb16 ?        00:00:03 ntpd -u ntp:ntp -p /var/run/ntpd.pid -g
+root     23196 10679  0 15:53 ?        00:00:00 /opt/VRTSvcs/bin/CSSD/imf_getnotification CSSD
+root     23249     2  0 Feb16 ?        00:00:00 [llt_rdlv]
+root     23250     2  0 Feb16 ?        00:00:00 [llt_rdlv]
+root     23251     2  0 Feb16 ?        00:00:00 [llt_rdlv]
+root     23252     2  0 Feb16 ?        00:00:00 [llt_rdlv]
+root     23253     2  0 Feb16 ?        00:00:00 [llt_rdlv]
+root     23254     2  0 Feb16 ?        00:00:00 [llt_rdlv]
+root     23255     2  0 Feb16 ?        00:00:00 [llt_rdlv]
+root     23256     2  0 Feb16 ?        00:00:00 [llt_rdlv]
+root     23257     2  0 Feb16 ?        00:00:00 [llt_rdlv]
+root     23258     2  0 Feb16 ?        00:00:02 [lltd]
+root     23259     2  0 Feb16 ?        00:00:02 [lltd]
+root     23343     2  0 Feb16 ?        00:00:24 [lltdlv]
+root     23431     2  0 Feb16 ?        00:00:24 [lltdlv]
+root     23434     1  0 Feb16 ?        00:00:00 /opt/VRTSgab/gablogd
+root     23930     1  0 Feb17 ?        00:01:40 /opt/VRTSagents/ha/bin/Oracle/OracleAgent -type Oracle -agdir /opt/VRTSagents/ha/bin/Oracle
+root     24772     2  0 Feb16 ?        00:02:27 [vxglm_thread]
+root     24829     2  0 Feb16 ?        00:00:00 [vxfen]
+root     24830     2  0 Feb16 ?        00:00:00 [vxfen]
+root     24831     2  0 Feb16 ?        00:00:24 [lltdlv]
+root     24855     2  0 Feb16 ?        00:00:00 [vcsmm]
+root     24856     2  0 Feb16 ?        00:00:00 [vcsmm]
+root     24857     2  0 Feb16 ?        00:00:24 [lltdlv]
+root     25031     1  0 Feb16 ?        00:00:01 /opt/VRTSsfmh/bin/xprtld -X 1 /etc/opt/VRTSsfmh/xprtld.conf
+root     25049     2  0 Feb16 ?        00:00:00 [vxodm_ioreap]
+root     25050     2  0 Feb16 ?        00:00:01 [vxodm_ioclean]
+root     25054     2  0 Feb16 ?        00:00:00 [odm_tsk_daemon]
+root     25055     2  0 Feb16 ?        00:00:00 [odm_tsk_daemon]
+root     25056     2  0 Feb16 ?        00:00:00 [odm_tsk_daemon]
+root     25057     2  0 Feb16 ?        00:00:00 [odm_tsk_daemon]
+root     25058     2  0 Feb16 ?        00:00:00 [odm_tsk_daemon]
+root     25059     2  0 Feb16 ?        00:00:00 [odm_tsk_daemon]
+root     25060     2  0 Feb16 ?        00:00:00 [odm_tsk_daemon]
+root     25061     2  0 Feb16 ?        00:00:00 [odm_tsk_daemon]
+root     25062     2  0 Feb16 ?        00:00:00 [odm_tsk_daemon]
+root     25063     2  0 Feb16 ?        00:00:00 [odm_tsk_daemon]
+root     25064     2  0 Feb16 ?        00:00:00 [odm_tsk_daemon]
+root     25065     2  0 Feb16 ?        00:00:00 [odm_tsk_daemon]
+root     25066     2  0 Feb16 ?        00:00:00 [odm_tsk_daemon]
+root     25070     2  0 Feb16 ?        00:00:00 [gms_ctl_thread]
+root     25148     1  0 Feb16 ?        00:00:01 /usr/libexec/postfix/master
+postfix  25155 25148  0 Feb16 ?        00:00:00 qmgr -l -t fifo -u
+root     25173     1  0 Feb16 ?        00:00:43 /opt/VRTSsfmh/bin/vxdclid
+root     25193     1  0 Feb16 ?        00:00:00 /usr/sbin/abrtd
+root     25220     1  0 Feb16 ?        00:00:02 crond
+root     25235     1  0 Feb16 ?        00:00:00 /usr/sbin/atd
+root     25285     1  0 Feb16 ?        00:00:00 /usr/bin/rhsmcertd
+root     25302     1  0 Feb16 ?        00:00:00 /usr/sbin/certmonger -S -p /var/run/certmonger.pid
+root     25374     1  0 Feb16 ?        00:03:18 /opt/VRTSvcs/bin/had
+root     25378     1  0 Feb16 ?        00:00:04 /opt/VRTSvcs/bin/CmdServer
+root     25384     1  0 Feb16 ?        00:00:00 /opt/VRTSvcs/bin/hashadow
+root     25395     1  0 Feb16 tty1     00:00:00 /sbin/mingetty /dev/tty1
+root     25397     1  0 Feb16 tty2     00:00:00 /sbin/mingetty /dev/tty2
+root     25399     1  0 Feb16 tty3     00:00:00 /sbin/mingetty /dev/tty3
+root     25401     1  0 Feb16 tty4     00:00:00 /sbin/mingetty /dev/tty4
+root     25403     1  0 Feb16 tty5     00:00:00 /sbin/mingetty /dev/tty5
+root     25405     1  0 Feb16 tty6     00:00:00 /sbin/mingetty /dev/tty6
+root     25734 26893  0 15:55 ?        00:00:00 /opt/VRTSvcs/bin/CFSMount/imf_getnotification CFSMount
+root     26893     1  0 Feb16 ?        00:02:16 /opt/VRTSvcs/bin/CFSMount/CFSMountAgent -type CFSMount
+root     26895     1  0 Feb16 ?        00:02:10 /opt/VRTSvcs/bin/CFSfsckd/CFSfsckdAgent -type CFSfsckd
+root     26899     1  0 Feb16 ?        00:02:02 /opt/VRTSvcs/bin/CVMCluster/CVMClusterAgent -type CVMCluster
+root     26900     1  0 Feb16 ?        00:02:21 /opt/VRTSvcs/bin/CVMVolDg/CVMVolDgAgent -type CVMVolDg
+root     26901     1  0 Feb16 ?        00:02:13 /opt/VRTSvcs/bin/CVMVxconfigd/CVMVxconfigdAgent -type CVMVxconfigd
+root     26905     1  0 Feb16 ?        00:01:57 /opt/VRTSvcs/bin/HostMonitor -type HostMonitor -agdir /
+root     26906     1  0 Feb16 ?        00:02:03 /opt/VRTSvcs/bin/ProcessOnOnly/ProcessOnOnlyAgent -type ProcessOnOnly
+root     27501 26901  0 Feb16 ?        00:00:00 /opt/VRTSvcs/bin/CVMVxconfigd/imf_getnotification CVMVxconfigd
+root     27503 26895  0 Feb16 ?        00:00:00 /opt/VRTSvcs/bin/CFSfsckd/imf_getnotification CFSfsckd
+root     27596     2  0 Feb16 ?        00:00:00 [vol_openclose_a]
+root     27597     2  0 Feb16 ?        00:00:00 [vol_kmsg_receiv]
+root     27598     2  0 Feb16 ?        00:00:00 [vol_ioship_rece]
+root     27599     2  0 Feb16 ?        00:00:00 [vol_ioship_send]
+root     27600     2  0 Feb16 ?        00:00:00 [vol_kmsg_sender]
+root     27601     2  0 Feb16 ?        00:00:00 [vxreconfd]
+root     27785     1  0 15:58 ?        00:00:00 /usr/sbin/vxnotify -g oradg9318_ocrvote -icfspdvACLMSk
+root     30390     1  0 Feb16 ?        00:00:00 /usr/lib/fs/vxfs/vxfsckd -p /var/adm/cfs/vxfsckd-pid
+root     30573     2  0 Feb16 ?        00:00:00 [gab_kdlvd_5]
+
+
+DATE:2017-02-21 16:23:56
+HOST:l111060
+USER:root
+STDIN:vxstat -g oradg9318_dbarch -i 2 -c 5 -u h
+STDOUT:
+                                         OPERATIONS          BYTES           AVG TIME(ms)
+TYP NAME                                 READ     WRITE      READ     WRITE   READ  WRITE 
+
+l111060 Tue 21 Feb 2017 04:23:48 PM CST
+vol archive                              7670       416    31051k    45596k   1.38 160.83 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                               260     13747        4m      103m  12.90   0.30 
+vol dbdata                              61648     21910      893m      227m   0.73   0.44 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+l111060 Tue 21 Feb 2017 04:23:50 PM CST
+vol archive                                 0         0         0         0   0.00   0.00 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                                 0         0         0         0   0.00   0.00 
+vol dbdata                                  8         2      128k       32k   0.38   0.50 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+l111060 Tue 21 Feb 2017 04:23:52 PM CST
+vol archive                                 0         0         0         0   0.00   0.00 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                                 0         0         0         0   0.00   0.00 
+vol dbdata                                  3         0       48k         0   0.33   0.00 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+l111060 Tue 21 Feb 2017 04:23:54 PM CST
+vol archive                                 0         0         0         0   0.00   0.00 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                                 0         0         0         0   0.00   0.00 
+vol dbdata                                  9         2      144k       32k   0.22   0.00 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+l111060 Tue 21 Feb 2017 04:23:56 PM CST
+vol archive                                 0         0         0         0   0.00   0.00 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                                 0         0         0         0   0.00   0.00 
+vol dbdata                                  3         0       48k         0   0.00   0.00 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+
+DATE:2017-02-21 16:23:56
+HOST:l111060
+USER:oracle
+STDIN:nohup /tmp/tmpfile.24191 3 3 > /tmp/.oracle.stress 2>&1 &
+STDOUT:
+
+
+
+DATE:2017-02-21 16:23:57
+HOST:l111060
+USER:oracle
+STDIN:cat /tmp/.oracle.stress
+STDOUT:
+13991
+
+
+DATE:2017-02-21 16:24:25
+HOST:l111060
+USER:root
+STDIN:vxstat -g oradg9318_dbarch -i 2 -c 10 -u h
+STDOUT:
+                                         OPERATIONS          BYTES           AVG TIME(ms)
+TYP NAME                                 READ     WRITE      READ     WRITE   READ  WRITE 
+
+l111060 Tue 21 Feb 2017 04:24:07 PM CST
+vol archive                              7670       416    31051k    45596k   1.38 160.83 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                               260     13747        4m      103m  12.90   0.30 
+vol dbdata                              61736     21922      894m      227m   0.73   0.44 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+l111060 Tue 21 Feb 2017 04:24:09 PM CST
+vol archive                                 0         0         0         0   0.00   0.00 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                                 0        10         0      180k   0.00   0.10 
+vol dbdata                                 12        40      160k      190k   0.08   0.65 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+l111060 Tue 21 Feb 2017 04:24:11 PM CST
+vol archive                                 0         0         0         0   0.00   0.00 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                                 0         0         0         0   0.00   0.00 
+vol dbdata                                  3         1       48k       1bl   0.33   0.00 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+l111060 Tue 21 Feb 2017 04:24:13 PM CST
+vol archive                                 0         0         0         0   0.00   0.00 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                                 0         0         0         0   0.00   0.00 
+vol dbdata                                  7         2      112k       32k   0.29   0.50 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+l111060 Tue 21 Feb 2017 04:24:15 PM CST
+vol archive                                 0         0         0         0   0.00   0.00 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                                 0         5         0       90k   0.00   0.00 
+vol dbdata                                 16        39      232k      187k   1.00   0.41 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+l111060 Tue 21 Feb 2017 04:24:17 PM CST
+vol archive                                 0         0         0         0   0.00   0.00 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                                 0         0         0         0   0.00   0.00 
+vol dbdata                                  3         0       48k         0   0.00   0.00 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+l111060 Tue 21 Feb 2017 04:24:19 PM CST
+vol archive                                 0         0         0         0   0.00   0.00 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                                 0         5         0       90k   0.00   0.40 
+vol dbdata                                 11        45      152k      191k   0.36   0.80 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+l111060 Tue 21 Feb 2017 04:24:21 PM CST
+vol archive                                 0         0         0         0   0.00   0.00 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                                 0         0         0         0   0.00   0.00 
+vol dbdata                                  7         3      112k      65bl   0.14   0.33 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+l111060 Tue 21 Feb 2017 04:24:23 PM CST
+vol archive                                 0         0         0         0   0.00   0.00 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                                 0         0         0         0   0.00   0.00 
+vol dbdata                                  5         0       80k         0   0.20   0.00 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+l111060 Tue 21 Feb 2017 04:24:25 PM CST
+vol archive                                 0         0         0         0   0.00   0.00 
+vol archive_dcl                             0         0         0         0   0.00   0.00 
+vol cachetc                                 0        10         0      180k   0.00   0.60 
+vol dbdata                                 14        42      200k      190k   0.93   0.64 
+vol dbdata_dcl                              0         0         0         0   0.00   0.00 
+vol oracle                                  0         0         0         0   0.00   0.00 
+vol oracle_dcl                              0         0         0         0   0.00   0.00 
+
+
+DATE:2017-02-21 16:24:25
+HOST:l111060
+USER:root
+STDIN:vxassist -g oradg9318_dbarch maxsize
+STDOUT:
+Maximum volume size: 334962688 (163556Mb)
+
+***Making autotcvol1 with size=9316M in oradg9318_dbarch***
+
+
+
+DATE:2017-02-21 16:24:26
+HOST:l111060
+USER:root
+STDIN:for i in `vxprint -g oradg9318_dbarch|grep ^v|grep autotcvol1|awk '{print $2}'`;do vxedit -g oradg9318_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:26
+HOST:l111060
+USER:root
+STDIN:vxassist -g oradg9318_dbarch make autotcvol1 9316M
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:27
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch set user=oracle autotcvol1
+STDOUT:
+
+
+***Making autotcvol2 with size=9316M in oradg9318_dbarch***
+
+
+
+DATE:2017-02-21 16:24:27
+HOST:l111060
+USER:root
+STDIN:for i in `vxprint -g oradg9318_dbarch|grep ^v|grep autotcvol2|awk '{print $2}'`;do vxedit -g oradg9318_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:27
+HOST:l111060
+USER:root
+STDIN:vxassist -g oradg9318_dbarch make autotcvol2 9316M
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:28
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch set user=oracle autotcvol2
+STDOUT:
+
+
+***Making autotcvol3 with size=9316M in oradg9318_dbarch***
+
+
+
+DATE:2017-02-21 16:24:28
+HOST:l111060
+USER:root
+STDIN:for i in `vxprint -g oradg9318_dbarch|grep ^v|grep autotcvol3|awk '{print $2}'`;do vxedit -g oradg9318_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:28
+HOST:l111060
+USER:root
+STDIN:vxassist -g oradg9318_dbarch make autotcvol3 9316M
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:29
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch set user=oracle autotcvol3
+STDOUT:
+
+
+***Making autotcvol4 with size=9316M in oradg9318_dbarch***
+
+
+
+DATE:2017-02-21 16:24:29
+HOST:l111060
+USER:root
+STDIN:for i in `vxprint -g oradg9318_dbarch|grep ^v|grep autotcvol4|awk '{print $2}'`;do vxedit -g oradg9318_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:30
+HOST:l111060
+USER:root
+STDIN:vxassist -g oradg9318_dbarch make autotcvol4 9316M
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:30
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch set user=oracle autotcvol4
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:30
+HOST:l111060
+USER:root
+STDIN:vxassist -g oradg9318_dbarch maxsize
+STDOUT:
+Maximum volume size: 258646016 (126292Mb)
+
+***Making autotcvol5 with size=9316M in oradg9318_dbarch***
+
+
+
+DATE:2017-02-21 16:24:31
+HOST:l111060
+USER:root
+STDIN:for i in `vxprint -g oradg9318_dbarch|grep ^v|grep autotcvol5|awk '{print $2}'`;do vxedit -g oradg9318_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:31
+HOST:l111060
+USER:root
+STDIN:vxassist -g oradg9318_dbarch make autotcvol5 9316M
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:32
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch set user=oracle autotcvol5
+STDOUT:
+
+
+***Making autotcvol6 with size=9316M in oradg9318_dbarch***
+
+
+
+DATE:2017-02-21 16:24:32
+HOST:l111060
+USER:root
+STDIN:for i in `vxprint -g oradg9318_dbarch|grep ^v|grep autotcvol6|awk '{print $2}'`;do vxedit -g oradg9318_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:32
+HOST:l111060
+USER:root
+STDIN:vxassist -g oradg9318_dbarch make autotcvol6 9316M
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:33
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch set user=oracle autotcvol6
+STDOUT:
+
+
+***Making autotcvol7 with size=9316M in oradg9318_dbarch***
+
+
+
+DATE:2017-02-21 16:24:33
+HOST:l111060
+USER:root
+STDIN:for i in `vxprint -g oradg9318_dbarch|grep ^v|grep autotcvol7|awk '{print $2}'`;do vxedit -g oradg9318_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:34
+HOST:l111060
+USER:root
+STDIN:vxassist -g oradg9318_dbarch make autotcvol7 9316M
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:34
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch set user=oracle autotcvol7
+STDOUT:
+
+
+***Making autotcvol8 with size=9316M in oradg9318_dbarch***
+
+
+
+DATE:2017-02-21 16:24:34
+HOST:l111060
+USER:root
+STDIN:for i in `vxprint -g oradg9318_dbarch|grep ^v|grep autotcvol8|awk '{print $2}'`;do vxedit -g oradg9318_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:35
+HOST:l111060
+USER:root
+STDIN:vxassist -g oradg9318_dbarch make autotcvol8 9316M
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:35
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch set user=oracle autotcvol8
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:35
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch set user=oracle dbdata
+STDOUT:
+
+
+
+DATE:2017-02-21 16:24:36
+HOST:l111060
+USER:root
+STDIN:vxedit -g oradg9318_dbarch set user=oracle archive
+STDOUT:
+
+
+
+====STEP: Doing dbdst operation
+DATE:2017-02-21 16:24:36
+
+
+DATE:2017-02-21 16:24:57
+HOST:l111060
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+No repository found for database orcl2, creating new one.
+
+SFDB vxsfadm ERROR V-81-0593 A repository already exists at /dbdata/orcl/.sfae/dbed-oracle-ORCL-repository.db
+
+Action: Specify a different location for the new repository, or remove the existing files.
+RESULT:NOEXIT:Failed
+
+***Waring: Trying to fix it through workaroud***
+
+
+
+DATE:2017-02-21 16:24:57
+HOST:l111060
+USER:root
+STDIN:/opt/VRTSdbed/bin/vxdbd stop;rm -rf /var/vx/vxdba/auth /opt/VRTSdbed/at-broker /var/VRTSat /var/VRTSat_lhc;echo "AUTHENTICATION=no" > /etc/vx/vxdbed/admin.properties;/opt/VRTSdbed/bin/vxdbd start
+STDOUT:
+
+RESULT:NOEXIT:Failed
+
+
+DATE:2017-02-21 16:25:42
+HOST:l111060
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+No repository found for database orcl2, creating new one.
+
+SFDB vxsfadm ERROR V-81-0593 A repository already exists at /dbdata/orcl/.sfae/dbed-oracle-ORCL-repository.db
+
+Action: Specify a different location for the new repository, or remove the existing files.
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-02-21 16:25:42
+Duration:2m58s

@@ -1,0 +1,497 @@
+
+
+DATE:2017-05-15 08:10:44
+HOST:cdcnfsclientcd03
+USER:root
+STDIN:ps -ef|grep tmpfile
+STDOUT:
+
+RETURN:255
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-05-15 08:10:44
+Duration:0m0s
+
+
+DATE:2017-05-15 08:10:45
+HOST:s090105
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster cluster0506 (
+	UserNames = { admin = bklDkfKhlGllJtlFki }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system s090105 (
+	)
+
+system s090106 (
+	)
+
+group autotcsg_nativevgpool0 (
+	SystemList = { s090105 = 0, s090106 = 1 }
+	AutoStartList = { s090105, s090106 }
+	)
+
+	LVMVolumeGroup autotcres_vgpool0 (
+		VolumeGroup = autotcvg2
+		StartVolumes = 1
+		)
+
+	Mount autotcres_vgpoolmnt0 (
+		MountPoint = "/autotclv2"
+		BlockDevice = "/dev/mapper/autotcvg2-autotclv2"
+		FSType = ext4
+		FsckOpt = "-y"
+		)
+
+	autotcres_vgpoolmnt0 requires autotcres_vgpool0
+
+
+	// resource dependency tree
+	//
+	//	group autotcsg_nativevgpool0
+	//	{
+	//	Mount autotcres_vgpoolmnt0
+	//	    {
+	//	    LVMVolumeGroup autotcres_vgpool0
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { s090105 = 0, s090106 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { s090105, s090106 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = cluster0506
+		CVMNodeId = { s090105 = 0, s090106 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+***import the maincf /opt/itf/log/s090105/logs/main.cf to cluster***
+
+
+
+DATE:2017-05-15 08:10:45
+HOST:s090105
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastop -all
+STDOUT:
+
+
+
+DATE:2017-05-15 08:10:56
+HOST:s090105
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+s090105
+s090106
+
+
+DATE:2017-05-15 08:11:07
+HOST:s090105
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-05-15 08:11:13
+HOST:s090105
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-05-15 08:11:14
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/log/s090105/logs/main.cf s090105:/tmp/tmpfile.6079
+STDOUT:
+
+
+
+DATE:2017-05-15 08:11:15
+HOST:s090105
+USER:root
+STDIN:mv /etc/VRTSvcs/conf/config/main.cf /etc/VRTSvcs/conf/config/main.cf.orig;cat /tmp/tmpfile.6079 > /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+
+
+
+DATE:2017-05-15 08:11:21
+HOST:s090105
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-05-15 08:11:32
+HOST:s090105
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+s090105    SysState                RUNNING
+s090106    SysState                UNKNOWN
+
+
+DATE:2017-05-15 08:11:33
+HOST:s090105
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+s090105    SysState                RUNNING
+s090106    SysState                UNKNOWN
+
+
+DATE:2017-05-15 08:11:34
+HOST:s090106
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-05-15 08:11:45
+HOST:s090105
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+s090105    SysState                RUNNING
+s090106    SysState                RUNNING
+
+
+DATE:2017-05-15 08:11:46
+HOST:s090105
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+s090105    SysState                RUNNING
+s090106    SysState                RUNNING
+
+***Waiting the group cvm online***
+
+
+
+DATE:2017-05-15 08:11:47
+HOST:s090105
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 s090105    |OFFLINE|STARTING|
+cvm          State                 s090106    |OFFLINE|STARTING|
+
+
+DATE:2017-05-15 08:11:48
+HOST:s090105
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster cluster0506 (
+	UserNames = { admin = bklDkfKhlGllJtlFki }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system s090105 (
+	)
+
+system s090106 (
+	)
+
+group cvm (
+	SystemList = { s090105 = 0, s090106 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { s090105, s090106 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = cluster0506
+		CVMNodeId = { s090105 = 0, s090106 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+DATE:2017-05-15 08:11:59
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 s090105    |ONLINE|
+cvm          State                 s090106    |ONLINE|
+
+
+DATE:2017-05-15 08:12:00
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 s090105    |ONLINE|
+cvm          State                 s090106    |ONLINE|
+
+***umount vxfs on node s090105***
+
+
+
+DATE:2017-05-15 08:12:01
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+
+***umount vxfs on node s090106***
+
+
+
+DATE:2017-05-15 08:12:02
+HOST:s090106
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 5.3G 115G 5% /
+tmpfs 1.5G 0 1.5G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+
+
+DATE:2017-05-15 08:12:03
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      DEVICE
+
+
+DATE:2017-05-15 08:12:04
+HOST:s090106
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      DEVICE
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-05-15 08:12:05
+HOST:s090105
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-05-15 08:12:06
+HOST:s090105
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc_clariion0_226 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_234 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_235 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_236 auto:none       -            -            online invalid
+emc_clariion0_237 auto:none       -            -            online invalid
+emc_clariion0_238 auto:cdsdisk    -            -            online
+emc_clariion0_239 auto:cdsdisk    -            -            online
+emc_clariion0_240 auto:cdsdisk    -            -            online
+emc_clariion0_242 auto:cdsdisk    -            -            online
+emc_clariion0_243 auto:cdsdisk    -            -            online
+emc_clariion0_244 auto:cdsdisk    -            -            online
+emc_clariion0_247 auto:cdsdisk    -            -            online
+emc_clariion0_248 auto:cdsdisk    -            -            online
+emc_clariion0_249 auto:cdsdisk    -            -            online
+emc_clariion0_250 auto:cdsdisk    -            -            online
+emc_clariion0_251 auto:cdsdisk    -            -            online
+emc_clariion0_252 auto:cdsdisk    -            -            online
+emc_clariion0_264 auto:cdsdisk    -            -            online
+emc_clariion0_265 auto:cdsdisk    -            -            online
+emc_clariion0_266 auto:cdsdisk    -            -            online
+emc_clariion0_267 auto:cdsdisk    -            -            online
+emc_clariion0_268 auto:cdsdisk    -            -            online
+emc_clariion0_269 auto:cdsdisk    -            -            online
+emc_clariion0_270 auto:cdsdisk    -            -            online
+emc_clariion0_271 auto:cdsdisk    -            -            online
+emc_clariion0_272 auto:cdsdisk    -            -            online
+emc_clariion0_312 auto:cdsdisk    -            -            online
+emc_clariion0_313 auto:cdsdisk    -            -            online
+sddi         auto:none       -            -            online invalid
+
+
+DATE:2017-05-15 08:12:07
+HOST:s090105
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-05-15 08:12:08
+HOST:s090106
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-05-15 08:12:09
+HOST:s090106
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc_clariion0_226 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_234 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_235 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_236 auto:none       -            -            online invalid
+emc_clariion0_237 auto:none       -            -            online invalid
+emc_clariion0_238 auto:cdsdisk    -            -            online
+emc_clariion0_239 auto:cdsdisk    -            -            online
+emc_clariion0_240 auto:cdsdisk    -            -            online
+emc_clariion0_242 auto:cdsdisk    -            -            online
+emc_clariion0_243 auto:cdsdisk    -            -            online
+emc_clariion0_244 auto:cdsdisk    -            -            online
+emc_clariion0_247 auto:cdsdisk    -            -            online
+emc_clariion0_248 auto:cdsdisk    -            -            online
+emc_clariion0_249 auto:cdsdisk    -            -            online
+emc_clariion0_250 auto:cdsdisk    -            -            online
+emc_clariion0_251 auto:cdsdisk    -            -            online
+emc_clariion0_252 auto:cdsdisk    -            -            online
+emc_clariion0_264 auto:cdsdisk    -            -            online
+emc_clariion0_265 auto:cdsdisk    -            -            online
+emc_clariion0_266 auto:cdsdisk    -            -            online
+emc_clariion0_267 auto:cdsdisk    -            -            online
+emc_clariion0_268 auto:cdsdisk    -            -            online
+emc_clariion0_269 auto:cdsdisk    -            -            online
+emc_clariion0_270 auto:cdsdisk    -            -            online
+emc_clariion0_271 auto:cdsdisk    -            -            online
+emc_clariion0_272 auto:cdsdisk    -            -            online
+emc_clariion0_312 auto:cdsdisk    -            -            online
+emc_clariion0_313 auto:cdsdisk    -            -            online
+sddi         auto:none       -            -            online invalid
+
+
+DATE:2017-05-15 08:12:10
+HOST:s090106
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID

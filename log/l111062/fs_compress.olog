@@ -1,0 +1,4126 @@
+
+==================== Operation Log for TC fs_compress ====================
+DATE:2017-01-09 16:28:44
+Nodes:l111062 l111063
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-01-09 16:28:44
+
+***checking if hosts are wop-sshable with root***
+
+
+
+HOST:l111062
+USER:root
+STDIN:ssh -l root l111062
+STDOUT:
+
+
+
+HOST:l111063
+USER:root
+STDIN:ssh -l root l111063
+STDOUT:
+
+
+
+HOST:l111062
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111062
+l111063
+
+
+HOST:l111063
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111062
+l111063
+
+***Getting hostname of node***
+
+
+
+HOST:l111062
+USER:root
+STDIN:hostname
+STDOUT:
+l111062.cdc.veritas.com
+
+***Getting os version***
+
+
+
+HOST:l111062
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+HOST:l111062
+USER:root
+STDIN:cat /etc/issue;uname -r
+STDOUT:
+\S
+Kernel \r on an \m
+
+3.10.0-514.2.2.el7.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+HOST:l111062
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTScps-7.1.0.000-RHEL7.x86_64
+Name        : VRTScps
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:52:31 PM CST
+Group       : Applications/System
+Size        : 58857579
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:57:49 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTScps-7.1.0.000-RHEL7.src.rpm
+Build Date  : Wed 30 Mar 2016 01:39:29 AM CST
+Build Host  : sfhamtvbuildrhel7-ga
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Co-ordination Point Server
+Description :
+Veritas Co-ordination Point Server
+Build Stamp: 7.1.0.000-2016-03-29_04.43.15
+
+Package INFO: VRTSdbac-7.1.0.100-RHEL7.x86_64
+Name        : VRTSdbac
+Version     : 7.1.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:15 PM CST
+Group       : Applications/System
+Size        : 17387587
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSdbac-7.1.0.100-RHEL7.src.rpm
+Build Date  : Thu 27 Oct 2016 06:32:17 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Real Application Cluster Support Package
+Description :
+Veritas Oracle Real Application Cluster Support Package
+Build Stamp	: 7.1.0.100-2016-10-27_03.26.50
+Supported kernel(s): 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64 3.10.0-513.el7.x86_64
+
+Package INFO: VRTSperl-5.20.1.3-RHEL7.x86_64
+Name        : VRTSperl
+Version     : 5.20.1.3
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:50:36 PM CST
+Group       : Applications/System
+Size        : 69606892
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:05 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSperl-5.20.1.3-RHEL7.src.rpm
+Build Date  : Tue 15 Mar 2016 10:53:47 PM CST
+Build Host  : rhel6-perl.cdc.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Perl 5.20.1 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.20.1 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.60
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSdbed-7.1.0.000-RHEL.x86_64
+Name        : VRTSdbed
+Version     : 7.1.0.000
+Release     : RHEL
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:52:48 PM CST
+Group       : Applications/Databases
+Size        : 262876309
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:57:53 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSdbed-7.1.0.000-RHEL.src.rpm
+Build Date  : Wed 16 Mar 2016 02:00:02 PM CST
+Build Host  : snapper53-64.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSvxfs-7.1.0.100-RHEL7.x86_64
+Name        : VRTSvxfs
+Version     : 7.1.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:53:53 PM CST
+Group       : Applications/System
+Size        : 46667264
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfs-7.1.0.100-RHEL7.src.rpm
+Build Date  : Thu 27 Oct 2016 04:08:53 PM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Filesystem
+Description :
+Veritas Filesystem
+
+Package INFO: VRTSsfcpi-7.1.0.000-GENERIC.noarch
+Name        : VRTSsfcpi
+Version     : 7.1.0.000
+Release     : GENERIC
+Architecture: noarch
+Install Date: Fri 23 Dec 2016 12:54:40 PM CST
+Group       : Applications/System
+Size        : 14121004
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:57:02 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSsfcpi-7.1.0.000-GENERIC.src.rpm
+Build Date  : Wed 30 Mar 2016 05:34:14 PM CST
+Build Host  : vmd2850lx11
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+
+Package INFO: VRTSveki-7.1.0.000-RHEL7.x86_64
+Name        : VRTSveki
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:50:46 PM CST
+Group       : Applications/System
+Size        : 143255
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:21 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSveki-7.1.0.000-RHEL7.src.rpm
+Build Date  : Wed 30 Mar 2016 01:06:22 AM CST
+Build Host  : sfhamtvbuildrhel7-ga
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Veki
+Description :
+Veritas Veki
+
+Package INFO: VRTSfsadv-7.1.0.000-RHEL7.x86_64
+Name        : VRTSfsadv
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:51:53 PM CST
+Group       : Applications/System
+Size        : 14596976
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:57:55 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSfsadv-7.1.0.000-RHEL7.src.rpm
+Build Date  : Tue 12 Apr 2016 07:39:13 PM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas File System Advanced Features
+Description :
+Veritas File System Advanced Features
+
+Package INFO: VRTSvcsea-7.1.0.000-RHEL7.x86_64
+Name        : VRTSvcsea
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:52:41 PM CST
+Group       : Applications/System
+Size        : 1340772
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:17 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcsea-7.1.0.000-RHEL7.src.rpm
+Build Date  : Wed 30 Mar 2016 01:40:55 AM CST
+Build Host  : sfhamtvbuildrhel7-ga
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+
+Package INFO: VRTSgms-7.1.0.000-RHEL7.x86_64
+Name        : VRTSgms
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:53:01 PM CST
+Group       : Applications/System
+Size        : 76898
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:01 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSgms-7.1.0.000-RHEL7.src.rpm
+Build Date  : Thu 31 Mar 2016 12:29:33 AM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Messaging Services
+Description :
+Veritas Group Messaging Sevice (GMS) driver
+
+Package INFO: VRTSaslapm-7.1.0.100-RHEL7.x86_64
+Name        : VRTSaslapm
+Version     : 7.1.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:53:47 PM CST
+Group       : Applications/System
+Size        : 41897833
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSaslapm-7.1.0.100-RHEL7.src.rpm
+Build Date  : Thu 03 Nov 2016 02:32:53 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTSvxfen-7.1.0.300-RHEL7.x86_64
+Name        : VRTSvxfen
+Version     : 7.1.0.300
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:08 PM CST
+Group       : Applications/System
+Size        : 25441635
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfen-7.1.0.300-RHEL7.src.rpm
+Build Date  : Wed 26 Oct 2016 07:44:47 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas I/O Fencing
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64 3.10.0-513.el7.x86_64
+Build Stamp        : 7.1.0.300-2016-10-24_23.50.04
+
+Package INFO: VRTSvbs-7.1.0.000-GA_Linux.x86_64
+Name        : VRTSvbs
+Version     : 7.1.0.000
+Release     : GA_Linux
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:36 PM CST
+Group       : Applications/System
+Size        : 70705720
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:12 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSvbs-7.1.0.000-GA_Linux.src.rpm
+Build Date  : Wed 30 Mar 2016 12:54:45 PM CST
+Build Host  : snapper53-64.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Virtual Business Services by Veritas
+Description :
+Virtual Business Services by Veritas
+Build Stamp : 7.1.0.000-2016-03-29_20.12.21
+
+Package INFO: VRTSspt-7.1.0.000-RHEL7.noarch
+Name        : VRTSspt
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: noarch
+Install Date: Fri 23 Dec 2016 12:50:43 PM CST
+Group       : Applications/System
+Size        : 38749153
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:10 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSspt-7.1.0.000-RHEL7.src.rpm
+Build Date  : Wed 16 Mar 2016 03:15:50 PM CST
+Build Host  : sfrhel5u3.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Software Support Tools Package
+Description :
+VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSvcsag-7.1.0.000-RHEL7.x86_64
+Name        : VRTSvcsag
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:52:37 PM CST
+Group       : Applications/System
+Size        : 84178374
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:15 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcsag-7.1.0.000-RHEL7.src.rpm
+Build Date  : Wed 30 Mar 2016 01:36:17 AM CST
+Build Host  : sfhamtvbuildrhel7-ga
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : VCS Bundled Agents
+Description :
+Veritas Cluster Server Bundled Agents (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+
+Package INFO: VRTScavf-7.1.0.000-RHEL7.x86_64
+Name        : VRTScavf
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:52:59 PM CST
+Group       : Applications/System
+Size        : 873115
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:57:48 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTScavf-7.1.0.000-RHEL7.src.rpm
+Build Date  : Thu 31 Mar 2016 08:43:06 PM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+Veritas Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+Package INFO: VRTSvxvm-7.1.0.100-RHEL7.x86_64
+Name        : VRTSvxvm
+Version     : 7.1.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:53:36 PM CST
+Group       : Applications/System
+Size        : 571595133
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxvm-7.1.0.100-RHEL7.src.rpm
+Build Date  : Thu 27 Oct 2016 08:13:38 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Volume Manager
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSgab-7.1.0.300-RHEL7.x86_64
+Name        : VRTSgab
+Version     : 7.1.0.300
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:04 PM CST
+Group       : Applications/System
+Size        : 25772213
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSgab-7.1.0.300-RHEL7.src.rpm
+Build Date  : Wed 26 Oct 2016 07:40:43 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Membership and Atomic Broadcast
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64 3.10.0-513.el7.x86_64
+Build Stamp        : Veritas-7.1.0.300-2016-10-24_23.50.04
+
+Package INFO: VRTSsfmh-7.1.0.0-0.x86_64
+Name        : VRTSsfmh
+Version     : 7.1.0.0
+Release     : 0
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:26 PM CST
+Group       : Applications/System
+Size        : 166345919
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:57:03 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSsfmh-7.1.0.0-0.src.rpm
+Build Date  : Sat 02 Apr 2016 02:40:20 AM CST
+Build Host  : vommvsles10-64bld.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+
+Package INFO: VRTSvlic-3.02.71.004-RHEL7.x86_64
+Name        : VRTSvlic
+Version     : 3.02.71.004
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:50:41 PM CST
+Group       : Applications/System
+Size        : 1585372
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:22 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSvlic-3.02.71.004-RHEL7.src.rpm
+Build Date  : Fri 11 Mar 2016 01:33:18 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas License Utilities
+Description :
+These are the Veritas License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSglm-7.1.0.000-RHEL7.x86_64
+Name        : VRTSglm
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:52:56 PM CST
+Group       : Applications/System
+Size        : 755324
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:57:59 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSglm-7.1.0.000-RHEL7.src.rpm
+Build Date  : Thu 31 Mar 2016 12:34:10 AM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Lock Manager (GLM) driver
+Description :
+Veritas Group Lock Manager (GLM) driver
+Supported kernel(s): 3.10.0-123.el7.x86_64, 3.10.0-229.el7.x86_64 or later
+
+Package INFO: VRTSllt-7.1.0.300-RHEL7.x86_64
+Name        : VRTSllt
+Version     : 7.1.0.300
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:00 PM CST
+Group       : Applications/System
+Size        : 55351429
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSllt-7.1.0.300-RHEL7.src.rpm
+Build Date  : Wed 26 Oct 2016 07:39:11 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Low Latency Transport
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64 3.10.0-513.el7.x86_64 [LINUX_RHEL70]
+Build Stamp: Veritas-7.1.0.300-2016-10-24_23.50.04
+
+Package INFO: VRTSvcswiz-7.1.0.000-RHEL7.x86_64
+Name        : VRTSvcswiz
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:45 PM CST
+Group       : Applications/System
+Size        : 10650041
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:20 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcswiz-7.1.0.000-RHEL7.src.rpm
+Build Date  : Wed 30 Mar 2016 01:40:00 AM CST
+Build Host  : sfhamtvbuildrhel7-ga
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : "Veritas Technologies LLC"
+URL         : http://www.veritas.com/support
+Summary     : Veritas Cluster Server Wizards
+Description :
+"The package contains Wizards for Veritas Cluster Server"
+
+Arch : (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_10.39.46
+
+Package INFO: VRTSvcs-7.1.0.000-RHEL7.x86_64
+Name        : VRTSvcs
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:52:20 PM CST
+Group       : Applications/System
+Size        : 217898703
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:14 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcs-7.1.0.000-RHEL7.src.rpm
+Build Date  : Wed 30 Mar 2016 01:37:32 AM CST
+Build Host  : sfhamtvbuildrhel7-ga
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Server
+Description :
+Veritas Cluster Server and Commands (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+
+Package INFO: VRTSodm-7.1.0.000-RHEL7.x86_64
+Name        : VRTSodm
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:53:03 PM CST
+Group       : Applications/System
+Size        : 1153388
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:03 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSodm-7.1.0.000-RHEL7.src.rpm
+Build Date  : Tue 12 Apr 2016 06:21:43 PM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC.
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Disk Manager
+Description :
+Veritas Oracle Disk Manager (ODM)
+
+Package INFO: VRTSamf-7.1.0.100-RHEL7.x86_64
+Name        : VRTSamf
+Version     : 7.1.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:12 PM CST
+Group       : System Environment/Kernel
+Size        : 22071715
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSamf-7.1.0.100-RHEL7.src.rpm
+Build Date  : Wed 26 Oct 2016 08:50:05 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64 3.10.0-513.el7.x86_64
+Build Stamp        : 7.1.0.100-2016-10-26_05.47.25
+
+***check if product is higher than 6.0***
+
+
+***The product version meet requirement***
+
+
+***Getting hostname of node***
+
+
+
+HOST:l111062
+USER:root
+STDIN:hostname
+STDOUT:
+l111062.cdc.veritas.com
+
+***Getting os version***
+
+
+
+HOST:l111062
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+HOST:l111062
+USER:root
+STDIN:cat /etc/issue;uname -r
+STDOUT:
+\S
+Kernel \r on an \m
+
+3.10.0-514.2.2.el7.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+HOST:l111062
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTScps-7.1.0.000-RHEL7.x86_64
+Name        : VRTScps
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:52:31 PM CST
+Group       : Applications/System
+Size        : 58857579
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:57:49 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTScps-7.1.0.000-RHEL7.src.rpm
+Build Date  : Wed 30 Mar 2016 01:39:29 AM CST
+Build Host  : sfhamtvbuildrhel7-ga
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Co-ordination Point Server
+Description :
+Veritas Co-ordination Point Server
+Build Stamp: 7.1.0.000-2016-03-29_04.43.15
+
+Package INFO: VRTSdbac-7.1.0.100-RHEL7.x86_64
+Name        : VRTSdbac
+Version     : 7.1.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:15 PM CST
+Group       : Applications/System
+Size        : 17387587
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSdbac-7.1.0.100-RHEL7.src.rpm
+Build Date  : Thu 27 Oct 2016 06:32:17 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Real Application Cluster Support Package
+Description :
+Veritas Oracle Real Application Cluster Support Package
+Build Stamp	: 7.1.0.100-2016-10-27_03.26.50
+Supported kernel(s): 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64 3.10.0-513.el7.x86_64
+
+Package INFO: VRTSperl-5.20.1.3-RHEL7.x86_64
+Name        : VRTSperl
+Version     : 5.20.1.3
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:50:36 PM CST
+Group       : Applications/System
+Size        : 69606892
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:05 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSperl-5.20.1.3-RHEL7.src.rpm
+Build Date  : Tue 15 Mar 2016 10:53:47 PM CST
+Build Host  : rhel6-perl.cdc.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Perl 5.20.1 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.20.1 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.60
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSdbed-7.1.0.000-RHEL.x86_64
+Name        : VRTSdbed
+Version     : 7.1.0.000
+Release     : RHEL
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:52:48 PM CST
+Group       : Applications/Databases
+Size        : 262876309
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:57:53 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSdbed-7.1.0.000-RHEL.src.rpm
+Build Date  : Wed 16 Mar 2016 02:00:02 PM CST
+Build Host  : snapper53-64.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSvxfs-7.1.0.100-RHEL7.x86_64
+Name        : VRTSvxfs
+Version     : 7.1.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:53:53 PM CST
+Group       : Applications/System
+Size        : 46667264
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfs-7.1.0.100-RHEL7.src.rpm
+Build Date  : Thu 27 Oct 2016 04:08:53 PM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Filesystem
+Description :
+Veritas Filesystem
+
+Package INFO: VRTSsfcpi-7.1.0.000-GENERIC.noarch
+Name        : VRTSsfcpi
+Version     : 7.1.0.000
+Release     : GENERIC
+Architecture: noarch
+Install Date: Fri 23 Dec 2016 12:54:40 PM CST
+Group       : Applications/System
+Size        : 14121004
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:57:02 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSsfcpi-7.1.0.000-GENERIC.src.rpm
+Build Date  : Wed 30 Mar 2016 05:34:14 PM CST
+Build Host  : vmd2850lx11
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+
+Package INFO: VRTSveki-7.1.0.000-RHEL7.x86_64
+Name        : VRTSveki
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:50:46 PM CST
+Group       : Applications/System
+Size        : 143255
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:21 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSveki-7.1.0.000-RHEL7.src.rpm
+Build Date  : Wed 30 Mar 2016 01:06:22 AM CST
+Build Host  : sfhamtvbuildrhel7-ga
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Veki
+Description :
+Veritas Veki
+
+Package INFO: VRTSfsadv-7.1.0.000-RHEL7.x86_64
+Name        : VRTSfsadv
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:51:53 PM CST
+Group       : Applications/System
+Size        : 14596976
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:57:55 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSfsadv-7.1.0.000-RHEL7.src.rpm
+Build Date  : Tue 12 Apr 2016 07:39:13 PM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas File System Advanced Features
+Description :
+Veritas File System Advanced Features
+
+Package INFO: VRTSvcsea-7.1.0.000-RHEL7.x86_64
+Name        : VRTSvcsea
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:52:41 PM CST
+Group       : Applications/System
+Size        : 1340772
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:17 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcsea-7.1.0.000-RHEL7.src.rpm
+Build Date  : Wed 30 Mar 2016 01:40:55 AM CST
+Build Host  : sfhamtvbuildrhel7-ga
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+
+Package INFO: VRTSgms-7.1.0.000-RHEL7.x86_64
+Name        : VRTSgms
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:53:01 PM CST
+Group       : Applications/System
+Size        : 76898
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:01 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSgms-7.1.0.000-RHEL7.src.rpm
+Build Date  : Thu 31 Mar 2016 12:29:33 AM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Messaging Services
+Description :
+Veritas Group Messaging Sevice (GMS) driver
+
+Package INFO: VRTSaslapm-7.1.0.100-RHEL7.x86_64
+Name        : VRTSaslapm
+Version     : 7.1.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:53:47 PM CST
+Group       : Applications/System
+Size        : 41897833
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSaslapm-7.1.0.100-RHEL7.src.rpm
+Build Date  : Thu 03 Nov 2016 02:32:53 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTSvxfen-7.1.0.300-RHEL7.x86_64
+Name        : VRTSvxfen
+Version     : 7.1.0.300
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:08 PM CST
+Group       : Applications/System
+Size        : 25441635
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfen-7.1.0.300-RHEL7.src.rpm
+Build Date  : Wed 26 Oct 2016 07:44:47 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas I/O Fencing
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64 3.10.0-513.el7.x86_64
+Build Stamp        : 7.1.0.300-2016-10-24_23.50.04
+
+Package INFO: VRTSvbs-7.1.0.000-GA_Linux.x86_64
+Name        : VRTSvbs
+Version     : 7.1.0.000
+Release     : GA_Linux
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:36 PM CST
+Group       : Applications/System
+Size        : 70705720
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:12 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSvbs-7.1.0.000-GA_Linux.src.rpm
+Build Date  : Wed 30 Mar 2016 12:54:45 PM CST
+Build Host  : snapper53-64.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Virtual Business Services by Veritas
+Description :
+Virtual Business Services by Veritas
+Build Stamp : 7.1.0.000-2016-03-29_20.12.21
+
+Package INFO: VRTSspt-7.1.0.000-RHEL7.noarch
+Name        : VRTSspt
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: noarch
+Install Date: Fri 23 Dec 2016 12:50:43 PM CST
+Group       : Applications/System
+Size        : 38749153
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:10 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSspt-7.1.0.000-RHEL7.src.rpm
+Build Date  : Wed 16 Mar 2016 03:15:50 PM CST
+Build Host  : sfrhel5u3.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Software Support Tools Package
+Description :
+VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSvcsag-7.1.0.000-RHEL7.x86_64
+Name        : VRTSvcsag
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:52:37 PM CST
+Group       : Applications/System
+Size        : 84178374
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:15 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcsag-7.1.0.000-RHEL7.src.rpm
+Build Date  : Wed 30 Mar 2016 01:36:17 AM CST
+Build Host  : sfhamtvbuildrhel7-ga
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : VCS Bundled Agents
+Description :
+Veritas Cluster Server Bundled Agents (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+
+Package INFO: VRTScavf-7.1.0.000-RHEL7.x86_64
+Name        : VRTScavf
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:52:59 PM CST
+Group       : Applications/System
+Size        : 873115
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:57:48 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTScavf-7.1.0.000-RHEL7.src.rpm
+Build Date  : Thu 31 Mar 2016 08:43:06 PM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+Veritas Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+Package INFO: VRTSvxvm-7.1.0.100-RHEL7.x86_64
+Name        : VRTSvxvm
+Version     : 7.1.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:53:36 PM CST
+Group       : Applications/System
+Size        : 571595133
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxvm-7.1.0.100-RHEL7.src.rpm
+Build Date  : Thu 27 Oct 2016 08:13:38 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Volume Manager
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSgab-7.1.0.300-RHEL7.x86_64
+Name        : VRTSgab
+Version     : 7.1.0.300
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:04 PM CST
+Group       : Applications/System
+Size        : 25772213
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSgab-7.1.0.300-RHEL7.src.rpm
+Build Date  : Wed 26 Oct 2016 07:40:43 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Membership and Atomic Broadcast
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64 3.10.0-513.el7.x86_64
+Build Stamp        : Veritas-7.1.0.300-2016-10-24_23.50.04
+
+Package INFO: VRTSsfmh-7.1.0.0-0.x86_64
+Name        : VRTSsfmh
+Version     : 7.1.0.0
+Release     : 0
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:26 PM CST
+Group       : Applications/System
+Size        : 166345919
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:57:03 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSsfmh-7.1.0.0-0.src.rpm
+Build Date  : Sat 02 Apr 2016 02:40:20 AM CST
+Build Host  : vommvsles10-64bld.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+
+Package INFO: VRTSvlic-3.02.71.004-RHEL7.x86_64
+Name        : VRTSvlic
+Version     : 3.02.71.004
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:50:41 PM CST
+Group       : Applications/System
+Size        : 1585372
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:22 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSvlic-3.02.71.004-RHEL7.src.rpm
+Build Date  : Fri 11 Mar 2016 01:33:18 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas License Utilities
+Description :
+These are the Veritas License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSglm-7.1.0.000-RHEL7.x86_64
+Name        : VRTSglm
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:52:56 PM CST
+Group       : Applications/System
+Size        : 755324
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:57:59 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSglm-7.1.0.000-RHEL7.src.rpm
+Build Date  : Thu 31 Mar 2016 12:34:10 AM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Lock Manager (GLM) driver
+Description :
+Veritas Group Lock Manager (GLM) driver
+Supported kernel(s): 3.10.0-123.el7.x86_64, 3.10.0-229.el7.x86_64 or later
+
+Package INFO: VRTSllt-7.1.0.300-RHEL7.x86_64
+Name        : VRTSllt
+Version     : 7.1.0.300
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:00 PM CST
+Group       : Applications/System
+Size        : 55351429
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSllt-7.1.0.300-RHEL7.src.rpm
+Build Date  : Wed 26 Oct 2016 07:39:11 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Low Latency Transport
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64 3.10.0-513.el7.x86_64 [LINUX_RHEL70]
+Build Stamp: Veritas-7.1.0.300-2016-10-24_23.50.04
+
+Package INFO: VRTSvcswiz-7.1.0.000-RHEL7.x86_64
+Name        : VRTSvcswiz
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:45 PM CST
+Group       : Applications/System
+Size        : 10650041
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:20 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcswiz-7.1.0.000-RHEL7.src.rpm
+Build Date  : Wed 30 Mar 2016 01:40:00 AM CST
+Build Host  : sfhamtvbuildrhel7-ga
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : "Veritas Technologies LLC"
+URL         : http://www.veritas.com/support
+Summary     : Veritas Cluster Server Wizards
+Description :
+"The package contains Wizards for Veritas Cluster Server"
+
+Arch : (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_10.39.46
+
+Package INFO: VRTSvcs-7.1.0.000-RHEL7.x86_64
+Name        : VRTSvcs
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:52:20 PM CST
+Group       : Applications/System
+Size        : 217898703
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:14 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcs-7.1.0.000-RHEL7.src.rpm
+Build Date  : Wed 30 Mar 2016 01:37:32 AM CST
+Build Host  : sfhamtvbuildrhel7-ga
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Server
+Description :
+Veritas Cluster Server and Commands (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+
+Package INFO: VRTSodm-7.1.0.000-RHEL7.x86_64
+Name        : VRTSodm
+Version     : 7.1.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:53:03 PM CST
+Group       : Applications/System
+Size        : 1153388
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Wed 13 Apr 2016 12:58:03 AM CST, Key ID 4e84af75cc633953
+Source RPM  : VRTSodm-7.1.0.000-RHEL7.src.rpm
+Build Date  : Tue 12 Apr 2016 06:21:43 PM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC.
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Disk Manager
+Description :
+Veritas Oracle Disk Manager (ODM)
+
+Package INFO: VRTSamf-7.1.0.100-RHEL7.x86_64
+Name        : VRTSamf
+Version     : 7.1.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Fri 23 Dec 2016 12:54:12 PM CST
+Group       : System Environment/Kernel
+Size        : 22071715
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSamf-7.1.0.100-RHEL7.src.rpm
+Build Date  : Wed 26 Oct 2016 08:50:05 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-319.el7.x86_64 3.10.0-513.el7.x86_64
+Build Stamp        : 7.1.0.100-2016-10-26_05.47.25
+
+***check if product is higher than 6.0***
+
+
+***The product version meet requirement***
+
+
+***checking if cvm is configured and online***
+
+
+
+HOST:l111062
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l111062    |ONLINE|
+cvm          State                 l111063    |ONLINE|
+
+***CVM of all nodes "l111062 l111063"are all online***
+
+
+
+====STEP: create a private diskgroup and a shared diskgroup
+DATE:2017-01-09 16:29:13
+
+***Making dg "autotcdg0" with maxsize=2048***
+
+
+
+HOST:l111062
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+oradg1923_dbarch enabled,shared,cds   1483003952.975.l111063.cdc.veritas.com
+oradg1923_ocrvote enabled,shared,cds   1483003950.973.l111063.cdc.veritas.com
+tdg          enabled,shared,cds   1483950470.1229.l111062.cdc.veritas.com
+
+***Getting disk list by specified size***
+
+
+***Getting avaiable disks***
+
+
+
+HOST:l111062
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+emc0              EMC            000492600040         CONNECTED    A/A        51         5876
+disk              Disk           DISKS                CONNECTED    Disk        1         HS0A
+
+
+HOST:l111062
+USER:root
+STDIN:vxddladm set namingscheme=ebn;vxdisk scandisks;vxdisk list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc0_0ada    auto:cdsdisk    -            -            online thinrclm
+emc0_0adb    auto:cdsdisk    -            -            online thinrclm
+emc0_0adc    auto:cdsdisk    -            -            online thinrclm
+emc0_0add    auto:cdsdisk    -            -            online thinrclm
+emc0_0ade    auto:cdsdisk    -            -            online thinrclm
+emc0_0adf    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae0    auto:cdsdisk    -            -            online thinrclm
+emc0_0aea    auto:cdsdisk    -            -            online thinrclm
+emc0_0aeb    auto:cdsdisk    -            -            online thinrclm
+emc0_0aec    auto:cdsdisk    -            -            online thinrclm
+emc0_0aed    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae1    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae2    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae3    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae4    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae5    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae6    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae7    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae8    auto:cdsdisk    -            -            online thinrclm
+emc0_0ae9    auto:cdsdisk    -            -            online thinrclm
+emc0_0a6a    auto:cdsdisk    -            (vxfendg)    online
+emc0_0a6b    auto:cdsdisk    -            (vxfendg)    online
+emc0_0a6c    auto:cdsdisk    -            (vxfendg)    online
+emc0_0a6d    auto:cdsdisk    -            -            online
+emc0_0a6e    auto:cdsdisk    -            -            online
+emc0_0a6f    auto:cdsdisk    -            -            online
+emc0_0a7a    auto:cdsdisk    -            -            online
+emc0_0a7b    auto:cdsdisk    -            -            online
+emc0_0a7c    auto:cdsdisk    -            -            online
+emc0_0a7d    auto:cdsdisk    -            -            online
+emc0_0a7e    auto:cdsdisk    emc0_0a7e    oradg1923_dbarch online shared
+emc0_0a7f    auto:cdsdisk    emc0_0a7f    oradg1923_dbarch online shared
+emc0_0a70    auto:cdsdisk    -            -            online
+emc0_0a71    auto:cdsdisk    -            -            online
+emc0_0a72    auto:cdsdisk    -            -            online
+emc0_0a73    auto:cdsdisk    -            -            online
+emc0_0a74    auto:cdsdisk    -            -            online
+emc0_0a75    auto:LVM        -            -            LVM
+emc0_0a76    auto:cdsdisk    emc0_0a76    tdg          online shared
+emc0_0a77    auto:cdsdisk    -            -            online
+emc0_0a78    auto:LVM        -            -            LVM
+emc0_0a79    auto:cdsdisk    -            -            online
+emc0_0a80    auto:cdsdisk    emc0_0a80    oradg1923_dbarch online shared
+emc0_0a81    auto:cdsdisk    emc0_0a81    oradg1923_dbarch online shared
+emc0_0a82    auto:cdsdisk    emc0_0a82    oradg1923_ocrvote online shared
+emc0_0a83    auto:cdsdisk    emc0_0a83    oradg1923_ocrvote online shared
+emc0_0a84    auto:cdsdisk    -            -            online
+emc0_0a85    auto:cdsdisk    -            -            online
+emc0_0a86    auto:cdsdisk    -            -            online
+emc0_0a87    auto:cdsdisk    -            -            online
+emc0_0438    auto:sliced     -            -            online
+sdda         auto:sliced     -            -            online
+
+
+HOST:l111062
+USER:root
+STDIN:/opt/VRTSsfmh/adm/dclisetup.sh
+STDOUT:
+
+
+
+HOST:l111062
+USER:root
+STDIN:/opt/VRTS/bin/vxlist disk
+STDOUT:
+TY   DEVICE      DISK        DISKGROUP                SIZE      FREE STATUS
+disk emc0_0ada   -           -                       4.96g         - free
+disk emc0_0adb   -           -                       4.96g         - free
+disk emc0_0adc   -           -                       4.96g         - free
+disk emc0_0add   -           -                       4.96g         - free
+disk emc0_0ade   -           -                       4.96g         - free
+disk emc0_0adf   -           -                       4.96g         - free
+disk emc0_0ae0   -           -                       4.96g         - free
+disk emc0_0aea   -           -                       4.96g         - free
+disk emc0_0aeb   -           -                       4.96g         - free
+disk emc0_0aec   -           -                       4.96g         - free
+disk emc0_0aed   -           -                       4.96g         - free
+disk emc0_0ae1   -           -                       4.96g         - free
+disk emc0_0ae2   -           -                       4.96g         - free
+disk emc0_0ae3   -           -                       4.96g         - free
+disk emc0_0ae4   -           -                       4.96g         - free
+disk emc0_0ae5   -           -                       4.96g         - free
+disk emc0_0ae6   -           -                       4.96g         - free
+disk emc0_0ae7   -           -                       4.96g         - free
+disk emc0_0ae8   -           -                       4.96g         - free
+disk emc0_0ae9   -           -                       4.96g         - free
+disk emc0_0a6a   -           vxfendg                 4.96g         - deported
+disk emc0_0a6b   -           vxfendg                 4.96g         - deported
+disk emc0_0a6c   -           vxfendg                 4.96g         - deported
+disk emc0_0a6d   -           -                       4.96g         - free
+disk emc0_0a6e   -           -                       4.96g         - free
+disk emc0_0a6f   -           -                       4.96g         - free
+disk emc0_0a7a   -           -                       4.96g         - free
+disk emc0_0a7b   -           -                       4.96g         - free
+disk emc0_0a7c   -           -                       4.96g         - free
+disk emc0_0a7d   -           -                       4.96g         - free
+disk emc0_0a7e   emc0_0a7e   oradg1923_dbarch        4.96g      0.00 imported
+disk emc0_0a7f   emc0_0a7f   oradg1923_dbarch        4.96g   947.75m imported
+disk emc0_0a70   -           -                       4.96g         - free
+disk emc0_0a71   -           -                       4.96g         - free
+disk emc0_0a72   -           -                       4.96g         - free
+disk emc0_0a73   -           -                       4.96g         - free
+disk emc0_0a74   -           -                       4.96g         - free
+disk emc0_0a75   -           -                           -         - LVM
+disk emc0_0a76   emc0_0a76   tdg                     4.96g     4.96g imported
+disk emc0_0a77   -           -                       4.96g         - free
+disk emc0_0a78   -           -                           -         - LVM
+disk emc0_0a79   -           -                       4.96g         - free
+disk emc0_0a80   emc0_0a80   oradg1923_dbarch        4.96g      0.00 imported
+disk emc0_0a81   emc0_0a81   oradg1923_dbarch        4.96g   947.75m imported
+disk emc0_0a82   emc0_0a82   oradg1923_ocrvote       4.96g      0.00 imported
+disk emc0_0a83   emc0_0a83   oradg1923_ocrvote       4.96g   947.75m imported
+disk emc0_0a84   -           -                       4.96g         - free
+disk emc0_0a85   -           -                       4.96g         - free
+disk emc0_0a86   -           -                       4.96g         - free
+disk emc0_0a87   -           -                       4.96g         - free
+disk emc0_0438   -           -                     136.69g         - free
+disk sdda        -           -                     136.69g         - free
+
+
+HOST:l111062
+USER:root
+STDIN:vxdisk list emc0_0a87 emc0_0a86 emc0_0a85 emc0_0a84 emc0_0a7d emc0_0a7c emc0_0a7b emc0_0a7a emc0_0a79 emc0_0a77 emc0_0a74 emc0_0a73 emc0_0a72 emc0_0a71 emc0_0a70 emc0_0a6f emc0_0a6e emc0_0a6d emc0_0aed emc0_0aec emc0_0aeb emc0_0aea emc0_0ae9 emc0_0ae8 emc0_0ae7 emc0_0ae6 emc0_0ae5 emc0_0ae4 emc0_0ae3 emc0_0ae2 emc0_0ae1 emc0_0ae0 emc0_0adf emc0_0ade emc0_0add emc0_0adc emc0_0adb emc0_0ada
+STDOUT:
+Device:    emc0_0a87
+devicetag: emc0_0a87
+type:      auto
+hostid:    
+disk:      name= id=1482508276.2229.l111063.cdc.veritas.com
+group:     name= id=1483596134.74.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a87s3 char=/dev/vx/rdmp/emc0_0a87s3
+guid:      {a359852c-c927-11e6-8dfd-db075a60955d}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A87000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950115 seqno=0.61
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbk     	state=enabled
+sdbl     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a86
+devicetag: emc0_0a86
+type:      auto
+hostid:    
+disk:      name= id=1482901636.883.l111063.cdc.veritas.com
+group:     name= id=1483596134.74.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a86s3 char=/dev/vx/rdmp/emc0_0a86s3
+guid:      {8075a922-ccbb-11e6-b95e-eb24b01923e5}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A86000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950115 seqno=0.53
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbi     	state=enabled
+sdbj     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a85
+devicetag: emc0_0a85
+type:      auto
+hostid:    
+disk:      name= id=1482901664.913.l111063.cdc.veritas.com
+group:     name= id=1483950050.1224.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a85s3 char=/dev/vx/rdmp/emc0_0a85s3
+guid:      {90d202b6-ccbb-11e6-859a-4005d77de891}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A85000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950077 seqno=0.55
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbg     	state=enabled
+sdbh     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a84
+devicetag: emc0_0a84
+type:      auto
+hostid:    
+disk:      name= id=1483950035.1222.l111062.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc0_0a84s3 char=/dev/vx/rdmp/emc0_0a84s3
+guid:      {7ead724a-d644-11e6-9d01-08c348057ce3}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A84000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950035 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbe     	state=enabled
+sdbf     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a7d
+devicetag: emc0_0a7d
+type:      auto
+hostid:    
+disk:      name= id=1482903803.957.l111062.cdc.veritas.com
+group:     name= id=1482917542.957.l111063.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a7ds3 char=/dev/vx/rdmp/emc0_0a7ds3
+guid:      {8ba37dce-ccc0-11e6-b486-49781862ad63}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A7D000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482918215 seqno=0.54
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdar     	state=enabled
+sdaq     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a7c
+devicetag: emc0_0a7c
+type:      auto
+hostid:    
+disk:      name= id=1482513240.2559.l111063.cdc.veritas.com
+group:     name= id=1482905440.969.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a7cs3 char=/dev/vx/rdmp/emc0_0a7cs3
+guid:      {3273d22a-c933-11e6-bc3b-cbf8e246bbd1}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A7C000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482909486 seqno=0.20
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdao     	state=enabled
+sdap     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a7b
+devicetag: emc0_0a7b
+type:      auto
+hostid:    
+disk:      name= id=1483003493.993.l111062.cdc.veritas.com
+group:     name= id=1483434679.63.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a7bs3 char=/dev/vx/rdmp/emc0_0a7bs3
+guid:      {a7f8d47c-cda8-11e6-b099-bd98113cec86}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A7B000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950078 seqno=0.20
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdam     	state=enabled
+sdan     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a7a
+devicetag: emc0_0a7a
+type:      auto
+hostid:    
+disk:      name= id=1483003493.991.l111062.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc0_0a7as3 char=/dev/vx/rdmp/emc0_0a7as3
+guid:      {a783b71e-cda8-11e6-a34a-e53b1200a30f}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A7A000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483003493 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdak     	state=enabled
+sdal     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a79
+devicetag: emc0_0a79
+type:      auto
+hostid:    
+disk:      name= id=1482509597.2378.l111063.cdc.veritas.com
+group:     name= id=1482908806.971.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a79s3 char=/dev/vx/rdmp/emc0_0a79s3
+guid:      {b6f1f1de-c92a-11e6-9f54-2260cb236387}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A79000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482909498 seqno=0.9
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdai     	state=enabled
+sdaj     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a77
+devicetag: emc0_0a77
+type:      auto
+hostid:    
+disk:      name= id=1482903804.960.l111062.cdc.veritas.com
+group:     name= id=1482917542.957.l111063.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a77s3 char=/dev/vx/rdmp/emc0_0a77s3
+guid:      {8cbb7bbc-ccc0-11e6-93a9-2d6cdd34dcd2}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A77000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482918215 seqno=0.71
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdae     	state=enabled
+sdaf     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a74
+devicetag: emc0_0a74
+type:      auto
+hostid:    
+disk:      name= id=1482903804.959.l111062.cdc.veritas.com
+group:     name= id=1482917542.957.l111063.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a74s3 char=/dev/vx/rdmp/emc0_0a74s3
+guid:      {8c60ab56-ccc0-11e6-a346-9672384166b3}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A74000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482918215 seqno=0.84
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdy      	state=enabled
+sdz      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a73
+devicetag: emc0_0a73
+type:      auto
+hostid:    
+disk:      name= id=1483594526.68.l111062.cdc.veritas.com
+group:     name= id=1483607176.1221.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a73s3 char=/dev/vx/rdmp/emc0_0a73s3
+guid:      {c2d0bd40-d308-11e6-9a02-4d902f2dc693}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A73000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950113 seqno=0.4480
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdw      	state=enabled
+sdx      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a72
+devicetag: emc0_0a72
+type:      auto
+hostid:    
+disk:      name= id=1483594524.67.l111062.cdc.veritas.com
+group:     name= id=1483607176.1221.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a72s3 char=/dev/vx/rdmp/emc0_0a72s3
+guid:      {c1c18010-d308-11e6-abbe-e977b94844d9}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A72000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950113 seqno=0.4202
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdu      	state=enabled
+sdv      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a71
+devicetag: emc0_0a71
+type:      auto
+hostid:    
+disk:      name= id=1482901662.908.l111063.cdc.veritas.com
+group:     name= id=1482905440.969.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a71s3 char=/dev/vx/rdmp/emc0_0a71s3
+guid:      {8f9c9000-ccbb-11e6-97ed-f1f239276492}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A71000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482909485 seqno=0.23
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sds      	state=enabled
+sdt      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a70
+devicetag: emc0_0a70
+type:      auto
+hostid:    
+disk:      name= id=1482901660.903.l111063.cdc.veritas.com
+group:     name= id=1482917758.959.l111063.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a70s3 char=/dev/vx/rdmp/emc0_0a70s3
+guid:      {8e7a7e12-ccbb-11e6-b968-74fa7f220340}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A70000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482918219 seqno=0.26
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdr      	state=enabled
+sdq      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a6f
+devicetag: emc0_0a6f
+type:      auto
+hostid:    
+disk:      name= id=1482513239.2554.l111063.cdc.veritas.com
+group:     name= id=1482912315.951.l111063.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a6fs3 char=/dev/vx/rdmp/emc0_0a6fs3
+guid:      {317606d6-c933-11e6-b780-48cf4a16bc7a}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A6F000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482912494 seqno=0.27
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdo      	state=enabled
+sdp      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a6e
+devicetag: emc0_0a6e
+type:      auto
+hostid:    
+disk:      name= id=1482901633.873.l111063.cdc.veritas.com
+group:     name= id=1482912315.951.l111063.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a6es3 char=/dev/vx/rdmp/emc0_0a6es3
+guid:      {7e5da586-ccbb-11e6-85f9-d23642400efe}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A6E000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482912494 seqno=0.24
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdn      	state=enabled
+sdm      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a6d
+devicetag: emc0_0a6d
+type:      auto
+hostid:    
+disk:      name= id=1482508271.2214.l111063.cdc.veritas.com
+group:     name= id=1482917758.959.l111063.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a6ds3 char=/dev/vx/rdmp/emc0_0a6ds3
+guid:      {a05d86de-c927-11e6-9667-bf35dd76cc64}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A6D000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482918219 seqno=0.37
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdk      	state=enabled
+sdl      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0aed
+devicetag: emc0_0aed
+type:      auto
+hostid:    
+disk:      name= id=1482901601.833.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0aeds3 char=/dev/vx/rdmp/emc0_0aeds3
+guid:      {6b33d7f0-ccbb-11e6-8008-fd4ce8522616}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AED000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901601 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcz     	state=enabled
+sdcy     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0aec
+devicetag: emc0_0aec
+type:      auto
+hostid:    
+disk:      name= id=1482901681.918.l111063.cdc.veritas.com
+group:     name= id=1483438608.68.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0aecs3 char=/dev/vx/rdmp/emc0_0aecs3
+guid:      {9b272f98-ccbb-11e6-9571-395ca20c0e85}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AEC000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950080 seqno=0.20
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcx     	state=enabled
+sdcw     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0aeb
+devicetag: emc0_0aeb
+type:      auto
+hostid:    
+disk:      name= id=1482901629.863.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0aebs3 char=/dev/vx/rdmp/emc0_0aebs3
+guid:      {7be2cec6-ccbb-11e6-9983-c28d606131a9}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AEB000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901629 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcv     	state=enabled
+sdcu     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0aea
+devicetag: emc0_0aea
+type:      auto
+hostid:    
+disk:      name= id=1482518306.64.l111062.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0aeas3 char=/dev/vx/rdmp/emc0_0aeas3
+guid:      {fde95f50-c93e-11e6-a119-7bc5e74bfdde}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AEA000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.43
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdct     	state=enabled
+sdcs     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae9
+devicetag: emc0_0ae9
+type:      auto
+hostid:    
+disk:      name= id=1482488677.1159.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae9s3 char=/dev/vx/rdmp/emc0_0ae9s3
+guid:      {0174e95e-c8fa-11e6-902f-0d9a820e1d53}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE9000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482488677 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcr     	state=enabled
+sdcq     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae8
+devicetag: emc0_0ae8
+type:      auto
+hostid:    
+disk:      name= id=1482901607.848.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae8s3 char=/dev/vx/rdmp/emc0_0ae8s3
+guid:      {6f08e014-ccbb-11e6-9450-e5fa7543c427}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE8000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901608 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcp     	state=enabled
+sdco     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae7
+devicetag: emc0_0ae7
+type:      auto
+hostid:    
+disk:      name= id=1482901658.898.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae7s3 char=/dev/vx/rdmp/emc0_0ae7s3
+guid:      {8d65b604-ccbb-11e6-8583-e89a3b49bd1c}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE7000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901659 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcn     	state=enabled
+sdcm     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae6
+devicetag: emc0_0ae6
+type:      auto
+hostid:    
+disk:      name= id=1482901605.843.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae6s3 char=/dev/vx/rdmp/emc0_0ae6s3
+guid:      {6ddcc354-ccbb-11e6-a257-f982be107932}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE6000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901605 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcl     	state=enabled
+sdck     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae5
+devicetag: emc0_0ae5
+type:      auto
+hostid:    
+disk:      name= id=1483594520.66.l111062.cdc.veritas.com
+group:     name= id=1483607176.1221.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae5s3 char=/dev/vx/rdmp/emc0_0ae5s3
+guid:      {bf2bdc88-d308-11e6-8217-0990e1433714}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE5000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950113 seqno=0.4477
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcj     	state=enabled
+sdci     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae4
+devicetag: emc0_0ae4
+type:      auto
+hostid:    
+disk:      name= id=1482901631.868.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae4s3 char=/dev/vx/rdmp/emc0_0ae4s3
+guid:      {7d255966-ccbb-11e6-8a93-28fed36f75ee}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE4000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901631 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcg     	state=enabled
+sdch     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae3
+devicetag: emc0_0ae3
+type:      auto
+hostid:    
+disk:      name= id=1482901656.893.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae3s3 char=/dev/vx/rdmp/emc0_0ae3s3
+guid:      {8c0323c8-ccbb-11e6-a599-267c2367dee8}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE3000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901656 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcf     	state=enabled
+sdce     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae2
+devicetag: emc0_0ae2
+type:      auto
+hostid:    
+disk:      name= id=1483594517.65.l111062.cdc.veritas.com
+group:     name= id=1483607176.1221.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae2s3 char=/dev/vx/rdmp/emc0_0ae2s3
+guid:      {bd8974da-d308-11e6-a455-88cdd47ac7aa}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE2000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950113 seqno=0.4202
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcd     	state=enabled
+sdcc     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae1
+devicetag: emc0_0ae1
+type:      auto
+hostid:    
+disk:      name= id=1482901603.838.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae1s3 char=/dev/vx/rdmp/emc0_0ae1s3
+guid:      {6c8f61e6-ccbb-11e6-bac3-a520631f43b5}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE1000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901603 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcb     	state=enabled
+sdca     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae0
+devicetag: emc0_0ae0
+type:      auto
+hostid:    
+disk:      name= id=1482469516.76.l111062.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae0s3 char=/dev/vx/rdmp/emc0_0ae0s3
+guid:      {64965e5a-c8cd-11e6-8fc6-33abfd6987b8}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE0000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.70
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbz     	state=enabled
+sdby     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0adf
+devicetag: emc0_0adf
+type:      auto
+hostid:    
+disk:      name= id=1482901626.858.l111063.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0adfs3 char=/dev/vx/rdmp/emc0_0adfs3
+guid:      {7a8f9522-ccbb-11e6-a081-ba9ec71b6b60}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000ADF000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.56
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbx     	state=enabled
+sdbw     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ade
+devicetag: emc0_0ade
+type:      auto
+hostid:    
+disk:      name= id=1482469513.70.l111062.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ades3 char=/dev/vx/rdmp/emc0_0ades3
+guid:      {62b5b8d8-c8cd-11e6-8d33-e52fc62e4170}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000ADE000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.56
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbv     	state=enabled
+sdbu     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0add
+devicetag: emc0_0add
+type:      auto
+hostid:    
+disk:      name= id=1482901599.828.l111063.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0adds3 char=/dev/vx/rdmp/emc0_0adds3
+guid:      {6a1250ea-ccbb-11e6-9324-3b1b2f0842a3}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000ADD000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.39
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbt     	state=enabled
+sdbs     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0adc
+devicetag: emc0_0adc
+type:      auto
+hostid:    
+disk:      name= id=1482472960.380.l111062.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0adcs3 char=/dev/vx/rdmp/emc0_0adcs3
+guid:      {6975180a-c8d5-11e6-9335-0aea20770300}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000ADC000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.53
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbq     	state=enabled
+sdbr     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0adb
+devicetag: emc0_0adb
+type:      auto
+hostid:    
+disk:      name= id=1482753388.214.l111063.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0adbs3 char=/dev/vx/rdmp/emc0_0adbs3
+guid:      {55c032ba-cb62-11e6-8c1c-43753d05589d}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000ADB000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.49
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbo     	state=enabled
+sdbp     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ada
+devicetag: emc0_0ada
+type:      auto
+hostid:    
+disk:      name= id=1482901654.888.l111063.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0adas3 char=/dev/vx/rdmp/emc0_0adas3
+guid:      {8ac1a07a-ccbb-11e6-8453-54ca453e2d0a}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000ADA000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.54
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbm     	state=enabled
+sdbn     	state=enabled
+connectivity: l111063 l111062 
+
+
+HOST:l111063
+USER:root
+STDIN:vxdisk -o alldgs list|grep -i auto:cdsdisk|grep -i online|awk '$4=="-"{print $1}'|xargs -n1000000
+STDOUT:
+emc0_0ada emc0_0adb emc0_0adc emc0_0add emc0_0ade emc0_0adf emc0_0ae0 emc0_0aea emc0_0aeb emc0_0aec emc0_0aed emc0_0ae1 emc0_0ae2 emc0_0ae3 emc0_0ae4 emc0_0ae5 emc0_0ae6 emc0_0ae7 emc0_0ae8 emc0_0ae9 emc0_0a6d emc0_0a6e emc0_0a6f emc0_0a7a emc0_0a7b emc0_0a7c emc0_0a7d emc0_0a70 emc0_0a71 emc0_0a72 emc0_0a73 emc0_0a74 emc0_0a77 emc0_0a79 emc0_0a84 emc0_0a85 emc0_0a86 emc0_0a87
+
+
+HOST:l111063
+USER:root
+STDIN:vxdisk list emc0_0ada emc0_0adb emc0_0adc emc0_0add emc0_0ade emc0_0adf emc0_0ae0 emc0_0aea emc0_0aeb emc0_0aec emc0_0aed emc0_0ae1 emc0_0ae2 emc0_0ae3 emc0_0ae4 emc0_0ae5 emc0_0ae6 emc0_0ae7 emc0_0ae8 emc0_0ae9 emc0_0a6d emc0_0a6e emc0_0a6f emc0_0a7a emc0_0a7b emc0_0a7c emc0_0a7d emc0_0a70 emc0_0a71 emc0_0a72 emc0_0a73 emc0_0a74 emc0_0a77 emc0_0a79 emc0_0a84 emc0_0a85 emc0_0a86 emc0_0a87
+STDOUT:
+Device:    emc0_0ada
+devicetag: emc0_0ada
+type:      auto
+hostid:    
+disk:      name= id=1482901654.888.l111063.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0adas3 char=/dev/vx/rdmp/emc0_0adas3
+guid:      {8ac1a07a-ccbb-11e6-8453-54ca453e2d0a}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000ADA000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.54
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbc     	state=enabled
+sdbw     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0adb
+devicetag: emc0_0adb
+type:      auto
+hostid:    
+disk:      name= id=1482753388.214.l111063.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0adbs3 char=/dev/vx/rdmp/emc0_0adbs3
+guid:      {55c032ba-cb62-11e6-8c1c-43753d05589d}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000ADB000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.49
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbe     	state=enabled
+sdbz     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0adc
+devicetag: emc0_0adc
+type:      auto
+hostid:    
+disk:      name= id=1482472960.380.l111062.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0adcs3 char=/dev/vx/rdmp/emc0_0adcs3
+guid:      {6975180a-c8d5-11e6-9335-0aea20770300}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000ADC000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.53
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbg     	state=enabled
+sdca     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0add
+devicetag: emc0_0add
+type:      auto
+hostid:    
+disk:      name= id=1482901599.828.l111063.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0adds3 char=/dev/vx/rdmp/emc0_0adds3
+guid:      {6a1250ea-ccbb-11e6-9324-3b1b2f0842a3}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000ADD000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.39
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbi     	state=enabled
+sdcd     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ade
+devicetag: emc0_0ade
+type:      auto
+hostid:    
+disk:      name= id=1482469513.70.l111062.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ades3 char=/dev/vx/rdmp/emc0_0ades3
+guid:      {62b5b8d8-c8cd-11e6-8d33-e52fc62e4170}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000ADE000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.56
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbk     	state=enabled
+sdcf     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0adf
+devicetag: emc0_0adf
+type:      auto
+hostid:    
+disk:      name= id=1482901626.858.l111063.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0adfs3 char=/dev/vx/rdmp/emc0_0adfs3
+guid:      {7a8f9522-ccbb-11e6-a081-ba9ec71b6b60}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000ADF000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.56
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbm     	state=enabled
+sdch     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae0
+devicetag: emc0_0ae0
+type:      auto
+hostid:    
+disk:      name= id=1482469516.76.l111062.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae0s3 char=/dev/vx/rdmp/emc0_0ae0s3
+guid:      {64965e5a-c8cd-11e6-8fc6-33abfd6987b8}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE0000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.70
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbo     	state=enabled
+sdcj     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0aea
+devicetag: emc0_0aea
+type:      auto
+hostid:    
+disk:      name= id=1482518306.64.l111062.cdc.veritas.com
+group:     name= id=1482910819.977.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0aeas3 char=/dev/vx/rdmp/emc0_0aeas3
+guid:      {fde95f50-c93e-11e6-a119-7bc5e74bfdde}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AEA000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482911889 seqno=0.43
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdci     	state=enabled
+sdcw     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0aeb
+devicetag: emc0_0aeb
+type:      auto
+hostid:    
+disk:      name= id=1482901629.863.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0aebs3 char=/dev/vx/rdmp/emc0_0aebs3
+guid:      {7be2cec6-ccbb-11e6-9983-c28d606131a9}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AEB000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901629 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcl     	state=enabled
+sdcx     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0aec
+devicetag: emc0_0aec
+type:      auto
+hostid:    
+disk:      name= id=1482901681.918.l111063.cdc.veritas.com
+group:     name= id=1483438608.68.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0aecs3 char=/dev/vx/rdmp/emc0_0aecs3
+guid:      {9b272f98-ccbb-11e6-9571-395ca20c0e85}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AEC000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950080 seqno=0.20
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcm     	state=enabled
+sdcy     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0aed
+devicetag: emc0_0aed
+type:      auto
+hostid:    
+disk:      name= id=1482901601.833.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0aeds3 char=/dev/vx/rdmp/emc0_0aeds3
+guid:      {6b33d7f0-ccbb-11e6-8008-fd4ce8522616}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AED000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901601 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdco     	state=enabled
+sdcz     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae1
+devicetag: emc0_0ae1
+type:      auto
+hostid:    
+disk:      name= id=1482901603.838.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae1s3 char=/dev/vx/rdmp/emc0_0ae1s3
+guid:      {6c8f61e6-ccbb-11e6-bac3-a520631f43b5}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE1000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901603 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbq     	state=enabled
+sdck     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae2
+devicetag: emc0_0ae2
+type:      auto
+hostid:    
+disk:      name= id=1483594517.65.l111062.cdc.veritas.com
+group:     name= id=1483607176.1221.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae2s3 char=/dev/vx/rdmp/emc0_0ae2s3
+guid:      {bd8974da-d308-11e6-a455-88cdd47ac7aa}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE2000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950113 seqno=0.4202
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbs     	state=enabled
+sdcn     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae3
+devicetag: emc0_0ae3
+type:      auto
+hostid:    
+disk:      name= id=1482901656.893.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae3s3 char=/dev/vx/rdmp/emc0_0ae3s3
+guid:      {8c0323c8-ccbb-11e6-a599-267c2367dee8}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE3000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901656 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbu     	state=enabled
+sdcp     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae4
+devicetag: emc0_0ae4
+type:      auto
+hostid:    
+disk:      name= id=1482901631.868.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae4s3 char=/dev/vx/rdmp/emc0_0ae4s3
+guid:      {7d255966-ccbb-11e6-8a93-28fed36f75ee}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE4000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901631 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdbx     	state=enabled
+sdcq     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae5
+devicetag: emc0_0ae5
+type:      auto
+hostid:    
+disk:      name= id=1483594520.66.l111062.cdc.veritas.com
+group:     name= id=1483607176.1221.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae5s3 char=/dev/vx/rdmp/emc0_0ae5s3
+guid:      {bf2bdc88-d308-11e6-8217-0990e1433714}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE5000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950113 seqno=0.4477
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdby     	state=enabled
+sdcr     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae6
+devicetag: emc0_0ae6
+type:      auto
+hostid:    
+disk:      name= id=1482901605.843.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae6s3 char=/dev/vx/rdmp/emc0_0ae6s3
+guid:      {6ddcc354-ccbb-11e6-a257-f982be107932}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE6000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901605 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcb     	state=enabled
+sdcs     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae7
+devicetag: emc0_0ae7
+type:      auto
+hostid:    
+disk:      name= id=1482901658.898.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae7s3 char=/dev/vx/rdmp/emc0_0ae7s3
+guid:      {8d65b604-ccbb-11e6-8583-e89a3b49bd1c}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE7000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901659 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcc     	state=enabled
+sdct     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae8
+devicetag: emc0_0ae8
+type:      auto
+hostid:    
+disk:      name= id=1482901607.848.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae8s3 char=/dev/vx/rdmp/emc0_0ae8s3
+guid:      {6f08e014-ccbb-11e6-9450-e5fa7543c427}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE8000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482901608 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdce     	state=enabled
+sdcu     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0ae9
+devicetag: emc0_0ae9
+type:      auto
+hostid:    
+disk:      name= id=1482488677.1159.l111063.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport thinrclm
+pubpaths:  block=/dev/vx/dmp/emc0_0ae9s3 char=/dev/vx/rdmp/emc0_0ae9s3
+guid:      {0174e95e-c8fa-11e6-902f-0d9a820e1d53}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000AE9000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482488677 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdcg     	state=enabled
+sdcv     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a6d
+devicetag: emc0_0a6d
+type:      auto
+hostid:    
+disk:      name= id=1482508271.2214.l111063.cdc.veritas.com
+group:     name= id=1482917758.959.l111063.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a6ds3 char=/dev/vx/rdmp/emc0_0a6ds3
+guid:      {a05d86de-c927-11e6-9667-bf35dd76cc64}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A6D000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482918219 seqno=0.37
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdl      	state=enabled
+sdk      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a6e
+devicetag: emc0_0a6e
+type:      auto
+hostid:    
+disk:      name= id=1482901633.873.l111063.cdc.veritas.com
+group:     name= id=1482912315.951.l111063.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a6es3 char=/dev/vx/rdmp/emc0_0a6es3
+guid:      {7e5da586-ccbb-11e6-85f9-d23642400efe}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A6E000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482912494 seqno=0.24
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdm      	state=enabled
+sdn      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a6f
+devicetag: emc0_0a6f
+type:      auto
+hostid:    
+disk:      name= id=1482513239.2554.l111063.cdc.veritas.com
+group:     name= id=1482912315.951.l111063.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a6fs3 char=/dev/vx/rdmp/emc0_0a6fs3
+guid:      {317606d6-c933-11e6-b780-48cf4a16bc7a}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A6F000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482912494 seqno=0.27
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdp      	state=enabled
+sdo      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a7a
+devicetag: emc0_0a7a
+type:      auto
+hostid:    
+disk:      name= id=1483003493.991.l111062.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc0_0a7as3 char=/dev/vx/rdmp/emc0_0a7as3
+guid:      {a783b71e-cda8-11e6-a34a-e53b1200a30f}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A7A000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483003493 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdak     	state=enabled
+sdal     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a7b
+devicetag: emc0_0a7b
+type:      auto
+hostid:    
+disk:      name= id=1483003493.993.l111062.cdc.veritas.com
+group:     name= id=1483434679.63.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a7bs3 char=/dev/vx/rdmp/emc0_0a7bs3
+guid:      {a7f8d47c-cda8-11e6-b099-bd98113cec86}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A7B000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950078 seqno=0.20
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdam     	state=enabled
+sdax     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a7c
+devicetag: emc0_0a7c
+type:      auto
+hostid:    
+disk:      name= id=1482513240.2559.l111063.cdc.veritas.com
+group:     name= id=1482905440.969.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a7cs3 char=/dev/vx/rdmp/emc0_0a7cs3
+guid:      {3273d22a-c933-11e6-bc3b-cbf8e246bbd1}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A7C000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482909486 seqno=0.20
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdan     	state=enabled
+sdaz     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a7d
+devicetag: emc0_0a7d
+type:      auto
+hostid:    
+disk:      name= id=1482903803.957.l111062.cdc.veritas.com
+group:     name= id=1482917542.957.l111063.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a7ds3 char=/dev/vx/rdmp/emc0_0a7ds3
+guid:      {8ba37dce-ccc0-11e6-b486-49781862ad63}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A7D000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482918215 seqno=0.54
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdao     	state=enabled
+sdbb     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a70
+devicetag: emc0_0a70
+type:      auto
+hostid:    
+disk:      name= id=1482901660.903.l111063.cdc.veritas.com
+group:     name= id=1482917758.959.l111063.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a70s3 char=/dev/vx/rdmp/emc0_0a70s3
+guid:      {8e7a7e12-ccbb-11e6-b968-74fa7f220340}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A70000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482918219 seqno=0.26
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdr      	state=enabled
+sdq      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a71
+devicetag: emc0_0a71
+type:      auto
+hostid:    
+disk:      name= id=1482901662.908.l111063.cdc.veritas.com
+group:     name= id=1482905440.969.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a71s3 char=/dev/vx/rdmp/emc0_0a71s3
+guid:      {8f9c9000-ccbb-11e6-97ed-f1f239276492}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A71000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482909485 seqno=0.23
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdt      	state=enabled
+sds      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a72
+devicetag: emc0_0a72
+type:      auto
+hostid:    
+disk:      name= id=1483594524.67.l111062.cdc.veritas.com
+group:     name= id=1483607176.1221.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a72s3 char=/dev/vx/rdmp/emc0_0a72s3
+guid:      {c1c18010-d308-11e6-abbe-e977b94844d9}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A72000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950113 seqno=0.4202
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdv      	state=enabled
+sdu      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a73
+devicetag: emc0_0a73
+type:      auto
+hostid:    
+disk:      name= id=1483594526.68.l111062.cdc.veritas.com
+group:     name= id=1483607176.1221.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a73s3 char=/dev/vx/rdmp/emc0_0a73s3
+guid:      {c2d0bd40-d308-11e6-9a02-4d902f2dc693}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A73000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950113 seqno=0.4480
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdw      	state=enabled
+sdx      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a74
+devicetag: emc0_0a74
+type:      auto
+hostid:    
+disk:      name= id=1482903804.959.l111062.cdc.veritas.com
+group:     name= id=1482917542.957.l111063.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a74s3 char=/dev/vx/rdmp/emc0_0a74s3
+guid:      {8c60ab56-ccc0-11e6-a346-9672384166b3}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A74000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482918215 seqno=0.84
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdy      	state=enabled
+sdz      	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a77
+devicetag: emc0_0a77
+type:      auto
+hostid:    
+disk:      name= id=1482903804.960.l111062.cdc.veritas.com
+group:     name= id=1482917542.957.l111063.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a77s3 char=/dev/vx/rdmp/emc0_0a77s3
+guid:      {8cbb7bbc-ccc0-11e6-93a9-2d6cdd34dcd2}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A77000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482918215 seqno=0.71
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdaf     	state=enabled
+sdae     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a79
+devicetag: emc0_0a79
+type:      auto
+hostid:    
+disk:      name= id=1482509597.2378.l111063.cdc.veritas.com
+group:     name= id=1482908806.971.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a79s3 char=/dev/vx/rdmp/emc0_0a79s3
+guid:      {b6f1f1de-c92a-11e6-9f54-2260cb236387}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A79000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1482909498 seqno=0.9
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdai     	state=enabled
+sdaj     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a84
+devicetag: emc0_0a84
+type:      auto
+hostid:    
+disk:      name= id=1483950035.1222.l111062.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc0_0a84s3 char=/dev/vx/rdmp/emc0_0a84s3
+guid:      {7ead724a-d644-11e6-9d01-08c348057ce3}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A84000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950035 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdav     	state=enabled
+sdbp     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a85
+devicetag: emc0_0a85
+type:      auto
+hostid:    
+disk:      name= id=1482901664.913.l111063.cdc.veritas.com
+group:     name= id=1483950050.1224.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a85s3 char=/dev/vx/rdmp/emc0_0a85s3
+guid:      {90d202b6-ccbb-11e6-859a-4005d77de891}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A85000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950077 seqno=0.55
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdaw     	state=enabled
+sdbr     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a86
+devicetag: emc0_0a86
+type:      auto
+hostid:    
+disk:      name= id=1482901636.883.l111063.cdc.veritas.com
+group:     name= id=1483596134.74.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a86s3 char=/dev/vx/rdmp/emc0_0a86s3
+guid:      {8075a922-ccbb-11e6-b95e-eb24b01923e5}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A86000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950115 seqno=0.53
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sday     	state=enabled
+sdbt     	state=enabled
+connectivity: l111063 l111062 
+
+Device:    emc0_0a87
+devicetag: emc0_0a87
+type:      auto
+hostid:    
+disk:      name= id=1482508276.2229.l111063.cdc.veritas.com
+group:     name= id=1483596134.74.l111062.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc0_0a87s3 char=/dev/vx/rdmp/emc0_0a87s3
+guid:      {a359852c-c927-11e6-8dfd-db075a60955d}
+udid:      EMC%5FSYMMETRIX%5F000492600040%5F4000A87000
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10407680 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1483950115 seqno=0.61
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdba     	state=enabled
+sdbv     	state=enabled
+connectivity: l111063 l111062 
+
+
+HOST:l111062
+USER:root
+STDIN:vxdg init autotcdg0 emc0_0a87
+STDOUT:
+
+
+***Making dg "autotcdg1" with maxsize=2048***
+
+
+
+HOST:l111062
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+oradg1923_dbarch enabled,shared,cds   1483003952.975.l111063.cdc.veritas.com
+autotcdg0    enabled,cds          1483950571.1231.l111062.cdc.veritas.com
+oradg1923_ocrvote enabled,shared,cds   1483003950.973.l111063.cdc.veritas.com
+tdg          enabled,shared,cds   1483950470.1229.l111062.cdc.veritas.com
+
+***Getting disk list by specified size***
+
+
+
+HOST:l111062
+USER:root
+STDIN:vxdg -s init autotcdg1 emc0_0a86
+STDOUT:
+VxVM vxdg ERROR V-5-1-585 Disk group autotcdg1: cannot create: Operation must be executed on master
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-01-09 16:29:34
+Duration:0m50s

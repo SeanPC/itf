@@ -1,0 +1,35 @@
+#,,,/opt/VRTS/install/_INSTALL_CMD_ -configure _IP_
+Select a component to configure:,,,5
+The installer has discovered an existing installer process,,,n
+Do you want to re-configure VCS,,,y
+Choose option,,,1
+the unique cluster name,,,_CLUSNAME_
+would you like to configure heartbeat,,,1
+Enter the NIC for the first private heartbeat link on,,,_NIC1_
+Enter the NIC for the second private heartbeat link on,,,_NIC2_
+Would you like to configure a second private heartbeat link,,,y
+Would you like to configure a third private heartbeat link,,,n
+configure lower speed,,,y
+configure an additional low-priority heartbeat link,,,n
+Are you using the same NICs for private heartbeat links on all systems,,,y
+a unique cluster ID number between,,, ,,,10
+you like to check if the cluster ID is in use by another cluster,,,n
+this information correct,,,y
+you want to configure the Virtual IP,,,n
+you like to configure the VCS cluster in secure mode,,,n
+you want to proceed with non-secure installation,,,y
+you wish to accept the default cluster credentials,,,y
+want to add another user to the cluster,,,n
+Is this information correct,,,y
+you want to configure SMTP notification,,,n
+want to configure SNMP notification,,,n
+want to configure the Global Cluster Option,,,n
+you want to stop*processes now,,,y,,,1000
+to continue,,,y,,,10
+you like to do post SFRAC configuration checks,,,n
+Would you like to send the information,,,n,,,300
+Would you like to view the summary file,,,n
+Fencing in enabled mode,,,n
+ould you like to enter the license,,,y
+you like to license the systems,,,2
+hich product would you like to register,,,_PRODUCT_

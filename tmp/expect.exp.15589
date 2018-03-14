@@ -1,0 +1,20 @@
+#!/usr/bin/expect
+set timeout 20
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no s111037-gd4
+expect {
+	"#" {send "/autotcinst/7.1/SxRT-7.1-2016-04-12a/dvd2-sol_x64/sol11_x64/installer 10.200.111.248 10.200.111.249\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+set timeout 1800
+while { 1 } {
+	expect {
+		"The installer has discovered an existing installer process" {send "n\r"}
+		"Enter a Task:" {send "I\r"}
+		"Select a product to install:" {send "q\r"}
+		"Are you sure you want to quit" {send "y\r"}
+		"#" {send "exit 0\r";break}
+		timeout {puts "\nEXPECT ERROR.Unkown Question '_QUESTION_'";exit 2;break}
+	}
+	sleep 0.1
+}
+expect eof

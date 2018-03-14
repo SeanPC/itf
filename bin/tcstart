@@ -1,0 +1,84 @@
+#!/bin/bash
+#global variable
+export TIMEOUT=60
+export SSH="ssh -q -o ConnectTimeout=$TIMEOUT -o PasswordAuthentication=no"
+export SCP="scp -r -p -q -o ConnectTimeout=$TIMEOUT"
+BASE=/opt/itf
+PID=$$
+ARGS=$*
+
+#import fuctions
+for func in `ls $BASE/lib`
+do
+	. $BASE/lib/$func || exit 1
+done
+trap "break 10;myexit 250" SIGHUP SIGINT SIGQUIT SIGTERM
+
+tcrun(){
+#initialize the tc
+local tmptc
+tc=$1
+olog=$baselog/$tc.olog
+find $baselog/ -type f|grep $tc|xargs -n1 rm -rf
+rm -f $logs/define
+#record if tc has been kicked
+echo $tc > $run
+sed -i -r "s/^$tc$/$tc 1/" $logs/tc.list
+tmptc=/tmp/tmptc.$PID
+echo "tmptc(){" > $tmptc
+cat $basetc/$tc.tc >> $tmptc
+echo -e "\n}" >> $tmptc
+source $tmptc
+rm -f $tmptc
+oLog head
+tmptc "${arg[2]}"
+}
+
+
+start(){
+[ -z "$baselog" ] && baselog=$BASE/log/$NODE1
+[ -z "$basetc" ] && basetc=$BASE/tc
+
+#define global vaule
+mkdir -p $baselog
+echo $PID > $baselog/.pid
+run=$baselog/.tcrun
+log=$baselog/log
+logs=$baselog/logs
+mkdir -p $logs
+rm -f $log
+olog=$log
+
+MAINCF=$logs/main.cf
+defineGlobalValue
+
+#begin execute tc
+checkTC
+lockNode
+#record tcs in file for tchelp
+echo "$tcs"|xargs -n1|grep -v print_env > $logs/tc.list
+for tc in $tcs
+do
+	echo $tc|while read tc
+	do
+		tcrun $tc
+	done
+	ret=$?
+	[ "$clear" != no -a $ret -gt 0 -a $ret -lt 200 ] && clearENV
+	[ $ret = 249 ] && break 10
+done
+statisTCResult
+unLockNode
+}
+
+#main code
+GetArg
+NODES=`echo ${arg[0]}|sed "s/,/ /g"`
+NODESN=`echo "$NODES"|awk '{print NF}'`
+NODE1=`echo $NODES|awk '{print $1}'`
+OTHER=`echo $NODES|sed -r "s/$NODE1//g"`
+[ -z "$tctimeout" ] && tctimeout=${arg[4]}
+[ -z "$tctimeout" ] && tctimeout=10000
+[ -z "$clear" ] && clear=${arg[2]}
+[ -z "$isvcs" ] && isvcs=${arg[3]}
+start

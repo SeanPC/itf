@@ -1,0 +1,142 @@
+#des:support platform:linux,aix,solaris
+vg1=autotcvg1;lv1=autotclv1;vg2=autotcvg2;lv2=autotclv2
+autotcdefinefs=ext3
+#P:50
+
+oLog step "Checking basic environment of testbed"
+#check if login without password by root and oracle user
+checkNode root
+getHostnameOSProduct $NODE1
+if [ "$type" != S ]
+then
+	oLog step "checking if exist native vgs or pool,drop them if existing"
+	dropNativeDg
+
+	oLog step "Copy mf.pl to $NODE1,filling files into the filesystem"
+	copyFileToRemote $BASE/etc/mf.pl $NODE1
+
+	oLog step "Checking dmp_native_support status,if it is on,trun it to be off"
+	setDmpNativeSupport "$NODES" off
+
+	oLog step "Getting disks for the 1st vg or pool"
+	disks=`getDiskBySizeWithPath $NODE1 2200 local` || exit 201
+	path=`getPathByDmpNode $NODE1 "$disks"` || exit 201
+	removeDiskFromVxvm "$disks"
+
+	oLog step "Make the 1st vg/zpool,then make volume and fs and mount it"
+	makeNativeDg $NODE1 $vg1 $path
+	makeNativeLv $NODE1 $vg1 $lv1 2G fs
+	mountNativeFS $NODE1 $vg1 $lv1
+	oLog step "Convert the 1st native vg/zpool to vxvm dg,free space required by vxfsconvert is approximately 12%-15% of the total file system size"
+	RExec root $NODE1 "/tmp/tmpfile.$PID -s 104857600 -n 10 -d /$lv1;sync"
+	getCksum $NODE1 /$lv1
+	cksum0="$out"
+	RExec root $NODE1 "umount /$lv1"
+fi
+if [ "$type" = L ]
+then
+	RExec root $NODE1 "modprobe dm_mirror"
+	response="
+#,,,vxvmconvert
+Select an operation to perform:,,,2,,,60
+list,listvg,q,,,$vg1,,,60
+Convert this Volume Group?,,,y,,,60
+Hit RETURN to continue.,,, ,,,600
+Are you ready to commit to these changes?,,,y,,,600
+Convert other LVM Volume Groups?,,,n
+Select an operation to perform:,,,q
+"
+	interactByResponse 0 $NODE1 "$response"
+	RExec root $NODE1 "NOEXIT:vxdg list" "$vg1"
+        if [ $result = WARNING ]
+        then
+                interactByResponse 0 $NODE1 "$response"
+                RExec root $NODE1 "vxdg list" "$vg1"
+        fi
+        RExec root $NODE1 "vxprint -g $vg1"
+	RExec root $NODE1 "mount -t $autotcdefinefs /dev/vx/dsk/$vg1/$lv1 /$lv1"
+	RExec root $NODE1 "$cmd2" "/$lv1$"
+	getCksum $NODE1 /$lv1
+	cksum1="$out"
+	if [ "$cksum0" = "$cksum1" ]
+	then
+        	oLog des "the cksum value keep the same after doing vm convert."
+	else
+        	oLog error "the cksum values are different after doing vm convert"
+        	myexit 1
+	fi
+
+	oLog step "Convert the 1st native filessytem to vxfs"
+	RExec root $NODE1 "umount /$lv1"
+	RExec root $NODE1 "/opt/VRTS/bin/vxfsconvert -y /dev/vx/dsk/$vg1/$lv1"
+	RExec root $NODE1 "/opt/VRTS/bin/fstyp /dev/vx/dsk/$vg1/$lv1" "vxfs"
+	RExec root $NODE1 "fsck -t vxfs -y /dev/vx/dsk/$vg1/$lv1"
+	mountVxfs $NODE1 $vg1 $lv1 /$lv1
+	getCksum $NODE1 /$lv1
+	cksum2="$out"
+	if [ "$cksum0" = "$cksum2" ]
+	then
+        	oLog des "the cksum value keep the same after doing fs convert."
+	else
+        	oLog error "the cksum values are different after doing fs convert"
+        	myexit 1
+	fi
+elif [ "$type" = A ]
+then
+        response="
+#,,,vxconvert
+tandard input,,, ,,,20
+return to continue,,, ,,,20
+Select an operation to perform:,,,2,,,60
+list,listvg,q,,,$vg1,,,60
+Convert this Volume Group,,,y,,,60
+name for the new VxVM disk group,,,"$vg1"_1,,,60
+Use the default disk layout for the disk?,,,y,,,60
+Are you ready to commit to these changes?,,,y,,,600
+Hit RETURN to continue,,, ,,,60
+Select an operation to perform:,,,q
+"
+	interactByResponse 0 $NODE1 "$response"
+	RExec root $NODE1 "vxdg list" "$vg1"_1
+	RExec root $NODE1 "/opt/VRTS/bin/fstyp /dev/vx/dsk/"$vg1"_1/$lv1" "vxfs"
+	RExec root $NODE1 "fsck -V vxfs -y /dev/vx/dsk/"$vg1"_1/$lv1"
+	mountVxfs $NODE1 "$vg1"_1 $lv1 /$lv1
+	getCksum $NODE1 /$lv1
+        cksum1="$out"
+	if [ "$cksum0" = "$cksum1" ]
+	then
+		oLog des "the cksum value keep the same after doing fs convert."
+	else
+		oLog error "the cksum values are different after doing fs convert"
+		myexit 1
+	fi
+elif [ "$type" = S ]
+then
+	copyFileToRemote $BASE/etc/mf.pl $NODE1
+	disks=`getDisk $NODE1 local` || exit 201
+	disks=`echo "$disks"|awk '$2>2200{print $1}'`
+	paths=`getPathByDmpNode $NODE1 "$disks"` || exit 201
+	for path in $paths
+	do
+		[[ "$path" =~ ^[a-zA-Z0-9]+s2$ ]] && break
+	done
+	makeUFS $NODE1 $path $lv1
+	RExec root $NODE1 "/tmp/tmpfile.$PID -s 104857600 -n 10 -d /$lv1"
+	getCksum $NODE1 /$lv1
+	cksum0="$out"
+	RExec root $NODE1 "umount /$lv1"
+	RExec root $NODE1 "/opt/VRTS/bin/vxfsconvert -y /dev/dsk/$path"
+	RExec root $NODE1 "/opt/VRTS/bin/fsck -F vxfs -y -o full /dev/rdsk/$path"
+	RExec root $NODE1 "/opt/VRTS/bin/mount -F vxfs /dev/dsk/$path /$lv1"
+	getCksum $NODE1 /$lv1
+	cksum1="$out"
+	if [ "$cksum0" = "$cksum1" ]
+	then
+		oLog des "the cksum value keep the same after doing fs convert."
+	else
+		oLog error "the cksum values are different after doing fs convert"
+		myexit 1
+	fi
+fi
+oLog flag
+myexit 10

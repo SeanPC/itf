@@ -1,0 +1,7 @@
+#P:19
+oLog step "Check and Print environment"
+checkNode root
+RExec root $NODE1 "[ -f $autotcmaincf ] && cat $autotcmaincf"
+echo "$out" > $MAINCF
+oLog flag
+myexit 0

@@ -1,0 +1,21 @@
+#,,,_CMD_,,,300
+The installer has discovered an existing installer process,,,n
+Enter a Task:,,,I
+Select a product to install:,,,_PRODUCT_
+you like to configure InfoScale Enterprise after installation,,,n
+Would you like to configure SF Oracle RAC,,,n
+Select the rpms to be installed on all systems,,,3
+Do you agree with the terms of the End User License Agreement,,,y,,,1800
+How would you like to install the missing required,,,1
+Press*to continue,,, ,,,20
+would you like to license the systems,,,2
+Would you like to enable replication,,,n
+Would you like to enable the Global Cluster Option,,,n
+Which product would you like to register,,,_PRODUCT_
+Would you like to send the information,,,n,,,300
+Would you like to view the summary file,,,n
+Do you want to exit install,,,y
+Do you want to continue,,,y
+you want to stop*processes now,,,y
+Do you want to restore and reuse,,,y
+enable DMP support for vSCSI devices,,,n

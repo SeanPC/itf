@@ -1,0 +1,237 @@
+
+==================== Operation Log for TC sf_setup ====================
+DATE:2017-03-21 14:47:26
+Nodes:l111062 l111063
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-03-21 14:47:26
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:393292 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:46781 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:25490176 (24.3 MiB)  TX bytes:11692584 (11.1 MiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:814 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:814 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:92869 (90.6 KiB)  TX bytes:92869 (90.6 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-03-21 14:47:27
+HOST:l111062
+USER:root
+STDIN:ssh -l root l111062
+STDOUT:
+
+
+
+DATE:2017-03-21 14:47:29
+HOST:l111063
+USER:root
+STDIN:ssh -l root l111063
+STDOUT:
+
+
+
+DATE:2017-03-21 14:47:34
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111062,l111063
+STDOUT:
+
+
+***Getting hostname of node***
+
+
+
+DATE:2017-03-21 14:47:35
+HOST:l111062
+USER:root
+STDIN:hostname
+STDOUT:
+l111062.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-03-21 14:47:36
+HOST:l111062
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-03-21 14:47:37
+HOST:l111062
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 6.9 Beta (Santiago)
+
+
+DATE:2017-03-21 14:47:38
+HOST:l111062
+USER:root
+STDIN:uname -r
+STDOUT:
+2.6.32-694.el6.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-03-21 14:47:44
+HOST:l111062
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+
+
+
+DATE:2017-03-21 14:47:45
+HOST:l111062
+USER:root
+STDIN:ls /opt/VRTS/install/install*
+STDOUT:
+ls: cannot access /opt/VRTS/install/install*: No such file or directory
+
+***Getting hostname of node***
+
+
+
+DATE:2017-03-21 14:47:46
+HOST:l111063
+USER:root
+STDIN:hostname
+STDOUT:
+l111063.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-03-21 14:47:47
+HOST:l111063
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-03-21 14:47:48
+HOST:l111063
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 6.9 Beta (Santiago)
+
+
+DATE:2017-03-21 14:47:49
+HOST:l111063
+USER:root
+STDIN:uname -r
+STDOUT:
+2.6.32-694.el6.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-03-21 14:47:53
+HOST:l111063
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+
+
+
+DATE:2017-03-21 14:47:54
+HOST:l111063
+USER:root
+STDIN:ls /opt/VRTS/install/install*
+STDOUT:
+ls: cannot access /opt/VRTS/install/install*: No such file or directory
+
+
+DATE:2017-03-21 14:47:57
+HOST:l111062
+USER:root
+STDIN:ntpdate 172.16.8.14
+STDOUT:
+21 Mar 06:47:56 ntpdate[4883]: adjust time server 172.16.8.14 offset 0.481754 sec
+
+
+DATE:2017-03-21 14:47:59
+HOST:l111063
+USER:root
+STDIN:ntpdate 172.16.8.14
+STDOUT:
+21 Mar 06:47:59 ntpdate[4878]: adjust time server 172.16.8.14 offset 0.390317 sec
+
+
+DATE:2017-03-21 14:48:00
+HOST:l111062
+USER:root
+STDIN:[ -f /root/.ssh/id_rsa.pub ] || echo y|ssh-keygen -t rsa -N '' -f /root/.ssh/id_rsa
+STDOUT:
+
+
+
+DATE:2017-03-21 14:48:01
+HOST:l111062
+USER:root
+STDIN:cat /root/.ssh/id_rsa.pub
+STDOUT:
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA8EQ5IXQftaMDAC2FG39x4yb9fury/IPqrn1tW3ApjektGvUkucIISUervrmVlWiRSYTAV7OR/4svKZvzsvYhWOU3tIGXWFXoICUbCSsYAZVcbDiQFHQsBVQIsESU5BSe18A/VOgYyUTKBEIhcaCJ4c+yIom2y3880xo00TT+SvQKPFxZOobEmLJTCdBRXO+Q+y+azG+jwForYKefj5mAy8I1VTU4bs0FGTS1QTfBdB1b/2BRi5sz3uxxHBNQOsPe5FZ1npUcWPM9RAok3arDgSBxnQV3GlsiGdG+z1n+j6Z22eFsffSLQZjVnP42DCxrmjNrGV/P+PoPf0uJ2N2dUQ== root@l111062.cdc.veritas.com
+
+
+DATE:2017-03-21 14:48:02
+HOST:l111063
+USER:root
+STDIN:mkdir -p /root/.ssh
+STDOUT:
+
+
+
+DATE:2017-03-21 14:48:04
+HOST:l111062
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 6.9 Beta (Santiago)
+
+
+DATE:2017-03-21 14:48:05
+HOST:l111062
+USER:root
+STDIN:mkdir -p /autotcinst && df -h|sed 1d|xargs -n 6|grep /autotcinst$ > /dev/null 2>&1 && umount /autotcinst
+STDOUT:
+
+
+
+DATE:2017-03-21 14:48:07
+HOST:l111062
+USER:root
+STDIN:mount 10.198.90.16:/re/release_train/linux /autotcinst
+STDOUT:
+

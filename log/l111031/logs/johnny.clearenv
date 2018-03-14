@@ -1,0 +1,396 @@
+
+
+DATE:2017-07-31 10:12:02
+HOST:l111031
+USER:root
+STDIN:for file in /etc/vx/encryption;do [ -d $file ] && rm -rf $file || echo 0;done
+STDOUT:
+0
+
+
+DATE:2017-07-31 10:12:04
+HOST:l111032
+USER:root
+STDIN:for file in /etc/vx/encryption;do [ -d $file ] && rm -rf $file || echo 0;done
+STDOUT:
+0
+
+
+DATE:2017-07-31 10:12:05
+HOST:l111031
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster hellogod (
+	UserNames = { admin = dlmElgLimHmmKumGlj }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111031 (
+	)
+
+system l111032 (
+	)
+
+group crs_grp (
+	SystemList = { l111031 = 0, l111032 = 1 }
+	Parallel = 1
+	AutoStartList = { l111031, l111032 }
+	)
+
+	CFSMount ocrvote_mnt (
+		Critical = 0
+		MountPoint = "/ocrvote"
+		BlockDevice = "/dev/vx/dsk/oradg1912_ocrvote/ocrvote"
+		)
+
+	CSSD cssd (
+		Critical = 0
+		CRSHOME = "/crs/crshome"
+		OnlineWaitLimit = 5
+		OfflineWaitLimit = 3
+		)
+
+	CVMVolDg ocrvote_voldg (
+		Critical = 0
+		CVMDiskGroup = oradg1912_ocrvote
+		CVMVolume = { ocrvote }
+		CVMActivation = sw
+		)
+
+	requires group cvm online local firm
+	cssd requires ocrvote_mnt
+	ocrvote_mnt requires ocrvote_voldg
+
+
+	// resource dependency tree
+	//
+	//	group crs_grp
+	//	{
+	//	CSSD cssd
+	//	    {
+	//	    CFSMount ocrvote_mnt
+	//	        {
+	//	        CVMVolDg ocrvote_voldg
+	//	        }
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { l111031 = 0, l111032 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111031, l111032 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = hellogod
+		CVMNodeId = { l111031 = 0, l111032 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group oradb_grp (
+	SystemList = { l111031 = 0, l111032 = 1 }
+	Parallel = 1
+	AutoStartList = { l111031, l111032 }
+	)
+
+	CFSMount oraarch_mnt (
+		Critical = 0
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg1912_dbarch/archive"
+		)
+
+	CFSMount oradata_mnt (
+		Critical = 0
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg1912_dbarch/dbdata"
+		)
+
+	CVMVolDg data_voldg (
+		Critical = 0
+		CVMDiskGroup = oradg1912_dbarch
+		CVMVolume = { dbdata, archive }
+		CVMActivation = sw
+		)
+
+	Oracle oradb (
+		Critical = 0
+		Sid @l111031 = orcl1
+		Sid @l111032 = orcl2
+		Owner = oracle
+		Home = "/oracle/orahome"
+		StartUpOpt = SRVCTLSTART
+		ShutDownOpt = SRVCTLSTOP
+		LevelTwoMonitorFreq = 0
+		)
+
+	requires group crs_grp online local firm
+	oraarch_mnt requires data_voldg
+	oradata_mnt requires data_voldg
+	oradb requires oraarch_mnt
+	oradb requires oradata_mnt
+
+
+	// resource dependency tree
+	//
+	//	group oradb_grp
+	//	{
+	//	Oracle oradb
+	//	    {
+	//	    CFSMount oraarch_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    CFSMount oradata_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    }
+	//	}
+
+***umount vxfs on node l111031***
+
+
+
+DATE:2017-07-31 10:12:07
+HOST:l111031
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 267G 35G 219G 14% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 27M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+/dev/vx/dsk/oradg1912_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg1912_dbarch/archive 28G 1.1G 25G 4% /archive
+/dev/vx/dsk/oradg1912_dbarch/dbdata 37G 1.8G 33G 6% /dbdata
+
+***umount vxfs on node l111032***
+
+
+
+DATE:2017-07-31 10:12:08
+HOST:l111032
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 33G 482G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 43M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+/dev/vx/dsk/oradg1912_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg1912_dbarch/archive 28G 1.1G 25G 4% /archive
+/dev/vx/dsk/oradg1912_dbarch/dbdata 37G 1.8G 33G 6% /dbdata
+
+
+DATE:2017-07-31 10:12:10
+HOST:l111031
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+
+DATE:2017-07-31 10:12:12
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-07-31 10:12:14
+HOST:l111031
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fendg
+
+
+DATE:2017-07-31 10:12:16
+HOST:l111031
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+ams_25000_102 auto:cdsdisk    -            -            online thinrclm
+ams_25000_103 auto:cdsdisk    -            -            online thinrclm
+ams_25000_104 auto:cdsdisk    -            -            online thinrclm
+ams_25000_105 auto:cdsdisk    -            -            online thinrclm
+ams_25000_106 auto:cdsdisk    -            -            online thinrclm
+ams_25000_107 auto:cdsdisk    -            -            online thinrclm
+ams_25000_108 auto:cdsdisk    -            -            online thinrclm
+ams_25000_109 auto:cdsdisk    -            -            online thinrclm
+ams_25000_110 auto:cdsdisk    -            -            online thinrclm
+ams_25000_111 auto:cdsdisk    -            -            online thinrclm
+ams_25000_221 auto:cdsdisk    -            -            online thinrclm
+ams_25000_222 auto:cdsdisk    -            -            online thinrclm
+ams_25000_233 auto:cdsdisk    -            -            online thinrclm
+ams_25000_234 auto:cdsdisk    -            -            online thinrclm
+ams_25000_235 auto:cdsdisk    -            -            online thinrclm
+ams_25000_245 auto:cdsdisk    ams_25000_245  oradg1912_dbarch online thinrclm shared
+ams_25000_246 auto:cdsdisk    ams_25000_246  oradg1912_dbarch online thinrclm shared
+ams_25000_247 auto:cdsdisk    ams_25000_247  oradg1912_dbarch online thinrclm shared
+ams_25000_248 auto:cdsdisk    ams_25000_248  oradg1912_dbarch online thinrclm shared
+ams_25000_249 auto:cdsdisk    ams_25000_249  oradg1912_dbarch online thinrclm shared
+ams_25000_383 auto:cdsdisk    -            (fendg)      online
+ams_25000_384 auto:cdsdisk    -            (fendg)      online
+ams_25000_385 auto:cdsdisk    -            (fendg)      online
+ams_25000_386 auto:cdsdisk    ams_25000_386  oradg1912_dbarch online shared
+ams_25000_387 auto:cdsdisk    ams_25000_387  oradg1912_dbarch online shared
+ams_25000_393 auto:cdsdisk    ams_25000_393  oradg1912_dbarch online shared
+ams_25000_394 auto:cdsdisk    ams_25000_394  oradg1912_dbarch online shared
+ams_25000_395 auto:cdsdisk    ams_25000_395  oradg1912_dbarch online shared
+ams_25000_396 auto:cdsdisk    ams_25000_396  oradg1912_dbarch online shared
+ams_25000_397 auto:cdsdisk    ams_25000_397  oradg1912_dbarch online shared
+ams_25000_398 auto:cdsdisk    ams_25000_398  oradg1912_dbarch online shared
+ams_25000_399 auto:cdsdisk    ams_25000_399  oradg1912_dbarch online shared
+ams_25000_400 auto:cdsdisk    ams_25000_400  oradg1912_dbarch online shared
+ams_25000_401 auto:cdsdisk    ams_25000_401  oradg1912_dbarch online shared
+ams_25000_402 auto:cdsdisk    ams_25000_402  oradg1912_dbarch online shared
+ams_25000_403 auto:cdsdisk    ams_25000_403  oradg1912_dbarch online shared
+ams_25000_404 auto:cdsdisk    ams_25000_404  oradg1912_dbarch online shared
+ams_25000_405 auto:cdsdisk    ams_25000_405  oradg1912_dbarch online shared
+ams_25000_406 auto:cdsdisk    ams_25000_406  oradg1912_ocrvote online shared
+ams_25000_407 auto:cdsdisk    ams_25000_407  oradg1912_ocrvote online shared
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-07-31 10:12:18
+HOST:l111031
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+oradg1912_dbarch enabled,shared,cds   1500619697.50.l111031.cdc.veritas.com
+oradg1912_ocrvote enabled,shared,cds   1500619696.48.l111031.cdc.veritas.com
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-07-31 10:12:19
+HOST:l111032
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fendg
+
+
+DATE:2017-07-31 10:12:21
+HOST:l111032
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+ams_25000_102 auto:cdsdisk    -            -            online thinrclm
+ams_25000_103 auto:cdsdisk    -            -            online thinrclm
+ams_25000_104 auto:cdsdisk    -            -            online thinrclm
+ams_25000_105 auto:cdsdisk    -            -            online thinrclm
+ams_25000_106 auto:cdsdisk    -            -            online thinrclm
+ams_25000_107 auto:cdsdisk    -            -            online thinrclm
+ams_25000_108 auto:cdsdisk    -            -            online thinrclm
+ams_25000_109 auto:cdsdisk    -            -            online thinrclm
+ams_25000_110 auto:cdsdisk    -            -            online thinrclm
+ams_25000_111 auto:cdsdisk    -            -            online thinrclm
+ams_25000_221 auto:cdsdisk    -            -            online thinrclm
+ams_25000_222 auto:cdsdisk    -            -            online thinrclm
+ams_25000_233 auto:cdsdisk    -            -            online thinrclm
+ams_25000_234 auto:cdsdisk    -            -            online thinrclm
+ams_25000_235 auto:cdsdisk    -            -            online thinrclm
+ams_25000_245 auto:cdsdisk    ams_25000_245  oradg1912_dbarch online thinrclm shared
+ams_25000_246 auto:cdsdisk    ams_25000_246  oradg1912_dbarch online thinrclm shared
+ams_25000_247 auto:cdsdisk    ams_25000_247  oradg1912_dbarch online thinrclm shared
+ams_25000_248 auto:cdsdisk    ams_25000_248  oradg1912_dbarch online thinrclm shared
+ams_25000_249 auto:cdsdisk    ams_25000_249  oradg1912_dbarch online thinrclm shared
+ams_25000_383 auto:cdsdisk    -            (fendg)      online
+ams_25000_384 auto:cdsdisk    -            (fendg)      online
+ams_25000_385 auto:cdsdisk    -            (fendg)      online
+ams_25000_386 auto:cdsdisk    ams_25000_386  oradg1912_dbarch online shared
+ams_25000_387 auto:cdsdisk    ams_25000_387  oradg1912_dbarch online shared
+ams_25000_393 auto:cdsdisk    ams_25000_393  oradg1912_dbarch online shared
+ams_25000_394 auto:cdsdisk    ams_25000_394  oradg1912_dbarch online shared
+ams_25000_395 auto:cdsdisk    ams_25000_395  oradg1912_dbarch online shared
+ams_25000_396 auto:cdsdisk    ams_25000_396  oradg1912_dbarch online shared
+ams_25000_397 auto:cdsdisk    ams_25000_397  oradg1912_dbarch online shared
+ams_25000_398 auto:cdsdisk    ams_25000_398  oradg1912_dbarch online shared
+ams_25000_399 auto:cdsdisk    ams_25000_399  oradg1912_dbarch online shared
+ams_25000_400 auto:cdsdisk    ams_25000_400  oradg1912_dbarch online shared
+ams_25000_401 auto:cdsdisk    ams_25000_401  oradg1912_dbarch online shared
+ams_25000_402 auto:cdsdisk    ams_25000_402  oradg1912_dbarch online shared
+ams_25000_403 auto:cdsdisk    ams_25000_403  oradg1912_dbarch online shared
+ams_25000_404 auto:cdsdisk    ams_25000_404  oradg1912_dbarch online shared
+ams_25000_405 auto:cdsdisk    ams_25000_405  oradg1912_dbarch online shared
+ams_25000_406 auto:cdsdisk    ams_25000_406  oradg1912_ocrvote online shared
+ams_25000_407 auto:cdsdisk    ams_25000_407  oradg1912_ocrvote online shared
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-07-31 10:12:23
+HOST:l111032
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+oradg1912_dbarch enabled,shared,cds   1500619697.50.l111031.cdc.veritas.com
+oradg1912_ocrvote enabled,shared,cds   1500619696.48.l111031.cdc.veritas.com

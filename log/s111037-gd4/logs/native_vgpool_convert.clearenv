@@ -1,0 +1,131 @@
+
+***umount vxfs on node s111037-gd4***
+
+
+
+DATE:2017-03-03 16:43:04
+HOST:s111037-gd4
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+rpool/ROOT/solaris 39G 18G 7.9G 70% /
+/devices 0K 0K 0K 0% /devices
+/dev 0K 0K 0K 0% /dev
+ctfs 0K 0K 0K 0% /system/contract
+proc 0K 0K 0K 0% /proc
+mnttab 0K 0K 0K 0% /etc/mnttab
+swap 8.5G 3.2M 8.5G 1% /system/volatile
+objfs 0K 0K 0K 0% /system/object
+sharefs 0K 0K 0K 0% /etc/dfs/sharetab
+fd 0K 0K 0K 0% /dev/fd
+rpool/ROOT/solaris/var 39G 275M 7.9G 4% /var
+swap 8.5G 152K 8.5G 1% /tmp
+rpool/VARSHARE 39G 1.0G 7.9G 12% /var/share
+swap 8.5G 0K 8.5G 0% /dev/vx/dmp
+swap 8.5G 0K 8.5G 0% /dev/vx/rdmp
+rpool/export 39G 32K 7.9G 1% /export
+rpool/export/home 39G 33K 7.9G 1% /export/home
+rpool/export/home/admin 39G 33K 7.9G 1% /export/home/admin
+rpool/export/home/oracle 39G 43K 7.9G 1% /export/home/oracle
+rpool 39G 73K 7.9G 1% /rpool
+rpool/VARSHARE/zones 39G 31K 7.9G 1% /system/zones
+rpool/VARSHARE/pkg 39G 32K 7.9G 1% /var/share/pkg
+rpool/VARSHARE/pkg/repositories 39G 31K 7.9G 1% /var/share/pkg/repositories
+/dev/odm 0K 0K 0K 0% /dev/odm
+/dev/dsk/c1d107s2 20G 1.0G 18G 6% /autotclv1
+
+
+DATE:2017-03-03 16:43:06
+HOST:s111037-gd4
+USER:root
+STDIN:umount /autotclv1;
+STDOUT:
+
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-03-03 16:43:07
+HOST:s111037-gd4
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+autotcfendg
+
+
+DATE:2017-03-03 16:43:09
+HOST:s111037-gd4
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+c1d0         auto:ZFS        -            -            ZFS
+emc_clariion0_278 auto:cdsdisk    -            (autotcfendg) online thinrclm
+emc_clariion0_279 auto:cdsdisk    -            (autotcfendg) online thinrclm
+emc_clariion0_280 auto:cdsdisk    -            (autotcfendg) online thinrclm
+emc_clariion0_281 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_282 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_283 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_284 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_285 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_286 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_287 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_288 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_289 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_290 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_291 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_292 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_293 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_294 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_295 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_296 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_297 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_298 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_299 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_300 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_301 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_302 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_303 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_304 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_305 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_306 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_307 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_308 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_309 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_310 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_311 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_312 auto            -            -            nolabel
+emc_clariion0_313 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_314 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_315 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_316 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_317 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_438 auto:cdsdisk    -            -            online
+emc_clariion0_439 auto:cdsdisk    -            -            online
+emc_clariion0_440 auto:cdsdisk    -            -            online
+emc_clariion0_441 auto:cdsdisk    -            -            online
+emc_clariion0_442 auto:cdsdisk    -            -            online
+emc_clariion0_443 auto:cdsdisk    -            -            online
+emc_clariion0_444 auto:cdsdisk    -            -            online
+emc_clariion0_445 auto:cdsdisk    -            -            online
+emc_clariion0_446 auto:cdsdisk    -            -            online
+emc_clariion0_447 auto:cdsdisk    -            -            online
+emc_clariion0_448 auto:cdsdisk    -            -            online
+emc_clariion0_449 auto:cdsdisk    -            -            online
+emc_clariion0_450 auto:cdsdisk    -            -            online
+emc_clariion0_451 auto:cdsdisk    -            -            online
+emc_clariion0_452 auto:cdsdisk    -            -            online
+emc_clariion0_453 auto:cdsdisk    -            -            online
+emc_clariion0_454 auto:cdsdisk    -            -            online invalid
+emc_clariion0_455 auto:simple     -            -            online invalid
+emc_clariion0_456 auto:cdsdisk    -            (oradg3018_dbarchasm) online shared
+emc_clariion0_457 auto:cdsdisk    -            (oradg3018_gridasm) online shared
+
+
+DATE:2017-03-03 16:43:10
+HOST:s111037-gd4
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID

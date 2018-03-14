@@ -1,0 +1,291 @@
+
+
+DATE:2017-01-26 14:11:28
+HOST:l111050
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster cluster5058 (
+	UserNames = { admin = JlmElgLimHmmKumGlj }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111050 (
+	)
+
+system l111058 (
+	)
+
+group cvm (
+	SystemList = { l111050 = 0, l111058 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111050, l111058 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = cluster5058
+		CVMNodeId = { l111050 = 0, l111058 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+***umount vxfs on node l111050***
+
+
+
+DATE:2017-01-26 14:11:29
+HOST:l111050
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sdcr4 99G 12G 82G 13% /
+devtmpfs 3.8G 0 3.8G 0% /dev
+tmpfs 3.9G 0 3.9G 0% /dev/shm
+tmpfs 3.9G 11M 3.9G 1% /run
+tmpfs 3.9G 0 3.9G 0% /sys/fs/cgroup
+tmpfs 782M 0 782M 0% /run/user/0
+10.200.117.70:/re/release_train/linux/6.2 2.0T 1.9T 76G 97% /tmp/JDdATj1wSy
+10.200.117.70:/re/release_train/linux/6.2.1 2.0T 1.9T 76G 97% /tmp/U2gvsB31hr
+10.200.117.70:/re/release_train/linux/6.2 2.0T 1.9T 76G 97% /tmp/yjBBKUEHq4
+10.200.117.70:/re/release_train/linux/6.2.1 2.0T 1.9T 76G 97% /tmp/_7upiQmbCb
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg1/autotcdg1_r_1 6.1G 1.4G 4.5G 23% /autotcmp
+
+
+DATE:2017-01-26 14:11:31
+HOST:l111050
+USER:root
+STDIN:umount /autotcmp;
+STDOUT:
+
+
+***umount vxfs on node l111058***
+
+
+
+DATE:2017-01-26 14:11:32
+HOST:l111058
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sdcq1 99G 11G 84G 11% /
+devtmpfs 3.9G 0 3.9G 0% /dev
+tmpfs 3.9G 0 3.9G 0% /dev/shm
+tmpfs 3.9G 27M 3.8G 1% /run
+tmpfs 3.9G 0 3.9G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 782M 0 782M 0% /run/user/0
+/dev/vx/dsk/autotcdg1/autotcdg1_r_1 6.1G 1.3G 4.6G 21% /autotcmp
+
+
+DATE:2017-01-26 14:11:33
+HOST:l111058
+USER:root
+STDIN:umount /autotcmp;
+STDOUT:
+
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-01-26 14:11:34
+HOST:l111050
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-01-26 14:11:35
+HOST:l111050
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_261 auto:cdsdisk    ams_25000_261  autotcdg1    online thinrclm shared
+ams_25000_268 auto:cdsdisk    ams_25000_268  autotcdg1    online thinrclm shared
+ams_25000_269 auto:cdsdisk    ams_25000_269  autotcdg1    online thinrclm shared
+ams_25000_270 auto:cdsdisk    ams_25000_270  autotcdg1    online thinrclm shared
+ams_25000_306 auto:cdsdisk    ams_25000_306  autotcdg1    online thinrclm shared
+ams_25000_307 auto:cdsdisk    ams_25000_307  autotcdg1    online thinrclm shared
+ams_25000_308 auto:cdsdisk    ams_25000_308  autotcdg1    online thinrclm shared
+ams_25000_309 auto:cdsdisk    ams_25000_309  autotcdg1    online thinrclm shared
+ams_25000_310 auto:cdsdisk    ams_25000_310  autotcdg1    online thinrclm shared
+ams_25000_311 auto:cdsdisk    ams_25000_311  autotcdg1    online thinrclm shared
+ams_25000_312 auto:cdsdisk    ams_25000_312  autotcdg1    online thinrclm shared
+ams_25000_313 auto:cdsdisk    ams_25000_313  autotcdg1    online thinrclm shared
+ams_25000_314 auto:cdsdisk    ams_25000_314  autotcdg1    online thinrclm shared
+ams_25000_318 auto:cdsdisk    ams_25000_318  autotcdg1    online thinrclm shared
+ams_25000_320 auto:cdsdisk    ams_25000_320  autotcdg1    online thinrclm shared
+emc0_00f4    auto:cdsdisk    -            (vxfendg)    online
+emc0_04e0    auto:cdsdisk    -            (vxfendg)    online
+emc0_04ea    auto:cdsdisk    -            (vxfendg)    online
+emc0_04eb    auto:cdsdisk    -            -            online
+emc0_04ec    auto:cdsdisk    -            -            online
+emc0_04ee    auto:cdsdisk    -            -            online
+emc0_04ef    auto:cdsdisk    -            -            online
+emc0_04e1    auto:cdsdisk    -            -            online
+emc0_04e2    auto:cdsdisk    -            -            online
+emc0_04e3    auto:cdsdisk    -            -            online
+emc0_04e4    auto:cdsdisk    -            -            online
+emc0_04e5    auto:cdsdisk    -            -            online
+emc0_04e6    auto:cdsdisk    -            -            online
+emc0_04e7    auto:cdsdisk    -            -            online
+emc0_04e8    auto:cdsdisk    -            -            online
+emc0_04e9    auto:cdsdisk    -            -            online
+emc0_04f0    auto:cdsdisk    -            -            online
+emc0_04f1    auto:cdsdisk    -            -            online
+emc0_04f2    auto:cdsdisk    -            -            online
+emc0_04f3    auto:cdsdisk    -            -            online
+emc0_06a0    auto:cdsdisk    -            -            online
+emc0_06a1    auto:cdsdisk    -            -            online
+emc0_06a2    auto:cdsdisk    -            -            online
+emc0_06a3    auto:cdsdisk    -            -            online
+emc0_036e    auto:cdsdisk    emc0_036e    autotcdg1    online thinrclm shared
+emc0_036f    auto:cdsdisk    emc0_036f    autotcdg1    online thinrclm shared
+emc0_069f    auto:cdsdisk    -            -            online
+emc0_0370    auto:cdsdisk    emc0_0370    autotcdg1    online thinrclm shared
+emc0_0371    auto:cdsdisk    emc0_0371    autotcdg1    online thinrclm shared
+emc0_0372    auto:cdsdisk    emc0_0372    autotcdg1    online thinrclm shared
+sdcr         auto:sliced     -            -            online
+
+
+DATE:2017-01-26 14:11:36
+HOST:l111050
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcdg1    enabled,shared,cds   1485409801.188.l111050.cdc.veritas.com
+
+
+DATE:2017-01-26 14:11:42
+HOST:l111050
+USER:root
+STDIN:vxdg destroy autotcdg1
+STDOUT:
+
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-01-26 14:11:43
+HOST:l111058
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-01-26 14:11:44
+HOST:l111058
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_261 auto:cdsdisk    -            -            online thinrclm
+ams_25000_268 auto:cdsdisk    -            -            online thinrclm
+ams_25000_269 auto:cdsdisk    -            -            online thinrclm
+ams_25000_270 auto:cdsdisk    -            -            online thinrclm
+ams_25000_306 auto:cdsdisk    -            -            online thinrclm
+ams_25000_307 auto:cdsdisk    -            -            online thinrclm
+ams_25000_308 auto:cdsdisk    -            -            online thinrclm
+ams_25000_309 auto:cdsdisk    -            -            online thinrclm
+ams_25000_310 auto:cdsdisk    -            -            online thinrclm
+ams_25000_311 auto:cdsdisk    -            -            online thinrclm
+ams_25000_312 auto:cdsdisk    -            -            online thinrclm
+ams_25000_313 auto:cdsdisk    -            -            online thinrclm
+ams_25000_314 auto:cdsdisk    -            -            online thinrclm
+ams_25000_318 auto:cdsdisk    -            -            online thinrclm
+ams_25000_320 auto:cdsdisk    -            -            online thinrclm
+disk_1       auto:none       -            -            online invalid
+emc0_00f4    auto:cdsdisk    -            (vxfendg)    online
+emc0_04e0    auto:cdsdisk    -            (vxfendg)    online
+emc0_04ea    auto:cdsdisk    -            (vxfendg)    online
+emc0_04eb    auto:cdsdisk    -            -            online
+emc0_04ec    auto:cdsdisk    -            -            online
+emc0_04ed    auto:cdsdisk    -            -            online
+emc0_04ee    auto:cdsdisk    -            -            online
+emc0_04ef    auto:cdsdisk    -            -            online
+emc0_04e1    auto:cdsdisk    -            -            online
+emc0_04e2    auto:cdsdisk    -            -            online
+emc0_04e3    auto:cdsdisk    -            -            online
+emc0_04e4    auto:cdsdisk    -            -            online
+emc0_04e5    auto:cdsdisk    -            -            online
+emc0_04e6    auto:cdsdisk    -            -            online
+emc0_04e7    auto:cdsdisk    -            -            online
+emc0_04e8    auto:cdsdisk    -            -            online
+emc0_04e9    auto:cdsdisk    -            -            online
+emc0_04f0    auto:cdsdisk    -            -            online
+emc0_04f1    auto:cdsdisk    -            -            online
+emc0_04f2    auto:cdsdisk    -            -            online
+emc0_04f3    auto:cdsdisk    -            -            online
+emc0_06a0    auto:cdsdisk    -            -            online
+emc0_06a1    auto:cdsdisk    -            -            online
+emc0_06a2    auto:cdsdisk    -            -            online
+emc0_06a3    auto:cdsdisk    -            -            online
+emc0_036e    auto:cdsdisk    -            -            online thinrclm
+emc0_036f    auto:cdsdisk    -            -            online thinrclm
+emc0_069f    auto:cdsdisk    -            -            online
+emc0_0370    auto:cdsdisk    -            -            online thinrclm
+emc0_0371    auto:cdsdisk    -            -            online thinrclm
+emc0_0372    auto:cdsdisk    -            -            online thinrclm
+sdcq         auto:none       -            -            online invalid
+
+
+DATE:2017-01-26 14:11:45
+HOST:l111058
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID

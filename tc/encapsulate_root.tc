@@ -1,0 +1,80 @@
+#This is for encapsulate and de-encapsulate testing
+#des:support linux only.
+
+root_dg=rootdg
+oLog step "Checking basic environment of testbed"
+checkNode root
+oLog des "Getting os version"
+type=`$SSH root@$NODE1 "uname"|cut -c 1`
+if [ "$type" = L ]
+then
+	cmd0='cat /etc/issue;uname -r'
+	cmd1='rpm -qi `rpm -qa|grep -i vxvm`'
+	cmd2="df -h"
+else
+	oLog des "The platform is not supported!"
+	myexit 1
+fi
+
+RExec root $NODE1 "$cmd0"
+oLog des "Getting InfoScale Product version"
+RExec root $NODE1 "$cmd1"
+oLog des "Getting the local disk"
+RExec root $NODE1 "$cmd2"
+local_disk=`echo "$out" |grep -P \/$|grep -oP "(?<=/dev/)sd[^0-9]+"`
+! echo "$local_disk"|grep ^sd >/dev/null 2>&1 && oLog error "Only legacy partition is supported" && myexit 201
+checkCVMStatus 
+RExec root $NODE1 "vxddladm set namingscheme=ebn persistence=yes"
+oLog step "checking the dmp_native_support"
+RExec root $NODE1 "vxdmpadm gettune"
+echo "$out"|grep dmp_native_support|awk '{print $2}'|grep off > /dev/null 2>&1 || RExec root $NODE1 "vxdmpadm settune dmp_native_support=off"   
+oLog step "encapsulate the disk"
+RExec root $NODE1 "(echo;echo y)|/etc/vx/bin/vxencap -c -g $root_dg rootdisk=$local_disk" 
+oLog des "reboot the $NODE1"
+RExec root $NODE1 "sync;sync;sync;sync;nohup reboot > /dev/null 2>&1 &"
+for i in `seq 20`
+do
+	waitNodeOffline $NODE1
+	waitNodeOnline $NODE1
+	RExec root $NODE1 "NOERROR:df -h|sed 1d|xargs -n 6|grep /$" 'rootvol' && break
+done
+oLog step "Checking boot disk is controlled by VxVM"
+RExec root $NODE1 "df -h" "/dev/vx/dsk/$root_dg/rootvol"
+waitVCSAgentOnline $NODE1
+waitGroupOnline $NODE1 cvm
+if [ $? -eq 1 ] 
+then
+	RExec root $NODE1 "/opt/VRTSvcs/bin/hastop -local"
+        RExec root $NODE1 "/opt/VRTSvcs/bin/hastart"
+	waitGroupOnline $NODE1 cvm
+	[ $? -eq 1 ] && oLog error "the cvm can not be online" && myexit 1
+fi
+oLog des "Checking the root volume"
+RExec root $NODE1 "/opt/VRTS/bin/vxprint"
+oLog step "Un-encasulated the root disk"
+RExec root $NODE1 "NOEXIT:(echo;echo;echo y)|/etc/vx/bin/vxunroot"
+oLog step "Reboot the os to effective the change"
+waitNodeOffline $NODE1
+waitNodeOnline $NODE1
+n=0
+for i in `seq 6`
+do
+        ping -c 1 $NODE1 >/dev/null 2>&1
+        [ $? -ne 0 ] && n=$[$n+1]
+        sleep 10
+done
+[ $n -gt 4 ] && waitNodeOnline $NODE1
+oLog step "Checking the system is boot up with the original boot disk"
+RExec root $NODE1 "df -h" "$local_disk"
+waitGroupOnline $NODE1 cvm
+if [ $? -eq 1 ] 
+then
+        RExec root $NODE1 "/opt/VRTSvcs/bin/hastop -local"
+        RExec root $NODE1 "/opt/VRTSvcs/bin/hastart"
+        waitGroupOnline $NODE1 cvm
+        [ $? -eq 1 ] && oLog error "the cvm can not be online" && myexit 1
+else
+        oLog flag
+	myexit 0
+fi
+

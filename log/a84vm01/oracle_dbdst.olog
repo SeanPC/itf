@@ -1,0 +1,782 @@
+
+==================== Operation Log for TC oracle_dbdst ====================
+DATE:2017-04-27 16:33:56
+Nodes:a84vm01 a84vm02
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-04-27 16:33:56
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-04-27 16:33:56
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:12220553 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5619876 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3338521811 (3.1 GiB)  TX bytes:5821115972 (5.4 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:18492 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:18492 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:2442054 (2.3 MiB)  TX bytes:2442054 (2.3 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-04-27 16:33:57
+HOST:a84vm01
+USER:root
+STDIN:ssh -l root a84vm01
+STDOUT:
+
+
+
+DATE:2017-04-27 16:33:59
+HOST:a84vm02
+USER:root
+STDIN:ssh -l root a84vm02
+STDOUT:
+
+
+
+DATE:2017-04-27 16:34:01
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+
+DATE:2017-04-27 16:34:02
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-04-27 16:34:02
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:12220760 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5620047 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3338556333 (3.1 GiB)  TX bytes:5821144600 (5.4 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:18492 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:18492 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:2442054 (2.3 MiB)  TX bytes:2442054 (2.3 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-04-27 16:34:03
+HOST:a84vm01
+USER:root
+STDIN:ssh -l root a84vm01
+STDOUT:
+
+
+
+DATE:2017-04-27 16:34:05
+HOST:a84vm02
+USER:root
+STDIN:ssh -l root a84vm02
+STDOUT:
+
+
+
+DATE:2017-04-27 16:34:07
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+
+DATE:2017-04-27 16:34:07
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+***Getting hostname of node***
+
+
+
+DATE:2017-04-27 16:34:08
+HOST:a84vm01
+USER:root
+STDIN:hostname
+STDOUT:
+a84vm01
+
+***Getting os version***
+
+
+
+DATE:2017-04-27 16:34:09
+HOST:a84vm01
+USER:root
+STDIN:uname
+STDOUT:
+AIX
+
+
+DATE:2017-04-27 16:34:11
+HOST:a84vm01
+USER:root
+STDIN:oslevel -s
+STDOUT:
+7200-01-01-1642
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-04-27 16:34:11
+HOST:a84vm01
+USER:root
+STDIN:lslpp -l|grep -i vrts
+STDOUT:
+  VRTSamf                    7.2.0.0  COMMITTED  Veritas AMF
+  VRTSaslapm                 7.2.0.0  COMMITTED  Array Support Libraries and
+  VRTScavf                   7.2.0.0  COMMITTED  Veritas cfs and cvm agents
+  VRTScps                    7.2.0.0  COMMITTED  Veritas Co-ordination Point
+  VRTSdbac                   7.2.0.0  COMMITTED  Veritas Oracle Real
+  VRTSdbed                   7.2.0.0  COMMITTED  Storage Management Software
+  VRTSfsadv                  7.2.0.0  COMMITTED  Veritas File System Advanced
+  VRTSgab                    7.2.0.0  COMMITTED  Veritas Group Membership and
+  VRTSglm                    7.2.0.0  COMMITTED  Veritas LOCK MGR
+  VRTSgms                    7.2.0.0  COMMITTED  Veritas Global Messaging
+  VRTSllt                    7.2.0.0  COMMITTED  Veritas Low Latency Transport 
+  VRTSodm                    7.2.0.0  COMMITTED  Veritas Extension for Oracle
+  VRTSperl                  5.24.0.0  COMMITTED  Perl 5.24.0 for Veritas
+  VRTSsfcpi                  7.2.0.0  COMMITTED  Veritas InfoScale Installer
+  VRTSsfmh                   7.2.0.0  COMMITTED  Veritas Infoscale Operations
+  VRTSspt                    7.2.0.0  COMMITTED  Veritas Support Tools
+  VRTSvbs                    7.2.0.0  COMMITTED  Virtual Business Services
+  VRTSvcs                    7.2.0.0  COMMITTED  Veritas Cluster Server
+  VRTSvcsag                  7.2.0.0  COMMITTED  Veritas Cluster Server Bundled
+  VRTSvcsea                  7.2.0.0  COMMITTED  Veritas High Availability
+  VRTSvcswiz                 7.2.0.0  COMMITTED  Veritas Cluster Server Wizards
+  VRTSveki                   7.2.0.0  COMMITTED  Veritas Kernel Interface
+  VRTSvlic                  3.2.71.4  COMMITTED  Veritas License Utilities
+  VRTSvxfen                  7.2.0.0  COMMITTED  Veritas I/O Fencing 
+  VRTSvxfs                   7.2.0.0  COMMITTED  Veritas File System
+  VRTSvxvm                   7.2.0.0  COMMITTED  Veritas Volume Manager
+  VRTSamf                    7.2.0.0  COMMITTED  Veritas AMF
+  VRTSaslapm                 7.2.0.0  COMMITTED  Array Support Libraries and
+  VRTScavf                   7.2.0.0  COMMITTED  Veritas cfs and cvm agents
+  VRTScps                    7.2.0.0  COMMITTED  Veritas Co-ordination Point
+  VRTSdbac                   7.2.0.0  COMMITTED  Veritas Oracle Real
+  VRTSgab                    7.2.0.0  COMMITTED  Veritas Group Membership and
+  VRTSglm                    7.2.0.0  COMMITTED  Veritas LOCK MGR
+  VRTSgms                    7.2.0.0  COMMITTED  Veritas Global Messaging
+  VRTSllt                    7.2.0.0  COMMITTED  Veritas Low Latency Transport 
+  VRTSodm                    7.2.0.0  COMMITTED  Veritas Extension for Oracle
+  VRTSperl                  5.24.0.0  COMMITTED  Perl 5.24.0 for Veritas
+  VRTSsfcpi                  7.2.0.0  COMMITTED  Veritas InfoScale Installer
+  VRTSsfmh                   7.2.0.0  COMMITTED  Veritas Infoscale Operations
+  VRTSvbs                    7.2.0.0  COMMITTED  Virtual Business Services
+  VRTSvcs                    7.2.0.0  COMMITTED  Veritas Cluster Server
+  VRTSvcsag                  7.2.0.0  COMMITTED  Veritas Cluster Server Bundled
+  VRTSvcsea                  7.2.0.0  COMMITTED  Veritas High Availability
+  VRTSveki                   7.2.0.0  COMMITTED  Veritas Kernel Interface
+  VRTSvxfen                  7.2.0.0  COMMITTED  Veritas I/O Fencing 
+  VRTSvxfs                   7.2.0.0  COMMITTED  Veritas File System
+  VRTSvxvm                   7.2.0.0  COMMITTED  Veritas Volume Manager
+
+
+DATE:2017-04-27 16:34:12
+HOST:a84vm01
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster clus201202 (
+	UserNames = { admin = INOgNInKOjOOmWOiNL }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system a84vm01 (
+	)
+
+system a84vm02 (
+	)
+
+group crs_grp (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSMount ocrvote_mnt (
+		Critical = 0
+		MountPoint = "/ocrvote"
+		BlockDevice = "/dev/vx/dsk/oradg2579_ocrvote/ocrvote"
+		)
+
+	CSSD cssd (
+		Critical = 0
+		CRSHOME = "/crs/crshome"
+		OfflineWaitLimit = 3
+		OnlineWaitLimit = 5
+		)
+
+	CVMVolDg ocrvote_voldg (
+		Critical = 0
+		CVMVolume = { ocrvote }
+		CVMDiskGroup = oradg2579_ocrvote
+		CVMActivation = sw
+		)
+
+	requires group cvm online local firm
+	cssd requires ocrvote_mnt
+	ocrvote_mnt requires ocrvote_voldg
+
+
+	// resource dependency tree
+	//
+	//	group crs_grp
+	//	{
+	//	CSSD cssd
+	//	    {
+	//	    CFSMount ocrvote_mnt
+	//	        {
+	//	        CVMVolDg ocrvote_voldg
+	//	        }
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMTransport = gab
+		CVMNodeId = { a84vm01 = 0, a84vm02 = 1 }
+		CVMClustName = clus201202
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/usr/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group oradb_grp (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSMount oraarch_mnt (
+		Critical = 0
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg2579_dbarch/archive"
+		)
+
+	CFSMount oradata_mnt (
+		Critical = 0
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg2579_dbarch/dbdata"
+		)
+
+	CVMVolDg data_voldg (
+		Critical = 0
+		CVMVolume = { dbdata, archive }
+		CVMDiskGroup = oradg2579_dbarch
+		CVMActivation = sw
+		)
+
+	Oracle oradb (
+		Critical = 0
+		Sid @a84vm01 = orcl1
+		Sid @a84vm02 = orcl2
+		Owner = oracle
+		ShutDownOpt = SRVCTLSTOP
+		StartUpOpt = SRVCTLSTART
+		Home = "/oracle/orahome"
+		LevelTwoMonitorFreq = 0
+		)
+
+	requires group crs_grp online local firm
+	oraarch_mnt requires data_voldg
+	oradata_mnt requires data_voldg
+	oradb requires oraarch_mnt
+	oradb requires oradata_mnt
+
+
+	// resource dependency tree
+	//
+	//	group oradb_grp
+	//	{
+	//	Oracle oradb
+	//	    {
+	//	    CFSMount oraarch_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    CFSMount oradata_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    }
+	//	}
+
+
+====STEP: Checking status of Oracle database
+DATE:2017-04-27 16:34:12
+
+***Checking if relink oracle odm libray to Veritas odm libray***
+
+
+
+DATE:2017-04-27 16:34:13
+HOST:a84vm01
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx    1 root     system           28 Apr 27 13:14 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib/libodm64.so
+
+
+DATE:2017-04-27 16:34:14
+HOST:a84vm02
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx    1 root     system           28 Apr 27 13:15 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib/libodm64.so
+
+***Checking if Oracle instance is OPEN***
+
+
+
+DATE:2017-04-27 16:34:16
+HOST:a84vm01
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 16:34:15 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+orcl1		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Checking if Archive log mode is enabled***
+
+
+
+DATE:2017-04-27 16:34:18
+HOST:a84vm01
+USER:oracle
+STDIN:archive log list;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 16:34:17 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+Database log mode	       Archive Mode
+Automatic archival	       Enabled
+Archive destination	       /archive
+Oldest online log sequence     18
+Next log sequence to archive   19
+Current log sequence	       19
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Getting datafile path and name***
+
+
+
+DATE:2017-04-27 16:34:19
+HOST:a84vm01
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 16:34:19 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/dbdata/orcl/system01.dbf
+/dbdata/orcl/sysaux01.dbf
+/dbdata/orcl/undotbs01.dbf
+/dbdata/orcl/users01.dbf
+/dbdata/orcl/undotbs02.dbf
+/dbdata/orcl/part1.dbf
+/dbdata/orcl/part2.dbf
+/dbdata/orcl/part3.dbf
+/dbdata/orcl/part4.dbf
+
+9 rows selected.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+====STEP: Prepare volumes to make volume sets
+DATE:2017-04-27 16:34:19
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /archive***
+
+
+
+DATE:2017-04-27 16:34:20
+HOST:a84vm01
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 5.35 83% 61318 5% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.78 5% 1175 1% /var
+/dev/hd3 4.00 3.98 1% 397 1% /tmp
+/dev/hd1 10.00 7.76 23% 1922 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.59 29% 9618 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 15.20 14.01 8% 52 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 20.29 17.17 16% 80 1% /dbdata
+
+
+DATE:2017-04-27 16:34:21
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2579_dbarch/archive
+STDOUT:
+vxfs
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /dbdata***
+
+
+
+DATE:2017-04-27 16:34:22
+HOST:a84vm01
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 5.35 83% 61318 5% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.78 5% 1175 1% /var
+/dev/hd3 4.00 3.98 1% 397 1% /tmp
+/dev/hd1 10.00 7.76 23% 1922 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.59 29% 9618 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 15.20 14.01 8% 52 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 20.29 17.17 16% 80 1% /dbdata
+
+
+DATE:2017-04-27 16:34:22
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2579_dbarch/dbdata
+STDOUT:
+vxfs
+
+***Checking and clear existing Environment.***
+
+
+
+DATE:2017-04-27 16:34:24
+HOST:a84vm01
+USER:oracle
+STDIN:select table_name from dba_tables where table_name='SALES';
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 16:34:23 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+TABLE_NAME
+------------------------------
+SALES
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 16:34:26
+HOST:a84vm01
+USER:oracle
+STDIN:drop table sales;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 16:34:24 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Table dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 16:34:27
+HOST:a84vm01
+USER:oracle
+STDIN:select name from v$tablespace;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 16:34:26 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+------------------------------
+SYSTEM
+SYSAUX
+UNDOTBS1
+USERS
+TEMP
+UNDOTBS2
+PART1
+PART2
+PART3
+PART4
+
+10 rows selected.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 16:34:39
+HOST:a84vm01
+USER:oracle
+STDIN:drop tablespace part1 including contents and datafiles;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 16:34:27 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 16:34:50
+HOST:a84vm01
+USER:oracle
+STDIN:drop tablespace part2 including contents and datafiles;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 16:34:40 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 16:35:02
+HOST:a84vm01
+USER:oracle
+STDIN:drop tablespace part3 including contents and datafiles;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 16:34:51 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 16:35:13
+HOST:a84vm01
+USER:oracle
+STDIN:drop tablespace part4 including contents and datafiles;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 16:35:02 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options

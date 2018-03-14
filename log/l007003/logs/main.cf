@@ -1,0 +1,65 @@
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster bj_7_0304 (
+	UserNames = { admin = dijBidIfjEjjHrjDig }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l007003 (
+	)
+
+system l007004 (
+	)
+
+group cvm (
+	SystemList = { l007003 = 0, l007004 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l007003, l007004 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l007003 = { R36825065341780R = sw }
+		ActivationMode @l007004 = { R36825065341780R = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = bj_7_0304
+		CVMNodeId = { l007003 = 0, l007004 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}

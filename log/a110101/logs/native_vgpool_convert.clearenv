@@ -1,0 +1,112 @@
+
+***umount vxfs on node a110101***
+
+
+
+DATE:2017-01-16 17:22:55
+HOST:a110101
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 5.00 2.85 44% 16666 3% /
+/dev/hd2 6.00 3.45 43% 58233 7% /usr
+/dev/hd9var 5.00 1.80 64% 8052 2% /var
+/dev/hd3 5.00 4.93 2% 163 1% /tmp
+/dev/hd1 2.00 2.00 1% 5 1% /home
+/dev/hd11admin 0.25 0.25 1% 7 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 10.00 8.00 21% 20449 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/autotcvg1_1/autotclv1 2.00 0.99 51% 15 1% /autotclv1
+
+
+DATE:2017-01-16 17:22:56
+HOST:a110101
+USER:root
+STDIN:umount /autotclv1;
+STDOUT:
+
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-01-16 17:22:57
+HOST:a110101
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-01-16 17:22:58
+HOST:a110101
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+a110101_disk_0 auto:LVM        -            -            LVM
+a110101_disk_1 auto:LVM        -            -            LVM
+emc_clariion0_2 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_3 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_4 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_5 auto:cdsdisk    -            -            online
+emc_clariion0_6 auto:cdsdisk    -            -            online
+emc_clariion0_7 auto:cdsdisk    autotcvg1_101  autotcvg1_1  online
+emc_clariion0_8 auto:cdsdisk    -            -            online
+emc_clariion0_9 auto:cdsdisk    -            -            online
+emc_clariion0_575 auto:cdsdisk    -            -            online
+emc_clariion0_576 auto:cdsdisk    -            -            online
+emc_clariion0_577 auto:cdsdisk    -            -            online
+emc_clariion0_578 auto:cdsdisk    -            -            online
+emc_clariion0_579 auto:cdsdisk    -            -            online
+emc_clariion0_580 auto:cdsdisk    -            -            online
+emc_clariion0_581 auto:cdsdisk    -            -            online
+emc_clariion0_582 auto:cdsdisk    -            -            online
+emc_clariion0_583 auto:cdsdisk    -            -            online
+emc_clariion0_584 auto:cdsdisk    -            -            online
+emc_clariion0_585 auto:cdsdisk    -            -            online
+emc_clariion0_586 auto:cdsdisk    -            -            online
+emc_clariion0_587 auto:cdsdisk    -            -            online
+emc_clariion0_588 auto:cdsdisk    -            -            online
+emc_clariion0_589 auto:cdsdisk    -            -            online
+emc_clariion0_590 auto:cdsdisk    -            -            online
+emc_clariion0_591 auto:cdsdisk    -            -            online
+emc0_06ff    auto:LVM        -            -            LVM
+emc0_070a    auto:cdsdisk    -            -            online thinrclm
+emc0_070b    auto:cdsdisk    -            -            online thinrclm
+emc0_070c    auto:cdsdisk    -            -            online thinrclm
+emc0_070d    auto:cdsdisk    -            -            online thinrclm
+emc0_070e    auto:cdsdisk    -            -            online thinrclm
+emc0_070f    auto:cdsdisk    -            -            online thinrclm
+emc0_0700    auto:cdsdisk    -            -            online thinrclm
+emc0_0701    auto:LVM        -            -            LVM
+emc0_0702    auto:cdsdisk    -            -            online thinrclm
+emc0_0703    auto:cdsdisk    -            -            online thinrclm
+emc0_0704    auto:cdsdisk    -            -            online thinrclm
+emc0_0705    auto:cdsdisk    -            -            online thinrclm
+emc0_0706    auto:cdsdisk    -            -            online thinrclm
+emc0_0707    auto:cdsdisk    -            -            online thinrclm
+emc0_0708    auto:cdsdisk    -            -            online thinrclm
+emc0_0709    auto:cdsdisk    -            -            online thinrclm
+emc0_0710    auto:cdsdisk    -            -            online thinrclm
+emc0_0711    auto:cdsdisk    -            -            online thinrclm
+emc0_0712    auto:cdsdisk    -            -            online thinrclm
+
+
+DATE:2017-01-16 17:22:59
+HOST:a110101
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcvg1_1  enabled              1484608793.74.a110101
+
+
+DATE:2017-01-16 17:22:59
+HOST:a110101
+USER:root
+STDIN:vxdg destroy autotcvg1_1
+STDOUT:
+

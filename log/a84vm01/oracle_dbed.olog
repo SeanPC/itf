@@ -1,0 +1,2681 @@
+
+==================== Operation Log for TC oracle_dbed ====================
+DATE:2017-04-27 13:44:23
+Nodes:a84vm01 a84vm02
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-04-27 13:44:23
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-04-27 13:44:23
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:12160784 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5569202 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3333403802 (3.1 GiB)  TX bytes:5768578308 (5.3 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:18414 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:18414 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:2433447 (2.3 MiB)  TX bytes:2433447 (2.3 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-04-27 13:44:23
+HOST:a84vm01
+USER:root
+STDIN:ssh -l root a84vm01
+STDOUT:
+
+
+
+DATE:2017-04-27 13:44:25
+HOST:a84vm02
+USER:root
+STDIN:ssh -l root a84vm02
+STDOUT:
+
+
+
+DATE:2017-04-27 13:44:27
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+
+DATE:2017-04-27 13:44:28
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-04-27 13:44:28
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:12160983 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5569367 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3333437700 (3.1 GiB)  TX bytes:5768607348 (5.3 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:18414 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:18414 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:2433447 (2.3 MiB)  TX bytes:2433447 (2.3 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-04-27 13:44:29
+HOST:a84vm01
+USER:root
+STDIN:ssh -l root a84vm01
+STDOUT:
+
+
+
+DATE:2017-04-27 13:44:35
+HOST:a84vm02
+USER:root
+STDIN:ssh -l root a84vm02
+STDOUT:
+
+
+
+DATE:2017-04-27 13:44:37
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+
+DATE:2017-04-27 13:44:38
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+***Getting hostname of node***
+
+
+
+DATE:2017-04-27 13:44:38
+HOST:a84vm01
+USER:root
+STDIN:hostname
+STDOUT:
+a84vm01
+
+***Getting os version***
+
+
+
+DATE:2017-04-27 13:44:39
+HOST:a84vm01
+USER:root
+STDIN:uname
+STDOUT:
+AIX
+
+
+DATE:2017-04-27 13:44:41
+HOST:a84vm01
+USER:root
+STDIN:oslevel -s
+STDOUT:
+7200-01-01-1642
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-04-27 13:44:42
+HOST:a84vm01
+USER:root
+STDIN:lslpp -l|grep -i vrts
+STDOUT:
+  VRTSamf                    7.2.0.0  COMMITTED  Veritas AMF
+  VRTSaslapm                 7.2.0.0  COMMITTED  Array Support Libraries and
+  VRTScavf                   7.2.0.0  COMMITTED  Veritas cfs and cvm agents
+  VRTScps                    7.2.0.0  COMMITTED  Veritas Co-ordination Point
+  VRTSdbac                   7.2.0.0  COMMITTED  Veritas Oracle Real
+  VRTSdbed                   7.2.0.0  COMMITTED  Storage Management Software
+  VRTSfsadv                  7.2.0.0  COMMITTED  Veritas File System Advanced
+  VRTSgab                    7.2.0.0  COMMITTED  Veritas Group Membership and
+  VRTSglm                    7.2.0.0  COMMITTED  Veritas LOCK MGR
+  VRTSgms                    7.2.0.0  COMMITTED  Veritas Global Messaging
+  VRTSllt                    7.2.0.0  COMMITTED  Veritas Low Latency Transport 
+  VRTSodm                    7.2.0.0  COMMITTED  Veritas Extension for Oracle
+  VRTSperl                  5.24.0.0  COMMITTED  Perl 5.24.0 for Veritas
+  VRTSsfcpi                  7.2.0.0  COMMITTED  Veritas InfoScale Installer
+  VRTSsfmh                   7.2.0.0  COMMITTED  Veritas Infoscale Operations
+  VRTSspt                    7.2.0.0  COMMITTED  Veritas Support Tools
+  VRTSvbs                    7.2.0.0  COMMITTED  Virtual Business Services
+  VRTSvcs                    7.2.0.0  COMMITTED  Veritas Cluster Server
+  VRTSvcsag                  7.2.0.0  COMMITTED  Veritas Cluster Server Bundled
+  VRTSvcsea                  7.2.0.0  COMMITTED  Veritas High Availability
+  VRTSvcswiz                 7.2.0.0  COMMITTED  Veritas Cluster Server Wizards
+  VRTSveki                   7.2.0.0  COMMITTED  Veritas Kernel Interface
+  VRTSvlic                  3.2.71.4  COMMITTED  Veritas License Utilities
+  VRTSvxfen                  7.2.0.0  COMMITTED  Veritas I/O Fencing 
+  VRTSvxfs                   7.2.0.0  COMMITTED  Veritas File System
+  VRTSvxvm                   7.2.0.0  COMMITTED  Veritas Volume Manager
+  VRTSamf                    7.2.0.0  COMMITTED  Veritas AMF
+  VRTSaslapm                 7.2.0.0  COMMITTED  Array Support Libraries and
+  VRTScavf                   7.2.0.0  COMMITTED  Veritas cfs and cvm agents
+  VRTScps                    7.2.0.0  COMMITTED  Veritas Co-ordination Point
+  VRTSdbac                   7.2.0.0  COMMITTED  Veritas Oracle Real
+  VRTSgab                    7.2.0.0  COMMITTED  Veritas Group Membership and
+  VRTSglm                    7.2.0.0  COMMITTED  Veritas LOCK MGR
+  VRTSgms                    7.2.0.0  COMMITTED  Veritas Global Messaging
+  VRTSllt                    7.2.0.0  COMMITTED  Veritas Low Latency Transport 
+  VRTSodm                    7.2.0.0  COMMITTED  Veritas Extension for Oracle
+  VRTSperl                  5.24.0.0  COMMITTED  Perl 5.24.0 for Veritas
+  VRTSsfcpi                  7.2.0.0  COMMITTED  Veritas InfoScale Installer
+  VRTSsfmh                   7.2.0.0  COMMITTED  Veritas Infoscale Operations
+  VRTSvbs                    7.2.0.0  COMMITTED  Virtual Business Services
+  VRTSvcs                    7.2.0.0  COMMITTED  Veritas Cluster Server
+  VRTSvcsag                  7.2.0.0  COMMITTED  Veritas Cluster Server Bundled
+  VRTSvcsea                  7.2.0.0  COMMITTED  Veritas High Availability
+  VRTSveki                   7.2.0.0  COMMITTED  Veritas Kernel Interface
+  VRTSvxfen                  7.2.0.0  COMMITTED  Veritas I/O Fencing 
+  VRTSvxfs                   7.2.0.0  COMMITTED  Veritas File System
+  VRTSvxvm                   7.2.0.0  COMMITTED  Veritas Volume Manager
+
+
+====STEP: Checking status of Oracle database
+DATE:2017-04-27 13:44:42
+
+***Checking if relink oracle odm libray to Veritas odm libray***
+
+
+
+DATE:2017-04-27 13:44:43
+HOST:a84vm01
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx    1 root     system           28 Apr 27 13:14 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib/libodm64.so
+
+
+DATE:2017-04-27 13:44:44
+HOST:a84vm02
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx    1 root     system           28 Apr 27 13:15 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib/libodm64.so
+
+***Checking if Oracle instance is OPEN***
+
+
+
+DATE:2017-04-27 13:44:45
+HOST:a84vm01
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 13:44:45 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+orcl1		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Checking if Archive log mode is enabled***
+
+
+
+DATE:2017-04-27 13:44:47
+HOST:a84vm01
+USER:oracle
+STDIN:archive log list;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 13:44:47 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+Database log mode	       Archive Mode
+Automatic archival	       Enabled
+Archive destination	       /archive
+Oldest online log sequence     10
+Next log sequence to archive   11
+Current log sequence	       11
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Getting datafile path and name***
+
+
+
+DATE:2017-04-27 13:44:49
+HOST:a84vm01
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 13:44:49 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/dbdata/orcl/system01.dbf
+/dbdata/orcl/sysaux01.dbf
+/dbdata/orcl/undotbs01.dbf
+/dbdata/orcl/users01.dbf
+/dbdata/orcl/undotbs02.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+====STEP: Prepare snapshot environment
+DATE:2017-04-27 13:44:49
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /archive***
+
+
+
+DATE:2017-04-27 13:44:50
+HOST:a84vm01
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 5.38 83% 60642 5% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.79 5% 1160 1% /var
+/dev/hd3 4.00 3.98 1% 379 1% /tmp
+/dev/hd1 10.00 7.76 23% 1922 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.59 29% 9618 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.53 10% 25 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.21 36% 42 1% /dbdata
+
+
+DATE:2017-04-27 13:44:51
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2579_dbarch/archive
+STDOUT:
+vxfs
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /dbdata***
+
+
+
+DATE:2017-04-27 13:44:52
+HOST:a84vm01
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 5.38 83% 60642 5% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.79 5% 1160 1% /var
+/dev/hd3 4.00 3.98 1% 379 1% /tmp
+/dev/hd1 10.00 7.76 23% 1922 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.59 29% 9618 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.53 10% 25 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.21 36% 42 1% /dbdata
+
+
+DATE:2017-04-27 13:44:53
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2579_dbarch/dbdata
+STDOUT:
+vxfs
+
+
+====STEP: Clone database testing by flashsnap
+DATE:2017-04-27 13:44:53
+
+***Adding mirror for volume dbdata***
+
+
+
+DATE:2017-04-27 13:44:54
+HOST:a84vm01
+USER:root
+STDIN:vxassist -g oradg2579_dbarch maxsize
+STDOUT:
+Maximum volume size: 95506432 (46634Mb)
+
+
+DATE:2017-04-27 13:44:55
+HOST:a84vm01
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+
+
+DATE:2017-04-27 13:44:56
+HOST:a84vm01
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch prepare dbdata
+STDOUT:
+
+
+
+DATE:2017-04-27 13:52:13
+HOST:a84vm01
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch addmir dbdata
+STDOUT:
+
+
+
+DATE:2017-04-27 13:52:19
+HOST:a84vm01
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+pl dbdata-02    dbdata       ENABLED  10485760 -        SNAPDONE -       -
+sd emc_clariion0_17-01 dbdata-02 ENABLED 73984 0        -        -       -
+sd emc_clariion0_21-01 dbdata-02 ENABLED 10411776 73984 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd emc_clariion0_18-02 dbdata_dcl-01 ENABLED 67840 0    -        -       -
+pl dbdata_dcl-02 dbdata_dcl  DISABLED 67840    -        DCOSNP   -       -
+sd emc_clariion0_17-02 dbdata_dcl-02 ENABLED 67840 0    -        -       -
+
+
+DATE:2017-04-27 13:52:20
+HOST:a84vm01
+USER:root
+STDIN:vxedit -g oradg2579_dbarch set putil2=dbed_flashsnap dbdata-02
+STDOUT:
+
+
+***Adding mirror for volume archive***
+
+
+
+DATE:2017-04-27 13:52:21
+HOST:a84vm01
+USER:root
+STDIN:vxassist -g oradg2579_dbarch maxsize
+STDOUT:
+Maximum volume size: 84885504 (41448Mb)
+
+
+DATE:2017-04-27 13:52:21
+HOST:a84vm01
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+pl dbdata-02    dbdata       ENABLED  10485760 -        SNAPDONE -       -
+sd emc_clariion0_17-01 dbdata-02 ENABLED 73984 0        -        -       -
+sd emc_clariion0_21-01 dbdata-02 ENABLED 10411776 73984 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd emc_clariion0_18-02 dbdata_dcl-01 ENABLED 67840 0    -        -       -
+pl dbdata_dcl-02 dbdata_dcl  DISABLED 67840    -        DCOSNP   -       -
+sd emc_clariion0_17-02 dbdata_dcl-02 ENABLED 67840 0    -        -       -
+
+
+DATE:2017-04-27 13:52:22
+HOST:a84vm01
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch prepare archive
+STDOUT:
+
+
+
+DATE:2017-04-27 13:53:31
+HOST:a84vm01
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch addmir archive
+STDOUT:
+
+
+
+DATE:2017-04-27 13:53:36
+HOST:a84vm01
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+pl archive-02   archive      ENABLED  10485760 -        SNAPDONE -       -
+sd emc_clariion0_19-01 archive-02 ENABLED 73984 0       -        -       -
+sd emc_clariion0_22-01 archive-02 ENABLED 10411776 73984 -       -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd emc_clariion0_10-02 archive_dcl-01 ENABLED 67840 0   -        -       -
+pl archive_dcl-02 archive_dcl DISABLED 67840   -        DCOSNP   -       -
+sd emc_clariion0_19-02 archive_dcl-02 ENABLED 67840 0   -        -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+pl dbdata-02    dbdata       ENABLED  10485760 -        SNAPDONE -       -
+sd emc_clariion0_17-01 dbdata-02 ENABLED 73984 0        -        -       -
+sd emc_clariion0_21-01 dbdata-02 ENABLED 10411776 73984 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd emc_clariion0_18-02 dbdata_dcl-01 ENABLED 67840 0    -        -       -
+pl dbdata_dcl-02 dbdata_dcl  DISABLED 67840    -        DCOSNP   -       -
+sd emc_clariion0_17-02 dbdata_dcl-02 ENABLED 67840 0    -        -       -
+
+
+DATE:2017-04-27 13:53:37
+HOST:a84vm01
+USER:root
+STDIN:vxedit -g oradg2579_dbarch set putil2=dbed_flashsnap archive-02
+STDOUT:
+
+
+***Clone database and check by using Flashsnap method***
+
+
+
+DATE:2017-04-27 13:53:51
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+
+DATE:2017-04-27 13:53:54
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s flashsnap -a oracle -o list
+STDOUT:
+Service Type          Configuration                    State
+flashsnap             autotc                           start
+
+***Tring to clean exsiting configuration.***
+
+
+
+DATE:2017-04-27 13:53:58
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s flashsnap -o umount -a oracle --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --flashsnap_name autotc --clone_name clone
+STDOUT:
+
+SFDB vxsfadm ERROR V-81-0487 Cannot transit to umount from start.
+
+Reason: Operation umount is not permitted at current state.
+
+Action: Operations permitted at current state are:
+destroy clone mount snap valid preclone
+RETURN:1
+RESULT:WARNING
+
+
+DATE:2017-04-27 13:54:02
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s flashsnap -a oracle -o destroy --name autotc
+STDOUT:
+
+
+
+DATE:2017-04-27 13:54:06
+HOST:a84vm01
+USER:oracle
+STDIN:rm -f autotc;/opt/VRTS/bin/vxsfadm -s flashsnap -o setdefaults -a oracle --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME -c autotc
+STDOUT:
+Written config file to /home/oracle/autotc
+
+
+DATE:2017-04-27 13:54:07
+HOST:a84vm01
+USER:oracle
+STDIN:cat autotc
+STDOUT:
+VERSION = 7
+ORACLE_SID = orcl1
+ORACLE_HOME = /oracle/orahome
+FLASHSNAP_NAME = autotc
+
+# APP_MODE is the mode in which snapshot is taken.  Possible values
+# are:
+# 
+# 1. offline: database must be shut down before snapshot is taken.
+# 
+# 2. online: database is put in hot-backup mode before snapshot is
+#    taken
+# 
+# 3. instant: snapshot is taken without putting database in
+#    hot-backup mode
+# 
+# The default value is online.
+
+# APP_MODE = online
+
+# SNAPSHOT_ARCHIVE_LOG specifies whether volumes containing archived
+# logs must be snapshotted.
+# 
+# The default value is yes for online snapshots, and no for instant
+# and offline snapshots.
+
+# SNAPSHOT_ARCHIVE_LOG = 
+
+# ARCHIVELOG_DEST specifies the archivelog destination to be
+# snapshotted, if the database has multiple valid archivelog
+# destinations.
+# 
+# The value provided for ARCHIVELOG_DEST must be a path.  If no value is
+# provided, the first valid archivelog destination will be snapshotted.
+
+# ARCHIVELOG_DEST = 
+
+# CLONE_NAME specifies the SID of the clone instance that will be
+# created using this snapshot.
+# 
+# The value provided for CLONE_NAME must be a valid Oracle SID.  If no
+# value is specified, a default name will be generated.
+
+# CLONE_NAME = 
+
+# PFILE_MOD specifies a filename that will be used during cloning to
+# modify Oracle initialization parameters.  It must be in a name=value
+# format similar to a pfile.
+# 
+# The value provided for PFILE_MOD must be a filename.  If no value is
+# specified, defaults initialization parameters will be used for clones.
+
+# PFILE_MOD = 
+
+# REVERSE_RESYNC_RECOVERY specifies the whether the database recovery 
+# in Reverse Resync Begin operation is to be automatically attempted.
+# 
+# The value can be auto or manual. If set to manual, it will just mount 
+# the snapshot volumes on primary mountpoints and no database recovery 
+# is attempted.
+# 
+# The default value is auto.
+
+# REVERSE_RESYNC_RECOVERY = Auto
+
+# REVERSE_RESYNC_ARCHIVE_LOG specifies whether volumes containing archived
+# logs must be reverse resynchronized.
+# 
+# The default value is no.
+
+# REVERSE_RESYNC_ARCHIVE_LOG = No
+
+# SECONDARY_HOST is the host where cloning must be done.  If not
+# specified, cloning will be done on the host where the clone command
+# is invoked.
+
+# SECONDARY_HOST = 
+
+# SNAPSHOT_PLEX_TAG identifies the plexes that can be used for
+# creating the snapshot.  When the snapshot process starts, only
+# those plexes that have a putil2 tag equal to this value will be
+# considered for snapshotting.
+# 
+# This must be a string upto 31 characters long.  The default value
+# is dbed_flashsnap.
+
+# SNAPSHOT_PLEX_TAG = dbed_flashsnap
+
+# SNAPSHOT_DG_PREFIX specifies the prefix that must be used when
+# creating the snapshot diskgroups.  This string will be prepended
+# to the existing diskgroup names.
+# 
+# This must be a string.  The sum of the length of existing diskgroup
+# name and this prefix value must not exceed 31 characters.  The
+# default value is SNAP_.
+
+# SNAPSHOT_DG_PREFIX = SNAP_
+
+# SNAPSHOT_VOL_PREFIX specifies the prefix that must be used when
+# creating the snapshot volumes.  This string will be prepended
+# to the existing volume names.
+# 
+# This must be a string.  The sum of the length of existing volume
+# name and this prefix value must not exceed 31 characters.  The
+# default value is SNAP_.
+
+# SNAPSHOT_VOL_PREFIX = SNAP_
+
+# SNAPSHOT_MIRROR specifies the number of plexes that will be used
+# when creating a snapshot.
+# 
+# This must be an integer greater than 0.  The default value is 1.
+
+# SNAPSHOT_MIRROR = 1
+
+# CLONE_PATH specifies the directory location where the snapshotted
+# filesystem should be mounted.
+# 
+# If no value is specified for CLONE_PATH, a default location will be
+# selected.
+
+# CLONE_PATH = 
+
+# MAPPED_MOUNTS specifies the mount points to be used when
+# mounting and cloning a snapshot.  Mount points can be provided for
+# each diskgroup - volume pair.  If a mount point is not provided
+# for a particular pair, a default mount point will be selected.
+# 
+# This must be a semicolon-separated list of mount specifications.
+# Each specification is a key-value pair, where the key is formed by
+# joining the diskgroup and volume names by a colon.  The value is
+# the mount point for the volume.
+
+# MAPPED_MOUNTS = oradg2579_dbarch:dbdata=;oradg2579_dbarch:archive=
+
+# EXTRA_OBJECTS specifies a list of additional objects (volumes, cache
+# objects, etc.) that must be included in the snapshot diskgroup.  These
+# objects must exist in the original diskgroup.
+# 
+# This must be a comma-separated list of objects.  Each object is
+# specified by joining the diskgroup and object names with a colon.
+
+# EXTRA_OBJECTS = 
+
+
+DATE:2017-04-27 13:54:18
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s flashsnap -o validate -a oracle --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --flashsnap_name autotc --app_mode online
+STDOUT:
+Validating database configuration for third-mirror-break-off snapshot:
+    ORACLE_SID			= orcl1
+    ORACLE_HOME			= /oracle/orahome
+    APP_MODE			= online
+    SNAPSHOT_ARCHIVE_LOG	= yes
+    REVERSE_RESYNC_ARCHIVE_LOG	= no
+    REVERSE_RESYNC_RECOVERY	= auto
+    ARCHIVELOG_DEST		= /archive
+Database validation successful.
+Validating database volume layout for third-mirror-break-off snapshot:
+    Data volumes ready for snapshot:
+	Volume/volume-set dbdata of diskgroup oradg2579_dbarch mounted on /dbdata.
+    Archivelog volume ready for snapshot:
+	Volume/volume-set archive of diskgroup oradg2579_dbarch mounted on /archive.
+    Storage units to be used for snapshot from diskgroup oradg2579_dbarch:
+	emc_clariion0_21 emc_clariion0_22 emc_clariion0_17 emc_clariion0_19 
+    SNAPSHOT_VOL_PREFIX		= SNAP_
+    SNAPSHOT_DG_PREFIX		= SNAP_
+Database volume layout validated successfully.
+
+
+DATE:2017-04-27 13:55:31
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s flashsnap -o mount -a oracle --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --flashsnap_name autotc
+STDOUT:
+Validating database configuration for third-mirror-break-off snapshot:
+    ORACLE_SID			= orcl1
+    ORACLE_HOME			= /oracle/orahome
+    APP_MODE			= online
+    ARCHIVELOG_DEST		= /archive
+    SNAPSHOT_ARCHIVE_LOG	= yes
+    REVERSE_RESYNC_ARCHIVE_LOG	= no
+    REVERSE_RESYNC_RECOVERY	= auto
+Database validation successful.
+snapshot started at Thu Apr 27 13:54:28 2017.
+Putting database in backup mode ...                            Done
+Validating database volume layout for third-mirror-break-off snapshot:
+    Data volumes ready for snapshot:
+	Volume/volume-set dbdata of diskgroup oradg2579_dbarch mounted on /dbdata.
+    Archivelog volume ready for snapshot:
+	Volume/volume-set archive of diskgroup oradg2579_dbarch mounted on /archive.
+    Storage units to be used for snapshot from diskgroup oradg2579_dbarch:
+	emc_clariion0_22 emc_clariion0_19 emc_clariion0_17 emc_clariion0_21 
+    SNAPSHOT_VOL_PREFIX		= SNAP_
+    SNAPSHOT_DG_PREFIX		= SNAP_
+Database volume layout validated successfully.
+Creating snapshot volumes for data volumes ...                 Done
+Taking database out of backup mode ...                         Done
+Flushing online redo logs ...                                  Done
+Creating snapshot volume for archivelog volume ...             Done
+Copying snapshot information to snapshot volume ...            Done
+Creating snapshot diskgroups ...                               Done
+Deporting snapshot diskgroups ...                              Done
+SNAP_oradg2579_dbarch 
+snapshot ended at Thu Apr 27 13:55:12 2017.
+Retrieving snapshot information ...                            Done
+Importing snapshot diskgroups ...                              Done
+Generated mount path: /var/tmp/rcTXGk_wWv
+Mounting snapshot volumes ...                                  Done
+
+
+DATE:2017-04-27 13:56:13
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s flashsnap -o clone -a oracle --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --flashsnap_name autotc --clone_name clone
+STDOUT:
+Preparing parameter file for clone database ...                Done
+Mounting clone database clone ...                              Done
+Starting database recovery ...
+Clone database clone is open.
+
+
+DATE:2017-04-27 13:56:16
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s flashsnap -a oracle -o list
+STDOUT:
+Service Type          Configuration                    State
+flashsnap             autotc                           clone
+
+
+DATE:2017-04-27 13:56:17
+HOST:a84vm01
+USER:oracle
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 5.39 83% 60833 5% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.79 5% 1163 1% /var
+/dev/hd3 4.00 3.98 1% 380 1% /tmp
+/dev/hd1 10.00 7.76 23% 1922 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.59 29% 9618 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.52 10% 27 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.21 36% 50 1% /dbdata
+/dev/vx/dsk/SNAP_oradg2579_dbarch/SNAP_archive 5.00 4.52 10% 37 1% /var/tmp/rcTXGk_wWv/archive
+/dev/vx/dsk/SNAP_oradg2579_dbarch/SNAP_dbdata 5.00 3.30 34% 50 1% /var/tmp/rcTXGk_wWv/dbdata
+
+
+DATE:2017-04-27 13:56:18
+HOST:a84vm01
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+    root 16122118        1   3 11:26:35      -  0:41 /crs/crshome/bin/osysmond.bin
+  oracle 19464534        1   0 11:30:12      -  0:00 ora_smon_orcl1
+  oracle 22413572 22675790   0 13:56:18      -  0:00 grep smon
+  oracle 24314364        1   0 13:56:01      -  0:00 ora_smon_clone
+
+
+DATE:2017-04-27 13:56:19
+HOST:a84vm01
+USER:oracle
+STDIN:echo "export ORACLE_SID=clone #autotc" >> /home/oracle/.profile
+STDOUT:
+
+
+
+DATE:2017-04-27 13:56:20
+HOST:a84vm01
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 13:56:19 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+clone		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 13:56:21
+HOST:a84vm01
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 13:56:20 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/var/tmp/rcTXGk_wWv/dbdata/orcl/system01.dbf
+/var/tmp/rcTXGk_wWv/dbdata/orcl/sysaux01.dbf
+/var/tmp/rcTXGk_wWv/dbdata/orcl/undotbs01.dbf
+/var/tmp/rcTXGk_wWv/dbdata/orcl/users01.dbf
+/var/tmp/rcTXGk_wWv/dbdata/orcl/undotbs02.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 13:56:22
+HOST:a84vm01
+USER:oracle
+STDIN:perl -i -pe 's/.*#autotc.*
+//' /home/oracle/.profile
+STDOUT:
+
+
+
+DATE:2017-04-27 13:56:46
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s flashsnap -o umount -a oracle --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --flashsnap_name autotc --clone_name clone
+STDOUT:
+Shutting down clone database clone ...
+Database shut down.
+Retrieving snapshot information ...                            Done
+Unmounting snapshot volumes ...                                Done
+Deporting snapshot diskgroups ...                              Done
+
+
+DATE:2017-04-27 13:56:47
+HOST:a84vm01
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+    root 16122118        1   0 11:26:35      -  0:41 /crs/crshome/bin/osysmond.bin
+  oracle 19464534        1   0 11:30:12      -  0:00 ora_smon_orcl1
+  oracle 23331160 24445196   0 13:56:46      -  0:00 grep smon
+
+
+DATE:2017-04-27 13:56:47
+HOST:a84vm01
+USER:oracle
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 5.39 83% 60833 5% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.79 5% 1163 1% /var
+/dev/hd3 4.00 3.98 1% 380 1% /tmp
+/dev/hd1 10.00 7.76 23% 1922 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.59 29% 9618 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.52 10% 27 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.21 36% 50 1% /dbdata
+
+
+DATE:2017-04-27 13:56:51
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s flashsnap -a oracle -o list
+STDOUT:
+Service Type          Configuration                    State
+flashsnap             autotc                           unmount
+
+
+DATE:2017-04-27 13:57:36
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s flashsnap -a oracle -o destroy --name autotc
+STDOUT:
+resync started at Thu Apr 27 13:56:55 2017.
+Importing snapshot diskgroups ...                              Done
+Joining snapshot diskgroups to original diskgroups ...         Done
+Reattaching snapshot volumes to original volumes ...           Done
+resync ended at Thu Apr 27 13:57:36 2017.
+
+
+DATE:2017-04-27 13:57:40
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s flashsnap -a oracle -o list
+STDOUT:
+
+
+***Removing mirror for volume dbdata***
+
+
+
+DATE:2017-04-27 13:57:45
+HOST:a84vm01
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+pl archive-02   archive      ENABLED  10485760 -        SNAPDONE -       -
+sd emc_clariion0_19-01 archive-02 ENABLED 73984 0       -        -       -
+sd emc_clariion0_22-01 archive-02 ENABLED 10411776 73984 -       -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd emc_clariion0_10-02 archive_dcl-01 ENABLED 67840 0   -        -       -
+pl archive_dcl-02 archive_dcl DISABLED 67840   -        DCOSNP   -       -
+sd emc_clariion0_19-02 archive_dcl-02 ENABLED 67840 0   -        -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+pl dbdata-02    dbdata       ENABLED  10485760 -        SNAPDONE -       -
+sd emc_clariion0_17-01 dbdata-02 ENABLED 73984 0        -        -       -
+sd emc_clariion0_21-01 dbdata-02 ENABLED 10411776 73984 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd emc_clariion0_18-02 dbdata_dcl-01 ENABLED 67840 0    -        -       -
+pl dbdata_dcl-02 dbdata_dcl  DISABLED 67840    -        DCOSNP   -       -
+sd emc_clariion0_17-02 dbdata_dcl-02 ENABLED 67840 0    -        -       -
+
+
+DATE:2017-04-27 13:57:46
+HOST:a84vm01
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch rmmir dbdata
+STDOUT:
+
+
+
+DATE:2017-04-27 13:57:47
+HOST:a84vm01
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch unprepare dbdata
+STDOUT:
+
+
+***Removing mirror for volume archive***
+
+
+
+DATE:2017-04-27 13:57:48
+HOST:a84vm01
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+pl archive-02   archive      ENABLED  10485760 -        SNAPDONE -       -
+sd emc_clariion0_19-01 archive-02 ENABLED 73984 0       -        -       -
+sd emc_clariion0_22-01 archive-02 ENABLED 10411776 73984 -       -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd emc_clariion0_10-02 archive_dcl-01 ENABLED 67840 0   -        -       -
+pl archive_dcl-02 archive_dcl DISABLED 67840   -        DCOSNP   -       -
+sd emc_clariion0_19-02 archive_dcl-02 ENABLED 67840 0   -        -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+
+
+DATE:2017-04-27 13:57:49
+HOST:a84vm01
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch rmmir archive
+STDOUT:
+
+
+
+DATE:2017-04-27 13:57:50
+HOST:a84vm01
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch unprepare archive
+STDOUT:
+
+
+
+====STEP: Clone database testing by checkpoint
+DATE:2017-04-27 13:57:50
+
+
+DATE:2017-04-27 13:57:53
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -a oracle -o list
+STDOUT:
+
+
+
+DATE:2017-04-27 13:58:18
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o create -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc
+STDOUT:
+Putting database in backup mode...                             Done
+Creating Storage Checkpoint autotc ...                         Done
+Storage Checkpoint autotc created
+Removing the database from backup mode...                      Done
+
+
+DATE:2017-04-27 13:58:25
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o mount -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc --mount_path=/tmp/autotc
+STDOUT:
+Mounting Checkpoint to /tmp/autotc...                          Done
+
+
+DATE:2017-04-27 13:58:26
+HOST:a84vm01
+USER:oracle
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 5.38 83% 60838 5% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.79 5% 1164 1% /var
+/dev/hd3 4.00 3.98 1% 380 1% /tmp
+/dev/hd1 10.00 7.76 23% 1922 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.59 29% 9618 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.52 10% 29 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.21 36% 49 1% /dbdata
+/dev/vx/dsk/oradg2579_dbarch/dbdata:autotc 5.00 3.21 36% 7179 1% /tmp/autotc/dbdata
+
+
+DATE:2017-04-27 13:58:32
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o umount -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc
+STDOUT:
+Unmounting the checkpoint...                                   Done
+
+
+DATE:2017-04-27 13:58:33
+HOST:a84vm01
+USER:oracle
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 5.38 83% 60838 5% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.79 5% 1164 1% /var
+/dev/hd3 4.00 3.98 1% 380 1% /tmp
+/dev/hd1 10.00 7.76 23% 1922 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.59 29% 9618 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.52 10% 29 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.21 36% 48 1% /dbdata
+
+
+DATE:2017-04-27 13:58:46
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o mountrw -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc --mount_path=/tmp/autotc
+STDOUT:
+Creating Storage Checkpoint autotc_rw_1493276704 ...           Done
+Storage Checkpoint autotc_rw_1493276704 created
+Mounting Checkpoint to /tmp/autotc...                          Done
+
+
+DATE:2017-04-27 13:58:47
+HOST:a84vm01
+USER:oracle
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 5.38 83% 60838 5% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.79 5% 1165 1% /var
+/dev/hd3 4.00 3.98 1% 380 1% /tmp
+/dev/hd1 10.00 7.76 23% 1922 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.59 29% 9618 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.52 10% 29 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.21 36% 56 1% /dbdata
+/dev/vx/dsk/oradg2579_dbarch/dbdata:autotc_rw_1493276704 5.00 3.21 36% 7179 1% /tmp/autotc/dbdata
+
+
+DATE:2017-04-27 13:58:53
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o umount -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc_rw_1493276704
+STDOUT:
+Unmounting the checkpoint...                                   Done
+
+
+DATE:2017-04-27 13:58:53
+HOST:a84vm01
+USER:oracle
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 5.38 83% 60838 5% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.79 5% 1165 1% /var
+/dev/hd3 4.00 3.98 1% 380 1% /tmp
+/dev/hd1 10.00 7.76 23% 1922 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.59 29% 9618 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.52 10% 29 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.21 36% 55 1% /dbdata
+
+
+DATE:2017-04-27 13:59:05
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o delete -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc_rw_1493276704
+STDOUT:
+Deleting the Checkpoint autotc_rw_1493276704...
+ Deleting Checkpoint from /dbdata...                           Done
+
+
+DATE:2017-04-27 13:59:10
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o delete -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc
+STDOUT:
+Deleting the Checkpoint autotc...
+ Deleting Checkpoint from /dbdata...                           Done
+
+
+DATE:2017-04-27 14:00:36
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o clone -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc --clone_path=/tmp/autotc --clone_name=clone
+STDOUT:
+Putting database in backup mode...                             Done
+Creating Storage Checkpoint autotc ...                         Done
+Storage Checkpoint autotc created
+Removing the database from backup mode...                      Done
+Creating Storage Checkpoint autotc_rw_1493273168 ...           Done
+Storage Checkpoint autotc_rw_1493273168 created
+Mounting Checkpoint to /tmp/autotc...                          Done
+Cloning the Pfile ...                                          Done
+Mounting the database...                                       Done
+Recovering the clone database...                               Done
+
+
+DATE:2017-04-27 14:00:42
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -a oracle -o list
+STDOUT:
+Checkpoint                        Type      MountPt    Clone     State
+===============================================================================
+autotc                            online    /tmp/auto  clone     ckpt
+                                            tc
+autotc_rw_1493273168              online    /tmp/auto  clone     clone
+                                            tc
+
+
+DATE:2017-04-27 14:00:43
+HOST:a84vm01
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+    root 16122118        1   3 11:26:35      -  0:43 /crs/crshome/bin/osysmond.bin
+  oracle 19464534        1   0 11:30:12      -  0:00 ora_smon_orcl1
+  oracle 21168402 21365210   0 14:00:43      -  0:00 grep smon
+  oracle 23527912        1   0 14:00:25      -  0:00 ora_smon_clone
+
+
+DATE:2017-04-27 14:00:44
+HOST:a84vm01
+USER:oracle
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 5.38 83% 60912 5% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.79 5% 1167 1% /var
+/dev/hd3 4.00 3.98 1% 380 1% /tmp
+/dev/hd1 10.00 7.76 23% 1922 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.59 29% 9618 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.52 10% 31 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.09 39% 57 1% /dbdata
+/dev/vx/dsk/oradg2579_dbarch/dbdata:autotc_rw_1493273168 5.00 3.09 39% 7182 1% /tmp/autotc/dbdata
+
+
+DATE:2017-04-27 14:00:45
+HOST:a84vm01
+USER:oracle
+STDIN:echo "export ORACLE_SID=clone #autotc" >> /home/oracle/.profile
+STDOUT:
+
+
+
+DATE:2017-04-27 14:00:46
+HOST:a84vm01
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 14:00:45 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+clone		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 14:00:47
+HOST:a84vm01
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 14:00:47 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/tmp/autotc/dbdata/orcl/system01.dbf
+/tmp/autotc/dbdata/orcl/sysaux01.dbf
+/tmp/autotc/dbdata/orcl/undotbs01.dbf
+/tmp/autotc/dbdata/orcl/users01.dbf
+/tmp/autotc/dbdata/orcl/undotbs02.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 14:00:48
+HOST:a84vm01
+USER:oracle
+STDIN:perl -i -pe 's/.*#autotc.*
+//' /home/oracle/.profile
+STDOUT:
+
+
+
+DATE:2017-04-27 14:01:06
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o umount -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc --clone_path=/tmp/autotc --clone_name=clone
+STDOUT:
+Shutting down the clone database clone ...                     Done
+Unmounting the checkpoint...                                   Done
+
+
+DATE:2017-04-27 14:01:07
+HOST:a84vm01
+USER:oracle
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 5.38 83% 60917 5% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.79 5% 1167 1% /var
+/dev/hd3 4.00 3.98 1% 380 1% /tmp
+/dev/hd1 10.00 7.76 23% 1922 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.59 29% 9618 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.52 10% 31 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.09 39% 57 1% /dbdata
+
+
+DATE:2017-04-27 14:01:07
+HOST:a84vm01
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+    root 16122118        1   5 11:26:35      -  0:43 /crs/crshome/bin/osysmond.bin
+  oracle 19464534        1   0 11:30:12      -  0:00 ora_smon_orcl1
+
+
+DATE:2017-04-27 14:01:13
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -a oracle -o list
+STDOUT:
+Checkpoint                        Type      MountPt    Clone     State
+===============================================================================
+autotc                            online    /tmp/auto  clone     ckpt
+                                            tc
+autotc_rw_1493273168              online    /tmp/auto  clone     umount
+                                            tc
+
+
+DATE:2017-04-27 14:01:19
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o delete -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc_rw_1493273168
+STDOUT:
+Deleting the Checkpoint autotc_rw_1493273168...
+ Deleting Checkpoint from /dbdata...                           Done
+
+
+DATE:2017-04-27 14:01:25
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o delete -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc
+STDOUT:
+Deleting the Checkpoint autotc...
+ Deleting Checkpoint from /dbdata...                           Done
+
+
+DATE:2017-04-27 14:01:28
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -a oracle -o list
+STDOUT:
+
+
+
+====STEP: Clone database testing by filesnap
+DATE:2017-04-27 14:01:28
+
+
+DATE:2017-04-27 14:01:31
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle -o list --oracle_sid $ORACLE_SID
+STDOUT:
+The following snapshot(s)/clone(s) are available:
+SNAPSHOT NAME            CLONE NAME               STATUS                   
+
+
+DATE:2017-04-27 14:01:35
+HOST:a84vm01
+USER:oracle
+STDIN:rm -f autotc;/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle --oracle_sid $ORACLE_SID -oracle_home $ORACLE_HOME --filesnap_name autotc -c autotc -o setdefaults
+STDOUT:
+Written config file to /home/oracle/autotc
+
+
+DATE:2017-04-27 14:01:36
+HOST:a84vm01
+USER:oracle
+STDIN:cat autotc
+STDOUT:
+VERSION = 7
+ORACLE_SID = orcl1
+ORACLE_HOME = /oracle/orahome
+FILESNAP_NAME = autotc
+
+# CLONE_NAME specifies the SID of the clone instance that will be
+# created using this snapshot.
+# 
+# The value provided for CLONE_NAME must be a valid Oracle SID.  If no
+# value is specified, a default name will be generated.
+
+# CLONE_NAME = 
+
+# PFILE_MOD specifies a filename that will be used during cloning to
+# modify Oracle initialization parameters.  It must be in a name=value
+# format similar to a pfile.
+# 
+# The value provided for PFILE_MOD must be a filename.  If no value is
+# specified, defaults initialization parameters will be used for clones.
+
+# PFILE_MOD = 
+
+
+DATE:2017-04-27 14:01:56
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle --oracle_sid $ORACLE_SID -oracle_home $ORACLE_HOME --filesnap_name autotc -o snap
+STDOUT:
+Validating database configuration for filesnap...
+Database validation successful.
+	ORACLE_SID                = orcl1
+	ORACLE_HOME               = /oracle/orahome
+	APP_MODE                  = online
+Validating filesystem configuration for filesnap...
+Database filesystem configuration validated successfully.
+Starting database online backup mode...                        Done
+Snapshotting files...                                          Done
+Stopping database online backup mode...                        Done
+
+
+DATE:2017-04-27 14:02:14
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle --oracle_sid $ORACLE_SID -oracle_home $ORACLE_HOME --filesnap_name autotc --clone_name clone -o clone
+STDOUT:
+Cloning files...                                               Done
+Preparing parameter file for clone database...                 Done
+Mounting clone database...                                     Done
+Starting clone database recovery...                            Done
+Clone database clone is open.
+
+
+DATE:2017-04-27 14:02:17
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle -o list --oracle_sid $ORACLE_SID
+STDOUT:
+The following snapshot(s)/clone(s) are available:
+SNAPSHOT NAME            CLONE NAME               STATUS                   
+autotc                                            Done                     
+                         clone                    Done                     
+
+
+DATE:2017-04-27 14:02:18
+HOST:a84vm01
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+    root 16122118        1   3 11:26:35      -  0:43 /crs/crshome/bin/osysmond.bin
+  oracle 19464534        1   0 11:30:12      -  0:00 ora_smon_orcl1
+  oracle 22741332 23920996   0 14:02:18      -  0:00 grep smon
+  oracle 23462374        1   0 14:02:07      -  0:00 ora_smon_clone
+
+
+DATE:2017-04-27 14:02:19
+HOST:a84vm01
+USER:oracle
+STDIN:echo "export ORACLE_SID=clone #autotc" >> /home/oracle/.profile
+STDOUT:
+
+
+
+DATE:2017-04-27 14:02:20
+HOST:a84vm01
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 14:02:19 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+clone		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 14:02:21
+HOST:a84vm01
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 14:02:20 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/dbdata/orcl/.dbed_snapshots/autotc/clone/system01.dbf
+/dbdata/orcl/.dbed_snapshots/autotc/clone/sysaux01.dbf
+/dbdata/orcl/.dbed_snapshots/autotc/clone/undotbs01.dbf
+/dbdata/orcl/.dbed_snapshots/autotc/clone/users01.dbf
+/dbdata/orcl/.dbed_snapshots/autotc/clone/undotbs02.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 14:02:22
+HOST:a84vm01
+USER:oracle
+STDIN:select name from v$tempfile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 14:02:21 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/dbdata/orcl/.dbed_snapshots/autotc/clone/temp01.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 14:02:22
+HOST:a84vm01
+USER:oracle
+STDIN:perl -i -pe 's/.*#autotc.*
+//' /home/oracle/.profile
+STDOUT:
+
+
+
+DATE:2017-04-27 14:02:23
+HOST:a84vm01
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+    root 16122118        1   1 11:26:35      -  0:43 /crs/crshome/bin/osysmond.bin
+  oracle 19464534        1   0 11:30:12      -  0:00 ora_smon_orcl1
+  oracle 22741334 22086122   0 14:02:23      -  0:00 grep smon
+  oracle 23462374        1   0 14:02:07      -  0:00 ora_smon_clone
+
+
+DATE:2017-04-27 14:02:40
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle --oracle_sid $ORACLE_SID -oracle_home $ORACLE_HOME --filesnap_name autotc --clone_name clone -o destroyclone
+STDOUT:
+Redundant argument in sprintf at /opt/VRTSdbed/lib/perl/DBED/Msg.pm line 170.
+Shutting down clone database...                                Done
+Destroying clone...                                            Done
+
+
+DATE:2017-04-27 14:02:44
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle -o list --oracle_sid $ORACLE_SID
+STDOUT:
+The following snapshot(s)/clone(s) are available:
+SNAPSHOT NAME            CLONE NAME               STATUS                   
+autotc                                            Done                     
+
+
+DATE:2017-04-27 14:02:49
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle --oracle_sid $ORACLE_SID -oracle_home $ORACLE_HOME --filesnap_name autotc -o destroysnap
+STDOUT:
+Destroying snapshot...                                         Done
+
+
+DATE:2017-04-27 14:02:52
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle -o list --oracle_sid $ORACLE_SID
+STDOUT:
+The following snapshot(s)/clone(s) are available:
+SNAPSHOT NAME            CLONE NAME               STATUS                   
+
+
+====STEP: Clone database testing by space object snapshot
+DATE:2017-04-27 14:02:52
+
+
+DATE:2017-04-27 14:02:53
+HOST:a84vm01
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch prepare archive
+STDOUT:
+
+
+
+DATE:2017-04-27 14:02:54
+HOST:a84vm01
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd emc_clariion0_10-02 archive_dcl-01 ENABLED 67840 0   -        -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+
+
+DATE:2017-04-27 14:02:55
+HOST:a84vm01
+USER:root
+STDIN:vxassist -g oradg2579_dbarch make cachetc 2g
+STDOUT:
+
+
+
+DATE:2017-04-27 14:02:57
+HOST:a84vm01
+USER:root
+STDIN:vxmake -g oradg2579_dbarch cache cacheobjtc cachevolname=cachetc
+STDOUT:
+
+
+
+DATE:2017-04-27 14:02:58
+HOST:a84vm01
+USER:root
+STDIN:vxcache -g oradg2579_dbarch start cacheobjtc
+STDOUT:
+
+
+
+DATE:2017-04-27 14:02:59
+HOST:a84vm01
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd emc_clariion0_10-02 archive_dcl-01 ENABLED 67840 0   -        -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+
+co cacheobjtc   -            ENABLED  -        -        ACTIVE   -       -
+v  cachetc      cacheobjtc   ENABLED  4194304  -        ACTIVE   -       -
+pl cachetc-01   cachetc      ENABLED  4194304  -        ACTIVE   -       -
+sd emc_clariion0_21-01 cachetc-01 ENABLED 4194304 0     -        -       -
+
+
+DATE:2017-04-27 14:03:00
+HOST:a84vm01
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch prepare dbdata
+STDOUT:
+
+
+
+DATE:2017-04-27 14:03:02
+HOST:a84vm01
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch make source=dbdata/newvol=oracle/cache=cacheobjtc
+STDOUT:
+
+
+
+DATE:2017-04-27 14:03:03
+HOST:a84vm01
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd emc_clariion0_10-02 archive_dcl-01 ENABLED 67840 0   -        -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd emc_clariion0_18-02 dbdata_dcl-01 ENABLED 67840 0    -        -       -
+sp oracle_snp   dbdata       -        -        -        -        -       -
+
+v  oracle       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl oracle-P01   oracle       ENABLED  10485760 -        ACTIVE   -       -
+sc oracle-S01   oracle-P01   ENABLED  10485760 0        -        -       -
+dc oracle_dco   oracle       -        -        -        -        -       -
+v  oracle_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl oracle_dcl-01 oracle_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd emc_clariion0_21-02 oracle_dcl-01 ENABLED 67840 0    -        -       -
+sp dbdata_snp   oracle       -        -        -        -        -       -
+
+co cacheobjtc   -            ENABLED  -        -        ACTIVE   -       -
+v  cachetc      cacheobjtc   ENABLED  4194304  -        ACTIVE   -       -
+pl cachetc-01   cachetc      ENABLED  4194304  -        ACTIVE   -       -
+sd emc_clariion0_21-01 cachetc-01 ENABLED 4194304 0     -        -       -
+
+
+DATE:2017-04-27 14:03:06
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o list --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME
+STDOUT:
+
+
+
+DATE:2017-04-27 14:03:10
+HOST:a84vm01
+USER:oracle
+STDIN:rm -rf autotc;/opt/VRTS/bin/vxsfadm -s sos -a oracle -o setdefaults --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --sos_name autotc -c autotc
+STDOUT:
+Written config file to /home/oracle/autotc
+
+
+DATE:2017-04-27 14:03:11
+HOST:a84vm01
+USER:oracle
+STDIN:cat autotc
+STDOUT:
+VERSION = 7
+ORACLE_SID = orcl1
+ORACLE_HOME = /oracle/orahome
+SOS_NAME = autotc
+
+# APP_MODE is the mode in which snapshot is taken.  Possible values
+# are:
+# 
+# 1. offline: database must be shut down before snapshot is taken.
+# 
+# 2. online: database is put in hot-backup mode before snapshot is
+#    taken
+# 
+# 3. instant: snapshot is taken without putting database in
+#    hot-backup mode
+# 
+# The default value is online.
+
+# APP_MODE = online
+
+# SNAPSHOT_ARCHIVE_LOG specifies whether volumes containing archived
+# logs must be snapshotted.
+# 
+# The default value is yes for online snapshots, and no for instant
+# and offline snapshots.
+
+# SNAPSHOT_ARCHIVE_LOG = 
+
+# CLONE_NAME specifies the SID of the clone instance that will be
+# created using this snapshot.
+# 
+# The value provided for CLONE_NAME must be a valid Oracle SID.  If no
+# value is specified, a default name will be generated.
+
+# CLONE_NAME = 
+
+# PFILE_MOD specifies a filename that will be used during cloning to
+# modify Oracle initialization parameters.  It must be in a name=value
+# format similar to a pfile.
+# 
+# The value provided for PFILE_MOD must be a filename.  If no value is
+# specified, defaults initialization parameters will be used for clones.
+
+# PFILE_MOD = 
+
+# SECONDARY_HOST is the host where cloning must be done.  If not
+# specified, cloning will be done on the host where the clone command
+# is invoked.
+
+# SECONDARY_HOST = 
+
+# CACHE_OBJECT specifies the cache object (co) of Veritas Volume Manager
+# to be used for space-optimized snapshot operation. Cache object needs
+# to be specified for each diskgroup participating in the snapshot.
+# 
+# The format for cache object specification is:
+# 
+# CACHE_OBJECT = <dg1>:<co1>,<dg2>:<co2>
+# 
+# Example:
+# 
+# CACHE_OBJECT = oraarchdg:cacheobj,oradatadg:cache
+# 
+# This parameter is optional. If not specified, it will automatically 
+# select one of the active cache objects per diskgroup for snapshot 
+# operation.
+
+# CACHE_OBJECT = 
+
+# SNAPSHOT_VOL_PREFIX specifies the prefix that must be used when
+# creating the snapshot volumes.  This string will be prepended
+# to the existing volume names.
+# 
+# This must be a string.  The sum of the length of existing volume
+# name and this prefix value must not exceed 31 characters.  The
+# default value is SNAP_.
+
+# SNAPSHOT_VOL_PREFIX = SNAP_
+
+# CLONE_PATH specifies the directory location where the snapshotted
+# filesystem should be mounted.
+# 
+# If no value is specified for CLONE_PATH, a default location will be
+# selected.
+
+# CLONE_PATH = 
+
+# MAPPED_MOUNTS specifies the mount points to be used when
+# mounting and cloning a snapshot.  Mount points can be provided for
+# each diskgroup - volume pair.  If a mount point is not provided
+# for a particular pair, a default mount point will be selected.
+# 
+# This must be a semicolon-separated list of mount specifications.
+# Each specification is a key-value pair, where the key is formed by
+# joining the diskgroup and volume names by a colon.  The value is
+# the mount point for the volume.
+
+# MAPPED_MOUNTS = oradg2579_dbarch:dbdata=;oradg2579_dbarch:archive=
+
+# SOURCE_SNAPSHOT identifies the name of the mirror-breakoff snapshot to
+# use as a golden image for the space-optimized snapshot.
+# 
+# The value must be a string, which must be the name of a Flashsnap
+# configuration.
+
+# SOURCE_SNAPSHOT = 
+
+
+DATE:2017-04-27 14:03:20
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o validate --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --sos_name autotc -c autotc
+STDOUT:
+Validating database configuration for space-optimized snapshot:
+    ORACLE_SID			= orcl1
+    ORACLE_HOME			= /oracle/orahome
+    APP_MODE			= online
+    ARCHIVELOG_DEST		= /archive
+    SNAPSHOT_ARCHIVE_LOG	= yes
+Database validation successful.
+Validating database volume layout for space-optimized snapshot:
+    Data volumes ready for snapshot:
+	Volume/volume-set dbdata of diskgroup oradg2579_dbarch mounted on /dbdata.
+    Archivelog volume ready for snapshot:
+	Volume/volume-set archive of diskgroup oradg2579_dbarch mounted on /archive.
+    CACHE_OBJECT		= oradg2579_dbarch:cacheobjtc
+    SNAPSHOT_VOL_PREFIX		= SNAP_
+Database volume layout validated successfully.
+
+
+DATE:2017-04-27 14:03:47
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o snap --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --sos_name autotc -c autotc
+STDOUT:
+Validating database configuration for space-optimized snapshot:
+    ORACLE_SID			= orcl1
+    ORACLE_HOME			= /oracle/orahome
+    APP_MODE			= online
+    ARCHIVELOG_DEST		= /archive
+    SNAPSHOT_ARCHIVE_LOG	= yes
+Database validation successful.
+Putting database in backup mode ...                            Done
+Validating database volume layout for space-optimized snapshot:
+    Data volumes ready for snapshot:
+	Volume/volume-set dbdata of diskgroup oradg2579_dbarch mounted on /dbdata.
+    Archivelog volume ready for snapshot:
+	Volume/volume-set archive of diskgroup oradg2579_dbarch mounted on /archive.
+    CACHE_OBJECT		= oradg2579_dbarch:cacheobjtc
+    SNAPSHOT_VOL_PREFIX		= SNAP_
+Database volume layout validated successfully.
+Creating snapshot volumes for data volumes ...                 Done
+Taking database out of backup mode ...                         Done
+Flushing online redo logs ...                                  Done
+Creating snapshot volume for archivelog volume ...             Done
+
+
+DATE:2017-04-27 14:04:40
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o clone --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --sos_name autotc -c autotc
+STDOUT:
+Generated mount path: /var/tmp/Tu2plgUvCF
+Mounting snapshot volumes ...                                  Done
+Cloning using autogenerated SID ( orcqZody )
+Preparing parameter file for clone database ...                Done
+Mounting clone database ...                                    Done
+Starting database recovery ...
+Clone database orcqZody is open.
+
+
+DATE:2017-04-27 14:04:40
+HOST:a84vm01
+USER:oracle
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 5.38 83% 61185 5% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.79 5% 1173 1% /var
+/dev/hd3 4.00 3.98 1% 380 1% /tmp
+/dev/hd1 10.00 7.76 23% 1922 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.59 29% 9618 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.52 10% 35 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.21 36% 51 1% /dbdata
+/dev/vx/dsk/oradg2579_dbarch/SNAP_archive 5.00 4.52 10% 35 1% /var/tmp/Tu2plgUvCF/archive
+/dev/vx/dsk/oradg2579_dbarch/SNAP_dbdata 5.00 3.30 34% 54 1% /var/tmp/Tu2plgUvCF/dbdata
+
+
+DATE:2017-04-27 14:04:41
+HOST:a84vm01
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+    root 16122118        1   0 11:26:35      -  0:44 /crs/crshome/bin/osysmond.bin
+  oracle 19464534        1   0 11:30:12      -  0:00 ora_smon_orcl1
+  oracle 23068944        1   0 14:04:30      -  0:00 ora_smon_orcqZody
+
+
+DATE:2017-04-27 14:04:42
+HOST:a84vm01
+USER:oracle
+STDIN:echo "export ORACLE_SID=orcqZody #autotc" >> /home/oracle/.profile
+STDOUT:
+
+
+
+DATE:2017-04-27 14:04:43
+HOST:a84vm01
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 14:04:43 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+orcqZody	 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 14:04:44
+HOST:a84vm01
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 14:04:44 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/var/tmp/Tu2plgUvCF/dbdata/orcl/system01.dbf
+/var/tmp/Tu2plgUvCF/dbdata/orcl/sysaux01.dbf
+/var/tmp/Tu2plgUvCF/dbdata/orcl/undotbs01.dbf
+/var/tmp/Tu2plgUvCF/dbdata/orcl/users01.dbf
+/var/tmp/Tu2plgUvCF/dbdata/orcl/undotbs02.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 14:04:45
+HOST:a84vm01
+USER:oracle
+STDIN:select name from v$tempfile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Apr 27 14:04:45 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/var/tmp/Tu2plgUvCF/dbdata/orcl/temp01.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-27 14:04:46
+HOST:a84vm01
+USER:oracle
+STDIN:perl -i -pe 's/.*#autotc.*
+//' /home/oracle/.profile
+STDOUT:
+
+
+
+DATE:2017-04-27 14:04:49
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o list --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME
+STDOUT:
+Service Type          Configuration                    State
+sos                   autotc                           clone
+
+
+DATE:2017-04-27 14:05:08
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o umount --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --sos_name autotc
+STDOUT:
+Shutting down clone database orcqZody ...
+Database shut down.
+Unmounting snapshot volumes ...                                Done
+
+
+DATE:2017-04-27 14:05:09
+HOST:a84vm01
+USER:oracle
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 5.38 83% 61192 5% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.79 5% 1173 1% /var
+/dev/hd3 4.00 3.98 1% 380 1% /tmp
+/dev/hd1 10.00 7.76 23% 1922 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.59 29% 9618 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.52 10% 35 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.21 36% 50 1% /dbdata
+
+
+DATE:2017-04-27 14:05:10
+HOST:a84vm01
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+  oracle 13566358 21889500   0 14:05:09      -  0:00 grep smon
+    root 16122118        1   1 11:26:35      -  0:44 /crs/crshome/bin/osysmond.bin
+  oracle 19464534        1   0 11:30:12      -  0:00 ora_smon_orcl1
+
+
+DATE:2017-04-27 14:05:21
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o destroy --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --sos_name autotc
+STDOUT:
+Destroying snapshot volumes ...                                Done
+
+
+DATE:2017-04-27 14:05:24
+HOST:a84vm01
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o list --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME
+STDOUT:
+
+
+
+DATE:2017-04-27 14:05:24
+HOST:a84vm01
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd emc_clariion0_10-02 archive_dcl-01 ENABLED 67840 0   -        -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd emc_clariion0_18-02 dbdata_dcl-01 ENABLED 67840 0    -        -       -
+sp oracle_snp   dbdata       -        -        -        -        -       -
+
+v  oracle       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl oracle-P01   oracle       ENABLED  10485760 -        ACTIVE   -       -
+sc oracle-S01   oracle-P01   ENABLED  10485760 0        -        -       -
+dc oracle_dco   oracle       -        -        -        -        -       -
+v  oracle_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl oracle_dcl-01 oracle_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd emc_clariion0_21-02 oracle_dcl-01 ENABLED 67840 0    -        -       -
+sp dbdata_snp   oracle       -        -        -        -        -       -
+
+co cacheobjtc   -            ENABLED  -        -        ACTIVE   -       -
+v  cachetc      cacheobjtc   ENABLED  4194304  -        ACTIVE   -       -
+pl cachetc-01   cachetc      ENABLED  4194304  -        ACTIVE   -       -
+sd emc_clariion0_21-01 cachetc-01 ENABLED 4194304 0     -        -       -
+
+
+DATE:2017-04-27 14:05:25
+HOST:a84vm01
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm oracle
+STDOUT:
+
+
+
+DATE:2017-04-27 14:05:26
+HOST:a84vm01
+USER:root
+STDIN:vxcache -g oradg2579_dbarch stop cacheobjtc
+STDOUT:
+
+
+
+DATE:2017-04-27 14:05:27
+HOST:a84vm01
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm cacheobjtc
+STDOUT:
+
+
+
+DATE:2017-04-27 14:05:28
+HOST:a84vm01
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch unprepare dbdata
+STDOUT:
+
+
+
+DATE:2017-04-27 14:05:28
+HOST:a84vm01
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd emc_clariion0_10-02 archive_dcl-01 ENABLED 67840 0   -        -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+
+
+DATE:2017-04-27 14:05:29
+HOST:a84vm01
+USER:root
+STDIN:vxsnap -g oradg2579_dbarch unprepare archive
+STDOUT:
+
+
+
+DATE:2017-04-27 14:05:30
+HOST:a84vm01
+USER:root
+STDIN:vxprint -g oradg2579_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2579_dbarch oradg2579_dbarch - -       -        -        -       -
+
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+
+v  archive      fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_6-01 archive-01 ENABLED 10411776 0     -        -       -
+sd emc_clariion0_10-01 archive-01 ENABLED 73984 10411776 -       -       -
+
+v  dbdata       fsgen        ENABLED  10485760 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  10485760 -        ACTIVE   -       -
+sd emc_clariion0_18-01 dbdata-01 ENABLED 73984 0        -        -       -
+sd emc_clariion0_20-01 dbdata-01 ENABLED 10411776 73984 -        -       -
+
+***Removing free disk of node "a84vm01"***
+
+
+
+DATE:2017-04-27 14:05:31
+HOST:a84vm01
+USER:root
+STDIN:vxprint|grep dm
+STDOUT:
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_17 emc_clariion0_17 - 4120320 -        -        -       -
+dm emc_clariion0_18 emc_clariion0_18 - 4120320 -        -        -       -
+dm emc_clariion0_19 emc_clariion0_19 - 4120320 -        -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+dm emc_clariion0_7 emc_clariion0_7 -  10411776 -        -        -       -
+dm emc_clariion0_8 emc_clariion0_8 -  10411776 -        -        -       -
+
+
+DATE:2017-04-27 14:05:32
+HOST:a84vm01
+USER:root
+STDIN:vxdisk reclaim emc_clariion0_6 emc_clariion0_10 emc_clariion0_17 emc_clariion0_18 emc_clariion0_19 emc_clariion0_20 emc_clariion0_21 emc_clariion0_22 emc_clariion0_23 emc_clariion0_24 emc_clariion0_26 emc_clariion0_27 emc_clariion0_29 emc_clariion0_7 emc_clariion0_8
+STDOUT:
+Disk emc_clariion0_6 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_10 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_17 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_18 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_19 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_20 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_21 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_22 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_23 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_24 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_26 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_27 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_29 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_7 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_8 : Skipped. Disk not reclaimable or wrong media type.
+
+
+DATE:2017-04-27 14:05:32
+HOST:a84vm01
+USER:root
+STDIN:vxdg -qa free|awk '$5==0 {print}'
+STDOUT:
+oradg2579_dbarch emc_clariion0_17 emc_clariion0_17 emc_clariion0_17 0         4120320   -
+oradg2579_dbarch emc_clariion0_19 emc_clariion0_19 emc_clariion0_19 0         4120320   -
+oradg2579_dbarch emc_clariion0_21 emc_clariion0_21 emc_clariion0_21 0         10411776  -
+oradg2579_dbarch emc_clariion0_22 emc_clariion0_22 emc_clariion0_22 0         10411776  -
+oradg2579_dbarch emc_clariion0_23 emc_clariion0_23 emc_clariion0_23 0         10411776  -
+oradg2579_dbarch emc_clariion0_24 emc_clariion0_24 emc_clariion0_24 0         10411776  -
+oradg2579_dbarch emc_clariion0_26 emc_clariion0_26 emc_clariion0_26 0         10411776  -
+oradg2579_dbarch emc_clariion0_27 emc_clariion0_27 emc_clariion0_27 0         10411776  -
+oradg2579_dbarch emc_clariion0_29 emc_clariion0_29 emc_clariion0_29 0         10411776  -
+
+
+DATE:2017-04-27 14:05:34
+HOST:a84vm01
+USER:root
+STDIN:vxdg -g oradg2579_dbarch rmdisk emc_clariion0_17 emc_clariion0_19 emc_clariion0_21 emc_clariion0_22 emc_clariion0_23 emc_clariion0_24 emc_clariion0_26 emc_clariion0_27 emc_clariion0_29
+STDOUT:
+
+
+
+Case Result:Passed
+DATE:2017-04-27 14:05:34
+Duration:21m11s

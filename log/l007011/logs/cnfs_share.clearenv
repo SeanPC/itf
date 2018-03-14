@@ -1,0 +1,1723 @@
+
+
+DATE:2017-07-17 15:05:33
+HOST:l007011
+USER:root
+STDIN:for file in /etc/vx/encryption;do [ -d $file ] && rm -rf $file;done
+STDOUT:
+
+RETURN:1
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-07-17 15:05:33
+Duration:0m0s
+
+
+DATE:2017-07-17 15:05:33
+HOST:l007011
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "ApplicationNone.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster bj-7-1112 (
+	UserNames = { admin = enoGniNkoJooMwoInl }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l007011 (
+	)
+
+system l007012 (
+	)
+
+group cfsnfssg (
+	SystemList = { l007011 = 0, l007012 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l007011, l007012 }
+	)
+
+	ApplicationNone app (
+		)
+
+	CFSMount cfsmount4 (
+		Critical = 0
+		MountPoint = "/autotcvo11/autotcvol2"
+		BlockDevice = "/dev/vx/dsk/autotcdg1/autotcvol2"
+		MountOpt @l007011 = rw
+		MountOpt @l007012 = rw
+		NodeList = { l007011, l007012 }
+		)
+
+	CFSMount cfsmount5 (
+		Critical = 0
+		MountPoint = "/autotcckpt"
+		MountType = VX_CLNFST
+		BlockDevice = "/dev/vx/dsk/autotcdg1/autotcvol1:ckpt1"
+		MountOpt @l007011 = "rw,ckpt=ckpt1"
+		MountOpt @l007012 = "rw,ckpt=ckpt1"
+		NodeList = { l007011, l007012 }
+		)
+
+	CFSMount cfsmount6 (
+		Critical = 0
+		MountPoint = "/autotcvo11"
+		BlockDevice = "/dev/vx/dsk/autotcdg1/autotcvol1"
+		MountOpt @l007011 = rw
+		MountOpt @l007012 = rw
+		NodeList = { l007011, l007012 }
+		)
+
+	CFSMount cfsnfs_locks (
+		Critical = 0
+		MountPoint = "/autotcvol3"
+		BlockDevice = "/dev/vx/dsk/autotcdg2/autotcvol3"
+		NodeList = { l007011, l007012 }
+		)
+
+	CVMVolDg cvmvoldg2 (
+		Critical = 0
+		CVMDiskGroup = autotcdg2
+		CVMVolume = { autotcvol3 }
+		CVMActivation @l007011 = sw
+		CVMActivation @l007012 = sw
+		CVMVolumeIoTest = { autotcvol3 }
+		)
+
+	CVMVolDg cvmvoldg3 (
+		Critical = 0
+		CVMDiskGroup = autotcdg1
+		CVMVolume = { autotcvol1, autotcvol2 }
+		CVMActivation @l007011 = sw
+		CVMActivation @l007012 = sw
+		CVMVolumeIoTest = { autotcvol1, autotcvol2, "autotcvol1:ckpt1" }
+		)
+
+	NFS nfs (
+		)
+
+	Share share1 (
+		Critical = 0
+		PathName = "/autotcvo11"
+		Options = "rw,sync,insecure,no_root_squash"
+		NFSRes = nfs
+		)
+
+	Share share2 (
+		Critical = 0
+		PathName = "/autotcvo11/autotcvol2"
+		Options = "rw,sync,insecure,no_root_squash"
+		NFSRes = nfs
+		)
+
+	Share share3 (
+		Critical = 0
+		PathName = "/autotcckpt"
+		Options = "rw,sync,insecure,no_root_squash,fsid=110"
+		NFSRes = nfs
+		)
+
+	requires group cvm online local firm
+	cfsmount4 requires cfsmount6
+	cfsmount4 requires cfsnfs_locks
+	cfsmount4 requires cvmvoldg3
+	cfsmount5 requires cfsmount6
+	cfsmount5 requires cfsnfs_locks
+	cfsmount6 requires cfsnfs_locks
+	cfsmount6 requires cvmvoldg3
+	cfsnfs_locks requires cvmvoldg2
+	share1 requires cfsmount6
+	share1 requires nfs
+	share2 requires cfsmount4
+	share2 requires nfs
+	share3 requires cfsmount5
+	share3 requires nfs
+
+
+	// resource dependency tree
+	//
+	//	group cfsnfssg
+	//	{
+	//	ApplicationNone app
+	//	Share share1
+	//	    {
+	//	    NFS nfs
+	//	    CFSMount cfsmount6
+	//	        {
+	//	        CVMVolDg cvmvoldg3
+	//	        CFSMount cfsnfs_locks
+	//	            {
+	//	            CVMVolDg cvmvoldg2
+	//	            }
+	//	        }
+	//	    }
+	//	Share share2
+	//	    {
+	//	    NFS nfs
+	//	    CFSMount cfsmount4
+	//	        {
+	//	        CVMVolDg cvmvoldg3
+	//	        CFSMount cfsmount6
+	//	            {
+	//	            CVMVolDg cvmvoldg3
+	//	            CFSMount cfsnfs_locks
+	//	                {
+	//	                CVMVolDg cvmvoldg2
+	//	                }
+	//	            }
+	//	        CFSMount cfsnfs_locks
+	//	            {
+	//	            CVMVolDg cvmvoldg2
+	//	            }
+	//	        }
+	//	    }
+	//	Share share3
+	//	    {
+	//	    NFS nfs
+	//	    CFSMount cfsmount5
+	//	        {
+	//	        CFSMount cfsmount6
+	//	            {
+	//	            CVMVolDg cvmvoldg3
+	//	            CFSMount cfsnfs_locks
+	//	                {
+	//	                CVMVolDg cvmvoldg2
+	//	                }
+	//	            }
+	//	        CFSMount cfsnfs_locks
+	//	            {
+	//	            CVMVolDg cvmvoldg2
+	//	            }
+	//	        }
+	//	    }
+	//	}
+
+
+group cfsnfssg_dummy (
+	SystemList = { l007011 = 0, l007012 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l007011, l007012 }
+	)
+
+	requires group cvm online local firm
+
+
+	// resource dependency tree
+	//
+	//	group cfsnfssg_dummy
+	//	{
+	//	}
+
+
+group cvm (
+	SystemList = { l007011 = 0, l007012 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l007011, l007012 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l007011 = { m52550908777593m = sw, autotcdg1 = sw,
+			 autotcdg2 = sw }
+		ActivationMode @l007012 = { m52550908777593m = sw, autotcdg1 = sw,
+			 autotcdg2 = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = bj-7-1112
+		CVMNodeId = { l007011 = 0, l007012 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group vip1 (
+	SystemList = { l007011 = 0, l007012 = 1 }
+	AutoStartList = { l007011, l007012 }
+	TriggerPath = "bin/cavftriggers/vip"
+	TriggersEnabled = { PREONLINE, POSTONLINE, POSTOFFLINE }
+	PreOnline = 1
+	)
+
+	IP vip1 (
+		Device = eth2
+		Address = "10.200.7.25"
+		NetMask = "255.255.240.0"
+		)
+
+	NIC nic1 (
+		Device = eth2
+		)
+
+	requires group cfsnfssg online local firm
+	vip1 requires nic1
+
+
+	// resource dependency tree
+	//
+	//	group vip1
+	//	{
+	//	IP vip1
+	//	    {
+	//	    NIC nic1
+	//	    }
+	//	}
+
+***import the maincf /opt/itf/log/l007011/logs/main.cf to cluster***
+
+
+
+DATE:2017-07-17 15:05:34
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastop -all
+STDOUT:
+
+
+
+DATE:2017-07-17 15:05:44
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:05:45
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:05:55
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:05:55
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:06:06
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:06:06
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:06:16
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:06:17
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:06:27
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:06:27
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:06:38
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:06:38
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:06:48
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:06:49
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:06:59
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:06:59
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:07:10
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:07:10
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:07:21
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:07:21
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:07:31
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:07:32
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:07:42
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:07:42
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:07:53
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:07:53
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:08:03
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:08:04
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:08:14
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:08:14
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:08:25
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:08:25
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:08:35
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:08:36
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:08:46
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:08:46
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:08:57
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:08:57
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:09:13
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:09:13
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:09:23
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:09:24
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:09:34
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:09:34
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:09:45
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:09:45
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:09:56
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:09:56
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:10:06
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:10:07
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:10:17
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:10:17
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:10:28
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:10:28
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:10:39
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:10:39
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:10:49
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:10:50
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:11:00
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:11:00
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:11:11
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:11:11
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:11:21
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:11:22
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:11:32
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:11:32
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:11:43
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:11:43
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:11:53
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:11:54
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:12:04
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:12:04
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:12:15
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:12:15
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:12:25
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:12:26
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:12:36
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:12:36
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:12:47
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:12:47
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:12:57
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:12:58
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:13:08
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:13:08
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:13:19
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:13:19
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:13:29
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:13:30
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:13:40
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:13:41
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:13:51
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:13:51
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:14:02
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:14:02
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:14:12
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:14:13
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:14:23
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:14:24
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:14:34
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:14:34
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:14:45
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:14:45
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:14:55
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:14:56
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:15:06
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-07-17 15:15:06
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:15:17
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:15:27
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:15:37
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:15:48
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:15:58
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:16:08
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-17 15:16:19
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+TCERROR: Failed to stop VCS agent
+
+
+
+Case Result:Failed
+DATE:2017-07-17 15:16:24
+Duration:10m51s
+
+
+DATE:2017-07-17 15:16:24
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastop -all -force
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+RETURN:1
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-07-17 15:16:24
+Duration:10m51s
+
+
+DATE:2017-07-17 15:16:25
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/log/l007011/logs/main.cf l007011:/tmp/tmpfile.13257
+STDOUT:
+
+
+
+DATE:2017-07-17 15:16:25
+HOST:l007011
+USER:root
+STDIN:mv /etc/VRTSvcs/conf/config/main.cf /etc/VRTSvcs/conf/config/main.cf.orig;cat /tmp/tmpfile.13257 > /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+
+
+
+DATE:2017-07-17 15:16:25
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-07-17 15:16:36
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute             Value
+l007011    SysState              ADMIN_WAIT
+l007012    SysState              LEAVING
+
+
+DATE:2017-07-17 15:16:36
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -force l007011
+STDOUT:
+
+
+
+DATE:2017-07-17 15:16:46
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute             Value
+l007011    SysState              RUNNING
+l007012    SysState              RUNNING
+
+
+DATE:2017-07-17 15:16:47
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute             Value
+l007011    SysState              RUNNING
+l007012    SysState              RUNNING
+
+
+DATE:2017-07-17 15:16:47
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-07-17 15:16:57
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute             Value
+l007011    SysState              RUNNING
+l007012    SysState              RUNNING
+
+
+DATE:2017-07-17 15:16:58
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute             Value
+l007011    SysState              RUNNING
+l007012    SysState              RUNNING
+
+***Rebooting node "l007011"!***
+
+
+***Rebooting node "l007012"!***
+
+
+
+TCERROR: You must define type first in function rebootNode
+
+
+
+TCERROR: You must define type first in function rebootNode
+
+
+
+Case Result:Failed
+DATE:2017-07-17 15:16:58
+Duration:11m25s
+
+
+Case Result:Failed
+DATE:2017-07-17 15:16:58
+Duration:11m25s
+
+***Waiting the group cvm online***
+
+
+
+DATE:2017-07-17 15:16:58
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |PARTIAL|STARTING|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:16:58
+HOST:l007011
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster bj-7-1112 (
+	UserNames = { admin = enoGniNkoJooMwoInl }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l007011 (
+	)
+
+system l007012 (
+	)
+
+group cvm (
+	SystemList = { l007011 = 0, l007012 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l007011, l007012 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l007011 = { m52550908777593m = sw }
+		ActivationMode @l007012 = { m52550908777593m = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = bj-7-1112
+		CVMNodeId = { l007011 = 0, l007012 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+DATE:2017-07-17 15:17:09
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:17:19
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:17:29
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:17:40
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:17:50
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:18:01
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:18:11
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:18:21
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:18:32
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:18:42
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:18:52
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:19:03
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:19:13
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:19:23
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:19:34
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:19:44
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|
+
+
+DATE:2017-07-17 15:19:54
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|

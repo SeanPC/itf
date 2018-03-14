@@ -1,0 +1,1179 @@
+
+==================== Operation Log for TC volset_tp_reclaim ====================
+DATE:2017-07-17 14:41:52
+Nodes:l007001 l007002
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-07-17 14:41:52
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-07-17 14:41:52
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:31632321 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:6101980 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:4852585336 (4.5 GiB)  TX bytes:1462986999 (1.3 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:1071 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:1071 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:173632 (169.5 KiB)  TX bytes:173632 (169.5 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-07-17 14:41:53
+HOST:l007001
+USER:root
+STDIN:ssh -l root l007001
+STDOUT:
+
+
+
+DATE:2017-07-17 14:41:54
+HOST:l007002
+USER:root
+STDIN:ssh -l root l007002
+STDOUT:
+
+
+
+DATE:2017-07-17 14:41:55
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l007001,l007002
+STDOUT:
+
+
+
+DATE:2017-07-17 14:41:55
+HOST:l007001
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l007001
+l007002
+
+
+DATE:2017-07-17 14:41:56
+HOST:l007002
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l007001
+l007002
+
+***Getting hostname of node***
+
+
+
+DATE:2017-07-17 14:41:56
+HOST:l007001
+USER:root
+STDIN:hostname
+STDOUT:
+l007001.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-07-17 14:41:56
+HOST:l007001
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-07-17 14:41:57
+HOST:l007001
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 6.8 (Santiago)
+
+
+DATE:2017-07-17 14:41:57
+HOST:l007001
+USER:root
+STDIN:uname -r
+STDOUT:
+2.6.32-642.13.1.el6.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-07-17 14:42:01
+HOST:l007001
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSfsadv-7.2.0.000-RHEL6.x86_64
+Name        : VRTSfsadv                    Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 07:49:48 AM UTC
+Install Date: Tue 11 Jul 2017 09:21:42 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSfsadv-7.2.0.000-RHEL6.src.rpm
+Size        : 15115315                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:49 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas File System Advanced Features
+Description :
+Veritas File System Advanced Features
+
+Package INFO: VRTSvcsea-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvcsea                    Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 05:02:57 PM UTC
+Install Date: Tue 11 Jul 2017 09:23:46 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsea-7.2.0.000-RHEL6.src.rpm
+Size        : 1363002                          License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:02 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSvbs-7.2.0.000-GA_Linux.x86_64
+Name        : VRTSvbs                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : GA_Linux                      Build Date: Wed 05 Oct 2016 08:44:13 AM UTC
+Install Date: Tue 11 Jul 2017 09:25:41 AM UTC      Build Host: snapper53-64.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSvbs-7.2.0.000-GA_Linux.src.rpm
+Size        : 74478677                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:43:18 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Virtual Business Services by Veritas
+Description :
+Virtual Business Services by Veritas
+Build Stamp : 7.2.0.000-2016-10-05_00.18.20
+
+Package INFO: VRTSvcs-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvcs                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Thu 13 Oct 2016 10:56:34 PM UTC
+Install Date: Tue 11 Jul 2017 09:22:50 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcs-7.2.0.000-RHEL6.src.rpm
+Size        : 225834191                        License: Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:43:20 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Server
+Description :
+Veritas Cluster Server and Commands (x86_64)
+Build Stamp : 7.2.0.000-2016-10-13_10.00.00
+
+Package INFO: VRTSodm-7.2.0.000-RHEL6.x86_64
+Name        : VRTSodm                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC.
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 07:46:46 AM UTC
+Install Date: Tue 11 Jul 2017 09:24:46 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSodm-7.2.0.000-RHEL6.src.rpm
+Size        : 910406                           License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:53 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Disk Manager
+Description :
+Veritas Oracle Disk Manager (ODM)
+
+Package INFO: VRTSvcsag-7.2.0.101-RHEL6.x86_64
+Name        : VRTSvcsag                    Relocations: (not relocatable)
+Version     : 7.2.0.101                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 12 Jul 2017 03:32:37 PM UTC
+Install Date: Thu 13 Jul 2017 08:55:39 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsag-7.2.0.101-RHEL6.src.rpm
+Size        : 84420967                         License: Veritas Proprietary
+Signature   : (none)
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : VCS Bundled Agents
+Description :
+Veritas Cluster Server Bundled Agents (x86_64)
+Build Stamp : 7.2.0.101-2017-07-12_05.48.11
+
+Package INFO: VRTSperl-5.24.0.0-RHEL6.x86_64
+Name        : VRTSperl                     Relocations: (not relocatable)
+Version     : 5.24.0.0                          Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 07 Sep 2016 01:09:03 PM UTC
+Install Date: Tue 11 Jul 2017 09:16:52 AM UTC      Build Host: rhel6-perl.cdc.veritas.com
+Group       : Applications/System           Source RPM: VRTSperl-5.24.0.0-RHEL6.src.rpm
+Size        : 72272162                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:54 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Perl 5.24.0 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.24.0 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.71
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSaslapm-7.2.0.000-RHEL6.x86_64
+Name        : VRTSaslapm                   Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Sun 16 Oct 2016 11:47:49 AM UTC
+Install Date: Tue 11 Jul 2017 09:20:27 AM UTC      Build Host: sf-rhel6ga-build.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSaslapm-7.2.0.000-RHEL6.src.rpm
+Size        : 52836521                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:43 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTSgab-7.2.0.000-RHEL6.x86_64
+Name        : VRTSgab                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 04:15:43 PM UTC
+Install Date: Tue 11 Jul 2017 09:21:57 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSgab-7.2.0.000-RHEL6.src.rpm
+Size        : 19538780                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:50 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Group Membership and Atomic Broadcast
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64
+Build Stamp        : Veritas-7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTScps-7.2.0.000-RHEL6.x86_64
+Name        : VRTScps                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 04:35:53 PM UTC
+Install Date: Tue 11 Jul 2017 09:23:22 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTScps-7.2.0.000-RHEL6.src.rpm
+Size        : 63081538                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:45 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Co-ordination Point Server
+Description :
+Veritas Co-ordination Point Server
+Build Stamp: 7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSglm-7.2.0.000-RHEL6.x86_64
+Name        : VRTSglm                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 07:48:17 AM UTC
+Install Date: Tue 11 Jul 2017 09:24:35 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSglm-7.2.0.000-RHEL6.src.rpm
+Size        : 434712                           License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:51 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Group Lock Manager (GLM) driver
+Description :
+Veritas Group Lock Manager (GLM) driver
+Supported kernel(s): 2.6.32-71.el6.x86_64 or later
+
+Package INFO: VRTSdbac-7.2.0.000-RHEL6.x86_64
+Name        : VRTSdbac                     Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 05 Oct 2016 12:46:22 PM UTC
+Install Date: Tue 11 Jul 2017 09:24:50 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSdbac-7.2.0.000-RHEL6.src.rpm
+Size        : 12691919                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:46 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Real Application Cluster Support Package
+Description :
+Veritas Oracle Real Application Cluster Support Package
+Build Stamp	: 7.2.0.000-2016-10-05_05.34.53
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.32-642.el6.x86_64
+
+Package INFO: VRTSvcswiz-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvcswiz                   Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: "Veritas Technologies LLC"
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 04:36:28 PM UTC
+Install Date: Tue 11 Jul 2017 09:25:57 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcswiz-7.2.0.000-RHEL6.src.rpm
+Size        : 8909583                          License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:03 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Veritas Cluster Server Wizards
+Description :
+"The package contains Wizards for Veritas Cluster Server"
+
+Arch : (x86_64)
+Build Stamp : 7.2.0.000-2016-10-17_09.36.23
+
+Package INFO: VRTSvlic-3.02.71.004-RHEL6.x86_64
+Name        : VRTSvlic                     Relocations: (not relocatable)
+Version     : 3.02.71.004                       Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 12 Oct 2016 09:10:43 AM UTC
+Install Date: Tue 11 Jul 2017 09:16:58 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvlic-3.02.71.004-RHEL6.src.rpm
+Size        : 1609373                          License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:04 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas License Utilities
+Description :
+These are the Veritas License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSvxfen-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvxfen                    Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Thu 13 Oct 2016 10:45:25 PM UTC
+Install Date: Tue 11 Jul 2017 09:22:03 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvxfen-7.2.0.000-RHEL6.src.rpm
+Size        : 19006811                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:43:25 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas I/O Fencing
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64
+Build Stamp        : 7.2.0.000-2016-10-13_10.00.00
+
+Package INFO: VRTScavf-7.2.0.000-RHEL6.x86_64
+Name        : VRTScavf                     Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 07:45:43 AM UTC
+Install Date: Tue 11 Jul 2017 09:24:40 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTScavf-7.2.0.000-RHEL6.src.rpm
+Size        : 860541                           License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:44 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+Veritas Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+Package INFO: VRTSsfmh-7.2.0.0-0.x86_64
+Name        : VRTSsfmh                     Relocations: (not relocatable)
+Version     : 7.2.0.0                           Vendor: Veritas Technologies LLC
+Release     : 0                             Build Date: Wed 05 Oct 2016 10:12:52 AM UTC
+Install Date: Tue 11 Jul 2017 09:25:09 AM UTC      Build Host: vommvsles10-64bld.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSsfmh-7.2.0.0-0.src.rpm
+Size        : 169913413                        License: Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:43:16 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+
+Package INFO: VRTSvxfs-7.2.0.100-RHEL6.x86_64
+Name        : VRTSvxfs                     Relocations: (not relocatable)
+Version     : 7.2.0.100                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 12 Apr 2017 07:28:23 PM UTC
+Install Date: Wed 12 Jul 2017 09:17:14 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSvxfs-7.2.0.100-RHEL6.src.rpm
+Size        : 37350345                         License: Veritas Proprietary
+Signature   : (none)
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Filesystem
+Description :
+Veritas Filesystem
+
+Package INFO: VRTSspt-7.2.0.000-rhel6.noarch
+Name        : VRTSspt                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : rhel6                         Build Date: Tue 04 Oct 2016 05:49:03 AM UTC
+Install Date: Tue 11 Jul 2017 09:17:15 AM UTC      Build Host: sptpunrhel5bld1.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSspt-7.2.0.000-rhel6.src.rpm
+Size        : 42691235                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:43:17 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Software Support Tools Package
+Description :
+VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSamf-7.2.0.000-RHEL6.x86_64
+Name        : VRTSamf                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 04:28:53 PM UTC
+Install Date: Tue 11 Jul 2017 09:22:09 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : System Environment/Kernel     Source RPM: VRTSamf-7.2.0.000-RHEL6.src.rpm
+Size        : 17713049                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:43 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64
+Build Stamp        : 7.2.0.000-2016-10-17_09.27.08
+
+Package INFO: VRTSgms-7.2.0.000-RHEL6.x86_64
+Name        : VRTSgms                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 07:45:14 AM UTC
+Install Date: Tue 11 Jul 2017 09:24:43 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSgms-7.2.0.000-RHEL6.src.rpm
+Size        : 83955                            License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:51 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Group Messaging Services
+Description :
+Veritas Group Messaging Sevice (GMS) driver
+
+Package INFO: VRTSvxvm-7.2.0.100-RHEL6.x86_64
+Name        : VRTSvxvm                     Relocations: (not relocatable)
+Version     : 7.2.0.100                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 12 Apr 2017 04:11:26 PM UTC
+Install Date: Wed 12 Jul 2017 09:37:01 AM UTC      Build Host: sf-rhel6ga-build.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSvxvm-7.2.0.100-RHEL6.src.rpm
+Size        : 515397325                        License: Veritas Proprietary
+Signature   : (none)
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Volume Manager
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSllt-7.2.0.000-RHEL6.x86_64
+Name        : VRTSllt                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 04:10:03 PM UTC
+Install Date: Tue 11 Jul 2017 09:21:50 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSllt-7.2.0.000-RHEL6.src.rpm
+Size        : 41557514                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:52 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Low Latency Transport
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64 [LINUX_RHEL60]
+Build Stamp: Veritas-7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSdbed-7.2.0.000-RHEL.x86_64
+Name        : VRTSdbed                     Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL                          Build Date: Mon 03 Oct 2016 01:38:19 AM UTC
+Install Date: Tue 11 Jul 2017 09:24:23 AM UTC      Build Host: snapper53-64.engba.veritas.com
+Group       : Applications/Databases        Source RPM: VRTSdbed-7.2.0.000-RHEL.src.rpm
+Size        : 278952613                        License: Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:43:08 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSsfcpi-7.2.0.000-GENERIC.noarch
+Name        : VRTSsfcpi                    Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : GENERIC                       Build Date: Fri 30 Sep 2016 03:50:10 PM UTC
+Install Date: Tue 11 Jul 2017 09:25:48 AM UTC      Build Host: vmd2850lx11
+Group       : Applications/System           Source RPM: VRTSsfcpi-7.2.0.000-GENERIC.src.rpm
+Size        : 14572111                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:55 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+
+***Getting hostname of node***
+
+
+
+DATE:2017-07-17 14:42:01
+HOST:l007002
+USER:root
+STDIN:hostname
+STDOUT:
+l007002.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-07-17 14:42:02
+HOST:l007002
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-07-17 14:42:02
+HOST:l007002
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 6.8 (Santiago)
+
+
+DATE:2017-07-17 14:42:02
+HOST:l007002
+USER:root
+STDIN:uname -r
+STDOUT:
+2.6.32-642.13.1.el6.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-07-17 14:42:07
+HOST:l007002
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSperl-5.24.0.0-RHEL6.x86_64
+Name        : VRTSperl                     Relocations: (not relocatable)
+Version     : 5.24.0.0                          Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 07 Sep 2016 01:09:03 PM UTC
+Install Date: Tue 11 Jul 2017 09:16:54 AM UTC      Build Host: rhel6-perl.cdc.veritas.com
+Group       : Applications/System           Source RPM: VRTSperl-5.24.0.0-RHEL6.src.rpm
+Size        : 72272162                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:54 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Perl 5.24.0 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.24.0 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.71
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSgab-7.2.0.000-RHEL6.x86_64
+Name        : VRTSgab                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 04:15:43 PM UTC
+Install Date: Tue 11 Jul 2017 09:21:58 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSgab-7.2.0.000-RHEL6.src.rpm
+Size        : 19538780                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:50 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Group Membership and Atomic Broadcast
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64
+Build Stamp        : Veritas-7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSglm-7.2.0.000-RHEL6.x86_64
+Name        : VRTSglm                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 07:48:17 AM UTC
+Install Date: Tue 11 Jul 2017 09:24:35 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSglm-7.2.0.000-RHEL6.src.rpm
+Size        : 434712                           License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:51 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Group Lock Manager (GLM) driver
+Description :
+Veritas Group Lock Manager (GLM) driver
+Supported kernel(s): 2.6.32-71.el6.x86_64 or later
+
+Package INFO: VRTSvcswiz-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvcswiz                   Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: "Veritas Technologies LLC"
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 04:36:28 PM UTC
+Install Date: Tue 11 Jul 2017 09:25:58 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcswiz-7.2.0.000-RHEL6.src.rpm
+Size        : 8909583                          License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:03 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Veritas Cluster Server Wizards
+Description :
+"The package contains Wizards for Veritas Cluster Server"
+
+Arch : (x86_64)
+Build Stamp : 7.2.0.000-2016-10-17_09.36.23
+
+Package INFO: VRTSsfmh-7.2.0.0-0.x86_64
+Name        : VRTSsfmh                     Relocations: (not relocatable)
+Version     : 7.2.0.0                           Vendor: Veritas Technologies LLC
+Release     : 0                             Build Date: Wed 05 Oct 2016 10:12:52 AM UTC
+Install Date: Tue 11 Jul 2017 09:25:19 AM UTC      Build Host: vommvsles10-64bld.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSsfmh-7.2.0.0-0.src.rpm
+Size        : 169913413                        License: Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:43:16 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+
+Package INFO: VRTSspt-7.2.0.000-rhel6.noarch
+Name        : VRTSspt                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : rhel6                         Build Date: Tue 04 Oct 2016 05:49:03 AM UTC
+Install Date: Tue 11 Jul 2017 09:17:16 AM UTC      Build Host: sptpunrhel5bld1.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSspt-7.2.0.000-rhel6.src.rpm
+Size        : 42691235                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:43:17 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Software Support Tools Package
+Description :
+VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSfsadv-7.2.0.000-RHEL6.x86_64
+Name        : VRTSfsadv                    Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 07:49:48 AM UTC
+Install Date: Tue 11 Jul 2017 09:21:44 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSfsadv-7.2.0.000-RHEL6.src.rpm
+Size        : 15115315                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:49 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas File System Advanced Features
+Description :
+Veritas File System Advanced Features
+
+Package INFO: VRTSamf-7.2.0.000-RHEL6.x86_64
+Name        : VRTSamf                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 04:28:53 PM UTC
+Install Date: Tue 11 Jul 2017 09:22:09 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : System Environment/Kernel     Source RPM: VRTSamf-7.2.0.000-RHEL6.src.rpm
+Size        : 17713049                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:43 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64
+Build Stamp        : 7.2.0.000-2016-10-17_09.27.08
+
+Package INFO: VRTSvcsea-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvcsea                    Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 05:02:57 PM UTC
+Install Date: Tue 11 Jul 2017 09:23:46 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsea-7.2.0.000-RHEL6.src.rpm
+Size        : 1363002                          License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:02 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSgms-7.2.0.000-RHEL6.x86_64
+Name        : VRTSgms                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 07:45:14 AM UTC
+Install Date: Tue 11 Jul 2017 09:24:43 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSgms-7.2.0.000-RHEL6.src.rpm
+Size        : 83955                            License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:51 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Group Messaging Services
+Description :
+Veritas Group Messaging Sevice (GMS) driver
+
+Package INFO: VRTSvbs-7.2.0.000-GA_Linux.x86_64
+Name        : VRTSvbs                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : GA_Linux                      Build Date: Wed 05 Oct 2016 08:44:13 AM UTC
+Install Date: Tue 11 Jul 2017 09:25:42 AM UTC      Build Host: snapper53-64.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSvbs-7.2.0.000-GA_Linux.src.rpm
+Size        : 74478677                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:43:18 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Virtual Business Services by Veritas
+Description :
+Virtual Business Services by Veritas
+Build Stamp : 7.2.0.000-2016-10-05_00.18.20
+
+Package INFO: VRTSvxvm-7.2.0.100-RHEL6.x86_64
+Name        : VRTSvxvm                     Relocations: (not relocatable)
+Version     : 7.2.0.100                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 12 Apr 2017 04:11:26 PM UTC
+Install Date: Wed 12 Jul 2017 09:37:03 AM UTC      Build Host: sf-rhel6ga-build.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSvxvm-7.2.0.100-RHEL6.src.rpm
+Size        : 515397325                        License: Veritas Proprietary
+Signature   : (none)
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Volume Manager
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSllt-7.2.0.000-RHEL6.x86_64
+Name        : VRTSllt                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 04:10:03 PM UTC
+Install Date: Tue 11 Jul 2017 09:21:51 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSllt-7.2.0.000-RHEL6.src.rpm
+Size        : 41557514                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:52 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Low Latency Transport
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64 [LINUX_RHEL60]
+Build Stamp: Veritas-7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSvcs-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvcs                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Thu 13 Oct 2016 10:56:34 PM UTC
+Install Date: Tue 11 Jul 2017 09:23:05 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcs-7.2.0.000-RHEL6.src.rpm
+Size        : 225834191                        License: Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:43:20 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Server
+Description :
+Veritas Cluster Server and Commands (x86_64)
+Build Stamp : 7.2.0.000-2016-10-13_10.00.00
+
+Package INFO: VRTSdbed-7.2.0.000-RHEL.x86_64
+Name        : VRTSdbed                     Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL                          Build Date: Mon 03 Oct 2016 01:38:19 AM UTC
+Install Date: Tue 11 Jul 2017 09:24:30 AM UTC      Build Host: snapper53-64.engba.veritas.com
+Group       : Applications/Databases        Source RPM: VRTSdbed-7.2.0.000-RHEL.src.rpm
+Size        : 278952613                        License: Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:43:08 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSodm-7.2.0.000-RHEL6.x86_64
+Name        : VRTSodm                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC.
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 07:46:46 AM UTC
+Install Date: Tue 11 Jul 2017 09:24:46 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSodm-7.2.0.000-RHEL6.src.rpm
+Size        : 910406                           License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:53 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Disk Manager
+Description :
+Veritas Oracle Disk Manager (ODM)
+
+Package INFO: VRTSsfcpi-7.2.0.000-GENERIC.noarch
+Name        : VRTSsfcpi                    Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : GENERIC                       Build Date: Fri 30 Sep 2016 03:50:10 PM UTC
+Install Date: Tue 11 Jul 2017 09:25:48 AM UTC      Build Host: vmd2850lx11
+Group       : Applications/System           Source RPM: VRTSsfcpi-7.2.0.000-GENERIC.src.rpm
+Size        : 14572111                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:55 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+
+Package INFO: VRTSvcsag-7.2.0.101-RHEL6.x86_64
+Name        : VRTSvcsag                    Relocations: (not relocatable)
+Version     : 7.2.0.101                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 12 Jul 2017 03:32:37 PM UTC
+Install Date: Thu 13 Jul 2017 08:57:40 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsag-7.2.0.101-RHEL6.src.rpm
+Size        : 84420967                         License: Veritas Proprietary
+Signature   : (none)
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : VCS Bundled Agents
+Description :
+Veritas Cluster Server Bundled Agents (x86_64)
+Build Stamp : 7.2.0.101-2017-07-12_05.48.11
+
+Package INFO: VRTSaslapm-7.2.0.000-RHEL6.x86_64
+Name        : VRTSaslapm                   Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Sun 16 Oct 2016 11:47:49 AM UTC
+Install Date: Tue 11 Jul 2017 09:20:28 AM UTC      Build Host: sf-rhel6ga-build.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSaslapm-7.2.0.000-RHEL6.src.rpm
+Size        : 52836521                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:43 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTScps-7.2.0.000-RHEL6.x86_64
+Name        : VRTScps                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 04:35:53 PM UTC
+Install Date: Tue 11 Jul 2017 09:23:27 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTScps-7.2.0.000-RHEL6.src.rpm
+Size        : 63081538                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:45 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Co-ordination Point Server
+Description :
+Veritas Co-ordination Point Server
+Build Stamp: 7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSdbac-7.2.0.000-RHEL6.x86_64
+Name        : VRTSdbac                     Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 05 Oct 2016 12:46:22 PM UTC
+Install Date: Tue 11 Jul 2017 09:24:51 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSdbac-7.2.0.000-RHEL6.src.rpm
+Size        : 12691919                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:46 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Real Application Cluster Support Package
+Description :
+Veritas Oracle Real Application Cluster Support Package
+Build Stamp	: 7.2.0.000-2016-10-05_05.34.53
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.32-642.el6.x86_64
+
+Package INFO: VRTSvlic-3.02.71.004-RHEL6.x86_64
+Name        : VRTSvlic                     Relocations: (not relocatable)
+Version     : 3.02.71.004                       Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 12 Oct 2016 09:10:43 AM UTC
+Install Date: Tue 11 Jul 2017 09:16:58 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvlic-3.02.71.004-RHEL6.src.rpm
+Size        : 1609373                          License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:37:04 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas License Utilities
+Description :
+These are the Veritas License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSvxfen-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvxfen                    Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Thu 13 Oct 2016 10:45:25 PM UTC
+Install Date: Tue 11 Jul 2017 09:22:04 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvxfen-7.2.0.000-RHEL6.src.rpm
+Size        : 19006811                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Mon 17 Oct 2016 12:43:25 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas I/O Fencing
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64
+Build Stamp        : 7.2.0.000-2016-10-13_10.00.00
+
+Package INFO: VRTScavf-7.2.0.000-RHEL6.x86_64
+Name        : VRTScavf                     Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 07:45:43 AM UTC
+Install Date: Tue 11 Jul 2017 09:24:40 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTScavf-7.2.0.000-RHEL6.src.rpm
+Size        : 860541                           License: Veritas Proprietary
+Signature   : RSA/SHA1, Tue 18 Oct 2016 04:36:44 PM UTC, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+Veritas Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+Package INFO: VRTSvxfs-7.2.0.100-RHEL6.x86_64
+Name        : VRTSvxfs                     Relocations: (not relocatable)
+Version     : 7.2.0.100                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 12 Apr 2017 07:28:23 PM UTC
+Install Date: Wed 12 Jul 2017 09:17:15 AM UTC      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSvxfs-7.2.0.100-RHEL6.src.rpm
+Size        : 37350345                         License: Veritas Proprietary
+Signature   : (none)
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Filesystem
+Description :
+Veritas Filesystem
+
+
+====STEP: check CVM status
+DATE:2017-07-17 14:42:07
+
+***checking if cvm is configured and online***
+
+
+
+DATE:2017-07-17 14:42:07
+HOST:l007001
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007001    |ONLINE|
+cvm          State                 l007002    |ONLINE|
+vxfen        State                 l007001    |OFFLINE|FAULTED|
+vxfen        State                 l007002    |OFFLINE|FAULTED|
+
+***CVM of all nodes "l007001 l007002"are all online***
+
+
+
+====STEP: check if could get phsical allocate size
+DATE:2017-07-17 14:42:07
+
+
+DATE:2017-07-17 14:42:07
+HOST:l007001
+USER:root
+STDIN:vxdisk -o thin list
+STDOUT:
+DEVICE          SIZE(MB)     PHYS_ALLOC(MB)  GROUP           TYPE                  RECLAIM_CMD
+emc_clariion0_156 5120         N/A             -               thinrclm                         WRITE_SAME
+emc_clariion0_157 5120         N/A             -               thinrclm                         WRITE_SAME
+emc_clariion0_158 5120         N/A             -               thinrclm                         WRITE_SAME
+emc_clariion0_159 5120         N/A             -               thinrclm                         WRITE_SAME
+emc_clariion0_160 5120         N/A             lilyfentest     thinrclm                         WRITE_SAME
+emc_clariion0_161 5120         N/A             -               thinrclm                         WRITE_SAME
+emc_clariion0_162 5120         N/A             lilyfentest     thinrclm                         WRITE_SAME
+emc_clariion0_163 5120         N/A             -               thinrclm                         WRITE_SAME
+emc_clariion0_164 5120         N/A             -               thinrclm                         WRITE_SAME
+emc_clariion0_165 5120         N/A             -               thinrclm                         WRITE_SAME
+emc_clariion0_166 5120         N/A             -               thinrclm                         WRITE_SAME
+emc_clariion0_167 5120         N/A             -               thinrclm                         WRITE_SAME
+emc_clariion0_168 5120         N/A             -               thinrclm                         WRITE_SAME
+emc_clariion0_169 5120         N/A             -               thinrclm                         WRITE_SAME
+emc_clariion0_170 5120         N/A             -               thinrclm                         WRITE_SAME
+
+
+TCERROR: Invalid thin disks,can not get the phsical allocated size.exiting
+
+
+
+Case Result:Failed
+DATE:2017-07-17 14:42:07
+Duration:0m15s

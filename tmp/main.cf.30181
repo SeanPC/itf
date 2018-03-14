@@ -1,0 +1,154 @@
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster clus2425 (
+	UserNames = { admin = dOPhOJoLPkPPnXPjOM }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l109024 (
+	)
+
+system l109025 (
+	)
+
+group cvm (
+	SystemList = { l109024 = 0, l109025 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l109024, l109025 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = clus2425
+		CVMNodeId = { l109024 = 0, l109025 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group oradb_grp (
+	SystemList = { l109024 = 0, l109025 = 1 }
+	AutoStartList = { l109024 }
+	)
+
+	DiskGroup data_voldg (
+		DiskGroup = oradg2750_dbarch
+		Reservation = NONE
+		)
+
+	Mount archive_mnt (
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg2750_dbarch/archive"
+		FSType = vxfs
+		FsckOpt = "-y"
+		)
+
+	Mount data_mnt (
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg2750_dbarch/dbdata"
+		FSType = vxfs
+		FsckOpt = "-y"
+		)
+
+	Netlsnr Ora_Netlsnr (
+		Owner = oracle
+		Home = "/oracle/orahome"
+		TnsAdmin = "/oracle/orahome/network/admin"
+		)
+
+	Oracle oradb (
+		Critical = 0
+		Sid = orcl
+		Owner = oracle
+		Home = "/oracle/orahome"
+		)
+
+	Volume ora_archive (
+		DiskGroup = oradg2750_dbarch
+		Volume = archive
+		)
+
+	Volume ora_datavol (
+		DiskGroup = oradg2750_dbarch
+		Volume = dbdata
+		)
+
+	Ora_Netlsnr requires oradb
+	archive_mnt requires ora_archive
+	data_mnt requires ora_datavol
+	ora_archive requires data_voldg
+	ora_datavol requires data_voldg
+	oradb requires archive_mnt
+	oradb requires data_mnt
+
+
+	// resource dependency tree
+	//
+	//	group oradb_grp
+	//	{
+	//	Netlsnr Ora_Netlsnr
+	//	    {
+	//	    Oracle oradb
+	//	        {
+	//	        Mount archive_mnt
+	//	            {
+	//	            Volume ora_archive
+	//	                {
+	//	                DiskGroup data_voldg
+	//	                }
+	//	            }
+	//	        Mount data_mnt
+	//	            {
+	//	            Volume ora_datavol
+	//	                {
+	//	                DiskGroup data_voldg
+	//	                }
+	//	            }
+	//	        }
+	//	    }
+	//	}

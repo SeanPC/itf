@@ -1,0 +1,143 @@
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sf_test (
+	UserNames = { admin = JlmElgLimHmmKumGlj }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111060 (
+	)
+
+system l111061 (
+	)
+
+group cvm (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111060 = { dg1 = sw }
+		ActivationMode @l111061 = { dg1 = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sf_test
+		CVMNodeId = { l111060 = 0, l111061 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group privgrp (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	AutoStartList = { l111060 }
+	)
+
+	DiskGroup privdg1 (
+		DiskGroup = dg2
+		)
+
+	Mount pmnt1 (
+		MountPoint = "/MNT"
+		BlockDevice = "/dev/vx/dsk/dg2/vol1"
+		FSType = vxfs
+		MountOpt = rw
+		FsckOpt = "-n"
+		)
+
+	pmnt1 requires privdg1
+
+
+	// resource dependency tree
+	//
+	//	group privgrp
+	//	{
+	//	Mount pmnt1
+	//	    {
+	//	    DiskGroup privdg1
+	//	    }
+	//	}
+
+
+group sg11 (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CFSMount cfsmount1 (
+		Critical = 0
+		MountPoint = "/dg1/vol1"
+		BlockDevice = "/dev/vx/dsk/dg1/vol1"
+		MountOpt @l111060 = "cluster"
+		MountOpt @l111061 = "cluster"
+		NodeList = { l111060, l111061 }
+		)
+
+	CVMVolDg cvmvoldg1 (
+		Critical = 0
+		CVMDiskGroup = dg1
+		CVMVolume = { vol1 }
+		CVMActivation @l111060 = sw
+		CVMActivation @l111061 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount1 requires cvmvoldg1
+
+
+	// resource dependency tree
+	//
+	//	group sg11
+	//	{
+	//	CFSMount cfsmount1
+	//	    {
+	//	    CVMVolDg cvmvoldg1
+	//	    }
+	//	}

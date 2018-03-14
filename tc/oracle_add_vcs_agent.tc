@@ -1,0 +1,108 @@
+#tc to configure vcs agent
+#des:support aix linux solaris platform
+#VALUE:oracle
+#DEFAULT:oracle
+#P:81
+
+oLog step "Checking basic environment of testbed"
+checkNode root
+checkNode $oracle
+for node in $NODES
+do
+	getHostnameOSProduct $node
+done
+oLog step "Checking status of Oracle database"
+RExec root $NODE1 "cat /orainst/oraInventory/ContentsXML/inventory.xml"
+echo "$out"|grep "/crs/crshome" > /dev/null 2>&1 && oracletype=RAC || oracletype=SI
+if [ $oracletype = RAC ]
+then
+	for node in $NODES
+	do
+        	checkInstOpen $node
+		checkArchEnable $node
+	done
+else
+	checkInstOpen $NODE1
+	checkArchEnable $NODE1
+fi
+archive_mnt=`echo "$out"|grep -P "^Archive destination"|awk '{print $3}'`
+if echo  "$archive_mnt" |grep -i +asm > /dev/null 2>&1
+then
+	oLog error "Currently,it doesn't support ASM storagetype"
+	myexit 201
+fi
+
+oLog step "relink oracle odm file to VRTS odm file"
+stopOracle "$NODES"
+for node in $NODES
+do
+	RExec root $node "find /opt/VRTSodm -type f"
+	odmfile=`echo "$out"|grep /libodm.*so$`
+        RExec root $node "ls -l /oracle/orahome/lib/libodm*"
+        if ! echo "$out"|grep VRTSodm > /dev/null 2>&1
+        then
+                linkfile=`echo "$out"|grep ^l|grep -oP "[^ ]+so(?= -)"`
+                RExec oracle $node "rm -f $linkfile && ln -s $odmfile $linkfile"
+        fi
+done
+
+oLog step "Shutdown crs if RAC and umount mountpoint"
+if [ $oracletype = RAC ]
+then
+	RExec root $NODE1 "/crs/crshome/bin/crsctl stop cluster -all"
+	#RExec root $NODE1 "/crs/crshome/bin/crsctl disable has"
+fi
+for node in $NODES
+do
+	RExec root $node "$cmd2"
+	mp=`echo "$out"|grep -P "/ocrvote$|/dbdata$|/archive$"|awk '{print $NF}'|xargs -n100`
+	RExec root $node "for i in $mp ; do umount \$i; done"
+done
+
+
+oLog step "Adding oracle resource to VCS"
+newmaincf=$BASE/tmp/main.cf.$PID
+cat $MAINCF > $newmaincf
+
+if [ $oracletype = RAC ]
+then
+	genOracleRacSgConf >> $newmaincf
+else
+	genOracleSISgConf >> $newmaincf
+fi 
+oLog des "Show maincf which added oracle resources"
+LExec "cat $newmaincf" 
+importMainCf $newmaincf || exit 1
+rm -f $newmaincf
+oLog des "updating $MAINCF"
+RExec root $NODE1 "cat $autotcmaincf"
+echo "$out" > $MAINCF
+
+oLog step "Bring oracle group online by VCS"
+if [ $oracletype = RAC ] 
+then
+        a=`waitGroupOnline $NODE1 crs_grp`
+        if [ $? -ne 0 ] 
+        then 
+                RExec root $NODE1 "/opt/VRTS/bin/hares -state"
+                RExec root $NODE1 "/opt/VRTS/bin/hagrp -clear crs_grp -any"
+                RExec root $NODE1 "/opt/VRTS/bin/hares -state"
+                RExec root $NODE1 "/opt/VRTS/bin/hagrp -online crs_grp -any"                
+                waitGroupOnline $NODE1 crs_grp
+        fi
+fi
+waitGroupOnline $NODE1 oradb_grp
+
+oLog step "Checking status of Oracle database after VCS taking over the control"
+checkOdmLink
+if [ $oracletype = RAC ]
+then
+        for node in $NODES
+        do
+                checkInstOpen $node
+        done
+else
+        checkInstOpen $NODE1
+fi
+oLog flag
+myexit 0

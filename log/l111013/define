@@ -1,0 +1,4 @@
+export freshinstall="yes"
+export noipc="no"
+export setup_content="install|configure"
+export version="7.1"

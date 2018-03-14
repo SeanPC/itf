@@ -1,0 +1,84 @@
+#tc to install oracle stuff
+#des:support aix linux solaris platform
+#VALUE:vers,oracletype,racip
+#value of vers could be 112040 or 121020,and oracletype could be SI or RAC,if you RAC selected,please define racip.You could define step and stroagetype as well
+#DEFAULT:121020,RAC,
+#P:80
+
+oLog step "Checking basic environment of testbed"
+#check if login without password by root and oracle user
+checkNode root
+getHostnameOSProduct $NODE1
+
+oLog step "Checking if OADT existing on the driver node"
+LExec "ls -l /orainst/oradbinst"
+
+oLog step "Install oracle stuff"
+[ -z "$vers" ] && oLog error "vers is not defined" && myexit 201
+[ -z "$oracletype" ] && oLog error "oracletype is not defined" && myexit 201
+[ -z "$stroagetype" ] && stroagetype=FS:VCFS
+[ -z "$step" ] && step=1-5
+if [ "$oracletype" = RAC ]
+then
+	[ -z "$racip" ] && oLog error "racip is not defined" && myexit 201
+	oracmd="/orainst/oradbinst -node "${arg[0]}" -vers $vers -type RAC -racip $racip -storagetype "$stroagetype" -step $step"
+else
+	oracmd="/orainst/oradbinst -node "${arg[0]}" -vers $vers -type SI -step $step"
+fi
+
+#start the install process
+nohup $oracmd > /dev/null 2>&1 &
+sleep 5
+
+oranode=`echo $NODE1|cut -d . -f 1`
+LExec "NOEXIT:ls -l /var/orainst/$oranode/log/pid"
+[ $result = "NOEXIT:Failed" ] && oLog error "Please check the options you typed in the \"$oracmd\"" && myexit 201
+
+#get the install log and present in the olog
+host=`hostname`
+user=root
+cmd=$oracmd
+line0=`cat $olog|wc -l|awk '{print $1 "+1"}'|bc`
+[ -f /var/orainst/$oranode/log.$oranode.part ] && oralog=/var/orainst/$oranode/log.$oranode.part || oralog=/var/orainst/$oranode/log.$oranode
+while [ -f /var/orainst/$NODE1/log/pid ]
+do
+	[ -f $oralog ] || continue
+	out=`cat $oralog`
+	sed -i "$line0",'$'d $olog
+	oLog exec
+	sleep 1
+done
+out=`cat $oralog`
+sed -i "$line0",'$'d $olog
+oLog exec
+
+oLog step "Checking if oracle install successfully"
+if cat $olog|grep -P "ERROR" > /dev/null 2>&1 
+then
+	LExec "cat $olog|grep -P "ERROR""
+	myexit 1
+else
+	oLog des "No Errors found in $olog"
+fi
+
+oLog step "Installing oracle patch if needed"
+export oracle=oracle
+if [ $vers = 112040 ]
+then
+	patch_home=18180390
+else
+	oLog des "$vers doesn't need oracle patch"
+	startOracle "$NODES"
+	myexit 0
+fi
+for node in $NODES
+do
+        RExec root $node "rm -rf /tmp/$patch_home /tmp/PatchSearch.xml"
+	$SCP $BASE/etc/oracle_patch/$vers/${type}_p* $node:/tmp/
+	RExec root $node "ls /tmp/${type}_p*"
+	RExec root $node "cd /tmp;unzip $out"
+	RExec oracle $node "cd /tmp/$patch_home;(echo y;echo y)|/oracle/orahome/OPatch/opatch apply"
+done
+startOracle "$NODES"
+oLog flag
+myexit 0

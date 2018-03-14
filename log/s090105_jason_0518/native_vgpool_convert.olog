@@ -1,0 +1,1843 @@
+
+==================== Operation Log for TC native_vgpool_convert ====================
+DATE:2017-05-15 07:50:53
+Nodes:s090105 s090106
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-05-15 07:50:53
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-05-15 07:50:53
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:4453299 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:301204 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:970397087 (925.4 MiB)  TX bytes:43359264 (41.3 MiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:136 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:136 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:20280 (19.8 KiB)  TX bytes:20280 (19.8 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-05-15 07:50:54
+HOST:s090105
+USER:root
+STDIN:ssh -l root s090105
+STDOUT:
+
+
+
+DATE:2017-05-15 07:50:56
+HOST:s090106
+USER:root
+STDIN:ssh -l root s090106
+STDOUT:
+
+
+
+DATE:2017-05-15 07:51:02
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh s090105,s090106
+STDOUT:
+
+
+
+DATE:2017-05-15 07:51:03
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+s090105
+s090106
+
+
+DATE:2017-05-15 07:51:04
+HOST:s090106
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+s090105
+s090106
+
+***Getting hostname of node***
+
+
+
+DATE:2017-05-15 07:51:05
+HOST:s090105
+USER:root
+STDIN:hostname
+STDOUT:
+s090105.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-05-15 07:51:06
+HOST:s090105
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-05-15 07:51:07
+HOST:s090105
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 6.8 (Santiago)
+
+
+DATE:2017-05-15 07:51:08
+HOST:s090105
+USER:root
+STDIN:uname -r
+STDOUT:
+2.6.32-642.11.1.el6.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-05-15 07:51:12
+HOST:s090105
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSperl-5.20.1.2-RHEL6.x86_64
+Name        : VRTSperl                     Relocations: (not relocatable)
+Version     : 5.20.1.2                          Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 30 Oct 2015 04:22:28 PM UTC
+Install Date: Fri 12 May 2017 07:32:16 AM UTC      Build Host: rhel6-perl.cdc.symantec.com
+Group       : Applications/System           Source RPM: VRTSperl-5.20.1.2-RHEL6.src.rpm
+Size        : 69606898                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Perl 5.20.1 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.20.1 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.60
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSamf-7.0.1.000-RHEL6.x86_64
+Name        : VRTSamf                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:51:12 PM UTC
+Install Date: Fri 12 May 2017 07:36:23 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : System Environment/Kernel     Source RPM: VRTSamf-7.0.1.000-RHEL6.src.rpm
+Size        : 25265412                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64
+Build Stamp        : 7.0.1.000-2015-11-23_15.43.36
+
+Package INFO: VRTSdbac-7.0.1.000-RHEL6.x86_64
+Name        : VRTSdbac                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 30 Oct 2015 12:21:46 PM UTC
+Install Date: Fri 12 May 2017 07:38:18 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSdbac-7.0.1.000-RHEL6.src.rpm
+Size        : 20442630                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Real Application Cluster Support Package by Symantec
+Description :
+Veritas Oracle Real Application Cluster Support Package by Symantec
+Build Stamp	: 7.0.1.000-2015-10-30_05.00.22
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-504.el6.x86_64
+
+Package INFO: VRTSvxfs-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvxfs                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 11:03:17 PM UTC
+Install Date: Fri 12 May 2017 07:35:41 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSvxfs-7.0.1.000-RHEL6.src.rpm
+Size        : 55997872                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Filesystem by Symantec
+Description :
+Veritas Filesystem by Symantec
+
+Package INFO: VRTSvcsag-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvcsag                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:55:32 PM UTC
+Install Date: Fri 12 May 2017 07:37:28 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsag-7.0.1.000-RHEL6.src.rpm
+Size        : 83655194                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : VCS Bundled Agents by Symantec
+Description :
+Veritas Cluster Server Bundled Agents (x86_64) by Symantec
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSodm-7.0.0.000-RHEL6.x86_64
+Name        : VRTSodm                      Relocations: (not relocatable)
+Version     : 7.0.0.000                         Vendor: Symantec Corporation.
+Release     : RHEL6                         Build Date: Thu 28 May 2015 02:26:55 PM UTC
+Install Date: Fri 12 May 2017 07:32:03 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSodm-7.0.0.000-RHEL6.src.rpm
+Size        : 1696190                          License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:22 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Disk Manager by Symantec
+Description :
+Veritas Oracle Disk Manager (ODM) by Symantec
+
+Package INFO: VRTSvxvm-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvxvm                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 08:20:31 AM UTC
+Install Date: Fri 12 May 2017 07:32:56 AM UTC      Build Host: sf-rhel6ga-build.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSvxvm-7.0.1.000-RHEL6.src.rpm
+Size        : 439447898                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Volume Manager by Symantec
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSgab-7.0.1.000-RHEL6.x86_64
+Name        : VRTSgab                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:25:21 PM UTC
+Install Date: Fri 12 May 2017 07:36:10 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSgab-7.0.1.000-RHEL6.src.rpm
+Size        : 28802234                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Membership and Atomic Broadcast by Symantec
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64
+Build Stamp        : Veritas-7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTScps-7.0.1.000-RHEL6.i686
+Name        : VRTScps                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 10:49:24 PM UTC
+Install Date: Fri 12 May 2017 07:37:11 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTScps-7.0.1.000-RHEL6.src.rpm
+Size        : 55496727                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Co-ordination Point Server by Symantec
+Description :
+Veritas Co-ordination Point Server by Symantec
+Build Stamp: 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSglm-7.0.1.000-RHEL6.x86_64
+Name        : VRTSglm                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 11:02:09 PM UTC
+Install Date: Fri 12 May 2017 07:38:07 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSglm-7.0.1.000-RHEL6.src.rpm
+Size        : 423328                           License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Lock Manager (GLM) driver by Symantec
+Description :
+Veritas Group Lock Manager (GLM) driver by Symantec
+Supported kernel(s): 2.6.32-71.el6.x86_64 or later
+
+Package INFO: VRTSvbs-7.0.0.000-Linux.i686
+Name        : VRTSvbs                      Relocations: (not relocatable)
+Version     : 7.0.0.000                         Vendor: Symantec Corporation
+Release     : Linux                         Build Date: Sat 13 Jun 2015 06:01:11 AM UTC
+Install Date: Fri 12 May 2017 07:38:56 AM UTC      Build Host: snapper53-64.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSvbs-7.0.0.000-Linux.src.rpm
+Size        : 58030321                         License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:31 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Virtual Business Services by Symantec
+Description :
+Virtual Business Services by Symantec
+Build Stamp : 7.0.0.000-2015-06-12_22.21.37
+
+Package INFO: VRTSvcswiz-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvcswiz                   Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: "Symantec Corporation"
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:59:15 PM UTC
+Install Date: Fri 12 May 2017 07:39:21 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcswiz-7.0.1.000-RHEL6.src.rpm
+Size        : 10615243                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server Wizards by Symantec
+Description :
+"The package contains Wizards for Veritas Cluster Server by Symantec"
+
+Arch : (x86_64)
+Build Stamp : 7.0.1.000-2015-11-23_15.59.03
+
+Package INFO: VRTSgms-7.0.0.000-RHEL6.x86_64
+Name        : VRTSgms                      Relocations: (not relocatable)
+Version     : 7.0.0.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Thu 28 May 2015 02:24:13 PM UTC
+Install Date: Fri 12 May 2017 07:32:00 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSgms-7.0.0.000-RHEL6.src.rpm
+Size        : 84471                            License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:19 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Messaging Services by Symantec
+Description :
+Veritas Group Messaging Sevice (GMS) driver by Symantec
+
+Package INFO: VRTSspt-7.0.1.000-RHEL6.noarch
+Name        : VRTSspt                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Wed 25 Nov 2015 07:28:09 AM UTC
+Install Date: Fri 12 May 2017 07:32:28 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSspt-7.0.1.000-RHEL6.src.rpm
+Size        : 34251540                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Software Support Tools Package by Symantec
+Description :
+    VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSllt-7.0.1.300-RHEL6.x86_64
+Name        : VRTSllt                      Relocations: (not relocatable)
+Version     : 7.0.1.300                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 24 Jun 2016 02:40:29 PM UTC
+Install Date: Fri 12 May 2017 07:36:03 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSllt-7.0.1.300-RHEL6.src.rpm
+Size        : 70604661                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Low Latency Transport by Symantec
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64 [LINUX_RHEL60]
+Build Stamp: Veritas-7.0.1.300-2016-06-24_02.23.02
+
+Package INFO: VRTSvcs-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvcs                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:56:49 PM UTC
+Install Date: Fri 12 May 2017 07:36:47 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcs-7.0.1.000-RHEL6.src.rpm
+Size        : 213430328                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server by Symantec
+Description :
+Veritas Cluster Server and Commands by Symantec (x86_64)
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSdbed-7.0.1.000-RHEL.x86_64
+Name        : VRTSdbed                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL                          Build Date: Fri 30 Oct 2015 09:00:17 AM UTC
+Install Date: Fri 12 May 2017 07:37:54 AM UTC      Build Host: snapper53-64.engba.symantec.com
+Group       : Applications/Databases        Source RPM: VRTSdbed-7.0.1.000-RHEL.src.rpm
+Size        : 262837089                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSsfmh-7.0.0.0-0.x86_64
+Name        : VRTSsfmh                     Relocations: (not relocatable)
+Version     : 7.0.0.0                           Vendor: Symantec Corporation
+Release     : 0                             Build Date: Fri 12 Jun 2015 01:18:17 PM UTC
+Install Date: Fri 12 May 2017 07:38:41 AM UTC      Build Host: vommvsles10-64bld.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSsfmh-7.0.0.0-0.src.rpm
+Size        : 150059360                        License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:28 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+
+Package INFO: VRTSsfcpi-7.0.1.000-GENERIC.noarch
+Name        : VRTSsfcpi                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : GENERIC                       Build Date: Mon 07 Dec 2015 07:24:22 AM UTC
+Install Date: Fri 12 May 2017 07:39:12 AM UTC      Build Host: mtvre01.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSsfcpi-7.0.1.000-GENERIC.src.rpm
+Size        : 14004981                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+
+Package INFO: VRTSvlic-3.02.70.008-RHEL6.x86_64
+Name        : VRTSvlic                     Relocations: (not relocatable)
+Version     : 3.02.70.008                       Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 18 May 2015 01:59:03 PM UTC
+Install Date: Fri 12 May 2017 07:24:34 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvlic-3.02.70.008-RHEL6.src.rpm
+Size        : 1583589                          License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:40 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Symantec License Utilities
+Description :
+These are the Symantec License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSfsadv-7.0.1.000-RHEL6.x86_64
+Name        : VRTSfsadv                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 11:04:30 PM UTC
+Install Date: Fri 12 May 2017 07:35:52 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSfsadv-7.0.1.000-RHEL6.src.rpm
+Size        : 14558515                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas File System Advanced Features by Symantec
+Description :
+Veritas File System Advanced Features by Symantec
+
+Package INFO: VRTSvcsea-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvcsea                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 24 Nov 2015 12:32:20 AM UTC
+Install Date: Fri 12 May 2017 07:37:34 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsea-7.0.1.000-RHEL6.src.rpm
+Size        : 1221089                          License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents by Symantec
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSaslapm-7.0.1.000-RHEL6.x86_64
+Name        : VRTSaslapm                   Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 08:21:25 AM UTC
+Install Date: Fri 12 May 2017 07:27:27 AM UTC      Build Host: sf-rhel6ga-build.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSaslapm-7.0.1.000-RHEL6.src.rpm
+Size        : 52402901                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTSvxfen-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvxfen                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:36:56 PM UTC
+Install Date: Fri 12 May 2017 07:36:17 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvxfen-7.0.1.000-RHEL6.src.rpm
+Size        : 27993862                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas I/O Fencing by Symantec
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64
+Build Stamp        : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTScavf-7.0.1.000-RHEL6.i686
+Name        : VRTScavf                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 10:57:53 PM UTC
+Install Date: Fri 12 May 2017 07:38:13 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTScavf-7.0.1.000-RHEL6.src.rpm
+Size        : 831198                           License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+VERITAS Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+
+====STEP: checking if exist native vgs or pool,drop them if existing
+DATE:2017-05-15 07:51:12
+
+***Drop native vg/zpool***
+
+
+
+DATE:2017-05-15 07:51:14
+HOST:s090105
+USER:root
+STDIN:pvs|grep autotc
+STDOUT:
+
+RETURN:1
+RESULT:WARNING
+
+
+====STEP: Copy mf.pl to s090105,filling files into the filesystem
+DATE:2017-05-15 07:51:14
+
+
+DATE:2017-05-15 07:51:15
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/etc/mf.pl s090105:/tmp/tmpfile.30225
+STDOUT:
+
+
+
+====STEP: Checking dmp_native_support status,if it is on,trun it to be off
+DATE:2017-05-15 07:51:15
+
+***setting dmp_native_support to be off***
+
+
+
+DATE:2017-05-15 07:51:16
+HOST:s090105
+USER:root
+STDIN:vxdmpadm gettune dmp_native_support
+STDOUT:
+            Tunable               Current Value  Default Value
+------------------------------    -------------  -------------
+dmp_native_support                      off	         off
+
+
+DATE:2017-05-15 07:51:17
+HOST:s090106
+USER:root
+STDIN:vxdmpadm gettune dmp_native_support
+STDOUT:
+            Tunable               Current Value  Default Value
+------------------------------    -------------  -------------
+dmp_native_support                      off	         off
+
+
+====STEP: Getting disks for the 1st vg or pool
+DATE:2017-05-15 07:51:22
+
+***Getting disk list by specified size***
+
+
+***Getting avaiable disks***
+
+
+
+DATE:2017-05-15 07:51:22
+HOST:s090105
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-05-15 07:51:24
+HOST:s090106
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-05-15 07:51:24
+HOST:s090105
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+emc_clariion0     EMC_CLARiiON   CKM00121900328       CONNECTED    CLR-ALUA   28         0532
+disk              Disk           DISKS                CONNECTED    Disk        1         3000
+
+
+DATE:2017-05-15 07:51:26
+HOST:s090105
+USER:root
+STDIN:vxdisk scandisks;vxdisk list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc_clariion0_226 auto:cdsdisk    -            -            online
+emc_clariion0_234 auto:cdsdisk    -            -            online
+emc_clariion0_235 auto:cdsdisk    -            -            online
+emc_clariion0_236 auto:cdsdisk    -            -            online
+emc_clariion0_237 auto:cdsdisk    -            -            online
+emc_clariion0_238 auto:cdsdisk    -            -            online
+emc_clariion0_239 auto:cdsdisk    -            -            online
+emc_clariion0_240 auto:cdsdisk    -            -            online
+emc_clariion0_242 auto:cdsdisk    -            -            online
+emc_clariion0_243 auto:cdsdisk    -            -            online
+emc_clariion0_244 auto:cdsdisk    -            -            online
+emc_clariion0_247 auto:cdsdisk    -            -            online
+emc_clariion0_248 auto:cdsdisk    -            -            online
+emc_clariion0_249 auto:cdsdisk    -            -            online
+emc_clariion0_250 auto:cdsdisk    -            -            online
+emc_clariion0_251 auto:cdsdisk    -            -            online
+emc_clariion0_252 auto:cdsdisk    -            -            online
+emc_clariion0_264 auto:cdsdisk    -            -            online
+emc_clariion0_265 auto:cdsdisk    -            -            online
+emc_clariion0_266 auto:cdsdisk    -            -            online
+emc_clariion0_267 auto:cdsdisk    -            -            online
+emc_clariion0_268 auto:cdsdisk    -            -            online
+emc_clariion0_269 auto:cdsdisk    -            -            online
+emc_clariion0_270 auto:cdsdisk    -            -            online
+emc_clariion0_271 auto:cdsdisk    -            -            online
+emc_clariion0_272 auto:cdsdisk    -            -            online
+emc_clariion0_312 auto:cdsdisk    -            -            online
+emc_clariion0_313 auto:cdsdisk    -            -            online
+sddi         auto:none       -            -            online invalid
+
+
+DATE:2017-05-15 07:51:28
+HOST:s090105
+USER:root
+STDIN:/opt/VRTSsfmh/adm/dclisetup.sh
+STDOUT:
+
+
+
+DATE:2017-05-15 07:51:30
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxlist disk
+STDOUT:
+TY   DEVICE              DISK   DISKGROUP        SIZE   FREE STATUS
+disk emc_clariion0_226   -      vxfendg       989.87m      - deported
+disk emc_clariion0_234   -      vxfendg         4.96g      - deported
+disk emc_clariion0_235   -      vxfendg         4.96g      - deported
+disk emc_clariion0_236   -      -               4.96g      - free
+disk emc_clariion0_237   -      -               4.96g      - free
+disk emc_clariion0_238   -      -               4.96g      - free
+disk emc_clariion0_239   -      -               4.96g      - free
+disk emc_clariion0_240   -      -               4.96g      - free
+disk emc_clariion0_242   -      -               4.96g      - free
+disk emc_clariion0_243   -      -               4.96g      - free
+disk emc_clariion0_244   -      -               4.96g      - free
+disk emc_clariion0_247   -      -               4.96g      - free
+disk emc_clariion0_248   -      -               4.96g      - free
+disk emc_clariion0_249   -      -               4.96g      - free
+disk emc_clariion0_250   -      -               4.96g      - free
+disk emc_clariion0_251   -      -               4.96g      - free
+disk emc_clariion0_252   -      -               4.96g      - free
+disk emc_clariion0_264   -      -               4.96g      - free
+disk emc_clariion0_265   -      -               4.96g      - free
+disk emc_clariion0_266   -      -               4.96g      - free
+disk emc_clariion0_267   -      -               4.96g      - free
+disk emc_clariion0_268   -      -               4.96g      - free
+disk emc_clariion0_269   -      -               4.96g      - free
+disk emc_clariion0_270   -      -               4.96g      - free
+disk emc_clariion0_271   -      -               4.96g      - free
+disk emc_clariion0_272   -      -               4.96g      - free
+disk emc_clariion0_312   -      -             989.87m      - free
+disk emc_clariion0_313   -      -             989.87m      - free
+disk sddi                -      -                   -      - uninitialized
+
+
+DATE:2017-05-15 07:51:31
+HOST:s090105
+USER:root
+STDIN:vxdmpadm getsubpaths
+STDOUT:
+NAME         STATE[A]   PATH-TYPE[M] DMPNODENAME  ENCLR-NAME   CTLR           ATTRS
+========================================================================================
+sddi         ENABLED(A)   -          sddi         disk         c6                -
+sda          ENABLED(A) PRIMARY      emc_clariion0_226 emc_clariion0 c2                -
+sdb          ENABLED    SECONDARY    emc_clariion0_226 emc_clariion0 c3                -
+sdc          ENABLED(A) PRIMARY      emc_clariion0_226 emc_clariion0 c4                -
+sdcg         ENABLED    SECONDARY    emc_clariion0_226 emc_clariion0 c5                -
+sdcj         ENABLED    SECONDARY    emc_clariion0_234 emc_clariion0 c5                -
+sdj          ENABLED(A) PRIMARY      emc_clariion0_234 emc_clariion0 c4                -
+sdk          ENABLED    SECONDARY    emc_clariion0_234 emc_clariion0 c3                -
+sdl          ENABLED(A) PRIMARY      emc_clariion0_234 emc_clariion0 c2                -
+sdck         ENABLED    SECONDARY    emc_clariion0_235 emc_clariion0 c5                -
+sdm          ENABLED(A) PRIMARY      emc_clariion0_235 emc_clariion0 c4                -
+sdn          ENABLED    SECONDARY    emc_clariion0_235 emc_clariion0 c3                -
+sdo          ENABLED(A) PRIMARY      emc_clariion0_235 emc_clariion0 c2                -
+sdcl         ENABLED    SECONDARY    emc_clariion0_236 emc_clariion0 c5                -
+sdp          ENABLED(A) PRIMARY      emc_clariion0_236 emc_clariion0 c4                -
+sdq          ENABLED    SECONDARY    emc_clariion0_236 emc_clariion0 c3                -
+sdr          ENABLED(A) PRIMARY      emc_clariion0_236 emc_clariion0 c2                -
+sdcm         ENABLED    SECONDARY    emc_clariion0_237 emc_clariion0 c5                -
+sds          ENABLED(A) PRIMARY      emc_clariion0_237 emc_clariion0 c4                -
+sdt          ENABLED    SECONDARY    emc_clariion0_237 emc_clariion0 c3                -
+sdu          ENABLED(A) PRIMARY      emc_clariion0_237 emc_clariion0 c2                -
+sdcn         ENABLED    SECONDARY    emc_clariion0_238 emc_clariion0 c5                -
+sdv          ENABLED(A) PRIMARY      emc_clariion0_238 emc_clariion0 c4                -
+sdw          ENABLED    SECONDARY    emc_clariion0_238 emc_clariion0 c3                -
+sdx          ENABLED(A) PRIMARY      emc_clariion0_238 emc_clariion0 c2                -
+sdaa         ENABLED(A) PRIMARY      emc_clariion0_239 emc_clariion0 c2                -
+sdco         ENABLED    SECONDARY    emc_clariion0_239 emc_clariion0 c5                -
+sdy          ENABLED(A) PRIMARY      emc_clariion0_239 emc_clariion0 c4                -
+sdz          ENABLED    SECONDARY    emc_clariion0_239 emc_clariion0 c3                -
+sdab         ENABLED(A) PRIMARY      emc_clariion0_240 emc_clariion0 c4                -
+sdac         ENABLED    SECONDARY    emc_clariion0_240 emc_clariion0 c3                -
+sdad         ENABLED(A) PRIMARY      emc_clariion0_240 emc_clariion0 c2                -
+sdcp         ENABLED    SECONDARY    emc_clariion0_240 emc_clariion0 c5                -
+sdae         ENABLED(A) PRIMARY      emc_clariion0_242 emc_clariion0 c4                -
+sdaf         ENABLED    SECONDARY    emc_clariion0_242 emc_clariion0 c3                -
+sdag         ENABLED(A) PRIMARY      emc_clariion0_242 emc_clariion0 c2                -
+sdcq         ENABLED    SECONDARY    emc_clariion0_242 emc_clariion0 c5                -
+sdah         ENABLED(A) PRIMARY      emc_clariion0_243 emc_clariion0 c4                -
+sdai         ENABLED    SECONDARY    emc_clariion0_243 emc_clariion0 c3                -
+sdaj         ENABLED(A) PRIMARY      emc_clariion0_243 emc_clariion0 c2                -
+sdcr         ENABLED    SECONDARY    emc_clariion0_243 emc_clariion0 c5                -
+sdak         ENABLED(A) PRIMARY      emc_clariion0_244 emc_clariion0 c4                -
+sdal         ENABLED    SECONDARY    emc_clariion0_244 emc_clariion0 c3                -
+sdam         ENABLED(A) PRIMARY      emc_clariion0_244 emc_clariion0 c2                -
+sdcs         ENABLED    SECONDARY    emc_clariion0_244 emc_clariion0 c5                -
+sdan         ENABLED(A) PRIMARY      emc_clariion0_247 emc_clariion0 c4                -
+sdao         ENABLED    SECONDARY    emc_clariion0_247 emc_clariion0 c3                -
+sdap         ENABLED(A) PRIMARY      emc_clariion0_247 emc_clariion0 c2                -
+sdct         ENABLED    SECONDARY    emc_clariion0_247 emc_clariion0 c5                -
+sdaq         ENABLED(A) PRIMARY      emc_clariion0_248 emc_clariion0 c4                -
+sdar         ENABLED    SECONDARY    emc_clariion0_248 emc_clariion0 c3                -
+sdas         ENABLED(A) PRIMARY      emc_clariion0_248 emc_clariion0 c2                -
+sdcu         ENABLED    SECONDARY    emc_clariion0_248 emc_clariion0 c5                -
+sdat         ENABLED(A) PRIMARY      emc_clariion0_249 emc_clariion0 c4                -
+sdau         ENABLED    SECONDARY    emc_clariion0_249 emc_clariion0 c3                -
+sdav         ENABLED(A) PRIMARY      emc_clariion0_249 emc_clariion0 c2                -
+sdcv         ENABLED    SECONDARY    emc_clariion0_249 emc_clariion0 c5                -
+sdaw         ENABLED(A) PRIMARY      emc_clariion0_250 emc_clariion0 c4                -
+sdax         ENABLED    SECONDARY    emc_clariion0_250 emc_clariion0 c3                -
+sday         ENABLED(A) PRIMARY      emc_clariion0_250 emc_clariion0 c2                -
+sdcw         ENABLED    SECONDARY    emc_clariion0_250 emc_clariion0 c5                -
+sdaz         ENABLED(A) PRIMARY      emc_clariion0_251 emc_clariion0 c4                -
+sdba         ENABLED    SECONDARY    emc_clariion0_251 emc_clariion0 c3                -
+sdbb         ENABLED(A) PRIMARY      emc_clariion0_251 emc_clariion0 c2                -
+sdcx         ENABLED    SECONDARY    emc_clariion0_251 emc_clariion0 c5                -
+sdbc         ENABLED    SECONDARY    emc_clariion0_252 emc_clariion0 c3                -
+sdbd         ENABLED(A) PRIMARY      emc_clariion0_252 emc_clariion0 c4                -
+sdbe         ENABLED(A) PRIMARY      emc_clariion0_252 emc_clariion0 c2                -
+sdcy         ENABLED    SECONDARY    emc_clariion0_252 emc_clariion0 c5                -
+sdbf         ENABLED    SECONDARY    emc_clariion0_264 emc_clariion0 c3                -
+sdbg         ENABLED(A) PRIMARY      emc_clariion0_264 emc_clariion0 c4                -
+sdbh         ENABLED(A) PRIMARY      emc_clariion0_264 emc_clariion0 c2                -
+sdcz         ENABLED    SECONDARY    emc_clariion0_264 emc_clariion0 c5                -
+sdbi         ENABLED    SECONDARY    emc_clariion0_265 emc_clariion0 c3                -
+sdbj         ENABLED(A) PRIMARY      emc_clariion0_265 emc_clariion0 c4                -
+sdbk         ENABLED(A) PRIMARY      emc_clariion0_265 emc_clariion0 c2                -
+sdda         ENABLED    SECONDARY    emc_clariion0_265 emc_clariion0 c5                -
+sdbl         ENABLED    SECONDARY    emc_clariion0_266 emc_clariion0 c3                -
+sdbm         ENABLED(A) PRIMARY      emc_clariion0_266 emc_clariion0 c4                -
+sdbn         ENABLED(A) PRIMARY      emc_clariion0_266 emc_clariion0 c2                -
+sddb         ENABLED    SECONDARY    emc_clariion0_266 emc_clariion0 c5                -
+sdbo         ENABLED    SECONDARY    emc_clariion0_267 emc_clariion0 c3                -
+sdbp         ENABLED(A) PRIMARY      emc_clariion0_267 emc_clariion0 c4                -
+sdbq         ENABLED(A) PRIMARY      emc_clariion0_267 emc_clariion0 c2                -
+sddc         ENABLED    SECONDARY    emc_clariion0_267 emc_clariion0 c5                -
+sdbr         ENABLED(A) PRIMARY      emc_clariion0_268 emc_clariion0 c4                -
+sdbs         ENABLED    SECONDARY    emc_clariion0_268 emc_clariion0 c3                -
+sdbt         ENABLED(A) PRIMARY      emc_clariion0_268 emc_clariion0 c2                -
+sddd         ENABLED    SECONDARY    emc_clariion0_268 emc_clariion0 c5                -
+sdbu         ENABLED    SECONDARY    emc_clariion0_269 emc_clariion0 c3                -
+sdbv         ENABLED(A) PRIMARY      emc_clariion0_269 emc_clariion0 c4                -
+sdbw         ENABLED(A) PRIMARY      emc_clariion0_269 emc_clariion0 c2                -
+sdde         ENABLED    SECONDARY    emc_clariion0_269 emc_clariion0 c5                -
+sdbx         ENABLED    SECONDARY    emc_clariion0_270 emc_clariion0 c3                -
+sdby         ENABLED(A) PRIMARY      emc_clariion0_270 emc_clariion0 c2                -
+sdbz         ENABLED(A) PRIMARY      emc_clariion0_270 emc_clariion0 c4                -
+sddf         ENABLED    SECONDARY    emc_clariion0_270 emc_clariion0 c5                -
+sdca         ENABLED    SECONDARY    emc_clariion0_271 emc_clariion0 c3                -
+sdcb         ENABLED(A) PRIMARY      emc_clariion0_271 emc_clariion0 c2                -
+sdcc         ENABLED(A) PRIMARY      emc_clariion0_271 emc_clariion0 c4                -
+sddg         ENABLED    SECONDARY    emc_clariion0_271 emc_clariion0 c5                -
+sdcd         ENABLED    SECONDARY    emc_clariion0_272 emc_clariion0 c3                -
+sdce         ENABLED(A) PRIMARY      emc_clariion0_272 emc_clariion0 c2                -
+sdcf         ENABLED(A) PRIMARY      emc_clariion0_272 emc_clariion0 c4                -
+sddh         ENABLED    SECONDARY    emc_clariion0_272 emc_clariion0 c5                -
+sdch         ENABLED    SECONDARY    emc_clariion0_312 emc_clariion0 c5                -
+sdd          ENABLED    SECONDARY    emc_clariion0_312 emc_clariion0 c3                -
+sde          ENABLED(A) PRIMARY      emc_clariion0_312 emc_clariion0 c2                -
+sdf          ENABLED(A) PRIMARY      emc_clariion0_312 emc_clariion0 c4                -
+sdci         ENABLED    SECONDARY    emc_clariion0_313 emc_clariion0 c5                -
+sdg          ENABLED    SECONDARY    emc_clariion0_313 emc_clariion0 c3                -
+sdh          ENABLED(A) PRIMARY      emc_clariion0_313 emc_clariion0 c4                -
+sdi          ENABLED(A) PRIMARY      emc_clariion0_313 emc_clariion0 c2                -
+
+
+DATE:2017-05-15 07:51:38
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxdiskunsetup -Cf emc_clariion0_272 && vxdisk rm emc_clariion0_272
+STDOUT:
+
+
+
+====STEP: Make the 1st vg/zpool,then make volume and fs and mount it
+DATE:2017-05-15 07:51:38
+
+***creating native vg/zpool***
+
+
+
+DATE:2017-05-15 07:51:39
+HOST:s090105
+USER:root
+STDIN:[ -f /etc/lvm/lvm.conf.bk ] || cp -pf /etc/lvm/lvm.conf /etc/lvm/lvm.conf.bk
+STDOUT:
+
+
+
+DATE:2017-05-15 07:51:40
+HOST:s090105
+USER:root
+STDIN:multipath -ll > /dev/null 2>&1 && multipath -F > /dev/null 2>&1 || (exit 0)
+STDOUT:
+
+
+
+DATE:2017-05-15 07:51:42
+HOST:s090105
+USER:root
+STDIN:pvcreate -y /dev/sdce
+STDOUT:
+  Physical volume "/dev/sdce" successfully created
+
+
+DATE:2017-05-15 07:51:44
+HOST:s090105
+USER:root
+STDIN:vgcreate autotcvg1 /dev/sdce
+STDOUT:
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sdcd3 not /dev/sdcd
+  Using duplicate PV /dev/sdcd3 which is last seen, replacing /dev/sdcd
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sdcd8 not /dev/sdcd3
+  Using duplicate PV /dev/sdcd8 which is last seen, replacing /dev/sdcd3
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sdce not /dev/sdcd8
+  Using duplicate PV /dev/sdce which is last seen, replacing /dev/sdcd8
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sdce3 not /dev/sdce
+  Using duplicate PV /dev/sdce3 which is last seen, replacing /dev/sdce
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sdcf not /dev/sdce3
+  Using duplicate PV /dev/sdcf which is last seen, replacing /dev/sdce3
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sdcf3 not /dev/sdcf
+  Using duplicate PV /dev/sdcf3 which is last seen, replacing /dev/sdcf
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sddh not /dev/sdcf3
+  Using duplicate PV /dev/sddh which is last seen, replacing /dev/sdcf3
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sddh3 not /dev/sddh
+  Using duplicate PV /dev/sddh3 which is last seen, replacing /dev/sddh
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sddh8 not /dev/sddh3
+  Using duplicate PV /dev/sddh8 which is last seen, replacing /dev/sddh3
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sdcd not /dev/sddh8
+  Using duplicate PV /dev/sdcd which is last seen, replacing /dev/sddh8
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sdcd3 not /dev/sdcd
+  Using duplicate PV /dev/sdcd3 which is last seen, replacing /dev/sdcd
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sdcd8 not /dev/sdcd3
+  Using duplicate PV /dev/sdcd8 which is last seen, replacing /dev/sdcd3
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sdce not /dev/sdcd8
+  Using duplicate PV /dev/sdce which is last seen, replacing /dev/sdcd8
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sdce3 not /dev/sdce
+  Using duplicate PV /dev/sdce3 which is last seen, replacing /dev/sdce
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sdcf not /dev/sdce3
+  Using duplicate PV /dev/sdcf which is last seen, replacing /dev/sdce3
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sdcf3 not /dev/sdcf
+  Using duplicate PV /dev/sdcf3 which is last seen, replacing /dev/sdcf
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sddh not /dev/sdcf3
+  Using duplicate PV /dev/sddh which is last seen, replacing /dev/sdcf3
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sddh3 not /dev/sddh
+  Using duplicate PV /dev/sddh3 which is last seen, replacing /dev/sddh
+  Found duplicate PV T10U0CSSpGo3PZ1iqDFygdNWNfVjwAcT: using /dev/sddh8 not /dev/sddh3
+  Using duplicate PV /dev/sddh8 which is last seen, replacing /dev/sddh3
+  Physical volume "/dev/sdce" successfully created
+  Volume group "autotcvg1" successfully created
+*** glibc detected *** vgcreate: double free or corruption (fasttop): 0x00007f8837ac8090 ***
+======= Backtrace: =========
+/lib64/libc.so.6(+0x35fa675f3e)[0x7f8835f4af3e]
+/lib64/libc.so.6(+0x35fa678d8d)[0x7f8835f4dd8d]
+vgcreate(+0x648fd)[0x7f88371af8fd]
+/lib64/libdevmapper.so.1.02(dm_hash_iter+0x3a)[0x7f88366be99a]
+vgcreate(lvmcache_destroy+0x6e)[0x7f88371af65e]
+vgcreate(destroy_toolcontext+0x55)[0x7f88371b3dc5]
+vgcreate(lvm_fin+0x6b)[0x7f88371866db]
+vgcreate(lvm2_main+0x59e)[0x7f883718c7de]
+/lib64/libc.so.6(__libc_start_main+0xfd)[0x7f8835ef3d1d]
+vgcreate(+0x261f9)[0x7f88371711f9]
+======= Memory map: ========
+7f8828000000-7f8828021000 rw-p 00000000 00:00 0 
+7f8828021000-7f882c000000 ---p 00000000 00:00 0 
+7f882f30e000-7f882f324000 r-xp 00000000 47:02 7479846                    /lib64/libgcc_s-4.4.7-20120601.so.1
+7f882f324000-7f882f523000 ---p 00016000 47:02 7479846                    /lib64/libgcc_s-4.4.7-20120601.so.1
+7f882f523000-7f882f524000 rw-p 00015000 47:02 7479846                    /lib64/libgcc_s-4.4.7-20120601.so.1
+7f882f524000-7f88353b7000 r--p 00000000 47:02 4562945                    /usr/lib/locale/locale-archive
+7f88353b7000-7f88353d4000 r-xp 00000000 47:02 7479847                    /lib64/libtinfo.so.5.7
+7f88353d4000-7f88355d3000 ---p 0001d000 47:02 7479847                    /lib64/libtinfo.so.5.7
+7f88355d3000-7f88355d7000 rw-p 0001c000 47:02 7479847                    /lib64/libtinfo.so.5.7
+7f88355d7000-7f88355d8000 rw-p 00000000 00:00 0 
+7f88355d8000-7f883565b000 r-xp 00000000 47:02 7479841                    /lib64/libm-2.12.so
+7f883565b000-7f883585a000 ---p 00083000 47:02 7479841                    /lib64/libm-2.12.so
+7f883585a000-7f883585b000 r--p 00082000 47:02 7479841                    /lib64/libm-2.12.so
+7f883585b000-7f883585c000 rw-p 00083000 47:02 7479841                    /lib64/libm-2.12.so
+7f883585c000-7f8835873000 r-xp 00000000 47:02 7479818                    /lib64/libpthread-2.12.so
+7f8835873000-7f8835a73000 ---p 00017000 47:02 7479818                    /lib64/libpthread-2.12.so
+7f8835a73000-7f8835a74000 r--p 00017000 47:02 7479818                    /lib64/libpthread-2.12.so
+7f8835a74000-7f8835a75000 rw-p 00018000 47:02 7479818                    /lib64/libpthread-2.12.so
+7f8835a75000-7f8835a79000 rw-p 00000000 00:00 0 
+7f8835a79000-7f8835ab4000 r-xp 00000000 47:02 7479537                    /lib64/libsepol.so.1
+7f8835ab4000-7f8835cb4000 ---p 0003b000 47:02 7479537                    /lib64/libsepol.so.1
+7f8835cb4000-7f8835cb5000 r--p 0003b000 47:02 7479537                    /lib64/libsepol.so.1
+7f8835cb5000-7f8835cb6000 rw-p 0003c000 47:02 7479537                    /lib64/libsepol.so.1
+7f8835cb6000-7f8835cd3000 r-xp 00000000 47:02 7479825                    /lib64/libselinux.so.1
+7f8835cd3000-7f8835ed2000 ---p 0001d000 47:02 7479825                    /lib64/libselinux.so.1
+7f8835ed2000-7f8835ed3000 r--p 0001c000 47:02 7479825                    /lib64/libselinux.so.1
+7f8835ed3000-7f8835ed4000 rw-p 0001d000 47:02 7479825                    /lib64/libselinux.so.1
+7f8835ed4000-7f8835ed5000 rw-p 00000000 00:00 0 
+7f8835ed5000-7f883605f000 r-xp 00000000 47:02 7479816                    /lib64/libc-2.12.so
+7f883605f000-7f883625f000 ---p 0018a000 47:02 7479816                    /lib64/libc-2.12.so
+7f883625f000-7f8836263000 r--p 0018a000 47:02 7479816                    /lib64/libc-2.12.so
+7f8836263000-7f8836265000 rw-p 0018e000 47:02 7479816                    /lib64/libc-2.12.so
+7f8836265000-7f8836269000 rw-p 00000000 00:00 0 
+7f8836269000-7f8836270000 r-xp 00000000 47:02 7479819                    /lib64/librt-2.12.so
+7f8836270000-7f883646f000 ---p 00007000 47:02 7479819                    /lib64/librt-2.12.so
+7f883646f000-7f8836470000 r--p 00006000 47:02 7479819                    /lib64/librt-2.12.so
+7f8836470000-7f8836471000 rw-p 00007000 47:02 7479819                    /lib64/librt-2.12.so
+7f8836471000-7f88364ab000 r-xp 00000000 47:02 7479794                    /lib64/libreadline.so.6.0
+7f88364ab000-7f88366ab000 ---p 0003a000 47:02 7479794                    /lib64/libreadline.so.6.0
+7f88366ab000-7f88366b3000 rw-p 0003a000 47:02 7479794                    /lib64/libreadline.so.6.0
+7f88366b3000-7f88366b4000 rw-p 00000000 00:00 0 
+7f88366b4000-7f883670a000 r-xp 00000000 47:02 7479417                    /lib64/libdevmapper.so.1.02
+7f883670a000-7f883690a000 ---p 00056000 47:02 7479417                    /lib64/libdevmapper.so.1.02
+7f883690a000-7f883690b000 r--p 00056000 47:02 7479417                    /lib64/libdevmapper.so.1.02
+7f883690b000-7f883690e000 rw-p 00057000 47:02 7479417                    /lib64/libdevmapper.so.1.02
+7f883690e000-7f883690f000 rw-p 00000000 00:00 0 
+7f883690f000-7f8836915000 r-xp 00000000 47:02 7479694                    /lib64/libdevmapper-event.so.1.02
+7f8836915000-7f8836b14000 ---p 00006000 47:02 7479694                    /lib64/libdevmapper-event.so.1.02
+7f8836b14000-7f8836b15000 r--p 00005000 47:02 7479694                    /lib64/libdevmapper-event.so.1.02
+7f8836b15000-7f8836b16000 rw-p 00006000 47:02 7479694                    /lib64/libdevmapper-event.so.1.02
+7f8836b16000-7f8836b18000 r-xp 00000000 47:02 7479817                    /lib64/libdl-2.12.so
+7f8836b18000-7f8836d18000 ---p 00002000 47:02 7479817                    /lib64/libdl-2.12.so
+7f8836d18000-7f8836d19000 r--p 00002000 47:02 7479817                    /lib64/libdl-2.12.so
+7f8836d19000-7f8836d1a000 rw-p 00003000 47:02 7479817                    /lib64/libdl-2.12.so
+7f8836d1a000-7f8836d26000 r-xp 00000000 47:02 7479387                    /lib64/libudev.so.0.5.1
+7f8836d26000-7f8836f26000 ---p 0000c000 47:02 7479387                    /lib64/libudev.so.0.5.1
+7f8836f26000-7f8836f27000 r--p 0000c000 47:02 7479387                    /lib64/libudev.so.0.5.1
+7f8836f27000-7f8836f28000 rw-p 0000d000 47:02 7479387                    /lib64/libudev.so.0.5.1
+7f8836f28000-7f8836f48000 r-xp 00000000 47:02 7479815                    /lib64/ld-2.12.so
+7f883712a000-7f8837131000 r--s 00000000 47:02 2876187                    /usr/lib64/gconv/gconv-modules.cache
+7f8837131000-7f8837138000 rw-p 00000000 00:00 0 
+7f8837145000-7f8837147000 rw-p 00000000 00:00 0 
+7f8837147000-7f8837149000 r--p 0001f000 47:02 7479815                    /lib64/ld-2.12.so
+7f8837149000-7f883714a000 rw-p 00021000 47:02 7479815                    /lib64/ld-2.12.so
+7f883714a000-7f883714b000 rw-p 00000000 00:00 0 
+7f883714b000-7f88372ae000 r-xp 00000000 47:02 5783771                    /sbin/lvm
+7f88374ad000-7f88374b5000 r--p 00162000 47:02 5783771                    /sbin/lvm
+7f88374b5000-7f88374bf000 rw-p 0016a000 47:02 5783771                    /sbin/lvm
+7f88374bf000-7f88374db000 rw-p 00000000 00:00 0 
+7f8837a72000-7f8837b6e000 rw-p 00000000 00:00 0                          [heap]
+7ffcab66f000-7ffcab684000 rw-p 00000000 00:00 0                          [stack]
+7ffcab7a4000-7ffcab7a5000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+/tmp/exec: line 1: 32379 Aborted                 (core dumped) vgcreate autotcvg1 /dev/sdce
+RETURN:134
+RESULT:WARNING
+
+
+DATE:2017-05-15 07:51:46
+HOST:s090105
+USER:root
+STDIN:vgs
+STDOUT:
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sdcd3 not /dev/sdcd
+  Using duplicate PV /dev/sdcd3 which is last seen, replacing /dev/sdcd
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sdcd8 not /dev/sdcd3
+  Using duplicate PV /dev/sdcd8 which is last seen, replacing /dev/sdcd3
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sdce not /dev/sdcd8
+  Using duplicate PV /dev/sdce which is last seen, replacing /dev/sdcd8
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sdce3 not /dev/sdce
+  Using duplicate PV /dev/sdce3 which is last seen, replacing /dev/sdce
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sdcf not /dev/sdce3
+  Using duplicate PV /dev/sdcf which is last seen, replacing /dev/sdce3
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sdcf3 not /dev/sdcf
+  Using duplicate PV /dev/sdcf3 which is last seen, replacing /dev/sdcf
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sddh not /dev/sdcf3
+  Using duplicate PV /dev/sddh which is last seen, replacing /dev/sdcf3
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sddh3 not /dev/sddh
+  Using duplicate PV /dev/sddh3 which is last seen, replacing /dev/sddh
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sddh8 not /dev/sddh3
+  Using duplicate PV /dev/sddh8 which is last seen, replacing /dev/sddh3
+  Device /dev/sddh8 has size of 10477568 sectors which is smaller than corresponding PV size of 10485760 sectors. Was device resized?
+  One or more devices used as PVs in VG autotcvg1 have changed sizes.
+  VG        #PV #LV #SN Attr   VSize VFree
+  autotcvg1   1   0   0 wz--n- 5.00g 5.00g
+
+***Create native lv and make filesystem***
+
+
+
+DATE:2017-05-15 07:51:48
+HOST:s090105
+USER:root
+STDIN:lvcreate -n autotclv1 -L 2G autotcvg1
+STDOUT:
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sdcd3 not /dev/sdcd
+  Using duplicate PV /dev/sdcd3 which is last seen, replacing /dev/sdcd
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sdcd8 not /dev/sdcd3
+  Using duplicate PV /dev/sdcd8 which is last seen, replacing /dev/sdcd3
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sdce not /dev/sdcd8
+  Using duplicate PV /dev/sdce which is last seen, replacing /dev/sdcd8
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sdce3 not /dev/sdce
+  Using duplicate PV /dev/sdce3 which is last seen, replacing /dev/sdce
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sdcf not /dev/sdce3
+  Using duplicate PV /dev/sdcf which is last seen, replacing /dev/sdce3
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sdcf3 not /dev/sdcf
+  Using duplicate PV /dev/sdcf3 which is last seen, replacing /dev/sdcf
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sddh not /dev/sdcf3
+  Using duplicate PV /dev/sddh which is last seen, replacing /dev/sdcf3
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sddh3 not /dev/sddh
+  Using duplicate PV /dev/sddh3 which is last seen, replacing /dev/sddh
+  Found duplicate PV zMdLUdPV7pOU0FIeQczAhcbGzaHEVJKt: using /dev/sddh8 not /dev/sddh3
+  Using duplicate PV /dev/sddh8 which is last seen, replacing /dev/sddh3
+  Device /dev/sddh8 has size of 10477568 sectors which is smaller than corresponding PV size of 10485760 sectors. Was device resized?
+  One or more devices used as PVs in VG autotcvg1 have changed sizes.
+  Logical volume "autotclv1" created.
+
+
+DATE:2017-05-15 07:51:54
+HOST:s090105
+USER:root
+STDIN:mkfs -t ext3 /dev/autotcvg1/autotclv1
+STDOUT:
+mke2fs 1.41.12 (17-May-2010)
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=0 blocks, Stripe width=0 blocks
+131072 inodes, 524288 blocks
+26214 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=536870912
+16 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912
+
+Writing inode tables:  0/16 1/16 2/16 3/16 4/16 5/16 6/16 7/16 8/16 9/1610/1611/1612/1613/1614/1615/16done                            
+Creating journal (16384 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+This filesystem will be automatically checked every 32 mounts or
+180 days, whichever comes first.  Use tune2fs -c or -i to override.
+
+***Mount the native filesystem***
+
+
+
+DATE:2017-05-15 07:51:55
+HOST:s090105
+USER:root
+STDIN:mkdir -p /autotclv1 && mount -t ext3 /dev/autotcvg1/autotclv1 /autotclv1
+STDOUT:
+
+
+
+DATE:2017-05-15 07:51:56
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/mapper/autotcvg1-autotclv1 2.0G 68M 1.9G 4% /autotclv1
+
+
+====STEP: Convert the 1st native vg/zpool to vxvm dg,free space required by vxfsconvert is approximately 12%-15% of the total file system size
+DATE:2017-05-15 07:51:56
+
+
+DATE:2017-05-15 07:52:04
+HOST:s090105
+USER:root
+STDIN:/tmp/tmpfile.30225 -s 104857600 -n 10 -d /autotclv1;sync
+STDOUT:
+
+
+
+DATE:2017-05-15 07:52:09
+HOST:s090105
+USER:root
+STDIN:find /autotclv1 -type f|grep -v lost|sort -n|xargs cksum
+STDOUT:
+1677882289 104857600 /autotclv1/mf/mf_0_0
+2592684631 104857600 /autotclv1/mf/mf_0_1
+1495355403 104857600 /autotclv1/mf/mf_0_2
+713187288 104857600 /autotclv1/mf/mf_0_3
+665720590 104857600 /autotclv1/mf/mf_0_4
+4257950482 104857600 /autotclv1/mf/mf_1_5
+54551284 104857600 /autotclv1/mf/mf_1_6
+285064191 104857600 /autotclv1/mf/mf_1_7
+2216209290 104857600 /autotclv1/mf/mf_1_8
+241969698 104857600 /autotclv1/mf/mf_1_9
+
+
+DATE:2017-05-15 07:52:11
+HOST:s090105
+USER:root
+STDIN:umount /autotclv1
+STDOUT:
+
+
+
+DATE:2017-05-15 07:52:11
+HOST:s090105
+USER:root
+STDIN:modprobe dm_mirror
+STDOUT:
+
+
+
+DATE:2017-05-15 07:52:12
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/expect_test.exp s090105
+STDOUT:
+spawn ssh s090105
+Warning: Permanently added 's090105,10.198.90.105' (RSA) to the list of known hosts.
+Last login: Mon May 15 07:36:06 2017 from 10.198.92.152
+[root@s090105 ~]# exit 0
+logout
+Connection to s090105 closed.
+
+
+DATE:2017-05-15 07:52:13
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:cat /opt/itf/tmp/expect.exp.30225
+STDOUT:
+#!/usr/bin/expect
+set timeout 20
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no s090105
+expect {
+	"#" {send "vxvmconvert\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+set timeout 20
+expect {
+	"Select an operation to perform:" {send "2\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Select an operation to perform:'";exit 2}
+}
+set timeout 60
+expect {
+	"list,listvg,q" {send "autotcvg1\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'list,listvg,q'";exit 2}
+}
+set timeout 60
+expect {
+	"Convert this Volume Group?" {send "y\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Convert this Volume Group?'";exit 2}
+}
+set timeout 60
+expect {
+	"Hit RETURN to continue." {send " \r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Hit RETURN to continue.'";exit 2}
+}
+set timeout 600
+expect {
+	"Are you ready to commit to these changes?" {send "y\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Are you ready to commit to these changes?'";exit 2}
+}
+set timeout 600
+expect {
+	"Convert other LVM Volume Groups?" {send "n\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Convert other LVM Volume Groups?'";exit 2}
+}
+set timeout 20
+expect {
+	"Select an operation to perform:" {send "q\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Select an operation to perform:'";exit 2}
+}
+set timeout 20
+expect {
+	"#" {send "exit 0\r"}
+	eof {exit 1}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+expect eof
+
+
+DATE:2017-05-15 07:54:12
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/tmp/expect.exp.30225
+STDOUT:
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no s090105
+Last login: Mon May 15 07:37:24 2017 from 10.198.92.152
+[root@s090105 ~]# vxvmconvert
+
+Volume Manager Support Operations
+Menu:: VolumeManager/LVM_Conversion
+
+ 1	Analyze LVM Volume Groups for Conversion
+ 2	Convert LVM Volume Groups to VxVM
+ 3	Roll back from VxVM to LVM
+ list	List disk information
+ listvg	List LVM Volume Group information
+
+
+ ?	Display help about menu
+ ??	Display help about the menuing system
+ q	Exit from menus
+
+Select an operation to perform: 2
+
+
+Convert one or more LVM Volume Groups
+Menu:: VolumeManager/LVM_Conversion/Convert_LVM_VGs
+
+  Use this operation to convert LVM Volume Groups to VxVM disk groups.
+  This adds the disks to a disk group and replaces existing LVM volumes
+  with VxVM volumes.  LVM-VxVM Volume Group conversion may require a
+  reboot for the changes to take effect. For this release, only
+  Non-root LVM Volume Groups can be converted.
+
+  More than one Volume Group or pattern may be entered at the prompt.
+  Here are some LVM Volume Group selection examples:
+
+  all:		convert all LVM Volume Groups (all except Root VG)
+  listvg:	list all LVM Volume Groups
+  list:		list all disk devices
+  vg_name:	a single LVM Volume Group, named vg_name
+  <pattern>:	for example:  vg04 vg08 vg09
+
+Select Volume Groups to convert :
+[<pattern-list>,all,list,listvg,q,?]  autotcvg1
+
+  autotcvg1
+
+Convert this Volume Group? [y,n,q,?] (default: y) y
+Problem: Analysis shows Volume Group autotcvg1 still in use
+
+
+  Conversion Analysis of the following devices indicates that the
+  Volume Group is still in use, which may prevent the completion
+  of the conversion without having to reboot the system. You may
+  want to double check that none of the volumes in the volume
+  group are in use before continuing with the conversion.
+
+  /dev/sddh
+
+Hit RETURN to continue. 
+
+
+
+   Second Stage Conversion Analysis of autotcvg1 
+
+touch: cannot touch `/tmp/lvmuuid.2462//dev/sdce': No such file or directory
+/etc/vx/bin/vxlxcap: line 55: /tmp/lvmuuid.2462//dev/sdce: No such file or directory
+cat: /tmp/lvmuuid.2462//dev/sdce: No such file or directory
+mv: cannot move `/tmp/t.2.2462' to `/tmp/lvmuuid.2462//dev/sdce': No such file or directory
+touch: cannot touch `/tmp/lvmuuid.2462//dev/sdcf': No such file or directory
+/etc/vx/bin/vxlxcap: line 55: /tmp/lvmuuid.2462//dev/sdcf: No such file or directory
+cat: /tmp/lvmuuid.2462//dev/sdcf: No such file or directory
+mv: cannot move `/tmp/t.2.2462' to `/tmp/lvmuuid.2462//dev/sdcf': No such file or directory
+touch: cannot touch `/tmp/lvmuuid.2462//dev/sddh': No such file or directory
+/etc/vx/bin/vxlxcap: line 55: /tmp/lvmuuid.2462//dev/sddh: No such file or directory
+cat: /tmp/lvmuuid.2462//dev/sddh: No such file or directory
+mv: cannot move `/tmp/t.2.2462' to `/tmp/lvmuuid.2462//dev/sddh': No such file or directory
+  PV /dev/sddh   VG autotcvg1       lvm2 [5.00 GiB / 3.00 GiB free]
+  Total: 1 [5.00 GiB] / in use: 1 [5.00 GiB] / in no VG: 0 [0   ]
+  Reading all physical volumes.  This may take a while...
+  Found volume group "autotcvg1" using metadata type lvm2
+  inactive          '/dev/autotcvg1/autotclv1' [2.00 GiB] inherit
+  PV /dev/sddh   VG autotcvg1       lvm2 [5.00 GiB / 3.00 GiB free]
+  Total: 1 [5.00 GiB] / in use: 1 [5.00 GiB] / in no VG: 0 [0   ]
+  inactive          '/dev/autotcvg1/autotclv1' [2.00 GiB] inherit
+/etc/vx/bin/vxlxcap: line 113: /tmp/lvmuuid.2462//dev/sdce: No such file or directory
+/etc/vx/bin/vxlxcap: line 113: /tmp/lvmuuid.2462//dev/sdcf: No such file or directory
+/etc/vx/bin/vxlxcap: line 113: /tmp/lvmuuid.2462//dev/sddh: No such file or directory
+ls: cannot access /dev/autotcvg1: No such file or directory
+ls: cannot access /dev/autotcvg1: No such file or directory
+
+  Volume Group autotcvg1 has been analyzed and prepared for conversion.
+
+Are you ready to commit to these changes? [y,n,q,?] (default: y) y
+
+  Preparing VG autotcvg1 for conversion, (possibly migrating extents) please wait .
+  /dev/sddh: Moved: 100.0%
+touch: cannot touch `/etc/vx/lvmconv/autotcvg1.d/ready': No such file or directory
+.mv: cannot move `/tmp/createpriv' to `/etc/vx/lvmconv/autotcvg1.d/todo/createpriv': No such file or directory
+mv: cannot move `/tmp/rollpriv' to `/etc/vx/lvmconv/autotcvg1.d/todo/rollpriv': No such file or directory
+.cat: /etc/vx/lvmconv/autotcvg1.d/todo/rollpriv: No such file or directory
+mv: cannot move `/tmp/reversefile.551' to `/etc/vx/lvmconv/autotcvg1.d/todo/rollpriv': No such file or directory
+.
+touch: cannot touch `/etc/vx/lvmconv/autotcvg1.d/ready': No such file or directory
+no VGs to convert
+
+Convert other LVM Volume Groups? [y,n,q,?] (default: n) n
+
+Volume Manager Support Operations
+Menu:: VolumeManager/LVM_Conversion
+
+ 1	Analyze LVM Volume Groups for Conversion
+ 2	Convert LVM Volume Groups to VxVM
+ 3	Roll back from VxVM to LVM
+ list	List disk information
+ listvg	List LVM Volume Group information
+
+
+ ?	Display help about menu
+ ??	Display help about the menuing system
+ q	Exit from menus
+
+Select an operation to perform: q
+
+Goodbye.
+[root@s090105 ~]# exit 0
+logout
+expectresult:0
+
+
+DATE:2017-05-15 07:54:13
+HOST:s090105
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+RETURN:0
+RESULT:WARNING
+
+
+DATE:2017-05-15 07:54:14
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/expect_test.exp s090105
+STDOUT:
+spawn ssh s090105
+Warning: Permanently added 's090105,10.198.90.105' (RSA) to the list of known hosts.
+Last login: Mon May 15 07:37:30 2017 from 10.198.92.152
+[root@s090105 ~]# exit 0
+logout
+Connection to s090105 closed.
+
+
+DATE:2017-05-15 07:54:14
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:cat /opt/itf/tmp/expect.exp.30225
+STDOUT:
+#!/usr/bin/expect
+set timeout 20
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no s090105
+expect {
+	"#" {send "vxvmconvert\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+set timeout 20
+expect {
+	"Select an operation to perform:" {send "2\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Select an operation to perform:'";exit 2}
+}
+set timeout 60
+expect {
+	"list,listvg,q" {send "autotcvg1\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'list,listvg,q'";exit 2}
+}
+set timeout 60
+expect {
+	"Convert this Volume Group?" {send "y\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Convert this Volume Group?'";exit 2}
+}
+set timeout 60
+expect {
+	"Hit RETURN to continue." {send " \r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Hit RETURN to continue.'";exit 2}
+}
+set timeout 600
+expect {
+	"Are you ready to commit to these changes?" {send "y\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Are you ready to commit to these changes?'";exit 2}
+}
+set timeout 600
+expect {
+	"Convert other LVM Volume Groups?" {send "n\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Convert other LVM Volume Groups?'";exit 2}
+}
+set timeout 20
+expect {
+	"Select an operation to perform:" {send "q\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Select an operation to perform:'";exit 2}
+}
+set timeout 20
+expect {
+	"#" {send "exit 0\r"}
+	eof {exit 1}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+expect eof
+
+
+DATE:2017-05-15 07:56:00
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/tmp/expect.exp.30225
+STDOUT:
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no s090105
+Last login: Mon May 15 07:39:25 2017 from 10.198.92.152
+[root@s090105 ~]# vxvmconvert
+
+Volume Manager Support Operations
+Menu:: VolumeManager/LVM_Conversion
+
+ 1	Analyze LVM Volume Groups for Conversion
+ 2	Convert LVM Volume Groups to VxVM
+ 3	Roll back from VxVM to LVM
+ list	List disk information
+ listvg	List LVM Volume Group information
+
+
+ ?	Display help about menu
+ ??	Display help about the menuing system
+ q	Exit from menus
+
+Select an operation to perform: 2
+
+
+Convert one or more LVM Volume Groups
+Menu:: VolumeManager/LVM_Conversion/Convert_LVM_VGs
+
+  Use this operation to convert LVM Volume Groups to VxVM disk groups.
+  This adds the disks to a disk group and replaces existing LVM volumes
+  with VxVM volumes.  LVM-VxVM Volume Group conversion may require a
+  reboot for the changes to take effect. For this release, only
+  Non-root LVM Volume Groups can be converted.
+
+  More than one Volume Group or pattern may be entered at the prompt.
+  Here are some LVM Volume Group selection examples:
+
+  all:		convert all LVM Volume Groups (all except Root VG)
+  listvg:	list all LVM Volume Groups
+  list:		list all disk devices
+  vg_name:	a single LVM Volume Group, named vg_name
+  <pattern>:	for example:  vg04 vg08 vg09
+
+Select Volume Groups to convert :
+[<pattern-list>,all,list,listvg,q,?]  autotcvg1
+
+  autotcvg1
+
+Convert this Volume Group? [y,n,q,?] (default: y) y
+Problem: Analysis shows Volume Group autotcvg1 still in use
+
+
+  Conversion Analysis of the following devices indicates that the
+  Volume Group is still in use, which may prevent the completion
+  of the conversion without having to reboot the system. You may
+  want to double check that none of the volumes in the volume
+  group are in use before continuing with the conversion.
+
+  /dev/sddh
+
+Hit RETURN to continue. 
+
+
+
+   Second Stage Conversion Analysis of autotcvg1 
+
+touch: cannot touch `/tmp/lvmuuid.7111//dev/sdce': No such file or directory
+/etc/vx/bin/vxlxcap: line 55: /tmp/lvmuuid.7111//dev/sdce: No such file or directory
+cat: /tmp/lvmuuid.7111//dev/sdce: No such file or directory
+mv: cannot move `/tmp/t.2.7111' to `/tmp/lvmuuid.7111//dev/sdce': No such file or directory
+touch: cannot touch `/tmp/lvmuuid.7111//dev/sdcf': No such file or directory
+/etc/vx/bin/vxlxcap: line 55: /tmp/lvmuuid.7111//dev/sdcf: No such file or directory
+cat: /tmp/lvmuuid.7111//dev/sdcf: No such file or directory
+mv: cannot move `/tmp/t.2.7111' to `/tmp/lvmuuid.7111//dev/sdcf': No such file or directory
+touch: cannot touch `/tmp/lvmuuid.7111//dev/sddh': No such file or directory
+/etc/vx/bin/vxlxcap: line 55: /tmp/lvmuuid.7111//dev/sddh: No such file or directory
+cat: /tmp/lvmuuid.7111//dev/sddh: No such file or directory
+mv: cannot move `/tmp/t.2.7111' to `/tmp/lvmuuid.7111//dev/sddh': No such file or directory
+  PV /dev/sddh   VG autotcvg1       lvm2 [5.00 GiB / 3.00 GiB free]
+  Total: 1 [5.00 GiB] / in use: 1 [5.00 GiB] / in no VG: 0 [0   ]
+  Reading all physical volumes.  This may take a while...
+  Found volume group "autotcvg1" using metadata type lvm2
+  inactive          '/dev/autotcvg1/autotclv1' [2.00 GiB] inherit
+  PV /dev/sddh   VG autotcvg1       lvm2 [5.00 GiB / 3.00 GiB free]
+  Total: 1 [5.00 GiB] / in use: 1 [5.00 GiB] / in no VG: 0 [0   ]
+  inactive          '/dev/autotcvg1/autotclv1' [2.00 GiB] inherit
+/etc/vx/bin/vxlxcap: line 113: /tmp/lvmuuid.7111//dev/sdce: No such file or directory
+/etc/vx/bin/vxlxcap: line 113: /tmp/lvmuuid.7111//dev/sdcf: No such file or directory
+/etc/vx/bin/vxlxcap: line 113: /tmp/lvmuuid.7111//dev/sddh: No such file or directory
+ls: cannot access /dev/autotcvg1: No such file or directory
+ls: cannot access /dev/autotcvg1: No such file or directory
+
+  Volume Group autotcvg1 has been analyzed and prepared for conversion.
+
+Are you ready to commit to these changes? [y,n,q,?] (default: y) y
+vxlvmconv: making log directory /etc/vx/lvmconv/autotcvg1.d/log.
+vxlvmconv: starting conversion for VG "autotcvg1" - Mon May 15 07:40:51 UTC 2017
+vxlvmconv: Checking disk connectivity
+Starting Conversion of autotcvg1 to VxVM
+lvmoff .
+fdisk .
+disksetup .
+dginit ..
+make .
+volinit .
+Saving rollback info for autotcvg1 to LVM
+vxlvmconv: Conversion complete.
+
+Convert other LVM Volume Groups? [y,n,q,?] (default: n) n
+
+Volume Manager Support Operations
+Menu:: VolumeManager/LVM_Conversion
+
+ 1	Analyze LVM Volume Groups for Conversion
+ 2	Convert LVM Volume Groups to VxVM
+ 3	Roll back from VxVM to LVM
+ list	List disk information
+ listvg	List LVM Volume Group information
+
+
+ ?	Display help about menu
+ ??	Display help about the menuing system
+ q	Exit from menus
+
+Select an operation to perform: q
+
+Goodbye.
+[root@s090105 ~]# exit 0
+logout
+expectresult:0
+
+
+DATE:2017-05-15 07:56:01
+HOST:s090105
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcvg1    enabled              1494834069.166.s090105.cdc.veritas.com
+
+
+DATE:2017-05-15 07:56:01
+HOST:s090105
+USER:root
+STDIN:mount -t ext3 /dev/vx/dsk/autotcvg1/autotclv1 /autotclv1
+STDOUT:
+
+
+
+DATE:2017-05-15 07:56:02
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcvg1/autotclv1 2.0G 1.1G 846M 56% /autotclv1
+
+
+DATE:2017-05-15 07:56:10
+HOST:s090105
+USER:root
+STDIN:find /autotclv1 -type f|grep -v lost|sort -n|xargs cksum
+STDOUT:
+1677882289 104857600 /autotclv1/mf/mf_0_0
+2592684631 104857600 /autotclv1/mf/mf_0_1
+1495355403 104857600 /autotclv1/mf/mf_0_2
+713187288 104857600 /autotclv1/mf/mf_0_3
+665720590 104857600 /autotclv1/mf/mf_0_4
+4257950482 104857600 /autotclv1/mf/mf_1_5
+54551284 104857600 /autotclv1/mf/mf_1_6
+285064191 104857600 /autotclv1/mf/mf_1_7
+2216209290 104857600 /autotclv1/mf/mf_1_8
+241969698 104857600 /autotclv1/mf/mf_1_9
+
+***the cksum value keep the same after doing vm convert.***
+
+
+
+====STEP: Convert the 1st native filessytem to vxfs
+DATE:2017-05-15 07:56:10
+
+
+DATE:2017-05-15 07:56:12
+HOST:s090105
+USER:root
+STDIN:umount /autotclv1
+STDOUT:
+
+
+
+DATE:2017-05-15 07:56:14
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxfsconvert -y /dev/vx/dsk/autotcvg1/autotclv1
+STDOUT:
+Do you wish to commit to conversion? (ynq) UX:vxfs vxfsconvert: INFO: V-3-21852:  CONVERSION WAS SUCCESSFUL
+y
+
+
+DATE:2017-05-15 07:56:15
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/autotcvg1/autotclv1
+STDOUT:
+vxfs
+
+
+DATE:2017-05-15 07:56:17
+HOST:s090105
+USER:root
+STDIN:fsck -t vxfs -y /dev/vx/dsk/autotcvg1/autotclv1
+STDOUT:
+fsck from util-linux-ng 2.17.2
+super-block indicates that intent logging was disabled
+cannot perform log replay
+file system is not clean, full fsck required
+pass0 - checking structural files
+pass1 - checking inode sanity and blocks
+pass2 - checking directory linkage
+pass3 - checking reference counts
+pass4 - checking resource maps
+fileset 1 au 0 imap incorrect - fix (ynq)y
+fileset 1 au 0 iemap incorrect - fix (ynq)y
+fileset 999 au 0 imap incorrect - fix (ynq)y
+fileset 999 au 0 iemap incorrect - fix (ynq)y
+fileset 999 au 1 imap incorrect - fix (ynq)y
+fileset 999 au 1 iemap incorrect - fix (ynq)y
+fileset 999 au 2 imap incorrect - fix (ynq)y
+fileset 999 au 2 iemap incorrect - fix (ynq)y
+no CUT entry for fileset 1, fix? (ynq)y
+no CUT entry for fileset 999, fix? (ynq)y
+au 0 emap incorrect - fix? (ynq)y
+au 0 summary incorrect - fix? (ynq)y
+au 0 state file incorrect - fix? (ynq)y
+au 1 emap incorrect - fix? (ynq)y
+au 1 summary incorrect - fix? (ynq)y
+au 2 emap incorrect - fix? (ynq)y
+au 2 summary incorrect - fix? (ynq)y
+au 2 state file incorrect - fix? (ynq)y
+au 3 emap incorrect - fix? (ynq)y
+au 3 summary incorrect - fix? (ynq)y
+au 3 state file incorrect - fix? (ynq)y
+au 4 emap incorrect - fix? (ynq)y
+au 4 summary incorrect - fix? (ynq)y
+au 4 state file incorrect - fix? (ynq)y
+au 5 emap incorrect - fix? (ynq)y
+au 5 summary incorrect - fix? (ynq)y
+au 6 emap incorrect - fix? (ynq)y
+au 6 summary incorrect - fix? (ynq)y
+au 6 state file incorrect - fix? (ynq)y
+au 7 emap incorrect - fix? (ynq)y
+au 7 summary incorrect - fix? (ynq)y
+au 7 state file incorrect - fix? (ynq)y
+au 8 emap incorrect - fix? (ynq)y
+au 8 summary incorrect - fix? (ynq)y
+au 8 state file incorrect - fix? (ynq)y
+au 9 emap incorrect - fix? (ynq)y
+au 9 summary incorrect - fix? (ynq)y
+au 10 emap incorrect - fix? (ynq)y
+au 10 summary incorrect - fix? (ynq)y
+au 10 state file incorrect - fix? (ynq)y
+au 11 emap incorrect - fix? (ynq)y
+au 11 summary incorrect - fix? (ynq)y
+au 11 state file incorrect - fix? (ynq)y
+au 12 emap incorrect - fix? (ynq)y
+au 12 summary incorrect - fix? (ynq)y
+au 12 state file incorrect - fix? (ynq)y
+au 13 emap incorrect - fix? (ynq)y
+au 13 summary incorrect - fix? (ynq)y
+au 14 emap incorrect - fix? (ynq)y
+au 14 summary incorrect - fix? (ynq)y
+au 14 state file incorrect - fix? (ynq)y
+au 15 emap incorrect - fix? (ynq)y
+au 15 summary incorrect - fix? (ynq)y
+au 15 state file incorrect - fix? (ynq)y
+fileset 1 iau 0 summary incorrect - fix? (ynq)y
+fileset 999 iau 0 summary incorrect - fix? (ynq)y
+fileset 999 iau 1 summary incorrect - fix? (ynq)y
+fileset 999 iau 2 summary incorrect - fix? (ynq)y
+free block count incorrect 0 expected 259219 fix? (ynq)y
+ fsuuid incorrect fix? (ynq)y
+free extent vector incorrect fix? (ynq)y
+OK to clear log? (ynq)y
+flush fileset headers? (ynq)y
+set state to CLEAN? (ynq)y
+
+
+DATE:2017-05-15 07:56:18
+HOST:s090105
+USER:root
+STDIN:mkdir -p /autotclv1 && mount  -t vxfs /dev/vx/dsk/autotcvg1/autotclv1 /autotclv1
+STDOUT:
+
+
+
+DATE:2017-05-15 07:56:19
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcvg1/autotclv1 2.0G 1.1G 1013M 51% /autotclv1
+
+
+DATE:2017-05-15 07:56:26
+HOST:s090105
+USER:root
+STDIN:find /autotclv1 -type f|grep -v lost|sort -n|xargs cksum
+STDOUT:
+1677882289 104857600 /autotclv1/mf/mf_0_0
+2592684631 104857600 /autotclv1/mf/mf_0_1
+1495355403 104857600 /autotclv1/mf/mf_0_2
+713187288 104857600 /autotclv1/mf/mf_0_3
+665720590 104857600 /autotclv1/mf/mf_0_4
+4257950482 104857600 /autotclv1/mf/mf_1_5
+54551284 104857600 /autotclv1/mf/mf_1_6
+285064191 104857600 /autotclv1/mf/mf_1_7
+2216209290 104857600 /autotclv1/mf/mf_1_8
+241969698 104857600 /autotclv1/mf/mf_1_9
+
+***the cksum value keep the same after doing fs convert.***
+
+
+
+Case Result:Passed
+DATE:2017-05-15 07:56:26
+Duration:5m33s

@@ -1,0 +1,199 @@
+#des:support platform linux,aix,solaris
+#P:55
+dg=autotcdg
+volprefix=autotcvol
+vsetprefix=autotcvset
+snapvsetprefix=snapautotcvset
+mpprefix=/autotc
+groupprefix=cfsgrp
+ckptprefix=ckpt
+datapolicyprefix=datapolicy
+metadatapolicyprefix=metadatapolicy
+
+oLog step "Checking basic environment of testbed"
+#check if login without password by root and oracle user
+if [ $NODESN -lt 2 ]
+then
+        oLog error "There must be 2 nodes and more for this test case"
+        myexit 201
+fi
+checkNode root
+for node in $NODES
+do
+        getHostnameOSProduct $node
+done
+
+oLog step "Find out 8 disks with size greater than 5g,and make a share dg among cluster"
+disks=`getDisk $node share` || exit 201
+disks=`echo "$disks"|awk '$2>4900 {print $1}'|head -8`
+
+if [ `echo "$disks"|wc -l` -lt 8 ]
+then
+	oLog error "Failed to get enough disks"
+	myexit 201
+fi
+disks=`echo "$disks"|xargs -n10000`
+RExec root $NODE1 "vxdg -s init $dg $disks"
+
+oLog step "Create 7 volumes with different layout and size will be 1g"
+i=1
+for opt in "layout=concat-mirror mirror=2" "layout=mirror-concat mirror=2" "layout=mirror-stripe ncol=2" "layout=stripe-mirror ncol=3" "" "layout=stripe ncol=3" ""
+do
+        RExec root $NODE1 "vxassist -g $dg make ${volprefix}$i 1g $opt"
+        i=$[$i+1]
+done
+
+oLog step "Making 4 volume sets and Mount them with specified mount options"
+RExec root $NODE1 "vxvset -g $dg make ${vsetprefix}1 ${volprefix}1"
+RExec root $NODE1 "vxvset -g $dg addvol ${vsetprefix}1 ${volprefix}2"
+RExec root $NODE1 "vxvset -g $dg make ${vsetprefix}2 ${volprefix}3"
+RExec root $NODE1 "vxvset -g $dg addvol ${vsetprefix}2 ${volprefix}4"
+RExec root $NODE1 "vxvset -g $dg make ${vsetprefix}3 ${volprefix}5"
+RExec root $NODE1 "vxvset -g $dg addvol ${vsetprefix}3 ${volprefix}6"
+RExec root $NODE1 "vxvset -g $dg make ${vsetprefix}4 ${volprefix}7"
+for i in 1 2 3 4
+do
+        mkVxfs $NODE1 $dg "${vsetprefix}${i}"
+done
+i=1
+for opt in "all=blkclear,mincache=dsync" "all=blkclear,mincache=closesync" "all=blkclear,mincache=direct" "all=blkclear,mincache=unbuffered"
+do
+        cfsMount $NODE1 $dg ${vsetprefix}$i ${mpprefix}$i ${groupprefix}$i $opt
+        i=$[$i+1]
+done
+
+oLog step "Adding IO load to above mountpoint"
+for i in {1..4}
+do
+        fsStressStart $NODE1 ${mpprefix}$i 
+done
+
+oLog step "Display the current environment"
+RExec root $NODE1 "vxprint -g autotcdg"
+RExec root $NODE1 "$cmd2"
+disk_exp=`echo "$disks"|sed "s/ /|/g"`
+
+RExec root $NODE1 "/opt/VRTS/bin/vxdmpadm iostat reset;sleep 2;/opt/VRTS/bin/vxdmpadm -uk iostat show groupby=dmpnode|awk '\$1 ~ /$disk_exp/ {print}'"
+
+oLog step "Set FCL logging on for the mount point,fill in files into mountpoint"
+copyFileToRemoteKeepName $BASE/etc/mf.pl $NODE1
+for i in {1..4}
+do
+        RExec root $NODE1 "/opt/VRTS/bin/fcladm on ${mpprefix}$i"
+        RExec root $NODE1 "mkdir -p ${mpprefix}$i/mffile && /mf.pl.$PID -d ${mpprefix}$i/mffile -n 10 -s10 -L M"
+done
+
+oLog step "Create checkpoint for the mount point and define policy(metadata and data)"
+for i in {1..3}
+do
+        j=$[2*$i]
+        k=$[$j-1]
+        RExec root $NODE1 "/opt/VRTS/bin/fsckptadm -n create ${ckptprefix}${i} ${mpprefix}$i"
+        RExec root $NODE1 "/opt/VRTS/bin/fsapadm define ${mpprefix}$i datapolicy ${volprefix}${j}"
+        RExec root $NODE1 "/opt/VRTS/bin/fsapadm define ${mpprefix}$i metadatapolicy ${volprefix}${k}"
+        RExec root $NODE1 "/opt/VRTS/bin/fsapadm assignfs ${mpprefix}$i datapolicy metadatapolicy"
+done
+
+oLog step "Stop the IO load for the mount point"
+RExec root $NODE1 "ps -ef|grep -v grep|grep tmpfile"
+iopids=`echo "$out"|awk '{print $2}'|xargs -n10000`
+fsStressStop $NODE1 "$iopids"
+
+oLog step "Delete the cfsmount service group and then add back"
+for i in {1..4}
+do
+        cfsUmount $NODE1 ${mpprefix}$i
+        cfsMount $NODE1 $dg ${vsetprefix}$i ${mpprefix}$i ${groupprefix}$i all=rw
+done
+
+oLog step "Create snapshot for the above 4 volume sets"
+oLog des "Create 7 volumes with the same layout and size with the previous volumes"
+i=8
+for opt in "layout=concat-mirror mirror=2" "layout=mirror-concat mirror=2" "layout=mirror-stripe ncol=2" "layout=stripe-mirror ncol=3" "" "layout=stripe ncol=3" ""
+do
+        RExec root $NODE1 "vxassist -g $dg make ${volprefix}$i 1g $opt"
+        i=$[$i+1]
+done
+oLog des "Making 4 volume according to above mapping"
+RExec root $NODE1 "vxvset -g $dg make ${snapvsetprefix}5 ${volprefix}8"
+RExec root $NODE1 "vxvset -g $dg addvol ${snapvsetprefix}5 ${volprefix}9"
+RExec root $NODE1 "vxvset -g $dg make ${snapvsetprefix}6 ${volprefix}10"
+RExec root $NODE1 "vxvset -g $dg addvol ${snapvsetprefix}6 ${volprefix}11"
+RExec root $NODE1 "vxvset -g $dg make ${snapvsetprefix}7 ${volprefix}12"
+RExec root $NODE1 "vxvset -g $dg addvol ${snapvsetprefix}7 ${volprefix}13"
+RExec root $NODE1 "vxvset -g $dg make ${snapvsetprefix}8 ${volprefix}14"
+oLog des "Prepare the target volume sets and and attach to source volume sets"
+for i in {1..4}
+do
+        j=$[$i+4]
+        RExec root $NODE1 "vxsnap -g $dg prepare ${vsetprefix}$i"
+        RExec root $NODE1 "vxsnap -g $dg prepare ${snapvsetprefix}$j"
+        RExec root $NODE1 "vxsnap -g $dg make source=${vsetprefix}$i/snapvol=${snapvsetprefix}$j"
+done
+
+oLog step "Do resize operation for the 4 Filesystem"
+for i in {1..7}
+do
+        [ $i -gt 4 ] && size=1100M || size=900M
+        RExec root $NODE1 "/opt/VRTS/bin/vxresize -f -g $dg ${volprefix}$i $size"
+done
+
+oLog step "Removing check point and policy just created"
+for i in {1..3}
+do
+        j=$[2*$i]
+        k=$[$j-1]
+        RExec root $NODE1 "/opt/VRTS/bin/fsckptadm remove ${ckptprefix}${i} ${mpprefix}$i"
+        RExec root $NODE1 "/opt/VRTS/bin/fsapadm delete ${mpprefix}$i datapolicy"
+        RExec root $NODE1 "/opt/VRTS/bin/fsapadm delete ${mpprefix}$i metadatapolicy"
+done
+
+oLog step "Force panic primary node during addition of checkpoint for 1st mount point on the primary node"
+cfsnodes=(`getCfsNodeRole $NODE1 ${mpprefix}1`) || exit 1
+pnode=${cfsnodes[0]}
+npnode=${cfsnodes[1]}
+oLog des "Primary Node is $pnode and None Primary node is $npnode"
+oLog des "Adding IO load to ${mpprefix}1/mffile on $npnode"
+fsStressStart $npnode ${mpprefix}1
+oLog des "Reboot primary node when create checkpoint on the primary node"
+RExec root $pnode "/opt/VRTS/bin/fsckptadm -n create ${ckptprefix}1 ${mpprefix}1 > /dev/null 2>&1 &"
+waitNodeReboot $pnode
+waitGroupOnline $npnode ${groupprefix}1
+RExec root $pnode "/opt/VRTS/bin/fsckptadm list ${mpprefix}1"
+
+oLog step "Force panic primary node during addition of checkpoint for 2nd mount point on the none primary node"
+cfsnodes=(`getCfsNodeRole $NODE1 ${mpprefix}2`) || exit 1
+pnode=${cfsnodes[0]}
+npnode=${cfsnodes[1]}
+oLog des "Primary Node is $pnode and None Primary node is $npnode"
+oLog des "Reboot primary node when create checkpoint on the none primary node"
+RExec root $npnode "/opt/VRTS/bin/fsckptadm -n create ${ckptprefix}2 ${mpprefix}2 > /dev/null 2>&1 &"
+waitNodeReboot $pnode
+waitGroupOnline $npnode ${groupprefix}2
+RExec root $pnode "/opt/VRTS/bin/fsckptadm list ${groupprefix}2"
+
+oLog step "Force panic primary node during deletion of checkpoint for 1st mount point on the primary"
+cfsnodes=(`getCfsNodeRole $NODE1 ${mpprefix}1`) || exit 1
+pnode=${cfsnodes[0]}
+npnode=${cfsnodes[1]}
+oLog des "Primary Node is $pnode and None Primary node is $npnode"
+oLog des "Adding IO load to ${mpprefix}1/mffile on $npnode"
+fsStressStart $npnode ${mpprefix}1
+oLog des "Reboot primary node when create checkpoint on the primary node"
+RExec root $pnode "/opt/VRTS/bin/fsckptadm remove ${ckptprefix}1 ${mpprefix}1 > /dev/null 2>&1 &"
+waitNodeReboot $pnode
+waitGroupOnline $npnode ${groupprefix}1
+RExec root $pnode "NOERROR:/opt/VRTS/bin/fsckptadm list ${groupprefix}1"
+
+oLog step "Force panic primary node during deletion of checkpoint for 2nd mount point on the none primary node"
+cfsnodes=(`getCfsNodeRole $NODE1 ${mpprefix}2`) || exit 1
+pnode=${cfsnodes[0]}
+npnode=${cfsnodes[1]}
+oLog des "Primary Node is $pnode and None Primary node is $npnode"
+oLog des "Reboot primary node when create checkpoint on the none primary node"
+RExec root $npnode "/opt/VRTS/bin/fsckptadm remove ${ckptprefix}2 ${mpprefix}2 > /dev/null 2>&1 &"
+waitNodeReboot $pnode
+waitGroupOnline $npnode ${groupprefix}2
+RExec root $pnode "NOERROR:/opt/VRTS/bin/fsckptadm list ${groupprefix}2"
+oLog flag
+myexit 10

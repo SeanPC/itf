@@ -1,0 +1,2683 @@
+
+==================== Operation Log for TC oracle_dbdst ====================
+DATE:2017-02-23 14:53:07
+Nodes:cdc-r710s0-cd cdc-r710s1-cd
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-02-23 14:53:07
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-02-23 14:53:08
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:ssh -l root cdc-r710s0-cd
+STDOUT:
+
+
+
+DATE:2017-02-23 14:53:11
+HOST:cdc-r710s1-cd
+USER:root
+STDIN:ssh -l root cdc-r710s1-cd
+STDOUT:
+
+
+
+DATE:2017-02-23 14:53:17
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh cdc-r710s0-cd,cdc-r710s1-cd
+STDOUT:
+
+
+
+DATE:2017-02-23 14:53:18
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+cdc-r710s0-cd
+cdc-r710s1-cd
+
+
+DATE:2017-02-23 14:53:19
+HOST:cdc-r710s1-cd
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+cdc-r710s0-cd
+cdc-r710s1-cd
+
+***checking if hosts are wop-sshable with oracle***
+
+
+
+DATE:2017-02-23 14:53:21
+HOST:cdc-r710s0-cd
+USER:oracle
+STDIN:ssh -l oracle cdc-r710s0-cd
+STDOUT:
+
+
+
+DATE:2017-02-23 14:53:23
+HOST:cdc-r710s1-cd
+USER:oracle
+STDIN:ssh -l oracle cdc-r710s1-cd
+STDOUT:
+
+
+***Getting hostname of node***
+
+
+
+DATE:2017-02-23 14:53:26
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:hostname
+STDOUT:
+cdc-r710s0-cd.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-02-23 14:53:27
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-02-23 14:53:28
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 6.9 Beta (Santiago)
+
+
+DATE:2017-02-23 14:53:29
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:uname -r
+STDOUT:
+2.6.32-691.el6.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-02-23 14:53:36
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSaslapm-7.2.0.000-RHEL6.x86_64
+Name        : VRTSaslapm                   Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Sun 16 Oct 2016 07:47:49 PM CST
+Install Date: Wed 22 Feb 2017 03:06:33 PM CST      Build Host: sf-rhel6ga-build.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSaslapm-7.2.0.000-RHEL6.src.rpm
+Size        : 52836521                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:43 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTScps-7.2.0.000-RHEL6.x86_64
+Name        : VRTScps                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 18 Oct 2016 12:35:53 AM CST
+Install Date: Wed 22 Feb 2017 03:07:58 PM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTScps-7.2.0.000-RHEL6.src.rpm
+Size        : 63081538                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:45 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Co-ordination Point Server
+Description :
+Veritas Co-ordination Point Server
+Build Stamp: 7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSdbac-7.2.0.000-RHEL6.x86_64
+Name        : VRTSdbac                     Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 05 Oct 2016 08:46:22 PM CST
+Install Date: Wed 22 Feb 2017 03:08:37 PM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSdbac-7.2.0.000-RHEL6.src.rpm
+Size        : 12691919                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:46 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Real Application Cluster Support Package
+Description :
+Veritas Oracle Real Application Cluster Support Package
+Build Stamp	: 7.2.0.000-2016-10-05_05.34.53
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.32-642.el6.x86_64
+
+Package INFO: VRTSvlic-3.02.71.004-RHEL6.x86_64
+Name        : VRTSvlic                     Relocations: (not relocatable)
+Version     : 3.02.71.004                       Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 12 Oct 2016 05:10:43 PM CST
+Install Date: Wed 22 Feb 2017 03:04:40 PM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvlic-3.02.71.004-RHEL6.src.rpm
+Size        : 1609373                          License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:37:04 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas License Utilities
+Description :
+These are the Veritas License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSvxfen-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvxfen                    Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 18 Oct 2016 12:21:39 AM CST
+Install Date: Wed 22 Feb 2017 03:07:30 PM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvxfen-7.2.0.000-RHEL6.src.rpm
+Size        : 19006812                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:37:04 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas I/O Fencing
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64
+Build Stamp        : 7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTScavf-7.2.0.000-RHEL6.x86_64
+Name        : VRTScavf                     Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 03:45:43 PM CST
+Install Date: Wed 22 Feb 2017 03:08:28 PM CST      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTScavf-7.2.0.000-RHEL6.src.rpm
+Size        : 860541                           License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:44 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+Veritas Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+Package INFO: VRTSspt-7.2.0.000-RHEL6.noarch
+Name        : VRTSspt                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 07:56:11 PM CST
+Install Date: Wed 22 Feb 2017 03:04:43 PM CST      Build Host: sptpunrhel5bld1.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSspt-7.2.0.000-RHEL6.src.rpm
+Size        : 42691235                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:57 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Software Support Tools Package
+Description :
+VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSfsadv-7.2.0.000-RHEL6.x86_64
+Name        : VRTSfsadv                    Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 03:49:48 PM CST
+Install Date: Wed 22 Feb 2017 03:07:17 PM CST      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSfsadv-7.2.0.000-RHEL6.src.rpm
+Size        : 15115315                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:49 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas File System Advanced Features
+Description :
+Veritas File System Advanced Features
+
+Package INFO: VRTSamf-7.2.0.000-RHEL6.x86_64
+Name        : VRTSamf                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 18 Oct 2016 12:28:53 AM CST
+Install Date: Wed 22 Feb 2017 03:07:34 PM CST      Build Host: vcsbuildrhel6x8664
+Group       : System Environment/Kernel     Source RPM: VRTSamf-7.2.0.000-RHEL6.src.rpm
+Size        : 17713049                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:43 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64
+Build Stamp        : 7.2.0.000-2016-10-17_09.27.08
+
+Package INFO: VRTSvcsea-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvcsea                    Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 18 Oct 2016 01:02:57 AM CST
+Install Date: Wed 22 Feb 2017 03:08:09 PM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsea-7.2.0.000-RHEL6.src.rpm
+Size        : 1363002                          License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:37:02 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSgms-7.2.0.000-RHEL6.x86_64
+Name        : VRTSgms                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 03:45:14 PM CST
+Install Date: Wed 22 Feb 2017 03:08:31 PM CST      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSgms-7.2.0.000-RHEL6.src.rpm
+Size        : 83955                            License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:51 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Group Messaging Services
+Description :
+Veritas Group Messaging Sevice (GMS) driver
+
+Package INFO: VRTSvbs-7.2.0.000-GA_Linux.x86_64
+Name        : VRTSvbs                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : GA_Linux                      Build Date: Wed 05 Oct 2016 04:44:13 PM CST
+Install Date: Wed 22 Feb 2017 03:08:59 PM CST      Build Host: snapper53-64.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSvbs-7.2.0.000-GA_Linux.src.rpm
+Size        : 74478677                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:58 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Virtual Business Services by Veritas
+Description :
+Virtual Business Services by Veritas
+Build Stamp : 7.2.0.000-2016-10-05_00.18.20
+
+Package INFO: VRTSvxvm-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvxvm                     Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Sun 16 Oct 2016 07:46:33 PM CST
+Install Date: Wed 22 Feb 2017 03:05:09 PM CST      Build Host: sf-rhel6ga-build.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSvxvm-7.2.0.000-RHEL6.src.rpm
+Size        : 515315830                        License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:37:07 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Volume Manager
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSllt-7.2.0.000-RHEL6.x86_64
+Name        : VRTSllt                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 18 Oct 2016 12:10:03 AM CST
+Install Date: Wed 22 Feb 2017 03:07:22 PM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSllt-7.2.0.000-RHEL6.src.rpm
+Size        : 41557514                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:52 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Low Latency Transport
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64 [LINUX_RHEL60]
+Build Stamp: Veritas-7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSvcs-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvcs                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 18 Oct 2016 12:32:42 AM CST
+Install Date: Wed 22 Feb 2017 03:07:49 PM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcs-7.2.0.000-RHEL6.src.rpm
+Size        : 225834188                        License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:37:00 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Server
+Description :
+Veritas Cluster Server and Commands (x86_64)
+Build Stamp : 7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSdbed-7.2.0.000-RHEL.x86_64
+Name        : VRTSdbed                     Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL                          Build Date: Mon 03 Oct 2016 09:38:19 AM CST
+Install Date: Wed 22 Feb 2017 03:08:16 PM CST      Build Host: snapper53-64.engba.veritas.com
+Group       : Applications/Databases        Source RPM: VRTSdbed-7.2.0.000-RHEL.src.rpm
+Size        : 278952613                        License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:48 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSodm-7.2.0.000-RHEL6.x86_64
+Name        : VRTSodm                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC.
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 03:46:46 PM CST
+Install Date: Wed 22 Feb 2017 03:08:33 PM CST      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSodm-7.2.0.000-RHEL6.src.rpm
+Size        : 910406                           License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:53 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Disk Manager
+Description :
+Veritas Oracle Disk Manager (ODM)
+
+Package INFO: VRTSsfcpi-7.2.0.000-GENERIC.noarch
+Name        : VRTSsfcpi                    Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : GENERIC                       Build Date: Fri 30 Sep 2016 11:50:10 PM CST
+Install Date: Wed 22 Feb 2017 03:09:03 PM CST      Build Host: vmd2850lx11
+Group       : Applications/System           Source RPM: VRTSsfcpi-7.2.0.000-GENERIC.src.rpm
+Size        : 14572111                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:55 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+
+Package INFO: VRTSperl-5.24.0.0-RHEL6.x86_64
+Name        : VRTSperl                     Relocations: (not relocatable)
+Version     : 5.24.0.0                          Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Wed 07 Sep 2016 09:09:03 PM CST
+Install Date: Wed 22 Feb 2017 03:04:33 PM CST      Build Host: rhel6-perl.cdc.veritas.com
+Group       : Applications/System           Source RPM: VRTSperl-5.24.0.0-RHEL6.src.rpm
+Size        : 72272162                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:54 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Perl 5.24.0 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.24.0 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.71
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSgab-7.2.0.000-RHEL6.x86_64
+Name        : VRTSgab                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 18 Oct 2016 12:15:43 AM CST
+Install Date: Wed 22 Feb 2017 03:07:26 PM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSgab-7.2.0.000-RHEL6.src.rpm
+Size        : 19538780                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:50 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Group Membership and Atomic Broadcast
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64
+Build Stamp        : Veritas-7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSglm-7.2.0.000-RHEL6.x86_64
+Name        : VRTSglm                      Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 03:48:17 PM CST
+Install Date: Wed 22 Feb 2017 03:08:24 PM CST      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSglm-7.2.0.000-RHEL6.src.rpm
+Size        : 434712                           License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:51 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Group Lock Manager (GLM) driver
+Description :
+Veritas Group Lock Manager (GLM) driver
+Supported kernel(s): 2.6.32-71.el6.x86_64 or later
+
+Package INFO: VRTSvcswiz-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvcswiz                   Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: "Veritas Technologies LLC"
+Release     : RHEL6                         Build Date: Tue 18 Oct 2016 12:36:28 AM CST
+Install Date: Wed 22 Feb 2017 03:09:10 PM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcswiz-7.2.0.000-RHEL6.src.rpm
+Size        : 8909583                          License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:37:03 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Veritas Cluster Server Wizards
+Description :
+"The package contains Wizards for Veritas Cluster Server"
+
+Arch : (x86_64)
+Build Stamp : 7.2.0.000-2016-10-17_09.36.23
+
+Package INFO: VRTSvxfs-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvxfs                     Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Mon 17 Oct 2016 03:49:19 PM CST
+Install Date: Wed 22 Feb 2017 03:06:41 PM CST      Build Host: sfrhel6.vxindia.veritas.com
+Group       : Applications/System           Source RPM: VRTSvxfs-7.2.0.000-RHEL6.src.rpm
+Size        : 37340413                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:37:05 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : Veritas Filesystem
+Description :
+Veritas Filesystem
+
+Package INFO: VRTSvcsag-7.2.0.000-RHEL6.x86_64
+Name        : VRTSvcsag                    Relocations: (not relocatable)
+Version     : 7.2.0.000                         Vendor: Veritas Technologies LLC
+Release     : RHEL6                         Build Date: Tue 18 Oct 2016 12:31:56 AM CST
+Install Date: Wed 22 Feb 2017 03:08:05 PM CST      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsag-7.2.0.000-RHEL6.src.rpm
+Size        : 84448103                         License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:37:01 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : www.veritas.com/support
+Summary     : VCS Bundled Agents
+Description :
+Veritas Cluster Server Bundled Agents (x86_64)
+Build Stamp : 7.2.0.000-2016-10-17_06.08.09
+
+Package INFO: VRTSsfmh-7.2.0.0-0.x86_64
+Name        : VRTSsfmh                     Relocations: (not relocatable)
+Version     : 7.2.0.0                           Vendor: Veritas Technologies LLC
+Release     : 0                             Build Date: Wed 05 Oct 2016 06:12:52 PM CST
+Install Date: Wed 22 Feb 2017 03:08:50 PM CST      Build Host: vommvsles10-64bld.engba.veritas.com
+Group       : Applications/System           Source RPM: VRTSsfmh-7.2.0.0-0.src.rpm
+Size        : 169913413                        License: Veritas Proprietary
+Signature   : RSA/SHA1, Wed 19 Oct 2016 12:36:56 AM CST, Key ID 4e84af75cc633953
+Packager    : enterprise_technical_support@veritas.com
+URL         : http://www.veritas.com/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+
+
+DATE:2017-02-23 14:53:37
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster clus2021 (
+	UserNames = { admin = ankHkiJikHkiJi }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system cdc-r710s0-cd (
+	)
+
+system cdc-r710s1-cd (
+	)
+
+group crs_grp (
+	SystemList = { cdc-r710s0-cd = 0, cdc-r710s1-cd = 1 }
+	Parallel = 1
+	AutoStartList = { cdc-r710s0-cd, cdc-r710s1-cd }
+	)
+
+	CFSMount ocrvote_mnt (
+		MountPoint = "/ocrvote"
+		BlockDevice = "/dev/vx/dsk/oradg1229_ocrvote/ocrvote"
+		)
+
+	CSSD cssd (
+		CRSHOME = "/crs/crshome"
+		)
+
+	cssd requires ocrvote_mnt
+
+
+	// resource dependency tree
+	//
+	//	group crs_grp
+	//	{
+	//	CSSD cssd
+	//	    {
+	//	    CFSMount ocrvote_mnt
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { cdc-r710s0-cd = 0, cdc-r710s1-cd = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { cdc-r710s0-cd, cdc-r710s1-cd }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = clus2021
+		CVMNodeId = { cdc-r710s0-cd = 0, cdc-r710s1-cd = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group oradg_grp (
+	SystemList = { cdc-r710s0-cd = 0, cdc-r710s1-cd = 1 }
+	Parallel = 1
+	AutoStartList = { cdc-r710s0-cd, cdc-r710s1-cd }
+	)
+
+	CFSMount oraarch_mnt (
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg1229_dbarch/archive"
+		)
+
+	CFSMount oradata_mnt (
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg1229_dbarch/dbdata"
+		)
+
+	Oracle oradb (
+		Sid @cdc-r710s0-cd = orcl1
+		Sid @cdc-r710s1-cd = orcl2
+		Owner = oracle
+		Home = "/oracle/orahome"
+		)
+
+
+
+	// resource dependency tree
+	//
+	//	group oradg_grp
+	//	{
+	//	CFSMount oraarch_mnt
+	//	CFSMount oradata_mnt
+	//	Oracle oradb
+	//	}
+
+
+====STEP: Checking status of Oracle database
+DATE:2017-02-23 14:53:37
+
+***Checking if relink oracle odm libray to Veritas odm libray***
+
+
+
+DATE:2017-02-23 14:53:39
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx 1 root   root        28 Feb 23 14:07 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib64/libodm.so
+lrwxrwxrwx 1 oracle oinstall    12 Feb 22 16:37 /oracle/orahome/lib/libodm12.so -> libodmd12.so
+
+
+DATE:2017-02-23 14:53:40
+HOST:cdc-r710s1-cd
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx 1 root   root        28 Feb 23 14:08 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib64/libodm.so
+lrwxrwxrwx 1 oracle oinstall    12 Feb 22 16:39 /oracle/orahome/lib/libodm12.so -> libodmd12.so
+
+***Checking if Oracle instance is OPEN***
+
+
+
+DATE:2017-02-23 14:53:43
+HOST:cdc-r710s0-cd
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 12.1.0.2.0 Production on Thu Feb 23 14:53:43 2017
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Advanced Analytics
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+orcl1		 OPEN
+
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Advanced Analytics
+and Real Application Testing options
+
+***Checking if Archive log mode is enabled***
+
+
+
+DATE:2017-02-23 14:53:45
+HOST:cdc-r710s0-cd
+USER:oracle
+STDIN:archive log list;
+STDOUT:
+
+SQL*Plus: Release 12.1.0.2.0 Production on Thu Feb 23 14:53:45 2017
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Advanced Analytics
+and Real Application Testing options
+
+Database log mode	       Archive Mode
+Automatic archival	       Enabled
+Archive destination	       /archive
+Oldest online log sequence     9
+Next log sequence to archive   10
+Current log sequence	       10
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Advanced Analytics
+and Real Application Testing options
+
+***Getting datafile path and name***
+
+
+
+DATE:2017-02-23 14:53:48
+HOST:cdc-r710s0-cd
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 12.1.0.2.0 Production on Thu Feb 23 14:53:48 2017
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Advanced Analytics
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/dbdata/orcl/system01.dbf
+/dbdata/orcl/sysaux01.dbf
+/dbdata/orcl/undotbs01.dbf
+/dbdata/orcl/undotbs02.dbf
+/dbdata/orcl/users01.dbf
+
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Advanced Analytics
+and Real Application Testing options
+
+
+====STEP: Prepare volumes to make volume sets
+DATE:2017-02-23 14:53:48
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /archive***
+
+
+
+DATE:2017-02-23 14:53:49
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6|grep /archive$
+STDOUT:
+/dev/vx/dsk/oradg1229_dbarch/archive 9.0G 83M 8.4G 1% /archive
+
+
+DATE:2017-02-23 14:53:50
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg1229_dbarch/archive
+STDOUT:
+vxfs
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /dbdata***
+
+
+
+DATE:2017-02-23 14:53:51
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6|grep /dbdata$
+STDOUT:
+/dev/vx/dsk/oradg1229_dbarch/dbdata 9.0G 1.8G 6.9G 20% /dbdata
+
+
+DATE:2017-02-23 14:53:53
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg1229_dbarch/dbdata
+STDOUT:
+vxfs
+
+***Checking and clear existing Environment.***
+
+
+
+DATE:2017-02-23 14:53:54
+HOST:cdc-r710s0-cd
+USER:oracle
+STDIN:select table_name from dba_tables where table_name='SALES';
+STDOUT:
+
+SQL*Plus: Release 12.1.0.2.0 Production on Thu Feb 23 14:53:54 2017
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Advanced Analytics
+and Real Application Testing options
+
+
+no rows selected
+
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Advanced Analytics
+and Real Application Testing options
+
+
+DATE:2017-02-23 14:53:56
+HOST:cdc-r710s0-cd
+USER:oracle
+STDIN:select name from v$tablespace;
+STDOUT:
+
+SQL*Plus: Release 12.1.0.2.0 Production on Thu Feb 23 14:53:55 2017
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Advanced Analytics
+and Real Application Testing options
+
+
+NAME
+------------------------------
+SYSAUX
+SYSTEM
+UNDOTBS1
+USERS
+TEMP
+UNDOTBS2
+
+6 rows selected.
+
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Advanced Analytics
+and Real Application Testing options
+
+
+DATE:2017-02-23 14:53:57
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:/opt/VRTS/bin/fsppadm unassign /dbdata
+STDOUT:
+
+
+
+DATE:2017-02-23 14:53:58
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:/opt/VRTS/bin/fsppadm unassign /archive
+STDOUT:
+
+
+
+DATE:2017-02-23 14:54:00
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxprint -g oradg1229_dbarch|awk '$2=="dbdata" {print}'
+STDOUT:
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+
+
+DATE:2017-02-23 14:54:01
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxprint -g oradg1229_dbarch|awk '$2=="archive" {print}'
+STDOUT:
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+
+***Removing volumes which begin with autotcvol from oradg1229_dbarch "oradg1229_dbarch" on node "cdc-r710s0-cd" ***
+
+
+
+DATE:2017-02-23 14:54:02
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxprint -g oradg1229_dbarch|awk '$1=="v" && $2 ~ /^autotcvol/ {print}'
+STDOUT:
+
+
+***Removing volumes which begin with autotcvol from oradg1229_dbarch "oradg1229_dbarch" on node "cdc-r710s0-cd" ***
+
+
+
+DATE:2017-02-23 14:54:03
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxprint -g oradg1229_dbarch|awk '$1=="v" && $2 ~ /^autotcvol/ {print}'
+STDOUT:
+
+
+***Removing free disk of node "cdc-r710s0-cd"***
+
+
+
+DATE:2017-02-23 14:54:05
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxprint|grep dm
+STDOUT:
+dm emc_clariion0_909 emc_clariion0_909 - 4120320 -      -        -       -
+dm emc_clariion0_910 emc_clariion0_910 - 4120320 -      -        -       -
+dm emc_clariion0_911 emc_clariion0_911 - 4120320 -      -        -       -
+dm emc_clariion0_912 emc_clariion0_912 - 4120320 -      -        -       -
+dm emc_clariion0_913 emc_clariion0_913 - 4120320 -      -        -       -
+dm emc_clariion0_914 emc_clariion0_914 - 4120320 -      -        -       -
+dm emc_clariion0_835 emc_clariion0_835 - 4120320 -      -        -       -
+dm emc_clariion0_836 emc_clariion0_836 - 4120320 -      -        -       -
+dm emc_clariion0_837 emc_clariion0_837 - 4120320 -      -        -       -
+dm emc_clariion0_838 emc_clariion0_838 - 4120320 -      -        -       -
+dm emc_clariion0_839 emc_clariion0_839 - 4120320 -      -        -       -
+dm emc_clariion0_905 emc_clariion0_905 - 4120320 -      -        -       -
+dm emc_clariion0_906 emc_clariion0_906 - 4120320 -      -        -       -
+dm emc_clariion0_907 emc_clariion0_907 - 4120320 -      -        -       -
+dm emc_clariion0_908 emc_clariion0_908 - 4120320 -      -        -       -
+dm emc_clariion0_1524 emc_clariion0_1524 - 4120320 -    -        -       -
+
+
+DATE:2017-02-23 14:54:06
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxdisk reclaim emc_clariion0_909 emc_clariion0_910 emc_clariion0_911 emc_clariion0_912 emc_clariion0_913 emc_clariion0_914 emc_clariion0_835 emc_clariion0_836 emc_clariion0_837 emc_clariion0_838 emc_clariion0_839 emc_clariion0_905 emc_clariion0_906 emc_clariion0_907 emc_clariion0_908 emc_clariion0_1524
+STDOUT:
+Disk emc_clariion0_909 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_910 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_911 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_912 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_913 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_914 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_835 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_836 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_837 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_838 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_839 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_905 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_906 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_907 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_908 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_1524 : Skipped. Disk not reclaimable or wrong media type.
+
+
+DATE:2017-02-23 14:54:07
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxdg -qa free|awk '$5==0 {print}'
+STDOUT:
+oradg1229_ocrvote emc_clariion0_914 emc_clariion0_914 emc_clariion0_914 0         4120320   -
+
+
+DATE:2017-02-23 14:54:09
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxdg -g oradg1229_ocrvote rmdisk emc_clariion0_914
+STDOUT:
+
+
+***Online Group oradg_grp on all active nodes***
+
+
+
+DATE:2017-02-23 14:54:10
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+cdc-r710s0-cd SysState                RUNNING
+cdc-r710s1-cd SysState                RUNNING
+
+
+DATE:2017-02-23 14:54:11
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:cat /var/VRTSvcs/log/engine_A.log|awk '{print NR}'|tail -1
+STDOUT:
+770
+
+
+DATE:2017-02-23 14:54:12
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -online oradg_grp -any
+STDOUT:
+VCS NOTICE V-16-1-50996 All instances of the parallel group (oradg_grp) are online in cluster
+
+
+DATE:2017-02-23 14:54:24
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradg_grp|grep ^oradg_grp|grep ONLINE|wc -l|awk '{print $1}'
+STDOUT:
+2
+
+
+DATE:2017-02-23 14:54:25
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradg_grp|grep ^oradg_grp|grep ONLINE|wc -l|awk '{print $1}'
+STDOUT:
+2
+
+***Add IO for oracle database***
+
+
+
+DATE:2017-02-23 14:54:31
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/etc/io_oracle.sh cdc-r710s0-cd:/tmp/tmpfile.32608
+STDOUT:
+
+
+
+DATE:2017-02-23 14:54:32
+HOST:cdc-r710s0-cd
+USER:oracle
+STDIN:ps -ef
+STDOUT:
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 14:29 ?        00:00:01 /sbin/init
+root         2     0  0 14:29 ?        00:00:00 [kthreadd]
+root         3     2  0 14:29 ?        00:00:00 [migration/0]
+root         4     2  0 14:29 ?        00:00:00 [ksoftirqd/0]
+root         5     2  0 14:29 ?        00:00:00 [stopper/0]
+root         6     2  0 14:29 ?        00:00:00 [watchdog/0]
+root         7     2  0 14:29 ?        00:00:00 [migration/1]
+root         8     2  0 14:29 ?        00:00:00 [stopper/1]
+root         9     2  0 14:29 ?        00:00:00 [ksoftirqd/1]
+root        10     2  0 14:29 ?        00:00:00 [watchdog/1]
+root        11     2  0 14:29 ?        00:00:00 [migration/2]
+root        12     2  0 14:29 ?        00:00:00 [stopper/2]
+root        13     2  0 14:29 ?        00:00:00 [ksoftirqd/2]
+root        14     2  0 14:29 ?        00:00:00 [watchdog/2]
+root        15     2  0 14:29 ?        00:00:00 [migration/3]
+root        16     2  0 14:29 ?        00:00:00 [stopper/3]
+root        17     2  0 14:29 ?        00:00:00 [ksoftirqd/3]
+root        18     2  0 14:29 ?        00:00:00 [watchdog/3]
+root        19     2  0 14:29 ?        00:00:00 [migration/4]
+root        20     2  0 14:29 ?        00:00:00 [stopper/4]
+root        21     2  0 14:29 ?        00:00:00 [ksoftirqd/4]
+root        22     2  0 14:29 ?        00:00:00 [watchdog/4]
+root        23     2  0 14:29 ?        00:00:00 [migration/5]
+root        24     2  0 14:29 ?        00:00:00 [stopper/5]
+root        25     2  0 14:29 ?        00:00:00 [ksoftirqd/5]
+root        26     2  0 14:29 ?        00:00:00 [watchdog/5]
+root        27     2  0 14:29 ?        00:00:00 [migration/6]
+root        28     2  0 14:29 ?        00:00:00 [stopper/6]
+root        29     2  0 14:29 ?        00:00:00 [ksoftirqd/6]
+root        30     2  0 14:29 ?        00:00:00 [watchdog/6]
+root        31     2  0 14:29 ?        00:00:00 [migration/7]
+root        32     2  0 14:29 ?        00:00:00 [stopper/7]
+root        33     2  0 14:29 ?        00:00:00 [ksoftirqd/7]
+root        34     2  0 14:29 ?        00:00:00 [watchdog/7]
+root        35     2  0 14:29 ?        00:00:00 [migration/8]
+root        36     2  0 14:29 ?        00:00:00 [stopper/8]
+root        37     2  0 14:29 ?        00:00:00 [ksoftirqd/8]
+root        38     2  0 14:29 ?        00:00:00 [watchdog/8]
+root        39     2  0 14:29 ?        00:00:00 [migration/9]
+root        40     2  0 14:29 ?        00:00:00 [stopper/9]
+root        41     2  0 14:29 ?        00:00:00 [ksoftirqd/9]
+root        42     2  0 14:29 ?        00:00:00 [watchdog/9]
+root        43     2  0 14:29 ?        00:00:00 [migration/10]
+root        44     2  0 14:29 ?        00:00:00 [stopper/10]
+root        45     2  0 14:29 ?        00:00:00 [ksoftirqd/10]
+root        46     2  0 14:29 ?        00:00:00 [watchdog/10]
+root        47     2  0 14:29 ?        00:00:00 [migration/11]
+root        48     2  0 14:29 ?        00:00:00 [stopper/11]
+root        49     2  0 14:29 ?        00:00:00 [ksoftirqd/11]
+root        50     2  0 14:29 ?        00:00:00 [watchdog/11]
+root        51     2  0 14:29 ?        00:00:00 [migration/12]
+root        52     2  0 14:29 ?        00:00:00 [stopper/12]
+root        53     2  0 14:29 ?        00:00:00 [ksoftirqd/12]
+root        54     2  0 14:29 ?        00:00:00 [watchdog/12]
+root        55     2  0 14:29 ?        00:00:00 [migration/13]
+root        56     2  0 14:29 ?        00:00:00 [stopper/13]
+root        57     2  0 14:29 ?        00:00:00 [ksoftirqd/13]
+root        58     2  0 14:29 ?        00:00:00 [watchdog/13]
+root        59     2  0 14:29 ?        00:00:00 [migration/14]
+root        60     2  0 14:29 ?        00:00:00 [stopper/14]
+root        61     2  0 14:29 ?        00:00:00 [ksoftirqd/14]
+root        62     2  0 14:29 ?        00:00:00 [watchdog/14]
+root        63     2  0 14:29 ?        00:00:00 [migration/15]
+root        64     2  0 14:29 ?        00:00:00 [stopper/15]
+root        65     2  0 14:29 ?        00:00:00 [ksoftirqd/15]
+root        66     2  0 14:29 ?        00:00:00 [watchdog/15]
+root        67     2  0 14:29 ?        00:00:00 [events/0]
+root        68     2  0 14:29 ?        00:00:00 [events/1]
+root        69     2  0 14:29 ?        00:00:00 [events/2]
+root        70     2  0 14:29 ?        00:00:00 [events/3]
+root        71     2  0 14:29 ?        00:00:00 [events/4]
+root        72     2  0 14:29 ?        00:00:00 [events/5]
+root        73     2  0 14:29 ?        00:00:00 [events/6]
+root        74     2  0 14:29 ?        00:00:00 [events/7]
+root        75     2  0 14:29 ?        00:00:00 [events/8]
+root        76     2  0 14:29 ?        00:00:00 [events/9]
+root        77     2  0 14:29 ?        00:00:00 [events/10]
+root        78     2  0 14:29 ?        00:00:00 [events/11]
+root        79     2  0 14:29 ?        00:00:00 [events/12]
+root        80     2  0 14:29 ?        00:00:00 [events/13]
+root        81     2  0 14:29 ?        00:00:00 [events/14]
+root        82     2  0 14:29 ?        00:00:00 [events/15]
+root        83     2  0 14:29 ?        00:00:00 [events/0]
+root        84     2  0 14:29 ?        00:00:00 [events/1]
+root        85     2  0 14:29 ?        00:00:00 [events/2]
+root        86     2  0 14:29 ?        00:00:00 [events/3]
+root        87     2  0 14:29 ?        00:00:00 [events/4]
+root        88     2  0 14:29 ?        00:00:00 [events/5]
+root        89     2  0 14:29 ?        00:00:00 [events/6]
+root        90     2  0 14:29 ?        00:00:00 [events/7]
+root        91     2  0 14:29 ?        00:00:00 [events/8]
+root        92     2  0 14:29 ?        00:00:00 [events/9]
+root        93     2  0 14:29 ?        00:00:00 [events/10]
+root        94     2  0 14:29 ?        00:00:00 [events/11]
+root        95     2  0 14:29 ?        00:00:00 [events/12]
+root        96     2  0 14:29 ?        00:00:00 [events/13]
+root        97     2  0 14:29 ?        00:00:00 [events/14]
+root        98     2  0 14:29 ?        00:00:00 [events/15]
+root        99     2  0 14:29 ?        00:00:00 [events_long/0]
+root       100     2  0 14:29 ?        00:00:00 [events_long/1]
+root       101     2  0 14:29 ?        00:00:00 [events_long/2]
+root       102     2  0 14:29 ?        00:00:00 [events_long/3]
+root       103     2  0 14:29 ?        00:00:00 [events_long/4]
+root       104     2  0 14:29 ?        00:00:00 [events_long/5]
+root       105     2  0 14:29 ?        00:00:00 [events_long/6]
+root       106     2  0 14:29 ?        00:00:00 [events_long/7]
+root       107     2  0 14:29 ?        00:00:00 [events_long/8]
+root       108     2  0 14:29 ?        00:00:00 [events_long/9]
+root       109     2  0 14:29 ?        00:00:00 [events_long/10]
+root       110     2  0 14:29 ?        00:00:00 [events_long/11]
+root       111     2  0 14:29 ?        00:00:00 [events_long/12]
+root       112     2  0 14:29 ?        00:00:00 [events_long/13]
+root       113     2  0 14:29 ?        00:00:00 [events_long/14]
+root       114     2  0 14:29 ?        00:00:00 [events_long/15]
+root       115     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       116     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       117     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       118     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       119     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       120     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       121     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       122     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       123     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       124     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       125     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       126     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       127     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       128     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       129     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       130     2  0 14:29 ?        00:00:00 [events_power_ef]
+root       131     2  0 14:29 ?        00:00:00 [cgroup]
+root       132     2  0 14:29 ?        00:00:00 [khelper]
+root       133     2  0 14:29 ?        00:00:00 [netns]
+root       134     2  0 14:29 ?        00:00:00 [async/mgr]
+root       135     2  0 14:29 ?        00:00:00 [pm]
+root       136     2  0 14:29 ?        00:00:00 [sync_supers]
+root       137     2  0 14:29 ?        00:00:00 [bdi-default]
+root       138     2  0 14:29 ?        00:00:00 [kintegrityd/0]
+root       139     2  0 14:29 ?        00:00:00 [kintegrityd/1]
+root       140     2  0 14:29 ?        00:00:00 [kintegrityd/2]
+root       141     2  0 14:29 ?        00:00:00 [kintegrityd/3]
+root       142     2  0 14:29 ?        00:00:00 [kintegrityd/4]
+root       143     2  0 14:29 ?        00:00:00 [kintegrityd/5]
+root       144     2  0 14:29 ?        00:00:00 [kintegrityd/6]
+root       145     2  0 14:29 ?        00:00:00 [kintegrityd/7]
+root       146     2  0 14:29 ?        00:00:00 [kintegrityd/8]
+root       147     2  0 14:29 ?        00:00:00 [kintegrityd/9]
+root       148     2  0 14:29 ?        00:00:00 [kintegrityd/10]
+root       149     2  0 14:29 ?        00:00:00 [kintegrityd/11]
+root       150     2  0 14:29 ?        00:00:00 [kintegrityd/12]
+root       151     2  0 14:29 ?        00:00:00 [kintegrityd/13]
+root       152     2  0 14:29 ?        00:00:00 [kintegrityd/14]
+root       153     2  0 14:29 ?        00:00:00 [kintegrityd/15]
+root       154     2  0 14:29 ?        00:00:00 [kblockd/0]
+root       155     2  0 14:29 ?        00:00:00 [kblockd/1]
+root       156     2  0 14:29 ?        00:00:00 [kblockd/2]
+root       157     2  0 14:29 ?        00:00:00 [kblockd/3]
+root       158     2  0 14:29 ?        00:00:00 [kblockd/4]
+root       159     2  0 14:29 ?        00:00:00 [kblockd/5]
+root       160     2  0 14:29 ?        00:00:00 [kblockd/6]
+root       161     2  0 14:29 ?        00:00:00 [kblockd/7]
+root       162     2  0 14:29 ?        00:00:00 [kblockd/8]
+root       163     2  0 14:29 ?        00:00:00 [kblockd/9]
+root       164     2  0 14:29 ?        00:00:00 [kblockd/10]
+root       165     2  0 14:29 ?        00:00:00 [kblockd/11]
+root       166     2  0 14:29 ?        00:00:00 [kblockd/12]
+root       167     2  0 14:29 ?        00:00:00 [kblockd/13]
+root       168     2  0 14:29 ?        00:00:00 [kblockd/14]
+root       169     2  0 14:29 ?        00:00:00 [kblockd/15]
+root       170     2  0 14:29 ?        00:00:00 [kacpid]
+root       171     2  0 14:29 ?        00:00:00 [kacpi_notify]
+root       172     2  0 14:29 ?        00:00:00 [kacpi_hotplug]
+root       173     2  0 14:29 ?        00:00:00 [ata_aux]
+root       174     2  0 14:29 ?        00:00:00 [ata_sff/0]
+root       175     2  0 14:29 ?        00:00:00 [ata_sff/1]
+root       176     2  0 14:29 ?        00:00:00 [ata_sff/2]
+root       177     2  0 14:29 ?        00:00:00 [ata_sff/3]
+root       178     2  0 14:29 ?        00:00:00 [ata_sff/4]
+root       179     2  0 14:29 ?        00:00:00 [ata_sff/5]
+root       180     2  0 14:29 ?        00:00:00 [ata_sff/6]
+root       181     2  0 14:29 ?        00:00:00 [ata_sff/7]
+root       182     2  0 14:29 ?        00:00:00 [ata_sff/8]
+root       183     2  0 14:29 ?        00:00:00 [ata_sff/9]
+root       184     2  0 14:29 ?        00:00:00 [ata_sff/10]
+root       185     2  0 14:29 ?        00:00:00 [ata_sff/11]
+root       186     2  0 14:29 ?        00:00:00 [ata_sff/12]
+root       187     2  0 14:29 ?        00:00:00 [ata_sff/13]
+root       188     2  0 14:29 ?        00:00:00 [ata_sff/14]
+root       189     2  0 14:29 ?        00:00:00 [ata_sff/15]
+root       190     2  0 14:29 ?        00:00:00 [ksuspend_usbd]
+root       191     2  0 14:29 ?        00:00:00 [khubd]
+root       192     2  0 14:29 ?        00:00:00 [kseriod]
+root       193     2  0 14:29 ?        00:00:00 [md/0]
+root       194     2  0 14:29 ?        00:00:00 [md/1]
+root       195     2  0 14:29 ?        00:00:00 [md/2]
+root       196     2  0 14:29 ?        00:00:00 [md/3]
+root       197     2  0 14:29 ?        00:00:00 [md/4]
+root       198     2  0 14:29 ?        00:00:00 [md/5]
+root       199     2  0 14:29 ?        00:00:00 [md/6]
+root       200     2  0 14:29 ?        00:00:00 [md/7]
+root       201     2  0 14:29 ?        00:00:00 [md/8]
+root       202     2  0 14:29 ?        00:00:00 [md/9]
+root       203     2  0 14:29 ?        00:00:00 [md/10]
+root       204     2  0 14:29 ?        00:00:00 [md/11]
+root       205     2  0 14:29 ?        00:00:00 [md/12]
+root       206     2  0 14:29 ?        00:00:00 [md/13]
+root       207     2  0 14:29 ?        00:00:00 [md/14]
+root       208     2  0 14:29 ?        00:00:00 [md/15]
+root       209     2  0 14:29 ?        00:00:00 [md_misc/0]
+root       210     2  0 14:29 ?        00:00:00 [md_misc/1]
+root       211     2  0 14:29 ?        00:00:00 [md_misc/2]
+root       212     2  0 14:29 ?        00:00:00 [md_misc/3]
+root       213     2  0 14:29 ?        00:00:00 [md_misc/4]
+root       214     2  0 14:29 ?        00:00:00 [md_misc/5]
+root       215     2  0 14:29 ?        00:00:00 [md_misc/6]
+root       216     2  0 14:29 ?        00:00:00 [md_misc/7]
+root       217     2  0 14:29 ?        00:00:00 [md_misc/8]
+root       218     2  0 14:29 ?        00:00:00 [md_misc/9]
+root       219     2  0 14:29 ?        00:00:00 [md_misc/10]
+root       220     2  0 14:29 ?        00:00:00 [md_misc/11]
+root       221     2  0 14:29 ?        00:00:00 [md_misc/12]
+root       222     2  0 14:29 ?        00:00:00 [md_misc/13]
+root       223     2  0 14:29 ?        00:00:00 [md_misc/14]
+root       224     2  0 14:29 ?        00:00:00 [md_misc/15]
+root       225     2  0 14:29 ?        00:00:00 [linkwatch]
+root       227     2  0 14:29 ?        00:00:00 [khungtaskd]
+root       228     2  0 14:29 ?        00:00:00 [kswapd0]
+root       229     2  0 14:29 ?        00:00:00 [kswapd1]
+root       230     2  0 14:29 ?        00:00:00 [ksmd]
+root       231     2  0 14:29 ?        00:00:00 [khugepaged]
+root       232     2  0 14:29 ?        00:00:00 [aio/0]
+root       233     2  0 14:29 ?        00:00:00 [aio/1]
+root       234     2  0 14:29 ?        00:00:00 [aio/2]
+root       235     2  0 14:29 ?        00:00:00 [aio/3]
+root       236     2  0 14:29 ?        00:00:00 [aio/4]
+root       237     2  0 14:29 ?        00:00:00 [aio/5]
+root       238     2  0 14:29 ?        00:00:00 [aio/6]
+root       239     2  0 14:29 ?        00:00:00 [aio/7]
+root       240     2  0 14:29 ?        00:00:00 [aio/8]
+root       241     2  0 14:29 ?        00:00:00 [aio/9]
+root       242     2  0 14:29 ?        00:00:00 [aio/10]
+root       243     2  0 14:29 ?        00:00:00 [aio/11]
+root       244     2  0 14:29 ?        00:00:00 [aio/12]
+root       245     2  0 14:29 ?        00:00:00 [aio/13]
+root       246     2  0 14:29 ?        00:00:00 [aio/14]
+root       247     2  0 14:29 ?        00:00:00 [aio/15]
+root       248     2  0 14:29 ?        00:00:00 [crypto/0]
+root       249     2  0 14:29 ?        00:00:00 [crypto/1]
+root       250     2  0 14:29 ?        00:00:00 [crypto/2]
+root       251     2  0 14:29 ?        00:00:00 [crypto/3]
+root       252     2  0 14:29 ?        00:00:00 [crypto/4]
+root       253     2  0 14:29 ?        00:00:00 [crypto/5]
+root       254     2  0 14:29 ?        00:00:00 [crypto/6]
+root       255     2  0 14:29 ?        00:00:00 [crypto/7]
+root       256     2  0 14:29 ?        00:00:00 [crypto/8]
+root       257     2  0 14:29 ?        00:00:00 [crypto/9]
+root       258     2  0 14:29 ?        00:00:00 [crypto/10]
+root       259     2  0 14:29 ?        00:00:00 [crypto/11]
+root       260     2  0 14:29 ?        00:00:00 [crypto/12]
+root       261     2  0 14:29 ?        00:00:00 [crypto/13]
+root       262     2  0 14:29 ?        00:00:00 [crypto/14]
+root       263     2  0 14:29 ?        00:00:00 [crypto/15]
+root       270     2  0 14:29 ?        00:00:00 [kthrotld/0]
+root       271     2  0 14:29 ?        00:00:00 [kthrotld/1]
+root       272     2  0 14:29 ?        00:00:00 [kthrotld/2]
+root       273     2  0 14:29 ?        00:00:00 [kthrotld/3]
+root       274     2  0 14:29 ?        00:00:00 [kthrotld/4]
+root       275     2  0 14:29 ?        00:00:00 [kthrotld/5]
+root       276     2  0 14:29 ?        00:00:00 [kthrotld/6]
+root       277     2  0 14:29 ?        00:00:00 [kthrotld/7]
+root       278     2  0 14:29 ?        00:00:00 [kthrotld/8]
+root       279     2  0 14:29 ?        00:00:00 [kthrotld/9]
+root       280     2  0 14:29 ?        00:00:00 [kthrotld/10]
+root       281     2  0 14:29 ?        00:00:00 [kthrotld/11]
+root       282     2  0 14:29 ?        00:00:00 [kthrotld/12]
+root       283     2  0 14:29 ?        00:00:00 [kthrotld/13]
+root       284     2  0 14:29 ?        00:00:00 [kthrotld/14]
+root       285     2  0 14:29 ?        00:00:00 [kthrotld/15]
+root       287     2  0 14:29 ?        00:00:00 [kpsmoused]
+root       288     2  0 14:29 ?        00:00:00 [usbhid_resumer]
+root       289     2  0 14:29 ?        00:00:00 [deferwq]
+root       321     2  0 14:29 ?        00:00:00 [kdmremove]
+root       322     2  0 14:29 ?        00:00:00 [kstriped]
+root       541     2  0 14:29 ?        00:00:00 [mpt_poll_0]
+root       542     2  0 14:29 ?        00:00:00 [mpt/0]
+root       546     2  0 14:30 ?        00:00:00 [scsi_eh_0]
+root       559     2  0 14:30 ?        00:00:00 [scsi_tgtd/0]
+root       560     2  0 14:30 ?        00:00:00 [scsi_tgtd/1]
+root       561     2  0 14:30 ?        00:00:00 [scsi_tgtd/2]
+root       562     2  0 14:30 ?        00:00:00 [scsi_tgtd/3]
+root       563     2  0 14:30 ?        00:00:00 [scsi_tgtd/4]
+root       564     2  0 14:30 ?        00:00:00 [scsi_tgtd/5]
+root       565     2  0 14:30 ?        00:00:00 [scsi_tgtd/6]
+root       566     2  0 14:30 ?        00:00:00 [scsi_tgtd/7]
+root       567     2  0 14:30 ?        00:00:00 [scsi_tgtd/8]
+root       568     2  0 14:30 ?        00:00:00 [scsi_tgtd/9]
+root       569     2  0 14:30 ?        00:00:00 [scsi_tgtd/10]
+root       570     2  0 14:30 ?        00:00:00 [scsi_tgtd/11]
+root       571     2  0 14:30 ?        00:00:00 [scsi_tgtd/12]
+root       572     2  0 14:30 ?        00:00:00 [scsi_tgtd/13]
+root       573     2  0 14:30 ?        00:00:00 [scsi_tgtd/14]
+root       574     2  0 14:30 ?        00:00:00 [scsi_tgtd/15]
+root       575     2  0 14:30 ?        00:00:00 [scsi_eh_1]
+root       582     2  0 14:30 ?        00:00:00 [qla2xxx_1_dpc]
+root       583     2  0 14:30 ?        00:00:00 [scsi_wq_1]
+root       584     2  0 14:30 ?        00:00:00 [fc_wq_1]
+root       585     2  0 14:30 ?        00:00:00 [fc_dl_1]
+root       587     2  0 14:30 ?        00:00:00 [scsi_eh_2]
+root       588     2  0 14:30 ?        00:00:00 [qla2xxx_2_dpc]
+root       589     2  0 14:30 ?        00:00:00 [scsi_wq_2]
+root       590     2  0 14:30 ?        00:00:00 [fc_wq_2]
+root       591     2  0 14:30 ?        00:00:00 [fc_dl_2]
+root       593     2  0 14:30 ?        00:00:00 [scsi_eh_3]
+root       594     2  0 14:30 ?        00:00:00 [qla2xxx_3_dpc]
+root       595     2  0 14:30 ?        00:00:00 [scsi_wq_3]
+root       596     2  0 14:30 ?        00:00:00 [fc_wq_3]
+root       597     2  0 14:30 ?        00:00:00 [fc_dl_3]
+root       599     2  0 14:30 ?        00:00:00 [scsi_eh_4]
+root       600     2  0 14:30 ?        00:00:00 [qla2xxx_4_dpc]
+root       601     2  0 14:30 ?        00:00:00 [scsi_wq_4]
+root       602     2  0 14:30 ?        00:00:00 [fc_wq_4]
+root       603     2  0 14:30 ?        00:00:00 [fc_dl_4]
+root       633     2  0 14:30 ?        00:00:00 [scsi_eh_5]
+root       634     2  0 14:30 ?        00:00:00 [scsi_eh_6]
+root       659     2  0 14:30 ?        00:00:00 [scsi_eh_7]
+root       660     2  0 14:30 ?        00:00:00 [usb-storage]
+root       662     2  0 14:30 ?        00:00:00 [scsi_eh_8]
+root       663     2  0 14:30 ?        00:00:00 [usb-storage]
+root      3810     1  0 14:35 ?        00:00:00 automount --pid-file /var/run/autofs.pid
+root      3897     2  0 14:35 ?        00:00:00 [rpciod/0]
+root      3898     2  0 14:35 ?        00:00:00 [rpciod/1]
+root      3899     2  0 14:35 ?        00:00:00 [rpciod/2]
+root      3900     2  0 14:35 ?        00:00:00 [rpciod/3]
+root      3901     2  0 14:35 ?        00:00:00 [rpciod/4]
+root      3902     2  0 14:35 ?        00:00:00 [rpciod/5]
+root      3903     2  0 14:35 ?        00:00:00 [rpciod/6]
+root      3904     2  0 14:35 ?        00:00:00 [rpciod/7]
+root      3905     2  0 14:35 ?        00:00:00 [rpciod/8]
+root      3906     2  0 14:35 ?        00:00:00 [rpciod/9]
+root      3907     2  0 14:35 ?        00:00:00 [rpciod/10]
+root      3908     2  0 14:35 ?        00:00:00 [rpciod/11]
+root      3909     2  0 14:35 ?        00:00:00 [rpciod/12]
+root      3910     2  0 14:35 ?        00:00:00 [rpciod/13]
+root      3911     2  0 14:35 ?        00:00:00 [rpciod/14]
+root      3912     2  0 14:35 ?        00:00:00 [rpciod/15]
+root      3921     1  0 14:35 ?        00:00:00 rpc.rquotad
+root      3926     1  0 14:35 ?        00:00:00 rpc.mountd
+root      3932     2  0 14:35 ?        00:00:00 [lockd]
+root      3933     2  0 14:35 ?        00:00:00 [nfsd4]
+root      3934     2  0 14:35 ?        00:00:00 [nfsd4_callbacks]
+root      3935     2  0 14:35 ?        00:00:00 [nfsd]
+root      3936     2  0 14:35 ?        00:00:00 [nfsd]
+root      3937     2  0 14:35 ?        00:00:00 [nfsd]
+root      3938     2  0 14:35 ?        00:00:00 [nfsd]
+root      3939     2  0 14:35 ?        00:00:00 [nfsd]
+root      3940     2  0 14:35 ?        00:00:00 [nfsd]
+root      3941     2  0 14:35 ?        00:00:00 [nfsd]
+root      3942     2  0 14:35 ?        00:00:00 [nfsd]
+root      3971     1  0 14:35 ?        00:00:00 rpc.idmapd
+root      7682     1  0 14:41 ?        00:00:06 /crs/crshome/bin/orarootagent.bin
+oracle    7763     1  0 14:41 ?        00:00:06 /crs/crshome/bin/oraagent.bin
+oracle    7776     1  0 14:41 ?        00:00:00 /crs/crshome/opmn/bin/ons -d
+oracle    7777  7776  0 14:41 ?        00:00:00 /crs/crshome/opmn/bin/ons -d
+oracle    7818     1  0 14:41 ?        00:00:00 /crs/crshome/bin/tnslsnr LISTENER -no_crs_notify -inherit
+oracle    7876     1  0 14:41 ?        00:00:00 ora_pmon_orcl1
+oracle    7878     1  0 14:41 ?        00:00:00 ora_psp0_orcl1
+oracle    7892     1  1 14:41 ?        00:00:10 ora_vktm_orcl1
+oracle    7896     1  0 14:41 ?        00:00:00 ora_gen0_orcl1
+oracle    7898     1  0 14:41 ?        00:00:00 ora_mman_orcl1
+oracle    7902     1  0 14:41 ?        00:00:00 ora_diag_orcl1
+oracle    7904     1  0 14:41 ?        00:00:00 ora_dbrm_orcl1
+oracle    7906     1  0 14:41 ?        00:00:00 ora_vkrm_orcl1
+oracle    7908     1  0 14:41 ?        00:00:00 ora_ping_orcl1
+oracle    7910     1  0 14:41 ?        00:00:00 ora_acms_orcl1
+oracle    7912     1  0 14:41 ?        00:00:01 ora_dia0_orcl1
+oracle    7914     1  0 14:41 ?        00:00:01 ora_lmon_orcl1
+oracle    7916     1  0 14:41 ?        00:00:01 ora_lmd0_orcl1
+oracle    7918     1  0 14:41 ?        00:00:00 ora_lmd1_orcl1
+oracle    7920     1  0 14:41 ?        00:00:01 ora_lms0_orcl1
+oracle    7924     1  0 14:41 ?        00:00:01 ora_lms1_orcl1
+oracle    7928     1  0 14:41 ?        00:00:00 ora_rms0_orcl1
+oracle    7930     1  0 14:41 ?        00:00:01 ora_lmhb_orcl1
+oracle    7932     1  0 14:41 ?        00:00:00 ora_lck1_orcl1
+oracle    7934     1  0 14:41 ?        00:00:00 ora_dbw0_orcl1
+oracle    7936     1  0 14:41 ?        00:00:00 ora_dbw1_orcl1
+oracle    7938     1  0 14:41 ?        00:00:00 ora_lgwr_orcl1
+oracle    7940     1  0 14:41 ?        00:00:00 ora_ckpt_orcl1
+oracle    7942     1  0 14:41 ?        00:00:00 ora_lg00_orcl1
+oracle    7944     1  0 14:41 ?        00:00:00 ora_smon_orcl1
+oracle    7946     1  0 14:41 ?        00:00:00 ora_lg01_orcl1
+oracle    7948     1  0 14:41 ?        00:00:00 ora_reco_orcl1
+oracle    7950     1  0 14:41 ?        00:00:00 ora_lreg_orcl1
+oracle    7952     1  0 14:41 ?        00:00:00 ora_pxmn_orcl1
+oracle    7954     1  0 14:41 ?        00:00:03 ora_mmon_orcl1
+oracle    7956     1  0 14:41 ?        00:00:00 ora_mmnl_orcl1
+oracle    7958     1  0 14:41 ?        00:00:00 ora_d000_orcl1
+oracle    7960     1  0 14:41 ?        00:00:00 ora_s000_orcl1
+oracle    7963     1  0 14:41 ?        00:00:02 ora_rmv1_orcl1
+oracle    7965     1  0 14:41 ?        00:00:02 ora_rmv0_orcl1
+oracle    7967     1  0 14:41 ?        00:00:00 ora_lck0_orcl1
+oracle    7969     1  0 14:41 ?        00:00:00 ora_gcr0_orcl1
+oracle    7971     1  0 14:41 ?        00:00:00 ora_rsmn_orcl1
+oracle    8058     1  0 14:41 ?        00:00:00 ora_tmon_orcl1
+oracle    8060     1  0 14:41 ?        00:00:00 ora_arc0_orcl1
+oracle    8062     1  0 14:41 ?        00:00:00 ora_arc1_orcl1
+oracle    8064     1  0 14:41 ?        00:00:00 ora_arc2_orcl1
+oracle    8066     1  0 14:41 ?        00:00:00 ora_arc3_orcl1
+oracle    8068     1  0 14:41 ?        00:00:00 ora_tt00_orcl1
+oracle    8073     1  0 14:41 ?        00:00:00 ora_smco_orcl1
+oracle    8075     1  0 14:41 ?        00:00:00 ora_w000_orcl1
+oracle    8077     1  0 14:41 ?        00:00:00 ora_w001_orcl1
+oracle    8086     1  0 14:41 ?        00:00:00 ora_gtx0_orcl1
+oracle    8088     1  0 14:41 ?        00:00:00 ora_rcbg_orcl1
+oracle    8104     1  0 14:41 ?        00:00:00 ora_aqpc_orcl1
+oracle    8142     1  0 14:41 ?        00:00:00 ora_cjq0_orcl1
+oracle    8146     1  0 14:41 ?        00:00:00 ora_p000_orcl1
+oracle    8148     1  0 14:41 ?        00:00:01 ora_ppa7_orcl1
+oracle    8150     1  0 14:41 ?        00:00:00 ora_p001_orcl1
+oracle    8152     1  0 14:41 ?        00:00:00 ora_p002_orcl1
+root      8154     2  0 14:41 ?        00:00:00 [flush-199:52000]
+root      8155     2  0 14:41 ?        00:00:00 [flush-199:52001]
+oracle    8157     1  0 14:41 ?        00:00:00 ora_p003_orcl1
+oracle    8159     1  0 14:41 ?        00:00:00 ora_p004_orcl1
+oracle    8161     1  0 14:41 ?        00:00:00 ora_p005_orcl1
+oracle    8163     1  0 14:41 ?        00:00:00 ora_p006_orcl1
+oracle    8165     1  0 14:41 ?        00:00:00 ora_p007_orcl1
+oracle    8167     1  0 14:41 ?        00:00:00 ora_p008_orcl1
+oracle    8169     1  0 14:41 ?        00:00:00 ora_p009_orcl1
+oracle    8175     1  0 14:41 ?        00:00:00 ora_p00a_orcl1
+oracle    8177     1  0 14:41 ?        00:00:00 ora_p00b_orcl1
+oracle    8179     1  0 14:41 ?        00:00:00 oracleorcl1 (DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))
+oracle    8181     1  0 14:41 ?        00:00:00 ora_p00c_orcl1
+oracle    8191     1  0 14:41 ?        00:00:00 ora_p00d_orcl1
+oracle    8193     1  0 14:41 ?        00:00:00 ora_p00e_orcl1
+oracle    8195     1  0 14:41 ?        00:00:00 ora_p00f_orcl1
+oracle    8197     1  0 14:41 ?        00:00:00 ora_p00g_orcl1
+oracle    8199     1  0 14:41 ?        00:00:00 ora_p00h_orcl1
+oracle    8202     1  0 14:41 ?        00:00:00 ora_p00i_orcl1
+oracle    8204     1  0 14:41 ?        00:00:00 ora_p00j_orcl1
+oracle    8206     1  0 14:41 ?        00:00:00 ora_p00k_orcl1
+oracle    8208     1  0 14:41 ?        00:00:00 ora_p00l_orcl1
+oracle    8210     1  0 14:41 ?        00:00:00 ora_p00m_orcl1
+oracle    8212     1  0 14:41 ?        00:00:00 ora_p00n_orcl1
+oracle    8214     1  0 14:41 ?        00:00:00 ora_p00o_orcl1
+oracle    8216     1  0 14:41 ?        00:00:00 ora_p00p_orcl1
+oracle    8218     1  0 14:41 ?        00:00:00 ora_p00q_orcl1
+oracle    8220     1  0 14:41 ?        00:00:00 ora_p00r_orcl1
+oracle    8222     1  0 14:41 ?        00:00:00 ora_p00s_orcl1
+oracle    8224     1  0 14:41 ?        00:00:00 ora_p00t_orcl1
+oracle    8226     1  0 14:41 ?        00:00:00 ora_p00u_orcl1
+oracle    8228     1  0 14:41 ?        00:00:00 ora_p00v_orcl1
+oracle    8230     1  0 14:41 ?        00:00:00 ora_p00w_orcl1
+oracle    8232     1  0 14:41 ?        00:00:00 ora_p00x_orcl1
+oracle    8234     1  0 14:41 ?        00:00:00 ora_p00y_orcl1
+oracle    8236     1  0 14:41 ?        00:00:00 ora_p00z_orcl1
+oracle    8238     1  0 14:41 ?        00:00:00 ora_p010_orcl1
+oracle    8240     1  0 14:41 ?        00:00:00 ora_p011_orcl1
+oracle    8244     1  0 14:41 ?        00:00:00 ora_p012_orcl1
+oracle    8248     1  0 14:41 ?        00:00:00 ora_p013_orcl1
+oracle    8250     1  0 14:41 ?        00:00:00 ora_p014_orcl1
+oracle    8252     1  0 14:41 ?        00:00:00 ora_p015_orcl1
+oracle    8254     1  0 14:41 ?        00:00:00 ora_p016_orcl1
+oracle    8305     1  0 14:41 ?        00:00:00 ora_p017_orcl1
+oracle    8322     1  0 14:41 ?        00:00:00 ora_p018_orcl1
+oracle    8324     1  0 14:41 ?        00:00:00 ora_p019_orcl1
+oracle    8327     1  0 14:41 ?        00:00:00 ora_p01a_orcl1
+oracle    8342     1  0 14:41 ?        00:00:00 ora_p01b_orcl1
+oracle    8344     1  0 14:41 ?        00:00:00 ora_p01c_orcl1
+oracle    8349     1  0 14:41 ?        00:00:00 ora_p01d_orcl1
+oracle    8355     1  0 14:41 ?        00:00:00 ora_p01e_orcl1
+oracle    8393     1  0 14:41 ?        00:00:00 ora_p01f_orcl1
+oracle    8400     1  0 14:41 ?        00:00:00 ora_p01g_orcl1
+oracle    8402     1  0 14:41 ?        00:00:00 ora_p01h_orcl1
+oracle    8404     1  0 14:41 ?        00:00:00 ora_p01i_orcl1
+oracle    8406     1  0 14:41 ?        00:00:00 ora_p01j_orcl1
+oracle    8408     1  0 14:41 ?        00:00:00 ora_p01k_orcl1
+oracle    8410     1  0 14:41 ?        00:00:00 ora_p01l_orcl1
+oracle    8412     1  0 14:41 ?        00:00:00 ora_p01m_orcl1
+oracle    8414     1  0 14:41 ?        00:00:00 ora_p01n_orcl1
+oracle    8416     1  0 14:41 ?        00:00:00 ora_p01o_orcl1
+oracle    8422     1  0 14:41 ?        00:00:00 ora_p01p_orcl1
+oracle    8432     1  0 14:41 ?        00:00:00 ora_p01q_orcl1
+oracle    8434     1  0 14:41 ?        00:00:00 ora_p01r_orcl1
+oracle    8455     1  0 14:41 ?        00:00:00 ora_qm02_orcl1
+oracle    8457     1  0 14:41 ?        00:00:00 ora_q001_orcl1
+oracle    8459     1  0 14:41 ?        00:00:00 ora_q002_orcl1
+oracle    8461     1  0 14:41 ?        00:00:00 ora_qm05_orcl1
+oracle    8463     1  0 14:41 ?        00:00:00 ora_qm03_orcl1
+oracle    8483     1  0 14:41 ?        00:00:00 ora_q005_orcl1
+root     10779     1  0 14:35 ?        00:00:00 /usr/sbin/mcelog --daemon
+root     10792     2  0 14:35 ?        00:00:00 [vxnetd]
+root     10793     2  0 14:35 ?        00:00:00 [vxnetd]
+root     10794     2  0 14:35 ?        00:00:00 [compress_thread]
+root     10795     2  0 14:35 ?        00:00:00 [compress_thread]
+root     10796     2  0 14:35 ?        00:00:00 [compress_thread]
+root     10797     2  0 14:35 ?        00:00:00 [compress_thread]
+root     10798     2  0 14:35 ?        00:00:00 [compress_thread]
+root     10799     2  0 14:35 ?        00:00:00 [compress_thread]
+root     10800     2  0 14:35 ?        00:00:00 [compress_thread]
+root     10801     2  0 14:35 ?        00:00:00 [compress_thread]
+root     10802     2  0 14:35 ?        00:00:00 [compress_thread]
+root     10803     2  0 14:35 ?        00:00:00 [compress_thread]
+root     11570     1  0 14:35 ?        00:00:00 /sbin/vxencryptd-shadow
+root     11581     1  0 14:35 ?        00:00:00 vxencryptd
+oracle   11962     1  0 14:51 ?        00:00:00 ora_ppa6_orcl1
+root     12190 21573  0 14:52 ?        00:00:00 sleep 300
+root     12243     2  0 14:30 ?        00:00:00 [edac-poller]
+root     12820     2  0 14:30 ?        00:00:00 [kauditd]
+root     12823     1  0 14:30 ?        00:00:00 /bin/sh /etc/init.d/init.tfa run
+root     12824     1  0 14:30 ?        00:00:00 /bin/sh /etc/init.d/init.ohasd run
+root     12881     2  0 14:30 ?        00:00:01 [vxfs_thread]
+root     12882     2  0 14:30 ?        00:00:00 [vx_sched_thread]
+root     13082     2  0 14:30 ?        00:00:00 [ib_addr]
+root     13087     2  0 14:30 ?        00:00:00 [infiniband/0]
+root     13088     2  0 14:30 ?        00:00:00 [infiniband/1]
+root     13089     2  0 14:30 ?        00:00:00 [infiniband/2]
+root     13090     2  0 14:30 ?        00:00:00 [infiniband/3]
+root     13091     2  0 14:30 ?        00:00:00 [infiniband/4]
+root     13092     2  0 14:30 ?        00:00:00 [infiniband/5]
+root     13093     2  0 14:30 ?        00:00:00 [infiniband/6]
+root     13094     2  0 14:30 ?        00:00:00 [infiniband/7]
+root     13095     2  0 14:30 ?        00:00:00 [infiniband/8]
+root     13096     2  0 14:30 ?        00:00:00 [infiniband/9]
+root     13097     2  0 14:30 ?        00:00:00 [infiniband/10]
+root     13098     2  0 14:30 ?        00:00:00 [infiniband/11]
+root     13099     2  0 14:30 ?        00:00:00 [infiniband/12]
+root     13100     2  0 14:30 ?        00:00:00 [infiniband/13]
+root     13101     2  0 14:30 ?        00:00:00 [infiniband/14]
+root     13102     2  0 14:30 ?        00:00:00 [infiniband/15]
+root     13111     2  0 14:30 ?        00:00:00 [ib_mcast]
+root     13116     2  0 14:30 ?        00:00:00 [iw_cm_wq]
+root     13121     2  0 14:30 ?        00:00:00 [ib_cm/0]
+root     13122     2  0 14:30 ?        00:00:00 [ib_cm/1]
+root     13123     2  0 14:30 ?        00:00:00 [ib_cm/2]
+root     13124     2  0 14:30 ?        00:00:00 [ib_cm/3]
+root     13125     2  0 14:30 ?        00:00:00 [ib_cm/4]
+root     13126     2  0 14:30 ?        00:00:00 [ib_cm/5]
+root     13127     2  0 14:30 ?        00:00:00 [ib_cm/6]
+root     13128     2  0 14:30 ?        00:00:00 [ib_cm/7]
+root     13129     2  0 14:30 ?        00:00:00 [ib_cm/8]
+root     13130     2  0 14:30 ?        00:00:00 [ib_cm/9]
+root     13131     2  0 14:30 ?        00:00:00 [ib_cm/10]
+root     13132     2  0 14:30 ?        00:00:00 [ib_cm/11]
+root     13133     2  0 14:30 ?        00:00:00 [ib_cm/12]
+root     13134     2  0 14:30 ?        00:00:00 [ib_cm/13]
+root     13135     2  0 14:30 ?        00:00:00 [ib_cm/14]
+root     13136     2  0 14:30 ?        00:00:00 [ib_cm/15]
+root     13141     2  0 14:30 ?        00:00:00 [rdma_cm]
+root     13163     2  0 14:30 ?        00:00:00 [ipoib_flush]
+root     13507     1  1 14:30 ?        00:00:22 /crs/crshome/jdk/jre/bin/java -Xms128m -Xmx512m -classpath /crs/crshome/tfa/cdc-r710s0-cd/tfa_home/jlib/RATFA.jar:/crs/crshome/tfa/cdc-r710s0-cd/tfa_home/jlib/je-5.0.84.jar:/crs/crshome/tfa/cdc-r710s0-cd/tfa_home/jlib/ojdbc6.jar:/crs/crshome/tfa/cdc-r710s0-cd/tfa_home/jlib/commons-io-2.2.jar oracle.rat.tfa.TFAMain /crs/crshome/tfa/cdc-r710s0-cd/tfa_home
+root     13598     1  0 14:30 ?        00:00:00 auditd
+root     13622     1  0 14:30 ?        00:00:00 /sbin/portreserve
+root     13632     1  0 14:30 ?        00:00:00 /sbin/rsyslogd -i /var/run/syslogd.pid -c 5
+oracle   13654     1  0 14:54 ?        00:00:00 ora_j000_orcl1
+oracle   13656     1  0 14:54 ?        00:00:00 ora_j001_orcl1
+root     13666     1  0 14:30 ?        00:00:00 irqbalance --pid=/var/run/irqbalance.pid
+rpc      13684     1  0 14:30 ?        00:00:00 rpcbind
+rpcuser  13706     1  0 14:30 ?        00:00:00 rpc.statd
+root     13827     2  0 14:30 ?        00:00:00 [dmpdaemon]
+root     13828     2  0 14:30 ?        00:00:00 [dmpdaemon]
+root     13830     2  0 14:30 ?        00:00:00 [dmpdaemon]
+root     13832     2  0 14:30 ?        00:00:00 [dmpdaemon]
+root     13833     2  0 14:30 ?        00:00:00 [dmpdaemon]
+root     13834     2  0 14:30 ?        00:00:00 [dmpdaemon]
+root     13835     2  0 14:30 ?        00:00:00 [dmpdaemon]
+root     13836     2  0 14:30 ?        00:00:00 [dmpdaemon]
+root     13837     2  0 14:30 ?        00:00:00 [dmpdaemon]
+root     13838     2  0 14:30 ?        00:00:00 [dmpdaemon]
+root     14151 12823  0 14:54 ?        00:00:00 /bin/sleep 30
+root     14174 20075  1 14:54 ?        00:00:00 sshd: oracle [priv]
+oracle   14176 14174  0 14:54 ?        00:00:00 sshd: oracle@notty
+oracle   14177 14176  0 14:54 ?        00:00:00 bash -c cat > /tmp/exec1 && source /home/oracle/.bash_profile && sh /tmp/exec1 2>&1 && rm -f /tmp/exec1
+oracle   14195 14177  0 14:54 ?        00:00:00 sh /tmp/exec1
+oracle   14196 14195  0 14:54 ?        00:00:00 ps -ef
+root     14333     2  0 14:30 ?        00:00:00 [voltuned]
+root     14335     2  0 14:30 ?        00:00:00 [vxiod]
+root     14336     2  0 14:30 ?        00:00:00 [vxiod]
+root     14337     2  0 14:30 ?        00:00:00 [vxiod]
+root     14338     2  0 14:30 ?        00:00:00 [vxiod]
+root     14340     2  0 14:30 ?        00:00:00 [vxiod]
+root     14341     2  0 14:30 ?        00:00:00 [vxiod]
+root     14342     2  0 14:30 ?        00:00:00 [vxiod]
+root     14343     2  0 14:30 ?        00:00:00 [vxiod]
+root     14344     2  0 14:30 ?        00:00:00 [vxiod]
+root     14345     2  0 14:30 ?        00:00:00 [vxiod]
+root     14346     2  0 14:30 ?        00:00:00 [vxiod]
+root     14347     2  0 14:30 ?        00:00:00 [vxiod]
+root     14348     2  0 14:30 ?        00:00:00 [vxiod]
+root     14349     2  0 14:30 ?        00:00:00 [vxiod]
+root     14350     2  0 14:30 ?        00:00:00 [vxiod]
+root     14351     2  0 14:30 ?        00:00:00 [vxiod]
+root     14352     2  0 14:30 ?        00:00:00 [vxiod]
+root     14354     2  0 14:30 ?        00:00:00 [vxiod]
+root     14355     2  0 14:30 ?        00:00:00 [vxiod]
+root     14356     2  0 14:30 ?        00:00:00 [vxiod]
+root     14357     2  0 14:30 ?        00:00:00 [vxiod]
+root     14358     2  0 14:30 ?        00:00:00 [vxiod]
+root     14360     2  0 14:30 ?        00:00:00 [vxiod]
+root     14361     2  0 14:30 ?        00:00:00 [vxiod]
+root     14362     2  0 14:30 ?        00:00:00 [vxiod]
+root     14363     2  0 14:30 ?        00:00:00 [vxiod]
+root     14364     2  0 14:30 ?        00:00:00 [vxiod]
+root     14365     2  0 14:30 ?        00:00:00 [vxiod]
+root     14366     2  0 14:30 ?        00:00:00 [vxiod]
+root     14367     2  0 14:30 ?        00:00:00 [vxiod]
+root     14368     2  0 14:30 ?        00:00:00 [vxiod]
+root     14369     2  0 14:30 ?        00:00:00 [vxiod]
+root     14370     2  0 14:30 ?        00:00:00 [vxiod]
+root     14371     2  0 14:30 ?        00:00:00 [vxiod]
+root     14372     2  0 14:30 ?        00:00:00 [vxiod]
+root     14373     2  0 14:30 ?        00:00:00 [vxiod]
+root     14374     2  0 14:30 ?        00:00:00 [vxiod]
+root     14375     2  0 14:30 ?        00:00:00 [vxiod]
+root     14376     2  0 14:30 ?        00:00:00 [vxiod]
+root     14377     2  0 14:30 ?        00:00:00 [vxiod]
+root     14378     2  0 14:30 ?        00:00:00 [vxiod]
+root     14379     2  0 14:30 ?        00:00:00 [vxiod]
+root     14380     2  0 14:30 ?        00:00:00 [vxiod]
+root     14381     2  0 14:30 ?        00:00:00 [vxiod]
+root     14382     2  0 14:30 ?        00:00:00 [vxiod]
+root     14383     2  0 14:30 ?        00:00:00 [vxiod]
+root     14384     2  0 14:30 ?        00:00:00 [vxiod]
+root     14385     2  0 14:30 ?        00:00:00 [vxiod]
+root     14386     2  0 14:30 ?        00:00:00 [vxiod]
+root     14387     2  0 14:30 ?        00:00:00 [vxiod]
+root     14388     2  0 14:30 ?        00:00:00 [vxiod]
+root     14389     2  0 14:30 ?        00:00:00 [vxiod]
+root     14390     2  0 14:30 ?        00:00:00 [vxiod]
+root     14391     2  0 14:30 ?        00:00:00 [vxiod]
+root     14392     2  0 14:30 ?        00:00:00 [vxiod]
+root     14393     2  0 14:30 ?        00:00:00 [vxiod]
+root     14394     2  0 14:30 ?        00:00:00 [vxiod]
+root     14395     2  0 14:30 ?        00:00:00 [vxiod]
+root     14396     2  0 14:30 ?        00:00:00 [vxiod]
+root     14397     2  0 14:30 ?        00:00:00 [vxiod]
+root     14398     2  0 14:30 ?        00:00:00 [vxiod]
+root     14399     2  0 14:30 ?        00:00:00 [vxiod]
+root     14400     2  0 14:30 ?        00:00:00 [vxiod]
+root     14401     2  0 14:30 ?        00:00:00 [vxiod]
+root     14403     2  0 14:30 ?        00:00:00 [volslad]
+root     14781     1  0 14:30 ?        00:00:10 vxconfigd -x syslog
+root     16755     2  0 14:30 ?        00:00:00 [flush-8:0]
+root     19410     1  0 14:36 ?        00:00:00 /sbin/vxesd
+root     19454     1  0 14:36 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxrelocd root
+root     19510 19454  0 14:36 ?        00:00:00 vxnotify -T -f -u -w 15
+root     19511 19454  0 14:36 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxrelocd root
+root     19538     1  0 14:36 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxattachd root
+root     19601 19538  0 14:36 ?        00:00:00 /usr/sbin/vxnotify -m -l -S -i -k -w 150
+root     19602 19538  0 14:36 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxattachd root
+root     19699     1  0 14:36 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxcached root
+root     19758 19699  0 14:36 ?        00:00:00 vxnotify -C -w 15
+root     19759 19699  0 14:36 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxcached root
+root     19791     1  0 14:36 ?        00:00:00 vxvvrstatd
+root     19799     1  0 14:36 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxvvrsecdgd root
+root     19815 19799  0 14:36 ?        00:00:00 /usr/sbin/vxnotify -x -w 15
+root     19816 19799  0 14:36 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxvvrsecdgd root
+root     19858     1  0 14:36 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxconfigbackupd
+root     19929 19858  0 14:36 ?        00:00:00 vxnotify
+root     19930 19858  0 14:36 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxconfigbackupd
+root     19959     1  0 14:36 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxvollogd
+root     20021 19959  0 14:36 ?        00:00:00 vxnotify
+root     20022 19959  0 14:36 ?        00:00:00 /bin/sh - /usr/lib/vxvm/bin/vxvollogd
+root     20052     1  0 14:36 ?        00:00:00 vxloggerd
+root     20075     1  0 14:36 ?        00:00:00 /usr/sbin/sshd
+root     20086     1  0 14:36 ?        00:00:00 xinetd -stayalive -pidfile /var/run/xinetd.pid
+ntp      20097     1  0 14:36 ?        00:00:00 ntpd -u ntp:ntp -p /var/run/ntpd.pid -g
+root     20163     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20164     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20165     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20166     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20167     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20168     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20169     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20170     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20171     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20172     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20173     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20174     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20175     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20176     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20177     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20178     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20179     2  0 14:36 ?        00:00:00 [llt_rdlv]
+root     20180     2  0 14:36 ?        00:00:00 [lltd]
+root     20181     2  0 14:36 ?        00:00:00 [lltd]
+root     20330     2  0 14:36 ?        00:00:00 [lltdlv]
+root     20429     2  0 14:36 ?        00:00:00 [lltdlv]
+root     20432     1  0 14:36 ?        00:00:00 /opt/VRTSgab/gablogd
+root     20967     2  0 14:36 ?        00:00:01 [vxglm_thread]
+root     21030     2  0 14:36 ?        00:00:00 [vxfen]
+root     21031     2  0 14:36 ?        00:00:00 [vxfen]
+root     21032     2  0 14:36 ?        00:00:00 [lltdlv]
+root     21155     2  0 14:37 ?        00:00:00 [vcsmm]
+root     21156     2  0 14:37 ?        00:00:00 [vcsmm]
+root     21157     2  0 14:37 ?        00:00:00 [lltdlv]
+root     21253     1  0 14:37 ?        00:00:00 /opt/VRTSsfmh/bin/xprtld -X 1 /etc/opt/VRTSsfmh/xprtld.conf
+root     21280     2  0 14:37 ?        00:00:00 [vxodm_ioreap]
+root     21281     2  0 14:37 ?        00:00:00 [vxodm_ioclean]
+root     21292     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21293     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21294     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21295     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21296     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21297     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21298     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21299     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21300     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21301     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21303     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21304     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21305     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21306     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21307     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21308     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21309     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21311     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21312     2  0 14:37 ?        00:00:00 [odm_tsk_daemon]
+root     21316     2  0 14:37 ?        00:00:00 [gms_ctl_thread]
+root     21394     1  0 14:37 ?        00:00:00 /usr/libexec/postfix/master
+postfix  21403 21394  0 14:37 ?        00:00:00 pickup -l -t fifo -u
+postfix  21404 21394  0 14:37 ?        00:00:00 qmgr -l -t fifo -u
+root     21430     1  0 14:37 ?        00:00:00 /opt/VRTSsfmh/bin/vxdclid
+root     21450     1  0 14:37 ?        00:00:00 /usr/sbin/abrtd
+root     21477     1  0 14:37 ?        00:00:00 crond
+root     21492     1  0 14:37 ?        00:00:00 /usr/sbin/atd
+root     21514     1  0 14:37 ?        00:00:00 /usr/sbin/vradmind
+root     21573     1  0 14:37 ?        00:00:00 /bin/sh - /etc/vx/vras/templates/vvr_stats
+root     21596     1  0 14:37 ?        00:00:00 /usr/sbin/in.vxrsyncd -keepstderr
+root     21632     1  1 14:37 ?        00:00:13 /crs/crshome/bin/ohasd.bin reboot
+root     21652     1  0 14:37 ?        00:00:00 /usr/bin/rhsmcertd
+root     21669     1  0 14:37 ?        00:00:00 /usr/sbin/certmonger -S -p /var/run/certmonger.pid
+root     21754     1  0 14:37 ?        00:00:01 /opt/VRTSvcs/bin/had
+root     21758     1  0 14:37 ?        00:00:00 /opt/VRTSvcs/bin/CmdServer
+root     21764     1  0 14:37 ?        00:00:00 /opt/VRTSvcs/bin/hashadow
+root     21775     1  0 14:37 tty1     00:00:00 /sbin/mingetty /dev/tty1
+root     21777     1  0 14:37 tty2     00:00:00 /sbin/mingetty /dev/tty2
+root     21779     1  0 14:37 tty3     00:00:00 /sbin/mingetty /dev/tty3
+root     21781     1  0 14:37 tty4     00:00:00 /sbin/mingetty /dev/tty4
+root     21783     1  0 14:37 tty5     00:00:00 /sbin/mingetty /dev/tty5
+root     21785     1  0 14:37 tty6     00:00:00 /sbin/mingetty /dev/tty6
+root     21806     1  0 14:37 ?        00:00:00 /opt/VRTSvcs/bin/CFSMount/CFSMountAgent -type CFSMount
+root     21808     1  0 14:37 ?        00:00:00 /opt/VRTSvcs/bin/CFSfsckd/CFSfsckdAgent -type CFSfsckd
+root     21810     1  0 14:37 ?        00:00:00 /opt/VRTSvcs/bin/CSSD/CSSDAgent -type CSSD
+root     21812     1  0 14:37 ?        00:00:00 /opt/VRTSvcs/bin/CVMCluster/CVMClusterAgent -type CVMCluster
+root     21814     1  0 14:37 ?        00:00:00 /opt/VRTSvcs/bin/CVMVxconfigd/CVMVxconfigdAgent -type CVMVxconfigd
+root     21816     1  0 14:37 ?        00:00:01 /opt/VRTSagents/ha/bin/Oracle/OracleAgent -type Oracle -agdir /opt/VRTSagents/ha/bin/Oracle
+root     21819     1  0 14:37 ?        00:00:00 /opt/VRTSvcs/bin/ProcessOnOnly/ProcessOnOnlyAgent -type ProcessOnOnly
+root     21820     1  0 14:37 ?        00:00:00 /opt/VRTSvcs/bin/HostMonitor -type HostMonitor -agdir /
+root     21993 21808  0 14:37 ?        00:00:00 /opt/VRTSvcs/bin/CFSfsckd/imf_getnotification CFSfsckd
+root     21998 21810  0 14:37 ?        00:00:00 /opt/VRTSvcs/bin/CSSD/imf_getnotification CSSD
+root     22000 21814  0 14:37 ?        00:00:00 /opt/VRTSvcs/bin/CVMVxconfigd/imf_getnotification CVMVxconfigd
+root     22006 21806  0 14:37 ?        00:00:00 /opt/VRTSvcs/bin/CFSMount/imf_getnotification CFSMount
+root     22179     2  0 14:37 ?        00:00:00 [vol_openclose_a]
+root     22180     2  0 14:37 ?        00:00:00 [vol_kmsg_receiv]
+root     22181     2  0 14:37 ?        00:00:00 [vol_ioship_rece]
+root     22182     2  0 14:37 ?        00:00:00 [vol_ioship_send]
+root     22183     2  0 14:37 ?        00:00:00 [vol_kmsg_sender]
+root     22184     2  0 14:37 ?        00:00:00 [vxreconfd]
+oracle   22195     1  0 14:37 ?        00:00:04 /crs/crshome/bin/oraagent.bin
+oracle   22209     1  0 14:37 ?        00:00:03 /crs/crshome/bin/mdnsd.bin
+oracle   22210     1  1 14:37 ?        00:00:10 /crs/crshome/bin/evmd.bin
+root     22218     2  0 14:30 ?        00:00:00 [kjournald]
+oracle   22233     1  0 14:37 ?        00:00:03 /crs/crshome/bin/gpnpd.bin
+root     22312     1  0 14:30 ?        00:00:01 /sbin/udevd -d
+oracle   22338 22210  0 14:37 ?        00:00:03 /crs/crshome/bin/evmlogger.bin -o /crs/crshome/log/[HOSTNAME]/evmd/evmlogger.info -l /crs/crshome/log/[HOSTNAME]/evmd/evmlogger.log
+oracle   22344     1  1 14:37 ?        00:00:19 /crs/crshome/bin/gipcd.bin
+root     22646     1  0 14:37 ?        00:00:04 /crs/crshome/bin/cssdmonitor
+root     22662     1  0 14:37 ?        00:00:03 /crs/crshome/bin/cssdagent
+oracle   22684     1  0 14:37 ?        00:00:08 /crs/crshome/bin/ocssd.bin 
+root     24926 19930  0 14:37 ?        00:00:00 sleep 3600
+root     25414     1  0 14:37 ?        00:00:00 /usr/lib/fs/vxfs/vxfsckd -p /var/adm/cfs/vxfsckd-pid
+root     25561     2  0 14:37 ?        00:00:00 [gab_kdlvd_5]
+root     26124     2  0 14:30 ?        00:00:00 [kipmi0]
+root     26845     1  0 14:40 ?        00:00:03 /crs/crshome/bin/orarootagent.bin
+root     26859     1  0 14:40 ?        00:00:06 /crs/crshome/bin/octssd.bin reboot
+root     26876     1  2 14:40 ?        00:00:23 /crs/crshome/bin/osysmond.bin
+root     26882     1  1 14:40 ?        00:00:11 /crs/crshome/bin/crsd.bin reboot
+root     27489 22312  0 14:40 ?        00:00:00 /sbin/udevd -d
+root     27503 22312  0 14:40 ?        00:00:00 /sbin/udevd -d
+dbus     27997     1  0 14:30 ?        00:00:00 dbus-daemon --system
+root     28357     1  0 14:30 ?        00:00:00 cupsd -C /etc/cups/cupsd.conf
+root     28835     1  0 14:30 ?        00:00:00 /usr/sbin/acpid
+
+
+DATE:2017-02-23 14:54:47
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxstat -g oradg1229_dbarch -i 2 -c 5 -u h
+STDOUT:
+                                         OPERATIONS          BYTES           AVG TIME(ms)
+TYP NAME                                 READ     WRITE      READ     WRITE   READ  WRITE 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:54:39 PM CST
+vol archive                                93      1053     1517k     7095k   0.49   0.28 
+vol dbdata                               4325      1575       65m       10m   0.53   0.55 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:54:41 PM CST
+vol archive                                 0         1         0        8k   0.00   0.00 
+vol dbdata                                  0         1         0        8k   0.00   1.00 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:54:43 PM CST
+vol archive                                 0         3         0      49bl   0.00   0.67 
+vol dbdata                                  0         3         0       25k   0.00   0.33 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:54:45 PM CST
+vol archive                                 0         2         0      33bl   0.00   0.00 
+vol dbdata                                  1         2       16k      35bl   1.00   0.00 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:54:47 PM CST
+vol archive                                 0         1         0        8k   0.00   1.00 
+vol dbdata                                  0         2         0       12k   0.00   0.00 
+
+
+DATE:2017-02-23 14:54:48
+HOST:cdc-r710s0-cd
+USER:oracle
+STDIN:nohup /tmp/tmpfile.32608 1 1 > /tmp/.oracle.stress 2>&1 &
+STDOUT:
+
+
+
+DATE:2017-02-23 14:54:49
+HOST:cdc-r710s0-cd
+USER:oracle
+STDIN:cat /tmp/.oracle.stress
+STDOUT:
+14353
+
+
+DATE:2017-02-23 14:55:19
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxstat -g oradg1229_dbarch -i 2 -c 10 -u h
+STDOUT:
+                                         OPERATIONS          BYTES           AVG TIME(ms)
+TYP NAME                                 READ     WRITE      READ     WRITE   READ  WRITE 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:55:01 PM CST
+vol archive                                93      1075     1517k     7274k   0.49   0.28 
+vol dbdata                               4897      2783       68m    17949k   0.59   0.56 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:55:03 PM CST
+vol archive                                 0         2         0      33bl   0.00   0.00 
+vol dbdata                                 74       206      296k     1329k   0.20   0.69 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:55:05 PM CST
+vol archive                                 0         1         0        8k   0.00   0.00 
+vol dbdata                                 80       213      332k     1346k   0.25   0.52 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:55:07 PM CST
+vol archive                                 0         3         0      49bl   0.00   0.33 
+vol dbdata                                 77       213      308k     1345k   0.25   0.45 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:55:09 PM CST
+vol archive                                 0         2         0      33bl   0.00   0.00 
+vol dbdata                                 76       211      304k     1345k   0.25   0.54 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:55:11 PM CST
+vol archive                                 0         1         0        8k   0.00   0.00 
+vol dbdata                                 72       212      300k     1356k   0.15   0.41 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:55:13 PM CST
+vol archive                                 0         3         0      49bl   0.00   0.33 
+vol dbdata                                 73       222      292k     1401k   0.22   0.46 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:55:15 PM CST
+vol archive                                 0         2         0      33bl   0.00   0.50 
+vol dbdata                                 75       208      312k     1337k   0.21   0.36 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:55:17 PM CST
+vol archive                                 0         1         0        8k   0.00   1.00 
+vol dbdata                                 79       211      316k     1340k   0.27   0.63 
+
+cdc-r710s0-cd Thu 23 Feb 2017 02:55:19 PM CST
+vol archive                                 0         3         0      49bl   0.00   0.67 
+vol dbdata                                 79       221      316k     1405k   0.28   0.42 
+
+
+DATE:2017-02-23 14:55:20
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxassist -g oradg1229_dbarch maxsize
+STDOUT:
+Maximum volume size: 3452928 (1686Mb)
+
+***Getting disk list by specified size***
+
+
+***Getting avaiable disks***
+
+
+
+DATE:2017-02-23 14:55:21
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-02-23 14:55:23
+HOST:cdc-r710s1-cd
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-02-23 14:55:24
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+emc_clariion0     EMC_CLARiiON   CETV2140800019       CONNECTED    CLR-ALUA   91         0533
+disk              Disk           DISKS                CONNECTED    Disk        1         HS0F
+
+
+DATE:2017-02-23 14:55:27
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxdisk scandisks;vxdisk list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+emc_clariion0_833 auto:none       -            -            online invalid
+emc_clariion0_835 auto:cdsdisk    emc_clariion0_835  oradg1229_dbarch online shared
+emc_clariion0_836 auto:cdsdisk    emc_clariion0_836  oradg1229_dbarch online shared
+emc_clariion0_837 auto:cdsdisk    emc_clariion0_837  oradg1229_dbarch online shared
+emc_clariion0_838 auto:cdsdisk    emc_clariion0_838  oradg1229_dbarch online shared
+emc_clariion0_839 auto:cdsdisk    emc_clariion0_839  oradg1229_dbarch online shared
+emc_clariion0_905 auto:cdsdisk    emc_clariion0_905  oradg1229_dbarch online shared
+emc_clariion0_906 auto:cdsdisk    emc_clariion0_906  oradg1229_dbarch online shared
+emc_clariion0_907 auto:cdsdisk    emc_clariion0_907  oradg1229_dbarch online shared
+emc_clariion0_908 auto:cdsdisk    emc_clariion0_908  oradg1229_dbarch online shared
+emc_clariion0_909 auto:cdsdisk    emc_clariion0_909  oradg1229_ocrvote online shared
+emc_clariion0_910 auto:cdsdisk    emc_clariion0_910  oradg1229_ocrvote online shared
+emc_clariion0_911 auto:cdsdisk    emc_clariion0_911  oradg1229_ocrvote online shared
+emc_clariion0_912 auto:cdsdisk    emc_clariion0_912  oradg1229_ocrvote online shared
+emc_clariion0_913 auto:cdsdisk    emc_clariion0_913  oradg1229_ocrvote online shared
+emc_clariion0_914 auto:cdsdisk    -            -            online
+emc_clariion0_1077 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_1078 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_1079 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_1080 auto:cdsdisk    -            -            online
+emc_clariion0_1081 auto:cdsdisk    -            -            online
+emc_clariion0_1082 auto:cdsdisk    -            -            online
+emc_clariion0_1083 auto:cdsdisk    -            -            online
+emc_clariion0_1084 auto:cdsdisk    -            -            online
+emc_clariion0_1085 auto:cdsdisk    -            -            online
+emc_clariion0_1086 auto:cdsdisk    -            -            online
+emc_clariion0_1087 auto:cdsdisk    -            -            online
+emc_clariion0_1088 auto:cdsdisk    -            -            online
+emc_clariion0_1089 auto:cdsdisk    -            -            online
+emc_clariion0_1090 auto:cdsdisk    -            -            online
+emc_clariion0_1091 auto:cdsdisk    -            -            online
+emc_clariion0_1092 auto:cdsdisk    -            -            online
+emc_clariion0_1093 auto:cdsdisk    -            -            online
+emc_clariion0_1094 auto:cdsdisk    -            -            online
+emc_clariion0_1095 auto:cdsdisk    -            -            online
+emc_clariion0_1096 auto:cdsdisk    -            -            online
+emc_clariion0_1097 auto:cdsdisk    -            -            online
+emc_clariion0_1098 auto:cdsdisk    -            -            online
+emc_clariion0_1099 auto:cdsdisk    -            -            online
+emc_clariion0_1100 auto:cdsdisk    -            -            online
+emc_clariion0_1101 auto:cdsdisk    -            -            online
+emc_clariion0_1102 auto:cdsdisk    -            -            online
+emc_clariion0_1103 auto:cdsdisk    -            -            online
+emc_clariion0_1130 auto:cdsdisk    -            -            online
+emc_clariion0_1131 auto:cdsdisk    -            -            online
+emc_clariion0_1132 auto:cdsdisk    -            -            online
+emc_clariion0_1133 auto:cdsdisk    -            -            online
+emc_clariion0_1134 auto:cdsdisk    -            -            online
+emc_clariion0_1135 auto:cdsdisk    -            -            online
+emc_clariion0_1136 auto:cdsdisk    -            -            online
+emc_clariion0_1137 auto:cdsdisk    -            -            online
+emc_clariion0_1138 auto:cdsdisk    -            -            online
+emc_clariion0_1139 auto:cdsdisk    -            -            online
+emc_clariion0_1140 auto:cdsdisk    -            -            online
+emc_clariion0_1141 auto:cdsdisk    -            -            online
+emc_clariion0_1142 auto:cdsdisk    -            -            online
+emc_clariion0_1143 auto:cdsdisk    -            -            online
+emc_clariion0_1144 auto:cdsdisk    -            -            online
+emc_clariion0_1145 auto:cdsdisk    -            -            online
+emc_clariion0_1146 auto:cdsdisk    -            -            online
+emc_clariion0_1147 auto:cdsdisk    -            -            online
+emc_clariion0_1148 auto:cdsdisk    -            -            online
+emc_clariion0_1149 auto:cdsdisk    -            -            online
+emc_clariion0_1184 auto:cdsdisk    -            -            online
+emc_clariion0_1234 auto:cdsdisk    -            -            online
+emc_clariion0_1235 auto:cdsdisk    -            -            online
+emc_clariion0_1236 auto:cdsdisk    -            -            online
+emc_clariion0_1237 auto:cdsdisk    -            -            online
+emc_clariion0_1238 auto:cdsdisk    -            -            online
+emc_clariion0_1239 auto:cdsdisk    -            -            online
+emc_clariion0_1396 auto:cdsdisk    -            -            online
+emc_clariion0_1397 auto:cdsdisk    -            -            online
+emc_clariion0_1513 auto:cdsdisk    -            -            online
+emc_clariion0_1514 auto:cdsdisk    -            -            online
+emc_clariion0_1518 auto:cdsdisk    -            -            online
+emc_clariion0_1519 auto:cdsdisk    -            -            online
+emc_clariion0_1520 auto:cdsdisk    -            -            online
+emc_clariion0_1521 auto:cdsdisk    -            -            online
+emc_clariion0_1522 auto:cdsdisk    -            -            online
+emc_clariion0_1523 auto:cdsdisk    -            -            online
+emc_clariion0_1524 auto:cdsdisk    emc_clariion0_1524  oradg1229_dbarch online shared
+emc_clariion0_1546 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1547 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1548 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1549 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1550 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1551 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1552 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1553 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1563 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1564 auto:cdsdisk    -            -            online thinrclm
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-02-23 14:55:29
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:for i in emc_clariion0_833;do /opt/VRTS/bin/vxdisksetup -if $i;done
+STDOUT:
+VxVM  ERROR V-5-1-19084 Device emc_clariion0_833 is in use.
+If it is still desired to initialize this device for VxVM use, please remove the foreign format signatures from each of the following partition(s) using 'dd' command or some other tool.
+PARTITION  TYPE            
+1          linux:ext3     
+RESULT:NOEXIT:Failed
+
+
+DATE:2017-02-23 14:55:30
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxdisk list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+emc_clariion0_833 auto:none       -            -            online invalid
+emc_clariion0_835 auto:cdsdisk    emc_clariion0_835  oradg1229_dbarch online shared
+emc_clariion0_836 auto:cdsdisk    emc_clariion0_836  oradg1229_dbarch online shared
+emc_clariion0_837 auto:cdsdisk    emc_clariion0_837  oradg1229_dbarch online shared
+emc_clariion0_838 auto:cdsdisk    emc_clariion0_838  oradg1229_dbarch online shared
+emc_clariion0_839 auto:cdsdisk    emc_clariion0_839  oradg1229_dbarch online shared
+emc_clariion0_905 auto:cdsdisk    emc_clariion0_905  oradg1229_dbarch online shared
+emc_clariion0_906 auto:cdsdisk    emc_clariion0_906  oradg1229_dbarch online shared
+emc_clariion0_907 auto:cdsdisk    emc_clariion0_907  oradg1229_dbarch online shared
+emc_clariion0_908 auto:cdsdisk    emc_clariion0_908  oradg1229_dbarch online shared
+emc_clariion0_909 auto:cdsdisk    emc_clariion0_909  oradg1229_ocrvote online shared
+emc_clariion0_910 auto:cdsdisk    emc_clariion0_910  oradg1229_ocrvote online shared
+emc_clariion0_911 auto:cdsdisk    emc_clariion0_911  oradg1229_ocrvote online shared
+emc_clariion0_912 auto:cdsdisk    emc_clariion0_912  oradg1229_ocrvote online shared
+emc_clariion0_913 auto:cdsdisk    emc_clariion0_913  oradg1229_ocrvote online shared
+emc_clariion0_914 auto:cdsdisk    -            -            online
+emc_clariion0_1077 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_1078 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_1079 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_1080 auto:cdsdisk    -            -            online
+emc_clariion0_1081 auto:cdsdisk    -            -            online
+emc_clariion0_1082 auto:cdsdisk    -            -            online
+emc_clariion0_1083 auto:cdsdisk    -            -            online
+emc_clariion0_1084 auto:cdsdisk    -            -            online
+emc_clariion0_1085 auto:cdsdisk    -            -            online
+emc_clariion0_1086 auto:cdsdisk    -            -            online
+emc_clariion0_1087 auto:cdsdisk    -            -            online
+emc_clariion0_1088 auto:cdsdisk    -            -            online
+emc_clariion0_1089 auto:cdsdisk    -            -            online
+emc_clariion0_1090 auto:cdsdisk    -            -            online
+emc_clariion0_1091 auto:cdsdisk    -            -            online
+emc_clariion0_1092 auto:cdsdisk    -            -            online
+emc_clariion0_1093 auto:cdsdisk    -            -            online
+emc_clariion0_1094 auto:cdsdisk    -            -            online
+emc_clariion0_1095 auto:cdsdisk    -            -            online
+emc_clariion0_1096 auto:cdsdisk    -            -            online
+emc_clariion0_1097 auto:cdsdisk    -            -            online
+emc_clariion0_1098 auto:cdsdisk    -            -            online
+emc_clariion0_1099 auto:cdsdisk    -            -            online
+emc_clariion0_1100 auto:cdsdisk    -            -            online
+emc_clariion0_1101 auto:cdsdisk    -            -            online
+emc_clariion0_1102 auto:cdsdisk    -            -            online
+emc_clariion0_1103 auto:cdsdisk    -            -            online
+emc_clariion0_1130 auto:cdsdisk    -            -            online
+emc_clariion0_1131 auto:cdsdisk    -            -            online
+emc_clariion0_1132 auto:cdsdisk    -            -            online
+emc_clariion0_1133 auto:cdsdisk    -            -            online
+emc_clariion0_1134 auto:cdsdisk    -            -            online
+emc_clariion0_1135 auto:cdsdisk    -            -            online
+emc_clariion0_1136 auto:cdsdisk    -            -            online
+emc_clariion0_1137 auto:cdsdisk    -            -            online
+emc_clariion0_1138 auto:cdsdisk    -            -            online
+emc_clariion0_1139 auto:cdsdisk    -            -            online
+emc_clariion0_1140 auto:cdsdisk    -            -            online
+emc_clariion0_1141 auto:cdsdisk    -            -            online
+emc_clariion0_1142 auto:cdsdisk    -            -            online
+emc_clariion0_1143 auto:cdsdisk    -            -            online
+emc_clariion0_1144 auto:cdsdisk    -            -            online
+emc_clariion0_1145 auto:cdsdisk    -            -            online
+emc_clariion0_1146 auto:cdsdisk    -            -            online
+emc_clariion0_1147 auto:cdsdisk    -            -            online
+emc_clariion0_1148 auto:cdsdisk    -            -            online
+emc_clariion0_1149 auto:cdsdisk    -            -            online
+emc_clariion0_1184 auto:cdsdisk    -            -            online
+emc_clariion0_1234 auto:cdsdisk    -            -            online
+emc_clariion0_1235 auto:cdsdisk    -            -            online
+emc_clariion0_1236 auto:cdsdisk    -            -            online
+emc_clariion0_1237 auto:cdsdisk    -            -            online
+emc_clariion0_1238 auto:cdsdisk    -            -            online
+emc_clariion0_1239 auto:cdsdisk    -            -            online
+emc_clariion0_1396 auto:cdsdisk    -            -            online
+emc_clariion0_1397 auto:cdsdisk    -            -            online
+emc_clariion0_1513 auto:cdsdisk    -            -            online
+emc_clariion0_1514 auto:cdsdisk    -            -            online
+emc_clariion0_1518 auto:cdsdisk    -            -            online
+emc_clariion0_1519 auto:cdsdisk    -            -            online
+emc_clariion0_1520 auto:cdsdisk    -            -            online
+emc_clariion0_1521 auto:cdsdisk    -            -            online
+emc_clariion0_1522 auto:cdsdisk    -            -            online
+emc_clariion0_1523 auto:cdsdisk    -            -            online
+emc_clariion0_1524 auto:cdsdisk    emc_clariion0_1524  oradg1229_dbarch online shared
+emc_clariion0_1546 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1547 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1548 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1549 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1550 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1551 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1552 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1553 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1563 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1564 auto:cdsdisk    -            -            online thinrclm
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-02-23 14:55:32
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:/opt/VRTSsfmh/adm/dclisetup.sh
+STDOUT:
+
+
+
+DATE:2017-02-23 14:55:35
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:/opt/VRTS/bin/vxlist disk
+STDOUT:
+TY   DEVICE            DISK              DISKGROUP         SIZE    FREE STATUS
+disk emc_clariion0_833 -                 -                    -       - LVM
+disk emc_clariion0_835 emc_clariion0_835 oradg1229_dbarch 1.96g    0.00 imported
+disk emc_clariion0_836 emc_clariion0_836 oradg1229_dbarch 1.96g    0.00 imported
+disk emc_clariion0_837 emc_clariion0_837 oradg1229_dbarch 1.96g    0.00 imported
+disk emc_clariion0_838 emc_clariion0_838 oradg1229_dbarch 1.96g    0.00 imported
+disk emc_clariion0_839 emc_clariion0_839 oradg1229_dbarch 1.96g 843.37m imported
+disk emc_clariion0_905 emc_clariion0_905 oradg1229_dbarch 1.96g    0.00 imported
+disk emc_clariion0_906 emc_clariion0_906 oradg1229_dbarch 1.96g    0.00 imported
+disk emc_clariion0_907 emc_clariion0_907 oradg1229_dbarch 1.96g    0.00 imported
+disk emc_clariion0_908 emc_clariion0_908 oradg1229_dbarch 1.96g    0.00 imported
+disk emc_clariion0_909 emc_clariion0_909 oradg1229_ocrvote 1.96g   0.00 imported
+disk emc_clariion0_910 emc_clariion0_910 oradg1229_ocrvote 1.96g   0.00 imported
+disk emc_clariion0_911 emc_clariion0_911 oradg1229_ocrvote 1.96g   0.00 imported
+disk emc_clariion0_912 emc_clariion0_912 oradg1229_ocrvote 1.96g   0.00 imported
+disk emc_clariion0_913 emc_clariion0_913 oradg1229_ocrvote 1.96g 843.37m imported
+disk emc_clariion0_914 -                 -                1.96g       - free
+disk emc_clariion0_1077 -                autotcfendg      1.96g       - deported
+disk emc_clariion0_1078 -                autotcfendg      1.96g       - deported
+disk emc_clariion0_1079 -                autotcfendg      1.96g       - deported
+disk emc_clariion0_1080 -                -                1.96g       - free
+disk emc_clariion0_1081 -                -                1.96g       - free
+disk emc_clariion0_1082 -                -                1.96g       - free
+disk emc_clariion0_1083 -                -                1.96g       - free
+disk emc_clariion0_1084 -                -                1.96g       - free
+disk emc_clariion0_1085 -                -                1.96g       - free
+disk emc_clariion0_1086 -                -                1.96g       - free
+disk emc_clariion0_1087 -                -                1.96g       - free
+disk emc_clariion0_1088 -                -                1.96g       - free
+disk emc_clariion0_1089 -                -                1.96g       - free
+disk emc_clariion0_1090 -                -                1.96g       - free
+disk emc_clariion0_1091 -                -                1.96g       - free
+disk emc_clariion0_1092 -                -                1.96g       - free
+disk emc_clariion0_1093 -                -                1.96g       - free
+disk emc_clariion0_1094 -                -                1.96g       - free
+disk emc_clariion0_1095 -                -                1.96g       - free
+disk emc_clariion0_1096 -                -                1.96g       - free
+disk emc_clariion0_1097 -                -                1.96g       - free
+disk emc_clariion0_1098 -                -                1.96g       - free
+disk emc_clariion0_1099 -                -                1.96g       - free
+disk emc_clariion0_1100 -                -                1.96g       - free
+disk emc_clariion0_1101 -                -                1.96g       - free
+disk emc_clariion0_1102 -                -                1.96g       - free
+disk emc_clariion0_1103 -                -                1.96g       - free
+disk emc_clariion0_1130 -                -                1.96g       - free
+disk emc_clariion0_1131 -                -                1.96g       - free
+disk emc_clariion0_1132 -                -                1.96g       - free
+disk emc_clariion0_1133 -                -                1.96g       - free
+disk emc_clariion0_1134 -                -                1.96g       - free
+disk emc_clariion0_1135 -                -                1.96g       - free
+disk emc_clariion0_1136 -                -                1.96g       - free
+disk emc_clariion0_1137 -                -                1.96g       - free
+disk emc_clariion0_1138 -                -                1.96g       - free
+disk emc_clariion0_1139 -                -                1.96g       - free
+disk emc_clariion0_1140 -                -                1.96g       - free
+disk emc_clariion0_1141 -                -                1.96g       - free
+disk emc_clariion0_1142 -                -                1.96g       - free
+disk emc_clariion0_1143 -                -                1.96g       - free
+disk emc_clariion0_1144 -                -                1.96g       - free
+disk emc_clariion0_1145 -                -                1.96g       - free
+disk emc_clariion0_1146 -                -                1.96g       - free
+disk emc_clariion0_1147 -                -                1.96g       - free
+disk emc_clariion0_1148 -                -                1.96g       - free
+disk emc_clariion0_1149 -                -                1.96g       - free
+disk emc_clariion0_1184 -                -                1.96g       - free
+disk emc_clariion0_1234 -                -                1.96g       - free
+disk emc_clariion0_1235 -                -                1.96g       - free
+disk emc_clariion0_1236 -                -                1.96g       - free
+disk emc_clariion0_1237 -                -                1.96g       - free
+disk emc_clariion0_1238 -                -                1.96g       - free
+disk emc_clariion0_1239 -                -                1.96g       - free
+disk emc_clariion0_1396 -                -                1.96g       - free
+disk emc_clariion0_1397 -                -                1.96g       - free
+disk emc_clariion0_1513 -                -                1.96g       - free
+disk emc_clariion0_1514 -                -                1.96g       - free
+disk emc_clariion0_1518 -                -                1.96g       - free
+disk emc_clariion0_1519 -                -                1.96g       - free
+disk emc_clariion0_1520 -                -                1.96g       - free
+disk emc_clariion0_1521 -                -                1.96g       - free
+disk emc_clariion0_1522 -                -                1.96g       - free
+disk emc_clariion0_1523 -                -                1.96g       - free
+disk emc_clariion0_1524 emc_clariion0_1524 oradg1229_dbarch 1.96g 843.37m imported
+disk emc_clariion0_1546 -                -                9.96g       - free
+disk emc_clariion0_1547 -                -                9.96g       - free
+disk emc_clariion0_1548 -                -                9.96g       - free
+disk emc_clariion0_1549 -                -                9.96g       - free
+disk emc_clariion0_1550 -                -                9.96g       - free
+disk emc_clariion0_1551 -                -                9.96g       - free
+disk emc_clariion0_1552 -                -                9.96g       - free
+disk emc_clariion0_1553 -                -                9.96g       - free
+disk emc_clariion0_1563 -                -                9.96g       - free
+disk emc_clariion0_1564 -                -                9.96g       - free
+disk sda               -                 -                    -       - LVM
+
+
+DATE:2017-02-23 14:55:41
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxdg -g oradg1229_dbarch adddisk emc_clariion0_914 emc_clariion0_1523 emc_clariion0_1522 emc_clariion0_1521 emc_clariion0_1520 emc_clariion0_1519 emc_clariion0_1518 emc_clariion0_1514 emc_clariion0_1513 emc_clariion0_1397 emc_clariion0_1396 emc_clariion0_1239 emc_clariion0_1238 emc_clariion0_1237 emc_clariion0_1236 emc_clariion0_1235 emc_clariion0_1234 emc_clariion0_1184 emc_clariion0_1149
+STDOUT:
+
+
+***Making autotcvol1 with size=9316M in oradg1229_dbarch***
+
+
+
+DATE:2017-02-23 14:55:43
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:for i in `vxprint -g oradg1229_dbarch|grep ^v|grep autotcvol1|awk '{print $2}'`;do vxedit -g oradg1229_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-23 14:55:44
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxassist -g oradg1229_dbarch make autotcvol1 9316M
+STDOUT:
+
+
+
+DATE:2017-02-23 14:55:46
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxedit -g oradg1229_dbarch set user=oracle autotcvol1
+STDOUT:
+
+
+***Making autotcvol2 with size=9316M in oradg1229_dbarch***
+
+
+
+DATE:2017-02-23 14:55:47
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:for i in `vxprint -g oradg1229_dbarch|grep ^v|grep autotcvol2|awk '{print $2}'`;do vxedit -g oradg1229_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-23 14:55:48
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxassist -g oradg1229_dbarch make autotcvol2 9316M
+STDOUT:
+
+
+
+DATE:2017-02-23 14:55:50
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxedit -g oradg1229_dbarch set user=oracle autotcvol2
+STDOUT:
+
+
+***Making autotcvol3 with size=9316M in oradg1229_dbarch***
+
+
+
+DATE:2017-02-23 14:55:51
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:for i in `vxprint -g oradg1229_dbarch|grep ^v|grep autotcvol3|awk '{print $2}'`;do vxedit -g oradg1229_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-23 14:55:52
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxassist -g oradg1229_dbarch make autotcvol3 9316M
+STDOUT:
+
+
+
+DATE:2017-02-23 14:55:54
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxedit -g oradg1229_dbarch set user=oracle autotcvol3
+STDOUT:
+
+
+***Making autotcvol4 with size=9316M in oradg1229_dbarch***
+
+
+
+DATE:2017-02-23 14:55:55
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:for i in `vxprint -g oradg1229_dbarch|grep ^v|grep autotcvol4|awk '{print $2}'`;do vxedit -g oradg1229_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-23 14:55:57
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxassist -g oradg1229_dbarch make autotcvol4 9316M
+STDOUT:
+
+
+
+DATE:2017-02-23 14:55:58
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxedit -g oradg1229_dbarch set user=oracle autotcvol4
+STDOUT:
+
+
+
+DATE:2017-02-23 14:56:00
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxassist -g oradg1229_dbarch maxsize
+STDOUT:
+Maximum volume size: 5423104 (2648Mb)
+
+***Getting disk list by specified size***
+
+
+
+DATE:2017-02-23 14:56:05
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxdg -g oradg1229_dbarch adddisk emc_clariion0_1148 emc_clariion0_1147 emc_clariion0_1146 emc_clariion0_1145 emc_clariion0_1144 emc_clariion0_1143 emc_clariion0_1142 emc_clariion0_1141 emc_clariion0_1140 emc_clariion0_1139 emc_clariion0_1138 emc_clariion0_1137 emc_clariion0_1136 emc_clariion0_1135 emc_clariion0_1134 emc_clariion0_1133 emc_clariion0_1132 emc_clariion0_1131 emc_clariion0_1130
+STDOUT:
+
+
+***Making autotcvol5 with size=9316M in oradg1229_dbarch***
+
+
+
+DATE:2017-02-23 14:56:06
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:for i in `vxprint -g oradg1229_dbarch|grep ^v|grep autotcvol5|awk '{print $2}'`;do vxedit -g oradg1229_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-23 14:56:08
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxassist -g oradg1229_dbarch make autotcvol5 9316M
+STDOUT:
+
+
+
+DATE:2017-02-23 14:56:09
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxedit -g oradg1229_dbarch set user=oracle autotcvol5
+STDOUT:
+
+
+***Making autotcvol6 with size=9316M in oradg1229_dbarch***
+
+
+
+DATE:2017-02-23 14:56:10
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:for i in `vxprint -g oradg1229_dbarch|grep ^v|grep autotcvol6|awk '{print $2}'`;do vxedit -g oradg1229_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-23 14:56:12
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxassist -g oradg1229_dbarch make autotcvol6 9316M
+STDOUT:
+
+
+
+DATE:2017-02-23 14:56:13
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxedit -g oradg1229_dbarch set user=oracle autotcvol6
+STDOUT:
+
+
+***Making autotcvol7 with size=9316M in oradg1229_dbarch***
+
+
+
+DATE:2017-02-23 14:56:14
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:for i in `vxprint -g oradg1229_dbarch|grep ^v|grep autotcvol7|awk '{print $2}'`;do vxedit -g oradg1229_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-23 14:56:16
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxassist -g oradg1229_dbarch make autotcvol7 9316M
+STDOUT:
+
+
+
+DATE:2017-02-23 14:56:17
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxedit -g oradg1229_dbarch set user=oracle autotcvol7
+STDOUT:
+
+
+***Making autotcvol8 with size=9316M in oradg1229_dbarch***
+
+
+
+DATE:2017-02-23 14:56:19
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:for i in `vxprint -g oradg1229_dbarch|grep ^v|grep autotcvol8|awk '{print $2}'`;do vxedit -g oradg1229_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-02-23 14:56:20
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxassist -g oradg1229_dbarch make autotcvol8 9316M
+STDOUT:
+
+
+
+DATE:2017-02-23 14:56:21
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxedit -g oradg1229_dbarch set user=oracle autotcvol8
+STDOUT:
+
+
+
+DATE:2017-02-23 14:56:23
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxedit -g oradg1229_dbarch set user=oracle dbdata
+STDOUT:
+
+
+
+DATE:2017-02-23 14:56:24
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:vxedit -g oradg1229_dbarch set user=oracle archive
+STDOUT:
+
+
+
+====STEP: Doing dbdst operation
+DATE:2017-02-23 14:56:24
+
+
+DATE:2017-02-23 14:56:32
+HOST:cdc-r710s0-cd
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+No repository found for database orcl1, creating new one.
+
+SFDB vxsfadm ERROR V-81-0978 Could not connect to the vxdbd daemon on host localhost
+
+Reason: This can be caused by the host being unreachable or the vxdbd daemon not enabled/ running on that host
+
+Action: Verify that the host localhost is reachable. If it is, verify that the vxdbd daemon is enabled and running using the [ /opt/VRTS/bin/sfae_config status ] command, and enable/start vxdbd using the [ /opt/VRTS/bin/sfae_config enable ] command if it is not enabled/running.
+RESULT:NOEXIT:Failed
+
+***Waring: Trying to fix it through workaroud***
+
+
+
+DATE:2017-02-23 14:56:33
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:/opt/VRTSdbed/bin/vxdbd stop;rm -rf /var/vx/vxdba/auth /opt/VRTSdbed/at-broker /var/VRTSat /var/VRTSat_lhc;echo "AUTHENTICATION=no" > /etc/vx/vxdbed/admin.properties;/opt/VRTSdbed/bin/vxdbd start
+STDOUT:
+
+RESULT:NOEXIT:Failed
+
+
+DATE:2017-02-23 14:57:00
+HOST:cdc-r710s0-cd
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+No repository found for database orcl1, creating new one.
+
+SFDB vxsfadm ERROR V-81-0450 A remote or privileged command could not be executed on localhost
+
+Reason: This can be caused by the host being unreachable or the vxdbd daemon not running on that host or because of insufficient privileges.
+
+Action: Verify that the host localhost is reachable. If it is, verify that the vxdbd daemon is enabled and running using the [ /opt/VRTS/bin/sfae_config status ] command, and enable/start vxdbd using the [ /opt/VRTS/bin/sfae_config enable ] command if it is not enabled/running. Also make sure you are authorized to run SFAE commands if running in secure mode.
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-02-23 14:57:00
+Duration:3m53s

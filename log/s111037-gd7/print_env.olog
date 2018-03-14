@@ -1,0 +1,107 @@
+
+==================== Operation Log for TC print_env ====================
+DATE:2017-01-12 14:48:12
+Nodes:s111037-gd7
+
+
+====STEP: Check and Print environment
+DATE:2017-01-12 14:48:12
+
+***checking if hosts are wop-sshable with root***
+
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:ssh -l root s111037-gd7
+STDOUT:
+
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+s111037-gd7
+s111038-gd7
+
+
+HOST:s111037-gd7
+USER:root
+STDIN:[ -f /etc/VRTSvcs/conf/config/main.cf ] && cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster rac111238239 (
+	UserNames = { admin = bopHojOlpKppNxpJom }
+	Administrators = { admin }
+	HacliUserLevel = COMMANDROOT
+	)
+
+system s111037-gd7 (
+	)
+
+system s111038-gd7 (
+	)
+
+group cvm (
+	SystemList = { s111037-gd7 = 0, s111038-gd7 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { s111037-gd7, s111038-gd7 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = rac111238239
+		CVMNodeId = { s111037-gd7 = 0, s111038-gd7 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/sbin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+Case Result:Passed
+DATE:2017-01-12 14:48:14
+Duration:0m2s

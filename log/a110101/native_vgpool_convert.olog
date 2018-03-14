@@ -1,0 +1,913 @@
+
+==================== Operation Log for TC native_vgpool_convert ====================
+DATE:2017-01-16 17:21:15
+Nodes:a110101
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-01-16 17:21:15
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-01-16 17:21:17
+HOST:a110101
+USER:root
+STDIN:ssh -l root a110101
+STDOUT:
+
+
+***Getting hostname of node***
+
+
+
+DATE:2017-01-16 17:21:18
+HOST:a110101
+USER:root
+STDIN:hostname
+STDOUT:
+a110101.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-01-16 17:21:19
+HOST:a110101
+USER:root
+STDIN:uname
+STDOUT:
+AIX
+
+
+DATE:2017-01-16 17:21:21
+HOST:a110101
+USER:root
+STDIN:oslevel -s
+STDOUT:
+7100-03-03-1415
+
+
+====STEP: checking if exist native vgs or pool,drop them if existing
+DATE:2017-01-16 17:21:21
+
+***Drop native vg/zpool***
+
+
+
+DATE:2017-01-16 17:21:22
+HOST:a110101
+USER:root
+STDIN:for vg in `lsvg|grep ^autotc`; do varyonvg $vg; disk=`lsvg -p $vg 2>/dev/null|tail -1|awk '{print $1}'`; reducevg -d -f $vg $disk; done
+STDOUT:
+
+RESULT:NOEXIT:Failed
+
+
+DATE:2017-01-16 17:21:23
+HOST:a110101
+USER:root
+STDIN:vxdisk list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+a110101_disk_0 auto:LVM        -            -            LVM
+a110101_disk_1 auto:LVM        -            -            LVM
+emc_clariion0_2 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_3 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_4 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_5 auto:cdsdisk    -            -            online
+emc_clariion0_6 auto:cdsdisk    -            -            online
+emc_clariion0_7 auto:cdsdisk    -            -            online
+emc_clariion0_8 auto:cdsdisk    -            -            online
+emc_clariion0_9 auto:cdsdisk    -            -            online
+emc_clariion0_575 auto:cdsdisk    -            -            online
+emc_clariion0_576 auto:cdsdisk    -            -            online
+emc_clariion0_577 auto:cdsdisk    -            -            online
+emc_clariion0_578 auto:cdsdisk    -            -            online
+emc_clariion0_579 auto:cdsdisk    -            -            online
+emc_clariion0_580 auto:cdsdisk    -            -            online
+emc_clariion0_581 auto:cdsdisk    -            -            online
+emc_clariion0_582 auto:cdsdisk    -            -            online
+emc_clariion0_583 auto:cdsdisk    -            -            online
+emc_clariion0_584 auto:cdsdisk    -            -            online
+emc_clariion0_585 auto:cdsdisk    -            -            online
+emc_clariion0_586 auto:cdsdisk    -            -            online
+emc_clariion0_587 auto:cdsdisk    -            -            online
+emc_clariion0_588 auto:cdsdisk    -            -            online
+emc_clariion0_589 auto:cdsdisk    -            -            online
+emc_clariion0_590 auto:cdsdisk    -            -            online
+emc_clariion0_591 auto:cdsdisk    -            -            online
+emc0_06ff    auto:LVM        -            -            LVM
+emc0_070a    auto:cdsdisk    -            -            online thinrclm
+emc0_070b    auto:cdsdisk    -            -            online thinrclm
+emc0_070c    auto:cdsdisk    -            -            online thinrclm
+emc0_070d    auto:cdsdisk    -            -            online thinrclm
+emc0_070e    auto:cdsdisk    -            -            online thinrclm
+emc0_070f    auto:cdsdisk    -            -            online thinrclm
+emc0_0700    auto:cdsdisk    -            -            online thinrclm
+emc0_0701    auto:LVM        -            -            LVM
+emc0_0702    auto:cdsdisk    -            -            online thinrclm
+emc0_0703    auto:cdsdisk    -            -            online thinrclm
+emc0_0704    auto:cdsdisk    -            -            online thinrclm
+emc0_0705    auto:cdsdisk    -            -            online thinrclm
+emc0_0706    auto:cdsdisk    -            -            online thinrclm
+emc0_0707    auto:cdsdisk    -            -            online thinrclm
+emc0_0708    auto:cdsdisk    -            -            online thinrclm
+emc0_0709    auto:cdsdisk    -            -            online thinrclm
+emc0_0710    auto:cdsdisk    -            -            online thinrclm
+emc0_0711    auto:cdsdisk    -            -            online thinrclm
+emc0_0712    auto:cdsdisk    -            -            online thinrclm
+
+
+DATE:2017-01-16 17:21:24
+HOST:a110101
+USER:root
+STDIN:for disk in ; do dd if=/dev/zero of=/dev/vx/dmp/$disk bs=1024k count=100; done
+STDOUT:
+/tmp/exec: 0403-057 Syntax error at line 1 : `;' is not expected.
+RESULT:NOEXIT:Failed
+
+
+====STEP: Copy mf.pl to a110101,filling files into the filesystem
+DATE:2017-01-16 17:21:24
+
+
+DATE:2017-01-16 17:21:25
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/etc/mf.pl a110101:/tmp/tmpfile.25949
+STDOUT:
+
+
+
+====STEP: Checking dmp_native_support status,if it is on,trun it to be off
+DATE:2017-01-16 17:21:25
+
+***setting dmp_native_support to be off***
+
+
+
+DATE:2017-01-16 17:21:25
+HOST:a110101
+USER:root
+STDIN:vxdmpadm gettune dmp_native_support
+STDOUT:
+            Tunable               Current Value  Default Value
+------------------------------    -------------  -------------
+dmp_native_support                      off	         off
+
+
+====STEP: Getting disks for the 1st vg or pool
+DATE:2017-01-16 17:21:25
+
+***Getting disk list by specified size***
+
+
+***Getting avaiable disks***
+
+
+
+DATE:2017-01-16 17:21:26
+HOST:a110101
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-01-16 17:21:27
+HOST:a110101
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+disk              Disk           DISKS                CONNECTED    Disk        2         C80A
+emc0              EMC            000492600040         CONNECTED    A/A        20         5876
+emc_clariion0     EMC_CLARiiON   CETV2140800019       CONNECTED    CLR-ALUA   25         0533
+
+
+DATE:2017-01-16 17:21:29
+HOST:a110101
+USER:root
+STDIN:vxdisk scandisks;vxdisk list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+a110101_disk_0 auto:LVM        -            -            LVM
+a110101_disk_1 auto:LVM        -            -            LVM
+emc_clariion0_2 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_3 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_4 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_5 auto:cdsdisk    -            -            online
+emc_clariion0_6 auto:cdsdisk    -            -            online
+emc_clariion0_7 auto:cdsdisk    -            -            online
+emc_clariion0_8 auto:cdsdisk    -            -            online
+emc_clariion0_9 auto:cdsdisk    -            -            online
+emc_clariion0_575 auto:cdsdisk    -            -            online
+emc_clariion0_576 auto:cdsdisk    -            -            online
+emc_clariion0_577 auto:cdsdisk    -            -            online
+emc_clariion0_578 auto:cdsdisk    -            -            online
+emc_clariion0_579 auto:cdsdisk    -            -            online
+emc_clariion0_580 auto:cdsdisk    -            -            online
+emc_clariion0_581 auto:cdsdisk    -            -            online
+emc_clariion0_582 auto:cdsdisk    -            -            online
+emc_clariion0_583 auto:cdsdisk    -            -            online
+emc_clariion0_584 auto:cdsdisk    -            -            online
+emc_clariion0_585 auto:cdsdisk    -            -            online
+emc_clariion0_586 auto:cdsdisk    -            -            online
+emc_clariion0_587 auto:cdsdisk    -            -            online
+emc_clariion0_588 auto:cdsdisk    -            -            online
+emc_clariion0_589 auto:cdsdisk    -            -            online
+emc_clariion0_590 auto:cdsdisk    -            -            online
+emc_clariion0_591 auto:cdsdisk    -            -            online
+emc0_06ff    auto:LVM        -            -            LVM
+emc0_070a    auto:cdsdisk    -            -            online thinrclm
+emc0_070b    auto:cdsdisk    -            -            online thinrclm
+emc0_070c    auto:cdsdisk    -            -            online thinrclm
+emc0_070d    auto:cdsdisk    -            -            online thinrclm
+emc0_070e    auto:cdsdisk    -            -            online thinrclm
+emc0_070f    auto:cdsdisk    -            -            online thinrclm
+emc0_0700    auto:cdsdisk    -            -            online thinrclm
+emc0_0701    auto:LVM        -            -            LVM
+emc0_0702    auto:cdsdisk    -            -            online thinrclm
+emc0_0703    auto:cdsdisk    -            -            online thinrclm
+emc0_0704    auto:cdsdisk    -            -            online thinrclm
+emc0_0705    auto:cdsdisk    -            -            online thinrclm
+emc0_0706    auto:cdsdisk    -            -            online thinrclm
+emc0_0707    auto:cdsdisk    -            -            online thinrclm
+emc0_0708    auto:cdsdisk    -            -            online thinrclm
+emc0_0709    auto:cdsdisk    -            -            online thinrclm
+emc0_0710    auto:cdsdisk    -            -            online thinrclm
+emc0_0711    auto:cdsdisk    -            -            online thinrclm
+emc0_0712    auto:cdsdisk    -            -            online thinrclm
+
+
+DATE:2017-01-16 17:21:32
+HOST:a110101
+USER:root
+STDIN:/opt/VRTSsfmh/adm/dclisetup.sh
+STDOUT:
+
+
+
+DATE:2017-01-16 17:21:34
+HOST:a110101
+USER:root
+STDIN:/opt/VRTS/bin/vxlist disk
+STDOUT:
+TY   DEVICE              DISK   DISKGROUP      SIZE   FREE STATUS
+disk a110101_disk_0      -      -                 -      - LVM
+disk a110101_disk_1      -      -                 -      - LVM
+disk emc_clariion0_2     -      vxfendg       9.96g      - deported
+disk emc_clariion0_3     -      vxfendg       9.96g      - deported
+disk emc_clariion0_4     -      vxfendg       9.96g      - deported
+disk emc_clariion0_5     -      -             9.96g      - free
+disk emc_clariion0_6     -      -             9.96g      - free
+disk emc_clariion0_7     -      -             9.96g      - free
+disk emc_clariion0_8     -      -             9.94g      - free
+disk emc_clariion0_9     -      -             9.94g      - free
+disk emc_clariion0_575   -      -             9.96g      - free
+disk emc_clariion0_576   -      -             9.96g      - free
+disk emc_clariion0_577   -      -             9.96g      - free
+disk emc_clariion0_578   -      -             9.96g      - free
+disk emc_clariion0_579   -      -             9.96g      - free
+disk emc_clariion0_580   -      -             9.96g      - free
+disk emc_clariion0_581   -      -             9.96g      - free
+disk emc_clariion0_582   -      -             9.96g      - free
+disk emc_clariion0_583   -      -             9.96g      - free
+disk emc_clariion0_584   -      -             9.96g      - free
+disk emc_clariion0_585   -      -             9.96g      - free
+disk emc_clariion0_586   -      -             9.96g      - free
+disk emc_clariion0_587   -      -             9.96g      - free
+disk emc_clariion0_588   -      -             9.96g      - free
+disk emc_clariion0_589   -      -             9.96g      - free
+disk emc_clariion0_590   -      -             9.96g      - free
+disk emc_clariion0_591   -      -             9.96g      - free
+disk emc0_06ff           -      -                 -      - LVM
+disk emc0_070a           -      -             9.96g      - free
+disk emc0_070b           -      -             9.96g      - free
+disk emc0_070c           -      -             9.96g      - free
+disk emc0_070d           -      -             9.96g      - free
+disk emc0_070e           -      -             9.96g      - free
+disk emc0_070f           -      -             9.96g      - free
+disk emc0_0700           -      -             9.96g      - free
+disk emc0_0701           -      -                 -      - LVM
+disk emc0_0702           -      -             9.96g      - free
+disk emc0_0703           -      -             9.96g      - free
+disk emc0_0704           -      -             9.96g      - free
+disk emc0_0705           -      -             9.96g      - free
+disk emc0_0706           -      -             9.96g      - free
+disk emc0_0707           -      -             9.96g      - free
+disk emc0_0708           -      -             9.96g      - free
+disk emc0_0709           -      -             9.96g      - free
+disk emc0_0710           -      -             9.96g      - free
+disk emc0_0711           -      -             9.96g      - free
+disk emc0_0712           -      -             9.96g      - free
+
+
+DATE:2017-01-16 17:21:35
+HOST:a110101
+USER:root
+STDIN:vxdmpadm getsubpaths
+STDOUT:
+NAME         STATE[A]   PATH-TYPE[M] DMPNODENAME  ENCLR-NAME   CTLR           ATTRS      PRIORITY
+=================================================================================================
+hdisk1       ENABLED(A)   -          a110101_disk_0 disk         scsi1           -         -
+hdisk0       ENABLED(A)   -          a110101_disk_1 disk         scsi1           -         -
+hdisk2       ENABLED(A)   -          emc0_06ff    emc0         fscsi0          -         -
+hdisk48      ENABLED(A)   -          emc0_06ff    emc0         fscsi1          -         -
+hdisk143     ENABLED(A)   -          emc0_0700    emc0         fscsi0          -         -
+hdisk147     ENABLED(A)   -          emc0_0700    emc0         fscsi1          -         -
+hdisk4       ENABLED(A)   -          emc0_0701    emc0         fscsi0          -         -
+hdisk50      ENABLED(A)   -          emc0_0701    emc0         fscsi1          -         -
+hdisk128     ENABLED(A)   -          emc0_0702    emc0         fscsi0          -         -
+hdisk51      ENABLED(A)   -          emc0_0702    emc0         fscsi1          -         -
+hdisk129     ENABLED(A)   -          emc0_0703    emc0         fscsi0          -         -
+hdisk52      ENABLED(A)   -          emc0_0703    emc0         fscsi1          -         -
+hdisk130     ENABLED(A)   -          emc0_0704    emc0         fscsi0          -         -
+hdisk53      ENABLED(A)   -          emc0_0704    emc0         fscsi1          -         -
+hdisk131     ENABLED(A)   -          emc0_0705    emc0         fscsi0          -         -
+hdisk54      ENABLED(A)   -          emc0_0705    emc0         fscsi1          -         -
+hdisk132     ENABLED(A)   -          emc0_0706    emc0         fscsi0          -         -
+hdisk55      ENABLED(A)   -          emc0_0706    emc0         fscsi1          -         -
+hdisk133     ENABLED(A)   -          emc0_0707    emc0         fscsi0          -         -
+hdisk56      ENABLED(A)   -          emc0_0707    emc0         fscsi1          -         -
+hdisk134     ENABLED(A)   -          emc0_0708    emc0         fscsi0          -         -
+hdisk57      ENABLED(A)   -          emc0_0708    emc0         fscsi1          -         -
+hdisk135     ENABLED(A)   -          emc0_0709    emc0         fscsi0          -         -
+hdisk58      ENABLED(A)   -          emc0_0709    emc0         fscsi1          -         -
+hdisk136     ENABLED(A)   -          emc0_070a    emc0         fscsi0          -         -
+hdisk59      ENABLED(A)   -          emc0_070a    emc0         fscsi1          -         -
+hdisk144     ENABLED(A)   -          emc0_070b    emc0         fscsi0          -         -
+hdisk148     ENABLED(A)   -          emc0_070b    emc0         fscsi1          -         -
+hdisk145     ENABLED(A)   -          emc0_070c    emc0         fscsi0          -         -
+hdisk149     ENABLED(A)   -          emc0_070c    emc0         fscsi1          -         -
+hdisk16      ENABLED(A)   -          emc0_070d    emc0         fscsi0          -         -
+hdisk62      ENABLED(A)   -          emc0_070d    emc0         fscsi1          -         -
+hdisk17      ENABLED(A)   -          emc0_070e    emc0         fscsi0          -         -
+hdisk63      ENABLED(A)   -          emc0_070e    emc0         fscsi1          -         -
+hdisk18      ENABLED(A)   -          emc0_070f    emc0         fscsi0          -         -
+hdisk64      ENABLED(A)   -          emc0_070f    emc0         fscsi1          -         -
+hdisk110     ENABLED(A)   -          emc0_0710    emc0         fscsi1          -         -
+hdisk126     ENABLED(A)   -          emc0_0710    emc0         fscsi0          -         -
+hdisk20      ENABLED(A)   -          emc0_0711    emc0         fscsi0          -         -
+hdisk66      ENABLED(A)   -          emc0_0711    emc0         fscsi1          -         -
+hdisk100     ENABLED(A)   -          emc0_0712    emc0         fscsi0          -         -
+hdisk67      ENABLED(A)   -          emc0_0712    emc0         fscsi1          -         -
+hdisk23      ENABLED(A) Active/Optimized emc_clariion0_2 emc_clariion0 fscsi0          -         -
+hdisk69      ENABLED(A) Active/Optimized(P) emc_clariion0_2 emc_clariion0 fscsi1          -         -
+hdisk24      ENABLED(A) Active/Optimized emc_clariion0_3 emc_clariion0 fscsi0          -         -
+hdisk70      ENABLED(A) Active/Optimized(P) emc_clariion0_3 emc_clariion0 fscsi1          -         -
+hdisk25      ENABLED(A) Active/Optimized emc_clariion0_4 emc_clariion0 fscsi0          -         -
+hdisk71      ENABLED(A) Active/Optimized(P) emc_clariion0_4 emc_clariion0 fscsi1          -         -
+hdisk138     ENABLED(A) Active/Optimized(P) emc_clariion0_5 emc_clariion0 fscsi1          -         -
+hdisk26      ENABLED(A) Active/Optimized emc_clariion0_5 emc_clariion0 fscsi0          -         -
+hdisk31      ENABLED(A) Active/Optimized emc_clariion0_575 emc_clariion0 fscsi0          -         -
+hdisk77      ENABLED(A) Active/Optimized(P) emc_clariion0_575 emc_clariion0 fscsi1          -         -
+hdisk32      ENABLED(A) Active/Optimized emc_clariion0_576 emc_clariion0 fscsi0          -         -
+hdisk78      ENABLED(A) Active/Optimized(P) emc_clariion0_576 emc_clariion0 fscsi1          -         -
+hdisk33      ENABLED(A) Active/Optimized emc_clariion0_577 emc_clariion0 fscsi0          -         -
+hdisk79      ENABLED(A) Active/Optimized(P) emc_clariion0_577 emc_clariion0 fscsi1          -         -
+hdisk137     ENABLED(A) Active/Optimized emc_clariion0_578 emc_clariion0 fscsi0          -         -
+hdisk80      ENABLED(A) Active/Optimized(P) emc_clariion0_578 emc_clariion0 fscsi1          -         -
+hdisk35      ENABLED(A) Active/Optimized emc_clariion0_579 emc_clariion0 fscsi0          -         -
+hdisk81      ENABLED(A) Active/Optimized(P) emc_clariion0_579 emc_clariion0 fscsi1          -         -
+hdisk36      ENABLED(A) Active/Optimized emc_clariion0_580 emc_clariion0 fscsi0          -         -
+hdisk82      ENABLED(A) Active/Optimized(P) emc_clariion0_580 emc_clariion0 fscsi1          -         -
+hdisk101     ENABLED(A) Active/Optimized emc_clariion0_581 emc_clariion0 fscsi0          -         -
+hdisk83      ENABLED(A) Active/Optimized(P) emc_clariion0_581 emc_clariion0 fscsi1          -         -
+hdisk38      ENABLED(A) Active/Optimized emc_clariion0_582 emc_clariion0 fscsi0          -         -
+hdisk84      ENABLED(A) Active/Optimized(P) emc_clariion0_582 emc_clariion0 fscsi1          -         -
+hdisk140     ENABLED(A) Active/Optimized(P) emc_clariion0_583 emc_clariion0 fscsi1          -         -
+hdisk39      ENABLED(A) Active/Optimized emc_clariion0_583 emc_clariion0 fscsi0          -         -
+hdisk141     ENABLED(A) Active/Optimized(P) emc_clariion0_584 emc_clariion0 fscsi1          -         -
+hdisk40      ENABLED(A) Active/Optimized emc_clariion0_584 emc_clariion0 fscsi0          -         -
+hdisk111     ENABLED(A) Active/Optimized(P) emc_clariion0_585 emc_clariion0 fscsi1          -         -
+hdisk127     ENABLED(A) Active/Optimized emc_clariion0_585 emc_clariion0 fscsi0          -         -
+hdisk42      ENABLED(A) Active/Optimized emc_clariion0_586 emc_clariion0 fscsi0          -         -
+hdisk88      ENABLED(A) Active/Optimized(P) emc_clariion0_586 emc_clariion0 fscsi1          -         -
+hdisk43      ENABLED(A) Active/Optimized emc_clariion0_587 emc_clariion0 fscsi0          -         -
+hdisk89      ENABLED(A) Active/Optimized(P) emc_clariion0_587 emc_clariion0 fscsi1          -         -
+hdisk142     ENABLED(A) Active/Optimized(P) emc_clariion0_588 emc_clariion0 fscsi1          -         -
+hdisk44      ENABLED(A) Active/Optimized emc_clariion0_588 emc_clariion0 fscsi0          -         -
+hdisk45      ENABLED(A) Active/Optimized emc_clariion0_589 emc_clariion0 fscsi0          -         -
+hdisk91      ENABLED(A) Active/Optimized(P) emc_clariion0_589 emc_clariion0 fscsi1          -         -
+hdisk46      ENABLED(A) Active/Optimized emc_clariion0_590 emc_clariion0 fscsi0          -         -
+hdisk92      ENABLED(A) Active/Optimized(P) emc_clariion0_590 emc_clariion0 fscsi1          -         -
+hdisk94      ENABLED(A) Active/Optimized emc_clariion0_591 emc_clariion0 fscsi0          -         -
+hdisk95      ENABLED(A) Active/Optimized(P) emc_clariion0_591 emc_clariion0 fscsi1          -         -
+hdisk139     ENABLED(A) Active/Optimized(P) emc_clariion0_6 emc_clariion0 fscsi1          -         -
+hdisk27      ENABLED(A) Active/Optimized emc_clariion0_6 emc_clariion0 fscsi0          -         -
+hdisk28      ENABLED(A) Active/Optimized emc_clariion0_7 emc_clariion0 fscsi0          -         -
+hdisk74      ENABLED(A) Active/Optimized(P) emc_clariion0_7 emc_clariion0 fscsi1          -         -
+hdisk29      ENABLED(A) Active/Optimized emc_clariion0_8 emc_clariion0 fscsi0          -         -
+hdisk75      ENABLED(A) Active/Optimized(P) emc_clariion0_8 emc_clariion0 fscsi1          -         -
+hdisk146     ENABLED(A) Active/Optimized emc_clariion0_9 emc_clariion0 fscsi0          -         -
+hdisk76      ENABLED(A) Active/Optimized(P) emc_clariion0_9 emc_clariion0 fscsi1          -         -
+
+
+DATE:2017-01-16 17:21:36
+HOST:a110101
+USER:root
+STDIN:/opt/VRTS/bin/vxdiskunsetup -Cf emc_clariion0_7 && vxdisk rm emc_clariion0_7
+STDOUT:
+
+
+
+====STEP: Make the 1st vg/zpool,then make volume and fs and mount it
+DATE:2017-01-16 17:21:36
+
+***creating native vg/zpool***
+
+
+
+DATE:2017-01-16 17:21:38
+HOST:a110101
+USER:root
+STDIN:mkvg -y autotcvg1 hdisk28
+STDOUT:
+0516-1254 mkvg: Changing the PVID in the ODM. 
+autotcvg1
+
+***Create native lv and make filesystem***
+
+
+
+DATE:2017-01-16 17:21:39
+HOST:a110101
+USER:root
+STDIN:mklv -y autotclv1 autotcvg1 2G
+STDOUT:
+autotclv1
+
+
+DATE:2017-01-16 17:21:43
+HOST:a110101
+USER:root
+STDIN:crfs -v jfs -m /autotclv1 -d autotclv1
+STDOUT:
+Based on the parameters chosen, the new /autotclv1 JFS file system
+is limited to a maximum size of 134217728 (512 byte blocks)
+
+New File System size is 4194304
+
+***Mount the native filesystem***
+
+
+
+DATE:2017-01-16 17:21:44
+HOST:a110101
+USER:root
+STDIN:mkdir -p /autotclv1 && mount /autotclv1
+STDOUT:
+
+
+
+DATE:2017-01-16 17:21:45
+HOST:a110101
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 5.00 2.85 44% 16647 3% /
+/dev/hd2 6.00 3.45 43% 58233 7% /usr
+/dev/hd9var 5.00 1.80 64% 8052 2% /var
+/dev/hd3 5.00 4.93 2% 163 1% /tmp
+/dev/hd1 2.00 2.00 1% 5 1% /home
+/dev/hd11admin 0.25 0.25 1% 7 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 10.00 8.00 21% 20449 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/autotclv1 2.00 1.94 4% 17 1% /autotclv1
+
+
+====STEP: Convert the 1st native vg/zpool to vxvm dg,free space required by vxfsconvert is approximately 12%-15% of the total file system size
+DATE:2017-01-16 17:21:45
+
+
+DATE:2017-01-16 17:21:52
+HOST:a110101
+USER:root
+STDIN:/tmp/tmpfile.25949 -s 104857600 -n 10 -d /autotclv1
+STDOUT:
+
+
+
+DATE:2017-01-16 17:22:00
+HOST:a110101
+USER:root
+STDIN:find /autotclv1 -type f|sort -n|xargs cksum
+STDOUT:
+1495355403 104857600 /autotclv1/mf/mf_0_0
+500298537 104857600 /autotclv1/mf/mf_0_1
+2056512108 104857600 /autotclv1/mf/mf_0_2
+3814374095 104857600 /autotclv1/mf/mf_0_3
+3643105000 104857600 /autotclv1/mf/mf_0_4
+3814374095 104857600 /autotclv1/mf/mf_1_5
+4000772633 104857600 /autotclv1/mf/mf_1_6
+3643105000 104857600 /autotclv1/mf/mf_1_7
+2009049786 104857600 /autotclv1/mf/mf_1_8
+3236432040 104857600 /autotclv1/mf/mf_1_9
+
+
+DATE:2017-01-16 17:22:01
+HOST:a110101
+USER:root
+STDIN:umount /autotclv1
+STDOUT:
+
+
+
+DATE:2017-01-16 17:22:03
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/expect_test.exp a110101
+STDOUT:
+spawn ssh a110101
+Warning: Permanently added 'a110101,10.200.110.101' (RSA) to the list of known hosts.
+Last unsuccessful login: Tue Jan 17 05:29:41 CST 2017 on ssh from 172.29.35.225
+Last login: Tue Jan 17 07:19:35 CST 2017 on ssh from i128-eng128.cdc.veritas.com
+*******************************************************************************
+*                                                                             *
+*                                                                             *
+*  Welcome to AIX Version 7.1!                                                *
+*                                                                             *
+*                                                                             *
+*  Please see the README file in /usr/lpp/bos for information pertinent to    *
+*  this release of the AIX Operating System.                                  *
+*                                                                             *
+*                                                                             *
+*******************************************************************************
+7100-03-03-1415
+a110101:/ # exit 0
+logout
+Connection to a110101 closed.
+
+
+DATE:2017-01-16 17:22:04
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:cat /opt/itf/tmp/expect.exp.25949
+STDOUT:
+#!/usr/bin/expect
+set timeout 20
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no a110101
+expect {
+	"#" {send "vxconvert\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+set timeout 20
+expect {
+	"tandard input" {send " \r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'tandard input'";exit 2}
+}
+set timeout 20
+expect {
+	"return to continue" {send " \r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'return to continue'";exit 2}
+}
+set timeout 20
+expect {
+	"Select an operation to perform:" {send "2\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Select an operation to perform:'";exit 2}
+}
+set timeout 60
+expect {
+	"list,listvg,q" {send "autotcvg1\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'list,listvg,q'";exit 2}
+}
+set timeout 60
+expect {
+	"Convert this Volume Group" {send "y\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Convert this Volume Group'";exit 2}
+}
+set timeout 60
+expect {
+	"name for the new VxVM disk group" {send "autotcvg1_1\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'name for the new VxVM disk group'";exit 2}
+}
+set timeout 60
+expect {
+	"Use the default disk layout for the disk?" {send "y\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Use the default disk layout for the disk?'";exit 2}
+}
+set timeout 60
+expect {
+	"Are you ready to commit to these changes?" {send "y\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Are you ready to commit to these changes?'";exit 2}
+}
+set timeout 600
+expect {
+	"Hit RETURN to continue" {send " \r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Hit RETURN to continue'";exit 2}
+}
+set timeout 60
+expect {
+	"Select an operation to perform:" {send "q\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find 'Select an operation to perform:'";exit 2}
+}
+set timeout 20
+expect {
+	"#" {send "exit 0\r"}
+	eof {exit 1}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+expect eof
+
+
+DATE:2017-01-16 17:22:22
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/tmp/expect.exp.25949
+STDOUT:
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no a110101
+Last unsuccessful login: Tue Jan 17 05:29:41 CST 2017 on ssh from 172.29.35.225
+Last login: Tue Jan 17 07:19:36 CST 2017 on /dev/pts/1 from i128-eng128.cdc.veritas.com
+*******************************************************************************
+*                                                                             *
+*                                                                             *
+*  Welcome to AIX Version 7.1!                                                *
+*                                                                             *
+*                                                                             *
+*  Please see the README file in /usr/lpp/bos for information pertinent to    *
+*  this release of the AIX Operating System.                                  *
+*                                                                             *
+*                                                                             *
+*******************************************************************************
+7100-03-03-1415
+a110101:/ # vxconvert
+?7h?1l(B=H
+VERITAS Storage Foundation Conversion Utility that migrates LVM
+Logical Volumes and JFS/JFS2 File Systems from a Volume Group
+to VxVM Volumes and VxFS File Systems.
+
+Only Non-Root LVM Volume Groups can be converted. All disks on the 
+system not controlled by LVM, are treated as fresh disks and cannot
+be converted. 
+
+PLEASE BACKUP THE DATA BEFORE PROCEEDING FOR MIGRATION. 
+
+All the file systems must be unmounted before running the conversion.
+Each and every file system must have a valid entry in the /etc/filesystems
+file. This utility cannot convert compressed JFS file systems.
+
+You will be required to run a full VxFS fsck on the converted VxFS File System
+to check for sanity, mount and reorganize the file system. Also need
+to check the /etc/filesystems file for dev and vfs to reflect the
+the VxVM volume and VxFS type.
+
+NOTE: Once LVM Volume Group and its JFS/JFS2 File System are converted to
+VxVM and VxFS File System, there is no utility to automatically rollback
+to the original LVM Volume Group and JFS/JFS2 File System. The only way 
+is to recreate the LVM Volume Group and JFS/JFS2 File Systems and RESTORE
+the DATA from BACKUP.
+
+While using this software, please be aware of the following restrictions:
+
+        *       VERITAS Storage Foundation can coexist on any AIX 5L system 
+                running LVM with JFS/JFS2. The only allowed configuration
+                after migration is a VxFS File System on top of VxVM Volume.
+
+        *       This wont support conversion of mounted File Systems.
+
+        *       Cannot rollback the VxVM and VxFS File System to a LVM Volume
+                Group and JFS/JFS2 File System.
+
+Standard input: END?7h>
+Press return to continue
+ 
+J
+VERITAS Storage Foundation Operations
+Menu: Volume Manager and File System Conversion
+
+ 1      Analyze LVM Volume Groups and JFS/JFS2 File Systems for Conversion
+ 2      Convert LVM and JFS/JFS2 to VxVM and VxFS
+ 3      Set path for saving VGRA records and JFS/JFS2 meta data
+ list   List disk information
+ listvg List LVM Volume Group information
+
+
+ ?      Display help about menu
+ ??     Display help about the menuing system
+ q      Exit from menus
+
+Select an operation to perform: 2
+
+  VxVM  ERROR V-5-2-302 Selection not recognized, enter ?? for help
+
+Select an operation to perform: 
+J
+Convert one or more LVM Volume Groups and JFS/JFS2 File Systems
+Menu: Volume Manager and File System Conversion/Convert
+
+Select Volume Groups to convert : [list,listvg,q,?] autotcvg1
+
+Convert this Volume Group for File Systems and Logical Volumes?
+[y,n,q,?] (default: y) y
+
+Specify a name for the new VxVM disk group (default: autotcvg1_1) autotcvg1_1
+
+  hdisk28
+
+Use the default disk layout for the disk? [y,n,q,?] (default: y) y
+
+  VxVM vxlvmencap INFO V-5-2-2272 The hdisk28 disk has been analyzed and prepared for conversion.
+
+VxVM  NOTICE V-5-2-4076   Second Stage Conversion Analysis of autotcvg1
+
+
+
+Are you ready to commit to these changes? [y,n,q,?] (default: y) y
+
+  Successfully committed the JFS/JFS2 (/dev/autotclv1) file system to VxFS type.
+
+  VxVM vxsave_lvmrecs INFO V-5-2-799 Saving LVM configuration records for Volume Group autotcvg1 ...
+
+  VxVM vxsave_lvmrecs INFO V-5-2-775 LVM Volume Group autotcvg1 records saved.
+VxVM vxcap-lvmvol INFO V-5-2-708   Adding volumes for hdisk28...
+VxVM vxcap-lvmvol INFO V-5-2-710   Starting new volumes...
+VxVM vxcap-lvmvol INFO V-5-2-722   Updating /etc/filesystems...
+
+  Volume Manager:  Converting LVM Volume Groups to VxVM disk groups is successful.
+
+  Check out /var/vxvm/vxconv.log for more information.
+
+Hit RETURN to continue 
+J
+VERITAS Storage Foundation Operations
+Menu: Volume Manager and File System Conversion
+
+ 1      Analyze LVM Volume Groups and JFS/JFS2 File Systems for Conversion
+ 2      Convert LVM and JFS/JFS2 to VxVM and VxFS
+ 3      Set path for saving VGRA records and JFS/JFS2 meta data
+ list   List disk information
+ listvg List LVM Volume Group information
+
+
+ ?      Display help about menu
+ ??     Display help about the menuing system
+ q      Exit from menus
+
+Select an operation to perform: q
+
+Goodbye.
+a110101:/ # exit 0
+logout
+expectresult:0
+
+
+DATE:2017-01-16 17:22:23
+HOST:a110101
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcvg1_1  enabled              1484608793.74.a110101
+
+
+DATE:2017-01-16 17:22:24
+HOST:a110101
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/autotcvg1_1/autotclv1
+STDOUT:
+vxfs
+
+
+DATE:2017-01-16 17:22:25
+HOST:a110101
+USER:root
+STDIN:fsck -V vxfs -y /dev/vx/dsk/autotcvg1_1/autotclv1
+STDOUT:
+super-block indicates that intent logging was disabled
+cannot perform log replay
+file system is not clean, full fsck required
+pass0 - checking structural files
+fileset 1 primary-ilist inode 17 (Smapbadino)
+		failed validation clear? (ynq)y
+fileset 1 primary-ilist inode 18 (Emapbadino)
+		failed validation clear? (ynq)y
+pass1 - checking inode sanity and blocks
+rebuild structural files? (ynq)y
+pass0 - checking structural files
+pass1 - checking inode sanity and blocks
+pass2 - checking directory linkage
+pass3 - checking reference counts
+pass4 - checking resource maps
+fileset 1 au 0 imap incorrect - fix (ynq)y
+fileset 1 au 0 iemap incorrect - fix (ynq)y
+fileset 999 au 0 imap incorrect - fix (ynq)y
+fileset 999 au 0 iemap incorrect - fix (ynq)y
+no CUT entry for fileset 1, fix? (ynq)y
+no CUT entry for fileset 999, fix? (ynq)y
+au 0 emap incorrect - fix? (ynq)y
+au 0 summary incorrect - fix? (ynq)y
+au 0 state file incorrect - fix? (ynq)y
+au 1 emap incorrect - fix? (ynq)y
+au 1 summary incorrect - fix? (ynq)y
+au 1 state file incorrect - fix? (ynq)y
+au 2 state file incorrect - fix? (ynq)y
+au 2 emap incorrect - fix? (ynq)y
+au 2 summary incorrect - fix? (ynq)y
+au 2 state file incorrect - fix? (ynq)y
+au 3 state file incorrect - fix? (ynq)y
+au 3 emap incorrect - fix? (ynq)y
+au 3 summary incorrect - fix? (ynq)y
+au 3 state file incorrect - fix? (ynq)y
+au 4 emap incorrect - fix? (ynq)y
+au 4 summary incorrect - fix? (ynq)y
+au 4 state file incorrect - fix? (ynq)y
+au 5 emap incorrect - fix? (ynq)y
+au 5 summary incorrect - fix? (ynq)y
+au 5 state file incorrect - fix? (ynq)y
+au 6 state file incorrect - fix? (ynq)y
+au 6 emap incorrect - fix? (ynq)y
+au 6 summary incorrect - fix? (ynq)y
+au 6 state file incorrect - fix? (ynq)y
+au 7 state file incorrect - fix? (ynq)y
+au 7 emap incorrect - fix? (ynq)y
+au 7 summary incorrect - fix? (ynq)y
+au 7 state file incorrect - fix? (ynq)y
+au 8 emap incorrect - fix? (ynq)y
+au 8 summary incorrect - fix? (ynq)y
+au 8 state file incorrect - fix? (ynq)y
+au 9 emap incorrect - fix? (ynq)y
+au 9 summary incorrect - fix? (ynq)y
+au 9 state file incorrect - fix? (ynq)y
+au 10 state file incorrect - fix? (ynq)y
+au 10 emap incorrect - fix? (ynq)y
+au 10 summary incorrect - fix? (ynq)y
+au 10 state file incorrect - fix? (ynq)y
+au 11 state file incorrect - fix? (ynq)y
+au 11 emap incorrect - fix? (ynq)y
+au 11 summary incorrect - fix? (ynq)y
+au 11 state file incorrect - fix? (ynq)y
+au 12 emap incorrect - fix? (ynq)y
+au 12 summary incorrect - fix? (ynq)y
+au 12 state file incorrect - fix? (ynq)y
+au 13 emap incorrect - fix? (ynq)y
+au 13 summary incorrect - fix? (ynq)y
+au 13 state file incorrect - fix? (ynq)y
+au 15 state file incorrect - fix? (ynq)y
+au 15 emap incorrect - fix? (ynq)y
+au 15 summary incorrect - fix? (ynq)y
+au 15 state file incorrect - fix? (ynq)y
+fileset 1 iau 0 summary incorrect - fix? (ynq)y
+fileset 999 iau 0 summary incorrect - fix? (ynq)y
+free block count incorrect 0 expected 263621 fix? (ynq)y
+ fsuuid incorrect fix? (ynq)y
+free extent vector incorrect fix? (ynq)y
+OK to clear log? (ynq)y
+flush fileset headers? (ynq)y
+set state to CLEAN? (ynq)y
+
+
+DATE:2017-01-16 17:22:26
+HOST:a110101
+USER:root
+STDIN:mkdir -p /autotclv1 && mount  -V vxfs /dev/vx/dsk/autotcvg1_1/autotclv1 /autotclv1
+STDOUT:
+
+
+
+DATE:2017-01-16 17:22:27
+HOST:a110101
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 5.00 2.85 44% 16666 3% /
+/dev/hd2 6.00 3.45 43% 58233 7% /usr
+/dev/hd9var 5.00 1.80 64% 8052 2% /var
+/dev/hd3 5.00 4.93 2% 163 1% /tmp
+/dev/hd1 2.00 2.00 1% 5 1% /home
+/dev/hd11admin 0.25 0.25 1% 7 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 10.00 8.00 21% 20449 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/autotcvg1_1/autotclv1 2.00 0.99 51% 15 1% /autotclv1
+
+
+DATE:2017-01-16 17:22:54
+HOST:a110101
+USER:root
+STDIN:find /autotclv1 -type f|sort -n|xargs cksum
+STDOUT:
+1495355403 104857600 /autotclv1/mf/mf_0_0
+500298537 104857600 /autotclv1/mf/mf_0_1
+2056512108 104857600 /autotclv1/mf/mf_0_2
+3814374095 104857600 /autotclv1/mf/mf_0_3
+3643105000 104857600 /autotclv1/mf/mf_0_4
+3814374095 104857600 /autotclv1/mf/mf_1_5
+4000772633 104857600 /autotclv1/mf/mf_1_6
+3643105000 104857600 /autotclv1/mf/mf_1_7
+2009049786 104857600 /autotclv1/mf/mf_1_8
+3236432040 104857600 /autotclv1/mf/mf_1_9
+
+***the cksum value keep the same after doing fs convert.***
+
+
+
+Case Result:Passed
+DATE:2017-01-16 17:22:54
+Duration:1m39s

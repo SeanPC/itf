@@ -1,0 +1,3421 @@
+
+==================== Operation Log for TC oracle_dbed ====================
+DATE:2017-07-13 13:48:50
+Nodes:l111032 l111031
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-07-13 13:48:50
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-07-13 13:48:50
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:26274155 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5149364 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:4049656564 (3.7 GiB)  TX bytes:1219952998 (1.1 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:654 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:654 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:101553 (99.1 KiB)  TX bytes:101553 (99.1 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-07-13 13:48:52
+HOST:l111032
+USER:root
+STDIN:ssh -l root l111032
+STDOUT:
+
+
+
+DATE:2017-07-13 13:48:55
+HOST:l111031
+USER:root
+STDIN:ssh -l root l111031
+STDOUT:
+
+
+
+DATE:2017-07-13 13:49:04
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111032,l111031
+STDOUT:
+
+
+
+DATE:2017-07-13 13:49:06
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+
+DATE:2017-07-13 13:49:07
+HOST:l111031
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-07-13 13:49:07
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:26274766 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5149802 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:4049742507 (3.7 GiB)  TX bytes:1220045698 (1.1 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:654 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:654 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:101553 (99.1 KiB)  TX bytes:101553 (99.1 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-07-13 13:49:09
+HOST:l111032
+USER:root
+STDIN:ssh -l root l111032
+STDOUT:
+
+
+
+DATE:2017-07-13 13:49:13
+HOST:l111031
+USER:root
+STDIN:ssh -l root l111031
+STDOUT:
+
+
+
+DATE:2017-07-13 13:49:22
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111032,l111031
+STDOUT:
+
+
+
+DATE:2017-07-13 13:49:24
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+
+DATE:2017-07-13 13:49:25
+HOST:l111031
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+***Getting hostname of node***
+
+
+
+DATE:2017-07-13 13:49:27
+HOST:l111032
+USER:root
+STDIN:hostname
+STDOUT:
+l111032.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-07-13 13:49:29
+HOST:l111032
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-07-13 13:49:30
+HOST:l111032
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 7.3 (Maipo)
+
+
+DATE:2017-07-13 13:49:32
+HOST:l111032
+USER:root
+STDIN:uname -r
+STDOUT:
+3.10.0-514.el7.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-07-13 13:49:36
+HOST:l111032
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSperl-5.20.1.2-RHEL7.x86_64
+Name        : VRTSperl
+Version     : 5.20.1.2
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:09:04 PM CST
+Group       : Applications/System
+Size        : 69606903
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSperl-5.20.1.2-RHEL7.src.rpm
+Build Date  : Sat 31 Oct 2015 12:35:23 AM CST
+Build Host  : rhel6-perl.cdc.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Perl 5.20.1 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.20.1 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.60
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSgab-7.0.1.200-RHEL7.x86_64
+Name        : VRTSgab
+Version     : 7.0.1.200
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 27 Jun 2017 09:16:58 AM CST
+Group       : Applications/System
+Size        : 25733310
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSgab-7.0.1.200-RHEL7.src.rpm
+Build Date  : Tue 20 Jun 2017 07:49:45 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Membership and Atomic Broadcast by Symantec
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-514.el7.x86_64
+Build Stamp        : Veritas-7.0.1.200-2017-06-20_02.48.26
+
+Package INFO: VRTSvxvm-7.0.1.200-RHEL7.x86_64
+Name        : VRTSvxvm
+Version     : 7.0.1.200
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 27 Jun 2017 04:53:01 PM CST
+Group       : Applications/System
+Size        : 493651476
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxvm-7.0.1.200-RHEL7.src.rpm
+Build Date  : Mon 19 Jun 2017 03:51:52 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Volume Manager by Symantec
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSvlic-3.02.70.008-RHEL7.x86_64
+Name        : VRTSvlic
+Version     : 3.02.70.008
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:05:35 PM CST
+Group       : Applications/System
+Size        : 1560170
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:38:39 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSvlic-3.02.70.008-RHEL7.src.rpm
+Build Date  : Mon 18 May 2015 09:59:17 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Symantec License Utilities
+Description :
+These are the Symantec License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSvcsag-7.0.1.000-RHEL7.x86_64
+Name        : VRTSvcsag
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:12:17 PM CST
+Group       : Applications/System
+Size        : 83845511
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvcsag-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:26:16 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : VCS Bundled Agents by Symantec
+Description :
+Veritas Cluster Server Bundled Agents (x86_64) by Symantec
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSodm-7.0.0.000-RHEL7.x86_64
+Name        : VRTSodm
+Version     : 7.0.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:08:43 PM CST
+Group       : Applications/System
+Size        : 1026505
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:38:20 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSodm-7.0.0.000-RHEL7.src.rpm
+Build Date  : Thu 28 May 2015 09:27:02 PM CST
+Build Host  : iarhle7bld.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation.
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Disk Manager by Symantec
+Description :
+Veritas Oracle Disk Manager (ODM) by Symantec
+
+Package INFO: VRTScps-7.0.1.000-RHEL7.i686
+Name        : VRTScps
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: i686
+Install Date: Mon 26 Jun 2017 04:12:00 PM CST
+Group       : Applications/System
+Size        : 55748738
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTScps-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:10:35 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Co-ordination Point Server by Symantec
+Description :
+Veritas Co-ordination Point Server by Symantec
+Build Stamp: 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSglm-7.0.1.000-RHEL7.x86_64
+Name        : VRTSglm
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:13:30 PM CST
+Group       : Applications/System
+Size        : 747976
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSglm-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 01 Dec 2015 05:44:22 AM CST
+Build Host  : iarhel7bld.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Lock Manager (GLM) driver by Symantec
+Description :
+Veritas Group Lock Manager (GLM) driver by Symantec
+Supported kernel(s): 3.10.0-123.el7.x86_64, 3.10.0-229.el7.x86_64 or later
+
+Package INFO: VRTSvbs-7.0.0.000-Linux.i686
+Name        : VRTSvbs
+Version     : 7.0.0.000
+Release     : Linux
+Architecture: i686
+Install Date: Mon 26 Jun 2017 04:14:41 PM CST
+Group       : Applications/System
+Size        : 58030321
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:38:28 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSvbs-7.0.0.000-Linux.src.rpm
+Build Date  : Sat 13 Jun 2015 02:01:11 PM CST
+Build Host  : snapper53-64.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Virtual Business Services by Symantec
+Description :
+Virtual Business Services by Symantec
+Build Stamp : 7.0.0.000-2015-06-12_22.21.37
+
+Package INFO: VRTSvcswiz-7.0.1.000-RHEL7.x86_64
+Name        : VRTSvcswiz
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:15:13 PM CST
+Group       : Applications/System
+Size        : 10589024
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvcswiz-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:27:42 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : "Symantec Corporation"
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server Wizards by Symantec
+Description :
+"The package contains Wizards for Veritas Cluster Server by Symantec"
+
+Arch : (x86_64)
+Build Stamp : 7.0.1.000-2015-11-23_16.27.40
+
+Package INFO: VRTSamf-7.0.1.200-RHEL7.x86_64
+Name        : VRTSamf
+Version     : 7.0.1.200
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 27 Jun 2017 09:17:05 AM CST
+Group       : System Environment/Kernel
+Size        : 22059876
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSamf-7.0.1.200-RHEL7.src.rpm
+Build Date  : Wed 21 Jun 2017 07:12:42 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-514.el7.x86_64
+Build Stamp        : 7.0.1.200-2017-06-21_04.11.44
+
+Package INFO: VRTSveki-7.0.0.000-RHEL7.x86_64
+Name        : VRTSveki
+Version     : 7.0.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:05:47 PM CST
+Group       : Applications/System
+Size        : 114651
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:38:37 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSveki-7.0.0.000-RHEL7.src.rpm
+Build Date  : Sat 13 Jun 2015 07:21:09 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Veki by Symantec
+Description :
+Veritas Veki by Symantec
+
+Package INFO: VRTSgms-7.0.0.000-RHEL7.x86_64
+Name        : VRTSgms
+Version     : 7.0.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:08:40 PM CST
+Group       : Applications/System
+Size        : 77367
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:38:17 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSgms-7.0.0.000-RHEL7.src.rpm
+Build Date  : Thu 28 May 2015 09:25:10 PM CST
+Build Host  : iarhle7bld.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Messaging Services by Symantec
+Description :
+Veritas Group Messaging Sevice (GMS) driver by Symantec
+
+Package INFO: VRTSspt-7.0.1.000-RHEL7.noarch
+Name        : VRTSspt
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: noarch
+Install Date: Mon 26 Jun 2017 04:09:17 PM CST
+Group       : Applications/System
+Size        : 34251540
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSspt-7.0.1.000-RHEL7.src.rpm
+Build Date  : Wed 25 Nov 2015 03:28:34 PM CST
+Build Host  : sfrhel6.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Software Support Tools Package by Symantec
+Description :
+    VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSvcs-7.0.1.000-RHEL7.x86_64
+Name        : VRTSvcs
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:11:43 PM CST
+Group       : Applications/System
+Size        : 215807490
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvcs-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:26:51 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server by Symantec
+Description :
+Veritas Cluster Server and Commands by Symantec (x86_64)
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSdbed-7.0.1.000-RHEL.x86_64
+Name        : VRTSdbed
+Version     : 7.0.1.000
+Release     : RHEL
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:13:20 PM CST
+Group       : Applications/Databases
+Size        : 262837089
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSdbed-7.0.1.000-RHEL.src.rpm
+Build Date  : Fri 30 Oct 2015 05:00:17 PM CST
+Build Host  : snapper53-64.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSsfmh-7.0.0.0-0.x86_64
+Name        : VRTSsfmh
+Version     : 7.0.0.0
+Release     : 0
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:14:08 PM CST
+Group       : Applications/System
+Size        : 150059360
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:36:28 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSsfmh-7.0.0.0-0.src.rpm
+Build Date  : Fri 12 Jun 2015 09:18:17 PM CST
+Build Host  : vommvsles10-64bld.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+
+Package INFO: VRTSsfcpi-7.0.1.000-GENERIC.noarch
+Name        : VRTSsfcpi
+Version     : 7.0.1.000
+Release     : GENERIC
+Architecture: noarch
+Install Date: Mon 26 Jun 2017 04:15:03 PM CST
+Group       : Applications/System
+Size        : 14004981
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSsfcpi-7.0.1.000-GENERIC.src.rpm
+Build Date  : Mon 07 Dec 2015 03:24:22 PM CST
+Build Host  : mtvre01.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+
+Package INFO: VRTSvxfen-7.0.1.200-RHEL7.x86_64
+Name        : VRTSvxfen
+Version     : 7.0.1.200
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 27 Jun 2017 09:17:02 AM CST
+Group       : Applications/System
+Size        : 25416049
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfen-7.0.1.200-RHEL7.src.rpm
+Build Date  : Tue 20 Jun 2017 07:53:10 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas I/O Fencing by Symantec
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-514.el7.x86_64
+Build Stamp        : 7.0.1.200-2017-06-20_02.48.26
+
+Package INFO: VRTSdbac-7.0.1.200-RHEL7.x86_64
+Name        : VRTSdbac
+Version     : 7.0.1.200
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Wed 12 Jul 2017 09:52:26 AM CST
+Group       : Applications/System
+Size        : 17358126
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSdbac-7.0.1.200-RHEL7.src.rpm
+Build Date  : Mon 10 Jul 2017 06:13:54 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Real Application Cluster Support Package by Symantec
+Description :
+Veritas Oracle Real Application Cluster Support Package by Symantec
+Build Stamp	: 7.0.1.200-2017-07-10_03.09.46
+Supported kernel(s): 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-514.el7.x86_64 3.10.0-327.el7.x86_64
+
+Package INFO: VRTSfsadv-7.0.1.000-RHEL7.x86_64
+Name        : VRTSfsadv
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:10:08 PM CST
+Group       : Applications/System
+Size        : 14529918
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSfsadv-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 01 Dec 2015 07:04:25 AM CST
+Build Host  : iarhel7bld.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas File System Advanced Features by Symantec
+Description :
+Veritas File System Advanced Features by Symantec
+
+Package INFO: VRTSvcsea-7.0.1.000-RHEL7.x86_64
+Name        : VRTSvcsea
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:12:20 PM CST
+Group       : Applications/System
+Size        : 1223976
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvcsea-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:28:15 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents by Symantec
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSaslapm-7.0.1.000-RHEL7.x86_64
+Name        : VRTSaslapm
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:06:31 PM CST
+Group       : Applications/System
+Size        : 27399599
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSaslapm-7.0.1.000-RHEL7.src.rpm
+Build Date  : Mon 30 Nov 2015 04:40:33 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTScavf-7.0.1.000-RHEL7.i686
+Name        : VRTScavf
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: i686
+Install Date: Mon 26 Jun 2017 04:13:33 PM CST
+Group       : Applications/System
+Size        : 842311
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTScavf-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 01 Dec 2015 05:40:04 AM CST
+Build Host  : iarhel7bld.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+VERITAS Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+Package INFO: VRTSllt-7.0.1.700-RHEL7.x86_64
+Name        : VRTSllt
+Version     : 7.0.1.700
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 27 Jun 2017 09:16:56 AM CST
+Group       : Applications/System
+Size        : 55175418
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSllt-7.0.1.700-RHEL7.src.rpm
+Build Date  : Tue 20 Jun 2017 09:02:25 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Low Latency Transport by Symantec
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-514.el7.x86_64 [LINUX_RHEL70]
+Build Stamp: Veritas-7.0.1.700-2017-06-20_02.48.26
+
+Package INFO: VRTSvxfs-7.0.1.200-RHEL7.x86_64
+Name        : VRTSvxfs
+Version     : 7.0.1.200
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 27 Jun 2017 04:45:18 PM CST
+Group       : Applications/System
+Size        : 44455907
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfs-7.0.1.200-RHEL7.src.rpm
+Build Date  : Wed 24 May 2017 08:15:21 PM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Filesystem by Symantec
+Description :
+Veritas Filesystem by Symantec
+
+
+====STEP: Checking status of Oracle database
+DATE:2017-07-13 13:49:36
+
+***Checking if relink oracle odm libray to Veritas odm libray***
+
+
+
+DATE:2017-07-13 13:49:38
+HOST:l111032
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx 1 oracle oinstall    28 Jul 13 11:36 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib64/libodm.so
+
+
+DATE:2017-07-13 13:49:39
+HOST:l111031
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx 1 oracle oinstall    28 Jul 13 11:36 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib64/libodm.so
+
+***Checking if Oracle instance is OPEN***
+
+
+
+DATE:2017-07-13 13:49:43
+HOST:l111032
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 13:50:14 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+orcl2		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Checking if Archive log mode is enabled***
+
+
+
+DATE:2017-07-13 13:49:46
+HOST:l111032
+USER:oracle
+STDIN:archive log list;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 13:50:17 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+Database log mode	       Archive Mode
+Automatic archival	       Enabled
+Archive destination	       /archive
+Oldest online log sequence     6
+Next log sequence to archive   7
+Current log sequence	       7
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Getting datafile path and name***
+
+
+
+DATE:2017-07-13 13:49:49
+HOST:l111032
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 13:50:20 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/dbdata/orcl/system01.dbf
+/dbdata/orcl/sysaux01.dbf
+/dbdata/orcl/undotbs01.dbf
+/dbdata/orcl/users01.dbf
+/dbdata/orcl/undotbs02.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+====STEP: Prepare snapshot environment
+DATE:2017-07-13 13:49:49
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /archive***
+
+
+
+DATE:2017-07-13 13:49:51
+HOST:l111032
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 480G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 19M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 54M 8.4G 1% /archive
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+
+
+DATE:2017-07-13 13:49:52
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2352_dbarch/archive
+STDOUT:
+vxfs
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /dbdata***
+
+
+
+DATE:2017-07-13 13:49:54
+HOST:l111032
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 480G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 19M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 54M 8.4G 1% /archive
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+
+
+DATE:2017-07-13 13:49:56
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2352_dbarch/dbdata
+STDOUT:
+vxfs
+
+
+====STEP: Clone database testing by flashsnap
+DATE:2017-07-13 13:49:56
+
+***Adding mirror for volume dbdata***
+
+
+
+DATE:2017-07-13 13:49:57
+HOST:l111032
+USER:root
+STDIN:vxassist -g oradg2352_dbarch maxsize
+STDOUT:
+Maximum volume size: 7524352 (3674Mb)
+
+***Getting disk list by specified size***
+
+
+***Getting avaiable disks***
+
+
+
+DATE:2017-07-13 13:49:59
+HOST:l111032
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-07-13 13:50:01
+HOST:l111031
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-07-13 13:50:02
+HOST:l111032
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+ams_25000         AMS_2500       87011286             CONNECTED    A/A        40         0000
+other_disks       OTHER_DISKS    OTHER_DISKS          CONNECTED    OTHER_DISKS   1         2.12
+
+
+DATE:2017-07-13 13:50:04
+HOST:l111032
+USER:root
+STDIN:vxdisk scandisks;vxdisk list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_102 auto:cdsdisk    -            -            online thinrclm
+ams_25000_103 auto:cdsdisk    -            -            online thinrclm
+ams_25000_104 auto:cdsdisk    -            -            online thinrclm
+ams_25000_105 auto:cdsdisk    -            -            online thinrclm
+ams_25000_106 auto:cdsdisk    -            -            online thinrclm
+ams_25000_107 auto:cdsdisk    -            -            online thinrclm
+ams_25000_108 auto:cdsdisk    -            -            online thinrclm
+ams_25000_109 auto:cdsdisk    -            -            online thinrclm
+ams_25000_110 auto:cdsdisk    -            -            online thinrclm
+ams_25000_111 auto:cdsdisk    -            -            online thinrclm
+ams_25000_221 auto:cdsdisk    -            -            online thinrclm
+ams_25000_222 auto:cdsdisk    -            -            online thinrclm
+ams_25000_233 auto:cdsdisk    -            -            online thinrclm
+ams_25000_234 auto:cdsdisk    -            -            online thinrclm
+ams_25000_235 auto:cdsdisk    -            -            online thinrclm
+ams_25000_245 auto:cdsdisk    -            -            online thinrclm
+ams_25000_246 auto:cdsdisk    -            -            online thinrclm
+ams_25000_247 auto:cdsdisk    -            -            online thinrclm
+ams_25000_248 auto:cdsdisk    -            -            online thinrclm
+ams_25000_249 auto:cdsdisk    -            -            online thinrclm
+ams_25000_383 auto:cdsdisk    -            -            online
+ams_25000_384 auto:cdsdisk    -            -            online
+ams_25000_385 auto:cdsdisk    -            -            online
+ams_25000_386 auto:cdsdisk    -            -            online
+ams_25000_387 auto:cdsdisk    -            -            online
+ams_25000_393 auto:cdsdisk    -            -            online
+ams_25000_394 auto:cdsdisk    -            -            online
+ams_25000_395 auto:cdsdisk    -            -            online
+ams_25000_396 auto:cdsdisk    -            -            online
+ams_25000_397 auto:cdsdisk    ams_25000_397  oradg2352_dbarch online shared
+ams_25000_398 auto:cdsdisk    ams_25000_398  oradg2352_dbarch online shared
+ams_25000_399 auto:cdsdisk    ams_25000_399  oradg2352_dbarch online shared
+ams_25000_400 auto:cdsdisk    ams_25000_400  oradg2352_dbarch online shared
+ams_25000_401 auto:cdsdisk    ams_25000_401  oradg2352_dbarch online shared
+ams_25000_402 auto:cdsdisk    ams_25000_402  oradg2352_dbarch online shared
+ams_25000_403 auto:cdsdisk    ams_25000_403  oradg2352_dbarch online shared
+ams_25000_404 auto:cdsdisk    ams_25000_404  oradg2352_dbarch online shared
+ams_25000_405 auto:cdsdisk    ams_25000_405  oradg2352_ocrvote online shared
+ams_25000_406 auto:cdsdisk    ams_25000_406  oradg2352_ocrvote online shared
+ams_25000_407 auto:cdsdisk    ams_25000_407  oradg2352_ocrvote online shared
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-07-13 13:50:07
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSsfmh/adm/dclisetup.sh
+STDOUT:
+
+
+
+DATE:2017-07-13 13:50:10
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/vxlist disk
+STDOUT:
+TY   DEVICE         DISK          DISKGROUP          SIZE    FREE STATUS
+disk ams_25000_102  -             -                 4.96g       - free
+disk ams_25000_103  -             -                 4.96g       - free
+disk ams_25000_104  -             -                 4.96g       - free
+disk ams_25000_105  -             -                 4.96g       - free
+disk ams_25000_106  -             -                 4.96g       - free
+disk ams_25000_107  -             -                 4.96g       - free
+disk ams_25000_108  -             -                 4.96g       - free
+disk ams_25000_109  -             -                 4.96g       - free
+disk ams_25000_110  -             -                 4.96g       - free
+disk ams_25000_111  -             -                 4.96g       - free
+disk ams_25000_221  -             -                 4.96g       - free
+disk ams_25000_222  -             -                 4.96g       - free
+disk ams_25000_233  -             -                 4.96g       - free
+disk ams_25000_234  -             -                 4.96g       - free
+disk ams_25000_235  -             -                 4.96g       - free
+disk ams_25000_245  -             -                 4.96g       - free
+disk ams_25000_246  -             -                 4.96g       - free
+disk ams_25000_247  -             -                 4.96g       - free
+disk ams_25000_248  -             -                 4.96g       - free
+disk ams_25000_249  -             -                 4.96g       - free
+disk ams_25000_383  -             fen701            4.96g       - deported
+disk ams_25000_384  -             fen701            4.96g       - deported
+disk ams_25000_385  -             fen701            4.96g       - deported
+disk ams_25000_386  -             -                 4.96g       - free
+disk ams_25000_387  -             -                 4.96g       - free
+disk ams_25000_393  -             -                 4.96g       - free
+disk ams_25000_394  -             -                 4.96g       - free
+disk ams_25000_395  -             -                 4.96g       - free
+disk ams_25000_396  -             -                 4.96g       - free
+disk ams_25000_397  ams_25000_397 oradg2352_dbarch  4.96g    0.00 imported
+disk ams_25000_398  ams_25000_398 oradg2352_dbarch  4.96g 918.62m imported
+disk ams_25000_399  ams_25000_399 oradg2352_dbarch  4.96g    0.00 imported
+disk ams_25000_400  ams_25000_400 oradg2352_dbarch  4.96g 918.62m imported
+disk ams_25000_401  ams_25000_401 oradg2352_dbarch  4.96g    0.00 imported
+disk ams_25000_402  ams_25000_402 oradg2352_dbarch  4.96g 918.62m imported
+disk ams_25000_403  ams_25000_403 oradg2352_dbarch  4.96g    0.00 imported
+disk ams_25000_404  ams_25000_404 oradg2352_dbarch  4.96g 918.62m imported
+disk ams_25000_405  ams_25000_405 oradg2352_ocrvote 4.96g 978.87m imported
+disk ams_25000_406  ams_25000_406 oradg2352_ocrvote 4.96g   4.96g imported
+disk ams_25000_407  ams_25000_407 oradg2352_ocrvote 4.99g    0.00 imported
+disk sda            -             -                     -       - uninitialized
+
+
+DATE:2017-07-13 13:50:12
+HOST:l111032
+USER:root
+STDIN:vxdg -g oradg2352_dbarch adddisk ams_25000_396 ams_25000_395
+STDOUT:
+
+
+
+DATE:2017-07-13 13:50:14
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2352_dbarch oradg2352_dbarch - -       -        -        -       -
+
+dm ams_25000_395 ams_25000_395 -      10411776 -        -        -       -
+dm ams_25000_396 ams_25000_396 -      10411776 -        -        -       -
+dm ams_25000_397 ams_25000_397 -      10411776 -        -        -       -
+dm ams_25000_398 ams_25000_398 -      10411776 -        -        -       -
+dm ams_25000_399 ams_25000_399 -      10411776 -        -        -       -
+dm ams_25000_400 ams_25000_400 -      10411776 -        -        -       -
+dm ams_25000_401 ams_25000_401 -      10411776 -        -        -       -
+dm ams_25000_402 ams_25000_402 -      10411776 -        -        -       -
+dm ams_25000_403 ams_25000_403 -      10411776 -        -        -       -
+dm ams_25000_404 ams_25000_404 -      10411776 -        -        -       -
+
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_403-01 archive-01 ENABLED 10411776 0       -        -       -
+sd ams_25000_404-01 archive-01 ENABLED 8462592 10411776 -        -       -
+pl archive-02   archive      ENABLED  18874368 -        SNAPDONE -       -
+sd ams_25000_397-01 archive-02 ENABLED 10411776 0       -        -       -
+sd ams_25000_398-01 archive-02 ENABLED 8462592 10411776 -        -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd ams_25000_404-02 archive_dcl-01 ENABLED 67840 0      -        -       -
+pl archive_dcl-02 archive_dcl DISABLED 67840   -        DCOSNP   -       -
+sd ams_25000_398-02 archive_dcl-02 ENABLED 67840 0      -        -       -
+
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_401-01 dbdata-01 ENABLED 10411776 0        -        -       -
+sd ams_25000_402-01 dbdata-01 ENABLED 8462592  10411776 -        -       -
+pl dbdata-02    dbdata       ENABLED  18874368 -        SNAPDONE -       -
+sd ams_25000_399-01 dbdata-02 ENABLED 10411776 0        -        -       -
+sd ams_25000_400-01 dbdata-02 ENABLED 8462592  10411776 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd ams_25000_402-02 dbdata_dcl-01 ENABLED 67840 0       -        -       -
+pl dbdata_dcl-02 dbdata_dcl  DISABLED 67840    -        DCOSNP   -       -
+sd ams_25000_400-02 dbdata_dcl-02 ENABLED 67840 0       -        -       -
+
+
+DATE:2017-07-13 13:50:16
+HOST:l111032
+USER:root
+STDIN:vxsnap -g oradg2352_dbarch rmmir dbdata
+STDOUT:
+
+
+
+DATE:2017-07-13 13:50:47
+HOST:l111032
+USER:root
+STDIN:vxsnap -g oradg2352_dbarch addmir dbdata
+STDOUT:
+
+
+
+DATE:2017-07-13 13:50:53
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2352_dbarch oradg2352_dbarch - -       -        -        -       -
+
+dm ams_25000_395 ams_25000_395 -      10411776 -        -        -       -
+dm ams_25000_396 ams_25000_396 -      10411776 -        -        -       -
+dm ams_25000_397 ams_25000_397 -      10411776 -        -        -       -
+dm ams_25000_398 ams_25000_398 -      10411776 -        -        -       -
+dm ams_25000_399 ams_25000_399 -      10411776 -        -        -       -
+dm ams_25000_400 ams_25000_400 -      10411776 -        -        -       -
+dm ams_25000_401 ams_25000_401 -      10411776 -        -        -       -
+dm ams_25000_402 ams_25000_402 -      10411776 -        -        -       -
+dm ams_25000_403 ams_25000_403 -      10411776 -        -        -       -
+dm ams_25000_404 ams_25000_404 -      10411776 -        -        -       -
+
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_403-01 archive-01 ENABLED 10411776 0       -        -       -
+sd ams_25000_404-01 archive-01 ENABLED 8462592 10411776 -        -       -
+pl archive-02   archive      ENABLED  18874368 -        SNAPDONE -       -
+sd ams_25000_397-01 archive-02 ENABLED 10411776 0       -        -       -
+sd ams_25000_398-01 archive-02 ENABLED 8462592 10411776 -        -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd ams_25000_404-02 archive_dcl-01 ENABLED 67840 0      -        -       -
+pl archive_dcl-02 archive_dcl DISABLED 67840   -        DCOSNP   -       -
+sd ams_25000_398-02 archive_dcl-02 ENABLED 67840 0      -        -       -
+
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_401-01 dbdata-01 ENABLED 10411776 0        -        -       -
+sd ams_25000_402-01 dbdata-01 ENABLED 8462592  10411776 -        -       -
+pl dbdata-02    dbdata       ENABLED  18874368 -        SNAPDONE -       -
+sd ams_25000_395-01 dbdata-02 ENABLED 10411776 0        -        -       -
+sd ams_25000_396-01 dbdata-02 ENABLED 8462592  10411776 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd ams_25000_402-02 dbdata_dcl-01 ENABLED 67840 0       -        -       -
+pl dbdata_dcl-02 dbdata_dcl  DISABLED 67840    -        DCOSNP   -       -
+sd ams_25000_396-02 dbdata_dcl-02 ENABLED 67840 0       -        -       -
+
+
+DATE:2017-07-13 13:50:55
+HOST:l111032
+USER:root
+STDIN:vxedit -g oradg2352_dbarch set putil2=dbed_flashsnap dbdata-02
+STDOUT:
+
+
+***Adding mirror for volume archive***
+
+
+
+DATE:2017-07-13 13:50:57
+HOST:l111032
+USER:root
+STDIN:vxassist -g oradg2352_dbarch maxsize
+STDOUT:
+Maximum volume size: 28348416 (13842Mb)
+
+
+DATE:2017-07-13 13:50:59
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2352_dbarch oradg2352_dbarch - -       -        -        -       -
+
+dm ams_25000_395 ams_25000_395 -      10411776 -        -        -       -
+dm ams_25000_396 ams_25000_396 -      10411776 -        -        -       -
+dm ams_25000_397 ams_25000_397 -      10411776 -        -        -       -
+dm ams_25000_398 ams_25000_398 -      10411776 -        -        -       -
+dm ams_25000_399 ams_25000_399 -      10411776 -        -        -       -
+dm ams_25000_400 ams_25000_400 -      10411776 -        -        -       -
+dm ams_25000_401 ams_25000_401 -      10411776 -        -        -       -
+dm ams_25000_402 ams_25000_402 -      10411776 -        -        -       -
+dm ams_25000_403 ams_25000_403 -      10411776 -        -        -       -
+dm ams_25000_404 ams_25000_404 -      10411776 -        -        -       -
+
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_403-01 archive-01 ENABLED 10411776 0       -        -       -
+sd ams_25000_404-01 archive-01 ENABLED 8462592 10411776 -        -       -
+pl archive-02   archive      ENABLED  18874368 -        SNAPDONE -       -
+sd ams_25000_397-01 archive-02 ENABLED 10411776 0       -        -       -
+sd ams_25000_398-01 archive-02 ENABLED 8462592 10411776 -        -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd ams_25000_404-02 archive_dcl-01 ENABLED 67840 0      -        -       -
+pl archive_dcl-02 archive_dcl DISABLED 67840   -        DCOSNP   -       -
+sd ams_25000_398-02 archive_dcl-02 ENABLED 67840 0      -        -       -
+
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_401-01 dbdata-01 ENABLED 10411776 0        -        -       -
+sd ams_25000_402-01 dbdata-01 ENABLED 8462592  10411776 -        -       -
+pl dbdata-02    dbdata       ENABLED  18874368 -        SNAPDONE -       -
+sd ams_25000_395-01 dbdata-02 ENABLED 10411776 0        -        -       -
+sd ams_25000_396-01 dbdata-02 ENABLED 8462592  10411776 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd ams_25000_402-02 dbdata_dcl-01 ENABLED 67840 0       -        -       -
+pl dbdata_dcl-02 dbdata_dcl  DISABLED 67840    -        DCOSNP   -       -
+sd ams_25000_396-02 dbdata_dcl-02 ENABLED 67840 0       -        -       -
+
+
+DATE:2017-07-13 13:51:00
+HOST:l111032
+USER:root
+STDIN:vxsnap -g oradg2352_dbarch rmmir archive
+STDOUT:
+
+
+
+DATE:2017-07-13 13:51:03
+HOST:l111032
+USER:root
+STDIN:vxsnap -g oradg2352_dbarch addmir archive
+STDOUT:
+
+
+
+DATE:2017-07-13 13:51:09
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2352_dbarch oradg2352_dbarch - -       -        -        -       -
+
+dm ams_25000_395 ams_25000_395 -      10411776 -        -        -       -
+dm ams_25000_396 ams_25000_396 -      10411776 -        -        -       -
+dm ams_25000_397 ams_25000_397 -      10411776 -        -        -       -
+dm ams_25000_398 ams_25000_398 -      10411776 -        -        -       -
+dm ams_25000_399 ams_25000_399 -      10411776 -        -        -       -
+dm ams_25000_400 ams_25000_400 -      10411776 -        -        -       -
+dm ams_25000_401 ams_25000_401 -      10411776 -        -        -       -
+dm ams_25000_402 ams_25000_402 -      10411776 -        -        -       -
+dm ams_25000_403 ams_25000_403 -      10411776 -        -        -       -
+dm ams_25000_404 ams_25000_404 -      10411776 -        -        -       -
+
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_403-01 archive-01 ENABLED 10411776 0       -        -       -
+sd ams_25000_404-01 archive-01 ENABLED 8462592 10411776 -        -       -
+pl archive-02   archive      ENABLED  18874368 -        SNAPDONE -       -
+sd ams_25000_397-01 archive-02 ENABLED 10411776 0       -        -       -
+sd ams_25000_398-01 archive-02 ENABLED 8462592 10411776 -        -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd ams_25000_404-02 archive_dcl-01 ENABLED 67840 0      -        -       -
+pl archive_dcl-02 archive_dcl DISABLED 67840   -        DCOSNP   -       -
+sd ams_25000_398-02 archive_dcl-02 ENABLED 67840 0      -        -       -
+
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_401-01 dbdata-01 ENABLED 10411776 0        -        -       -
+sd ams_25000_402-01 dbdata-01 ENABLED 8462592  10411776 -        -       -
+pl dbdata-02    dbdata       ENABLED  18874368 -        SNAPDONE -       -
+sd ams_25000_395-01 dbdata-02 ENABLED 10411776 0        -        -       -
+sd ams_25000_396-01 dbdata-02 ENABLED 8462592  10411776 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd ams_25000_402-02 dbdata_dcl-01 ENABLED 67840 0       -        -       -
+pl dbdata_dcl-02 dbdata_dcl  DISABLED 67840    -        DCOSNP   -       -
+sd ams_25000_396-02 dbdata_dcl-02 ENABLED 67840 0       -        -       -
+
+
+DATE:2017-07-13 13:51:11
+HOST:l111032
+USER:root
+STDIN:vxedit -g oradg2352_dbarch set putil2=dbed_flashsnap archive-02
+STDOUT:
+
+
+***Clone database and check by using Flashsnap method***
+
+
+
+DATE:2017-07-13 13:51:18
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+
+DATE:2017-07-13 13:51:22
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s flashsnap -a oracle -o list
+STDOUT:
+
+
+
+DATE:2017-07-13 13:51:27
+HOST:l111032
+USER:oracle
+STDIN:rm -f autotc;/opt/VRTS/bin/vxsfadm -s flashsnap -o setdefaults -a oracle --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME -c autotc
+STDOUT:
+Written config file to /home/oracle/autotc
+
+
+DATE:2017-07-13 13:51:28
+HOST:l111032
+USER:oracle
+STDIN:cat autotc
+STDOUT:
+VERSION = 7
+ORACLE_SID = orcl2
+ORACLE_HOME = /oracle/orahome
+FLASHSNAP_NAME = autotc
+
+# APP_MODE is the mode in which snapshot is taken.  Possible values
+# are:
+# 
+# 1. offline: database must be shut down before snapshot is taken.
+# 
+# 2. online: database is put in hot-backup mode before snapshot is
+#    taken
+# 
+# 3. instant: snapshot is taken without putting database in
+#    hot-backup mode
+# 
+# The default value is online.
+
+# APP_MODE = online
+
+# SNAPSHOT_ARCHIVE_LOG specifies whether volumes containing archived
+# logs must be snapshotted.
+# 
+# The default value is yes for online snapshots, and no for instant
+# and offline snapshots.
+
+# SNAPSHOT_ARCHIVE_LOG = 
+
+# ARCHIVELOG_DEST specifies the archivelog destination to be
+# snapshotted, if the database has multiple valid archivelog
+# destinations.
+# 
+# The value provided for ARCHIVELOG_DEST must be a path.  If no value is
+# provided, the first valid archivelog destination will be snapshotted.
+
+# ARCHIVELOG_DEST = 
+
+# CLONE_NAME specifies the SID of the clone instance that will be
+# created using this snapshot.
+# 
+# The value provided for CLONE_NAME must be a valid Oracle SID.  If no
+# value is specified, a default name will be generated.
+
+# CLONE_NAME = 
+
+# PFILE_MOD specifies a filename that will be used during cloning to
+# modify Oracle initialization parameters.  It must be in a name=value
+# format similar to a pfile.
+# 
+# The value provided for PFILE_MOD must be a filename.  If no value is
+# specified, defaults initialization parameters will be used for clones.
+
+# PFILE_MOD = 
+
+# REVERSE_RESYNC_RECOVERY specifies the whether the database recovery 
+# in Reverse Resync Begin operation is to be automatically attempted.
+# 
+# The value can be auto or manual. If set to manual, it will just mount 
+# the snapshot volumes on primary mountpoints and no database recovery 
+# is attempted.
+# 
+# The default value is auto.
+
+# REVERSE_RESYNC_RECOVERY = Auto
+
+# REVERSE_RESYNC_ARCHIVE_LOG specifies whether volumes containing archived
+# logs must be reverse resynchronized.
+# 
+# The default value is no.
+
+# REVERSE_RESYNC_ARCHIVE_LOG = No
+
+# SECONDARY_HOST is the host where cloning must be done.  If not
+# specified, cloning will be done on the host where the clone command
+# is invoked.
+
+# SECONDARY_HOST = 
+
+# SNAPSHOT_PLEX_TAG identifies the plexes that can be used for
+# creating the snapshot.  When the snapshot process starts, only
+# those plexes that have a putil2 tag equal to this value will be
+# considered for snapshotting.
+# 
+# This must be a string upto 31 characters long.  The default value
+# is dbed_flashsnap.
+
+# SNAPSHOT_PLEX_TAG = dbed_flashsnap
+
+# SNAPSHOT_DG_PREFIX specifies the prefix that must be used when
+# creating the snapshot diskgroups.  This string will be prepended
+# to the existing diskgroup names.
+# 
+# This must be a string.  The sum of the length of existing diskgroup
+# name and this prefix value must not exceed 31 characters.  The
+# default value is SNAP_.
+
+# SNAPSHOT_DG_PREFIX = SNAP_
+
+# SNAPSHOT_VOL_PREFIX specifies the prefix that must be used when
+# creating the snapshot volumes.  This string will be prepended
+# to the existing volume names.
+# 
+# This must be a string.  The sum of the length of existing volume
+# name and this prefix value must not exceed 31 characters.  The
+# default value is SNAP_.
+
+# SNAPSHOT_VOL_PREFIX = SNAP_
+
+# SNAPSHOT_MIRROR specifies the number of plexes that will be used
+# when creating a snapshot.
+# 
+# This must be an integer greater than 0.  The default value is 1.
+
+# SNAPSHOT_MIRROR = 1
+
+# CLONE_PATH specifies the directory location where the snapshotted
+# filesystem should be mounted.
+# 
+# If no value is specified for CLONE_PATH, a default location will be
+# selected.
+
+# CLONE_PATH = 
+
+# MAPPED_MOUNTS specifies the mount points to be used when
+# mounting and cloning a snapshot.  Mount points can be provided for
+# each diskgroup - volume pair.  If a mount point is not provided
+# for a particular pair, a default mount point will be selected.
+# 
+# This must be a semicolon-separated list of mount specifications.
+# Each specification is a key-value pair, where the key is formed by
+# joining the diskgroup and volume names by a colon.  The value is
+# the mount point for the volume.
+
+# MAPPED_MOUNTS = oradg2352_dbarch:archive=;oradg2352_dbarch:dbdata=
+
+# EXTRA_OBJECTS specifies a list of additional objects (volumes, cache
+# objects, etc.) that must be included in the snapshot diskgroup.  These
+# objects must exist in the original diskgroup.
+# 
+# This must be a comma-separated list of objects.  Each object is
+# specified by joining the diskgroup and object names with a colon.
+
+# EXTRA_OBJECTS = 
+
+
+DATE:2017-07-13 13:51:39
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s flashsnap -o validate -a oracle --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --flashsnap_name autotc --app_mode online
+STDOUT:
+Validating database configuration for third-mirror-break-off snapshot:
+    ORACLE_SID			= orcl2
+    ORACLE_HOME			= /oracle/orahome
+    APP_MODE			= online
+    SNAPSHOT_ARCHIVE_LOG	= yes
+    REVERSE_RESYNC_ARCHIVE_LOG	= no
+    REVERSE_RESYNC_RECOVERY	= auto
+    ARCHIVELOG_DEST		= /archive
+Database validation successful.
+Validating database volume layout for third-mirror-break-off snapshot:
+    Data volumes ready for snapshot:
+	Volume/volume-set dbdata of diskgroup oradg2352_dbarch mounted on /dbdata.
+    Archivelog volume ready for snapshot:
+	Volume/volume-set archive of diskgroup oradg2352_dbarch mounted on /archive.
+    Storage units to be used for snapshot from diskgroup oradg2352_dbarch:
+	ams_25000_396 ams_25000_397 ams_25000_395 ams_25000_398 
+    SNAPSHOT_VOL_PREFIX		= SNAP_
+    SNAPSHOT_DG_PREFIX		= SNAP_
+Database volume layout validated successfully.
+
+
+DATE:2017-07-13 13:52:23
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s flashsnap -o mount -a oracle --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --flashsnap_name autotc
+STDOUT:
+Validating database configuration for third-mirror-break-off snapshot:
+    ORACLE_SID			= orcl2
+    ORACLE_HOME			= /oracle/orahome
+    APP_MODE			= online
+    ARCHIVELOG_DEST		= /archive
+    SNAPSHOT_ARCHIVE_LOG	= yes
+    REVERSE_RESYNC_ARCHIVE_LOG	= no
+    REVERSE_RESYNC_RECOVERY	= auto
+Database validation successful.
+snapshot started at Thu Jul 13 13:52:15 2017.
+Putting database in backup mode ...                            Done
+Validating database volume layout for third-mirror-break-off snapshot:
+    Data volumes ready for snapshot:
+	Volume/volume-set dbdata of diskgroup oradg2352_dbarch mounted on /dbdata.
+    Archivelog volume ready for snapshot:
+	Volume/volume-set archive of diskgroup oradg2352_dbarch mounted on /archive.
+    Storage units to be used for snapshot from diskgroup oradg2352_dbarch:
+	ams_25000_395 ams_25000_398 ams_25000_397 ams_25000_396 
+    SNAPSHOT_VOL_PREFIX		= SNAP_
+    SNAPSHOT_DG_PREFIX		= SNAP_
+Database volume layout validated successfully.
+Creating snapshot volumes for data volumes ...                 Done
+Taking database out of backup mode ...                         Done
+Flushing online redo logs ...                                  Done
+Creating snapshot volume for archivelog volume ...             Done
+Copying snapshot information to snapshot volume ...            Done
+Creating snapshot diskgroups ...                               Done
+Deporting snapshot diskgroups ...                              Done
+SNAP_oradg2352_dbarch 
+snapshot ended at Thu Jul 13 13:52:44 2017.
+Retrieving snapshot information ...                            Done
+Importing snapshot diskgroups ...                              Done
+Generated mount path: /var/tmp/_H_mKNb5Y6
+Mounting snapshot volumes ...                                  Done
+
+
+DATE:2017-07-13 13:53:12
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s flashsnap -o clone -a oracle --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --flashsnap_name autotc --clone_name clone
+STDOUT:
+Preparing parameter file for clone database ...                Done
+Mounting clone database clone ...                              Done
+Starting database recovery ...
+Clone database clone is open.
+
+
+DATE:2017-07-13 13:53:16
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s flashsnap -a oracle -o list
+STDOUT:
+Service Type          Configuration                    State
+flashsnap             autotc                           clone
+
+
+DATE:2017-07-13 13:53:17
+HOST:l111032
+USER:oracle
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 480G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 19M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 55M 8.4G 1% /archive
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+/dev/vx/dsk/SNAP_oradg2352_dbarch/SNAP_archive 9.0G 55M 8.4G 1% /var/tmp/_H_mKNb5Y6/archive
+/dev/vx/dsk/SNAP_oradg2352_dbarch/SNAP_dbdata 9.0G 1.5G 7.1G 18% /var/tmp/_H_mKNb5Y6/dbdata
+tmpfs 6.3G 0 6.3G 0% /run/user/1001
+
+
+DATE:2017-07-13 13:53:19
+HOST:l111032
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+root     19828     1  4 12:42 ?        00:03:18 /crs/crshome/bin/osysmond.bin
+oracle   21903     1  0 12:44 ?        00:00:01 ora_smon_orcl2
+oracle   26656     1  0 13:53 ?        00:00:00 ora_smon_clone
+oracle   27247 27245  0 13:53 ?        00:00:00 grep smon
+
+
+DATE:2017-07-13 13:53:21
+HOST:l111032
+USER:oracle
+STDIN:echo "export ORACLE_SID=clone #autotc" >> /home/oracle/.bash_profile
+STDOUT:
+
+
+
+DATE:2017-07-13 13:53:22
+HOST:l111032
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 13:53:54 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+clone		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-07-13 13:53:24
+HOST:l111032
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 13:53:55 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/var/tmp/_H_mKNb5Y6/dbdata/orcl/system01.dbf
+/var/tmp/_H_mKNb5Y6/dbdata/orcl/sysaux01.dbf
+/var/tmp/_H_mKNb5Y6/dbdata/orcl/undotbs01.dbf
+/var/tmp/_H_mKNb5Y6/dbdata/orcl/users01.dbf
+/var/tmp/_H_mKNb5Y6/dbdata/orcl/undotbs02.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-07-13 13:53:26
+HOST:l111032
+USER:oracle
+STDIN:perl -i -pe 's/.*#autotc.*
+//' /home/oracle/.bash_profile
+STDOUT:
+
+
+
+DATE:2017-07-13 13:53:45
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s flashsnap -o umount -a oracle --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --flashsnap_name autotc --clone_name clone
+STDOUT:
+Shutting down clone database clone ...
+Database shut down.
+Retrieving snapshot information ...                            Done
+Unmounting snapshot volumes ...                                Done
+Deporting snapshot diskgroups ...                              Done
+
+
+DATE:2017-07-13 13:53:47
+HOST:l111032
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+root     19828     1  4 12:42 ?        00:03:19 /crs/crshome/bin/osysmond.bin
+oracle   21903     1  0 12:44 ?        00:00:01 ora_smon_orcl2
+oracle   27516 27514  0 13:54 ?        00:00:00 grep smon
+
+
+DATE:2017-07-13 13:53:48
+HOST:l111032
+USER:oracle
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 480G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 19M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 55M 8.4G 1% /archive
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+tmpfs 6.3G 0 6.3G 0% /run/user/1001
+
+
+DATE:2017-07-13 13:53:52
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s flashsnap -a oracle -o list
+STDOUT:
+Service Type          Configuration                    State
+flashsnap             autotc                           unmount
+
+
+DATE:2017-07-13 13:54:18
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s flashsnap -a oracle -o destroy --name autotc
+STDOUT:
+resync started at Thu Jul 13 13:54:29 2017.
+Importing snapshot diskgroups ...                              Done
+Joining snapshot diskgroups to original diskgroups ...         Done
+Reattaching snapshot volumes to original volumes ...           Done
+resync ended at Thu Jul 13 13:54:49 2017.
+
+
+DATE:2017-07-13 13:54:22
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s flashsnap -a oracle -o list
+STDOUT:
+
+
+***Removing mirror for volume dbdata***
+
+
+
+DATE:2017-07-13 13:54:28
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2352_dbarch oradg2352_dbarch - -       -        -        -       -
+
+dm ams_25000_395 ams_25000_395 -      10411776 -        -        -       -
+dm ams_25000_396 ams_25000_396 -      10411776 -        -        -       -
+dm ams_25000_397 ams_25000_397 -      10411776 -        -        -       -
+dm ams_25000_398 ams_25000_398 -      10411776 -        -        -       -
+dm ams_25000_399 ams_25000_399 -      10411776 -        -        -       -
+dm ams_25000_400 ams_25000_400 -      10411776 -        -        -       -
+dm ams_25000_401 ams_25000_401 -      10411776 -        -        -       -
+dm ams_25000_402 ams_25000_402 -      10411776 -        -        -       -
+dm ams_25000_403 ams_25000_403 -      10411776 -        -        -       -
+dm ams_25000_404 ams_25000_404 -      10411776 -        -        -       -
+
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_403-01 archive-01 ENABLED 10411776 0       -        -       -
+sd ams_25000_404-01 archive-01 ENABLED 8462592 10411776 -        -       -
+pl archive-02   archive      ENABLED  18874368 -        SNAPDONE -       -
+sd ams_25000_397-01 archive-02 ENABLED 10411776 0       -        -       -
+sd ams_25000_398-01 archive-02 ENABLED 8462592 10411776 -        -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd ams_25000_404-02 archive_dcl-01 ENABLED 67840 0      -        -       -
+pl archive_dcl-02 archive_dcl DISABLED 67840   -        DCOSNP   -       -
+sd ams_25000_398-02 archive_dcl-02 ENABLED 67840 0      -        -       -
+
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_401-01 dbdata-01 ENABLED 10411776 0        -        -       -
+sd ams_25000_402-01 dbdata-01 ENABLED 8462592  10411776 -        -       -
+pl dbdata-02    dbdata       ENABLED  18874368 -        SNAPDONE -       -
+sd ams_25000_395-01 dbdata-02 ENABLED 10411776 0        -        -       -
+sd ams_25000_396-01 dbdata-02 ENABLED 8462592  10411776 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd ams_25000_402-02 dbdata_dcl-01 ENABLED 67840 0       -        -       -
+pl dbdata_dcl-02 dbdata_dcl  DISABLED 67840    -        DCOSNP   -       -
+sd ams_25000_396-02 dbdata_dcl-02 ENABLED 67840 0       -        -       -
+
+
+DATE:2017-07-13 13:54:30
+HOST:l111032
+USER:root
+STDIN:vxsnap -g oradg2352_dbarch rmmir dbdata
+STDOUT:
+
+
+
+DATE:2017-07-13 13:54:32
+HOST:l111032
+USER:root
+STDIN:vxsnap -g oradg2352_dbarch unprepare dbdata
+STDOUT:
+
+
+***Removing mirror for volume archive***
+
+
+
+DATE:2017-07-13 13:54:33
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2352_dbarch oradg2352_dbarch - -       -        -        -       -
+
+dm ams_25000_395 ams_25000_395 -      10411776 -        -        -       -
+dm ams_25000_396 ams_25000_396 -      10411776 -        -        -       -
+dm ams_25000_397 ams_25000_397 -      10411776 -        -        -       -
+dm ams_25000_398 ams_25000_398 -      10411776 -        -        -       -
+dm ams_25000_399 ams_25000_399 -      10411776 -        -        -       -
+dm ams_25000_400 ams_25000_400 -      10411776 -        -        -       -
+dm ams_25000_401 ams_25000_401 -      10411776 -        -        -       -
+dm ams_25000_402 ams_25000_402 -      10411776 -        -        -       -
+dm ams_25000_403 ams_25000_403 -      10411776 -        -        -       -
+dm ams_25000_404 ams_25000_404 -      10411776 -        -        -       -
+
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_403-01 archive-01 ENABLED 10411776 0       -        -       -
+sd ams_25000_404-01 archive-01 ENABLED 8462592 10411776 -        -       -
+pl archive-02   archive      ENABLED  18874368 -        SNAPDONE -       -
+sd ams_25000_397-01 archive-02 ENABLED 10411776 0       -        -       -
+sd ams_25000_398-01 archive-02 ENABLED 8462592 10411776 -        -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd ams_25000_404-02 archive_dcl-01 ENABLED 67840 0      -        -       -
+pl archive_dcl-02 archive_dcl DISABLED 67840   -        DCOSNP   -       -
+sd ams_25000_398-02 archive_dcl-02 ENABLED 67840 0      -        -       -
+
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_401-01 dbdata-01 ENABLED 10411776 0        -        -       -
+sd ams_25000_402-01 dbdata-01 ENABLED 8462592  10411776 -        -       -
+
+
+DATE:2017-07-13 13:54:35
+HOST:l111032
+USER:root
+STDIN:vxsnap -g oradg2352_dbarch rmmir archive
+STDOUT:
+
+
+
+DATE:2017-07-13 13:54:37
+HOST:l111032
+USER:root
+STDIN:vxsnap -g oradg2352_dbarch unprepare archive
+STDOUT:
+
+
+
+====STEP: Clone database testing by checkpoint
+DATE:2017-07-13 13:54:37
+
+
+DATE:2017-07-13 13:54:40
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -a oracle -o list
+STDOUT:
+
+
+
+DATE:2017-07-13 13:55:04
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o create -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc
+STDOUT:
+Putting database in backup mode...                             Done
+Creating Storage Checkpoint autotc ...                         Done
+Storage Checkpoint autotc created
+Removing the database from backup mode...                      Done
+
+
+DATE:2017-07-13 13:55:10
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o mount -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc --mount_path=/tmp/autotc
+STDOUT:
+Mounting Checkpoint to /tmp/autotc...                          Done
+
+
+DATE:2017-07-13 13:55:12
+HOST:l111032
+USER:oracle
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 480G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 19M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 55M 8.4G 1% /archive
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+/dev/vx/dsk/oradg2352_dbarch/dbdata:autotc 9.0G 1.6G 7.0G 19% /tmp/autotc/dbdata
+tmpfs 6.3G 0 6.3G 0% /run/user/1001
+
+
+DATE:2017-07-13 13:55:18
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o umount -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc
+STDOUT:
+Unmounting the checkpoint...                                   Done
+
+
+DATE:2017-07-13 13:55:19
+HOST:l111032
+USER:oracle
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 480G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 19M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 55M 8.4G 1% /archive
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+tmpfs 6.3G 0 6.3G 0% /run/user/1001
+
+
+DATE:2017-07-13 13:55:30
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o mountrw -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc --mount_path=/tmp/autotc
+STDOUT:
+Creating Storage Checkpoint autotc_rw_1499933569 ...           Done
+Storage Checkpoint autotc_rw_1499933569 created
+Mounting Checkpoint to /tmp/autotc...                          Done
+
+
+DATE:2017-07-13 13:55:32
+HOST:l111032
+USER:oracle
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 480G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 19M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 55M 8.4G 1% /archive
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+/dev/vx/dsk/oradg2352_dbarch/dbdata:autotc_rw_1499933569 9.0G 1.6G 7.0G 19% /tmp/autotc/dbdata
+tmpfs 6.3G 0 6.3G 0% /run/user/1001
+
+
+DATE:2017-07-13 13:55:38
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o umount -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc_rw_1499933569
+STDOUT:
+Unmounting the checkpoint...                                   Done
+
+
+DATE:2017-07-13 13:55:39
+HOST:l111032
+USER:oracle
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 480G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 19M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 55M 8.4G 1% /archive
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+tmpfs 6.3G 0 6.3G 0% /run/user/1001
+
+
+DATE:2017-07-13 13:55:45
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o delete -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc_rw_1499933569
+STDOUT:
+Deleting the Checkpoint autotc_rw_1499933569...
+ Deleting Checkpoint from /dbdata...                           Done
+
+
+DATE:2017-07-13 13:55:50
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o delete -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc
+STDOUT:
+Deleting the Checkpoint autotc...
+ Deleting Checkpoint from /dbdata...                           Done
+
+
+DATE:2017-07-13 13:56:37
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o clone -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc --clone_path=/tmp/autotc --clone_name=clone
+STDOUT:
+Putting database in backup mode...                             Done
+Creating Storage Checkpoint autotc ...                         Done
+Storage Checkpoint autotc created
+Removing the database from backup mode...                      Done
+Creating Storage Checkpoint autotc_rw_1499926550 ...           Done
+Storage Checkpoint autotc_rw_1499926550 created
+Mounting Checkpoint to /tmp/autotc...                          Done
+Cloning the Pfile ...                                          Done
+Mounting the database...                                       Done
+Recovering the clone database...                               Done
+
+
+DATE:2017-07-13 13:56:41
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -a oracle -o list
+STDOUT:
+Checkpoint                        Type      MountPt    Clone     State
+===============================================================================
+autotc                            online    /tmp/auto  clone     ckpt
+                                            tc
+autotc_rw_1499926550              online    /tmp/auto  clone     clone
+                                            tc
+
+
+DATE:2017-07-13 13:56:43
+HOST:l111032
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+oracle     698     1  0 13:57 ?        00:00:00 ora_smon_clone
+oracle     865   863  0 13:57 ?        00:00:00 grep smon
+root     19828     1  4 12:42 ?        00:03:31 /crs/crshome/bin/osysmond.bin
+oracle   21903     1  0 12:44 ?        00:00:01 ora_smon_orcl2
+
+
+DATE:2017-07-13 13:56:45
+HOST:l111032
+USER:oracle
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 480G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 19M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 55M 8.4G 1% /archive
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.7G 6.9G 20% /dbdata
+tmpfs 6.3G 0 6.3G 0% /run/user/1001
+/dev/vx/dsk/oradg2352_dbarch/dbdata:autotc_rw_1499926550 9.0G 1.7G 6.9G 20% /tmp/autotc/dbdata
+
+
+DATE:2017-07-13 13:56:47
+HOST:l111032
+USER:oracle
+STDIN:echo "export ORACLE_SID=clone #autotc" >> /home/oracle/.bash_profile
+STDOUT:
+
+
+
+DATE:2017-07-13 13:56:48
+HOST:l111032
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 13:57:20 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+clone		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-07-13 13:56:50
+HOST:l111032
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 13:57:21 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/tmp/autotc/dbdata/orcl/system01.dbf
+/tmp/autotc/dbdata/orcl/sysaux01.dbf
+/tmp/autotc/dbdata/orcl/undotbs01.dbf
+/tmp/autotc/dbdata/orcl/users01.dbf
+/tmp/autotc/dbdata/orcl/undotbs02.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-07-13 13:56:52
+HOST:l111032
+USER:oracle
+STDIN:perl -i -pe 's/.*#autotc.*
+//' /home/oracle/.bash_profile
+STDOUT:
+
+
+
+DATE:2017-07-13 13:57:07
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o umount -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc --clone_path=/tmp/autotc --clone_name=clone
+STDOUT:
+Shutting down the clone database clone ...                     Done
+Unmounting the checkpoint...                                   Done
+
+
+DATE:2017-07-13 13:57:08
+HOST:l111032
+USER:oracle
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 480G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 19M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 55M 8.4G 1% /archive
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.7G 6.9G 20% /dbdata
+tmpfs 6.3G 0 6.3G 0% /run/user/1001
+
+
+DATE:2017-07-13 13:57:10
+HOST:l111032
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+oracle    1217  1215  0 13:57 ?        00:00:00 grep smon
+root     19828     1  4 12:42 ?        00:03:33 /crs/crshome/bin/osysmond.bin
+oracle   21903     1  0 12:44 ?        00:00:01 ora_smon_orcl2
+
+
+DATE:2017-07-13 13:57:15
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -a oracle -o list
+STDOUT:
+Checkpoint                        Type      MountPt    Clone     State
+===============================================================================
+autotc                            online    /tmp/auto  clone     ckpt
+                                            tc
+autotc_rw_1499926550              online    /tmp/auto  clone     umount
+                                            tc
+
+
+DATE:2017-07-13 13:57:21
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o delete -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc_rw_1499926550
+STDOUT:
+Deleting the Checkpoint autotc_rw_1499926550...
+ Deleting Checkpoint from /dbdata...                           Done
+
+
+DATE:2017-07-13 13:57:27
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -o delete -a oracle --oracle_sid=$ORACLE_SID --oracle_home=$ORACLE_HOME --checkpoint_name=autotc
+STDOUT:
+Deleting the Checkpoint autotc...
+ Deleting Checkpoint from /dbdata...                           Done
+
+
+DATE:2017-07-13 13:57:30
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s checkpoint -a oracle -o list
+STDOUT:
+
+
+
+====STEP: Clone database testing by filesnap
+DATE:2017-07-13 13:57:30
+
+
+DATE:2017-07-13 13:57:33
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle -o list --oracle_sid $ORACLE_SID
+STDOUT:
+The following snapshot(s)/clone(s) are available:
+SNAPSHOT NAME            CLONE NAME               STATUS                   
+
+
+DATE:2017-07-13 13:57:38
+HOST:l111032
+USER:oracle
+STDIN:rm -f autotc;/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle --oracle_sid $ORACLE_SID -oracle_home $ORACLE_HOME --filesnap_name autotc -c autotc -o setdefaults
+STDOUT:
+Written config file to /home/oracle/autotc
+
+
+DATE:2017-07-13 13:57:40
+HOST:l111032
+USER:oracle
+STDIN:cat autotc
+STDOUT:
+VERSION = 7
+ORACLE_SID = orcl2
+ORACLE_HOME = /oracle/orahome
+FILESNAP_NAME = autotc
+
+# CLONE_NAME specifies the SID of the clone instance that will be
+# created using this snapshot.
+# 
+# The value provided for CLONE_NAME must be a valid Oracle SID.  If no
+# value is specified, a default name will be generated.
+
+# CLONE_NAME = 
+
+# PFILE_MOD specifies a filename that will be used during cloning to
+# modify Oracle initialization parameters.  It must be in a name=value
+# format similar to a pfile.
+# 
+# The value provided for PFILE_MOD must be a filename.  If no value is
+# specified, defaults initialization parameters will be used for clones.
+
+# PFILE_MOD = 
+
+
+DATE:2017-07-13 13:57:59
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle --oracle_sid $ORACLE_SID -oracle_home $ORACLE_HOME --filesnap_name autotc -o snap
+STDOUT:
+Validating database configuration for filesnap...
+Database validation successful.
+	ORACLE_SID                = orcl2
+	ORACLE_HOME               = /oracle/orahome
+	APP_MODE                  = online
+Validating filesystem configuration for filesnap...
+Database filesystem configuration validated successfully.
+Starting database online backup mode...                        Done
+Snapshotting files...                                          Done
+Stopping database online backup mode...                        Done
+
+
+DATE:2017-07-13 13:58:21
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle --oracle_sid $ORACLE_SID -oracle_home $ORACLE_HOME --filesnap_name autotc --clone_name clone -o clone
+STDOUT:
+Cloning files...                                               Done
+Preparing parameter file for clone database...                 Done
+Mounting clone database...                                     Done
+Starting clone database recovery...                            Done
+Clone database clone is open.
+
+
+DATE:2017-07-13 13:58:25
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle -o list --oracle_sid $ORACLE_SID
+STDOUT:
+The following snapshot(s)/clone(s) are available:
+SNAPSHOT NAME            CLONE NAME               STATUS                   
+autotc                                            Done                     
+                         clone                    Done                     
+
+
+DATE:2017-07-13 13:58:26
+HOST:l111032
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+oracle    2158     1  0 13:58 ?        00:00:00 ora_smon_clone
+oracle    2670  2668  0 13:58 ?        00:00:00 grep smon
+root     19828     1  4 12:42 ?        00:03:38 /crs/crshome/bin/osysmond.bin
+oracle   21903     1  0 12:44 ?        00:00:01 ora_smon_orcl2
+
+
+DATE:2017-07-13 13:58:28
+HOST:l111032
+USER:oracle
+STDIN:echo "export ORACLE_SID=clone #autotc" >> /home/oracle/.bash_profile
+STDOUT:
+
+
+
+DATE:2017-07-13 13:58:30
+HOST:l111032
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 13:59:01 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+clone		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-07-13 13:58:31
+HOST:l111032
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 13:59:03 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/dbdata/orcl/.dbed_snapshots/autotc/clone/system01.dbf
+/dbdata/orcl/.dbed_snapshots/autotc/clone/sysaux01.dbf
+/dbdata/orcl/.dbed_snapshots/autotc/clone/undotbs01.dbf
+/dbdata/orcl/.dbed_snapshots/autotc/clone/users01.dbf
+/dbdata/orcl/.dbed_snapshots/autotc/clone/undotbs02.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-07-13 13:58:33
+HOST:l111032
+USER:oracle
+STDIN:select name from v$tempfile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 13:59:05 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/dbdata/orcl/.dbed_snapshots/autotc/clone/temp01.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-07-13 13:58:35
+HOST:l111032
+USER:oracle
+STDIN:perl -i -pe 's/.*#autotc.*
+//' /home/oracle/.bash_profile
+STDOUT:
+
+
+
+DATE:2017-07-13 13:58:37
+HOST:l111032
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+oracle    2158     1  0 13:58 ?        00:00:00 ora_smon_clone
+oracle    2834  2832  0 13:59 ?        00:00:00 grep smon
+root     19828     1  4 12:42 ?        00:03:39 /crs/crshome/bin/osysmond.bin
+oracle   21903     1  0 12:44 ?        00:00:01 ora_smon_orcl2
+
+
+DATE:2017-07-13 13:58:52
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle --oracle_sid $ORACLE_SID -oracle_home $ORACLE_HOME --filesnap_name autotc --clone_name clone -o destroyclone
+STDOUT:
+Shutting down clone database...                                Done
+Destroying clone...                                            Done
+
+
+DATE:2017-07-13 13:58:56
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle -o list --oracle_sid $ORACLE_SID
+STDOUT:
+The following snapshot(s)/clone(s) are available:
+SNAPSHOT NAME            CLONE NAME               STATUS                   
+autotc                                            Done                     
+
+
+DATE:2017-07-13 13:59:01
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle --oracle_sid $ORACLE_SID -oracle_home $ORACLE_HOME --filesnap_name autotc -o destroysnap
+STDOUT:
+Destroying snapshot...                                         Done
+
+
+DATE:2017-07-13 13:59:05
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/vxsfadm -s filesnap -a oracle -o list --oracle_sid $ORACLE_SID
+STDOUT:
+The following snapshot(s)/clone(s) are available:
+SNAPSHOT NAME            CLONE NAME               STATUS                   
+
+
+====STEP: Clone database testing by space object snapshot
+DATE:2017-07-13 13:59:05
+
+
+DATE:2017-07-13 13:59:06
+HOST:l111032
+USER:root
+STDIN:vxsnap -g oradg2352_dbarch prepare archive
+STDOUT:
+
+
+
+DATE:2017-07-13 13:59:08
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2352_dbarch oradg2352_dbarch - -       -        -        -       -
+
+dm ams_25000_395 ams_25000_395 -      10411776 -        -        -       -
+dm ams_25000_396 ams_25000_396 -      10411776 -        -        -       -
+dm ams_25000_397 ams_25000_397 -      10411776 -        -        -       -
+dm ams_25000_398 ams_25000_398 -      10411776 -        -        -       -
+dm ams_25000_399 ams_25000_399 -      10411776 -        -        -       -
+dm ams_25000_400 ams_25000_400 -      10411776 -        -        -       -
+dm ams_25000_401 ams_25000_401 -      10411776 -        -        -       -
+dm ams_25000_402 ams_25000_402 -      10411776 -        -        -       -
+dm ams_25000_403 ams_25000_403 -      10411776 -        -        -       -
+dm ams_25000_404 ams_25000_404 -      10411776 -        -        -       -
+
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_403-01 archive-01 ENABLED 10411776 0       -        -       -
+sd ams_25000_404-01 archive-01 ENABLED 8462592 10411776 -        -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd ams_25000_404-02 archive_dcl-01 ENABLED 67840 0      -        -       -
+
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_401-01 dbdata-01 ENABLED 10411776 0        -        -       -
+sd ams_25000_402-01 dbdata-01 ENABLED 8462592  10411776 -        -       -
+
+
+DATE:2017-07-13 13:59:10
+HOST:l111032
+USER:root
+STDIN:vxassist -g oradg2352_dbarch make cachetc 2g
+STDOUT:
+
+
+
+DATE:2017-07-13 13:59:12
+HOST:l111032
+USER:root
+STDIN:vxmake -g oradg2352_dbarch cache cacheobjtc cachevolname=cachetc
+STDOUT:
+
+
+
+DATE:2017-07-13 13:59:13
+HOST:l111032
+USER:root
+STDIN:vxcache -g oradg2352_dbarch start cacheobjtc
+STDOUT:
+
+
+
+DATE:2017-07-13 13:59:15
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2352_dbarch oradg2352_dbarch - -       -        -        -       -
+
+dm ams_25000_395 ams_25000_395 -      10411776 -        -        -       -
+dm ams_25000_396 ams_25000_396 -      10411776 -        -        -       -
+dm ams_25000_397 ams_25000_397 -      10411776 -        -        -       -
+dm ams_25000_398 ams_25000_398 -      10411776 -        -        -       -
+dm ams_25000_399 ams_25000_399 -      10411776 -        -        -       -
+dm ams_25000_400 ams_25000_400 -      10411776 -        -        -       -
+dm ams_25000_401 ams_25000_401 -      10411776 -        -        -       -
+dm ams_25000_402 ams_25000_402 -      10411776 -        -        -       -
+dm ams_25000_403 ams_25000_403 -      10411776 -        -        -       -
+dm ams_25000_404 ams_25000_404 -      10411776 -        -        -       -
+
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_403-01 archive-01 ENABLED 10411776 0       -        -       -
+sd ams_25000_404-01 archive-01 ENABLED 8462592 10411776 -        -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd ams_25000_404-02 archive_dcl-01 ENABLED 67840 0      -        -       -
+
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_401-01 dbdata-01 ENABLED 10411776 0        -        -       -
+sd ams_25000_402-01 dbdata-01 ENABLED 8462592  10411776 -        -       -
+
+co cacheobjtc   -            ENABLED  -        -        ACTIVE   -       -
+v  cachetc      cacheobjtc   ENABLED  4194304  -        ACTIVE   -       -
+pl cachetc-01   cachetc      ENABLED  4194304  -        ACTIVE   -       -
+sd ams_25000_395-01 cachetc-01 ENABLED 4194304 0        -        -       -
+
+
+DATE:2017-07-13 13:59:17
+HOST:l111032
+USER:root
+STDIN:vxsnap -g oradg2352_dbarch prepare dbdata
+STDOUT:
+
+
+
+DATE:2017-07-13 13:59:19
+HOST:l111032
+USER:root
+STDIN:vxsnap -g oradg2352_dbarch make source=dbdata/newvol=oracle/cache=cacheobjtc
+STDOUT:
+
+
+
+DATE:2017-07-13 13:59:21
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2352_dbarch oradg2352_dbarch - -       -        -        -       -
+
+dm ams_25000_395 ams_25000_395 -      10411776 -        -        -       -
+dm ams_25000_396 ams_25000_396 -      10411776 -        -        -       -
+dm ams_25000_397 ams_25000_397 -      10411776 -        -        -       -
+dm ams_25000_398 ams_25000_398 -      10411776 -        -        -       -
+dm ams_25000_399 ams_25000_399 -      10411776 -        -        -       -
+dm ams_25000_400 ams_25000_400 -      10411776 -        -        -       -
+dm ams_25000_401 ams_25000_401 -      10411776 -        -        -       -
+dm ams_25000_402 ams_25000_402 -      10411776 -        -        -       -
+dm ams_25000_403 ams_25000_403 -      10411776 -        -        -       -
+dm ams_25000_404 ams_25000_404 -      10411776 -        -        -       -
+
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_403-01 archive-01 ENABLED 10411776 0       -        -       -
+sd ams_25000_404-01 archive-01 ENABLED 8462592 10411776 -        -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd ams_25000_404-02 archive_dcl-01 ENABLED 67840 0      -        -       -
+
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_401-01 dbdata-01 ENABLED 10411776 0        -        -       -
+sd ams_25000_402-01 dbdata-01 ENABLED 8462592  10411776 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd ams_25000_402-02 dbdata_dcl-01 ENABLED 67840 0       -        -       -
+sp oracle_snp   dbdata       -        -        -        -        -       -
+
+v  oracle       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl oracle-P01   oracle       ENABLED  18874368 -        ACTIVE   -       -
+sc oracle-S01   oracle-P01   ENABLED  18874368 0        -        -       -
+dc oracle_dco   oracle       -        -        -        -        -       -
+v  oracle_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl oracle_dcl-01 oracle_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd ams_25000_395-02 oracle_dcl-01 ENABLED 67840 0       -        -       -
+sp dbdata_snp   oracle       -        -        -        -        -       -
+
+co cacheobjtc   -            ENABLED  -        -        ACTIVE   -       -
+v  cachetc      cacheobjtc   ENABLED  4194304  -        ACTIVE   -       -
+pl cachetc-01   cachetc      ENABLED  4194304  -        ACTIVE   -       -
+sd ams_25000_395-01 cachetc-01 ENABLED 4194304 0        -        -       -
+
+
+DATE:2017-07-13 13:59:24
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o list --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME
+STDOUT:
+
+
+
+DATE:2017-07-13 13:59:29
+HOST:l111032
+USER:oracle
+STDIN:rm -rf autotc;/opt/VRTS/bin/vxsfadm -s sos -a oracle -o setdefaults --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --sos_name autotc -c autotc
+STDOUT:
+Written config file to /home/oracle/autotc
+
+
+DATE:2017-07-13 13:59:30
+HOST:l111032
+USER:oracle
+STDIN:cat autotc
+STDOUT:
+VERSION = 7
+ORACLE_SID = orcl2
+ORACLE_HOME = /oracle/orahome
+SOS_NAME = autotc
+
+# APP_MODE is the mode in which snapshot is taken.  Possible values
+# are:
+# 
+# 1. offline: database must be shut down before snapshot is taken.
+# 
+# 2. online: database is put in hot-backup mode before snapshot is
+#    taken
+# 
+# 3. instant: snapshot is taken without putting database in
+#    hot-backup mode
+# 
+# The default value is online.
+
+# APP_MODE = online
+
+# SNAPSHOT_ARCHIVE_LOG specifies whether volumes containing archived
+# logs must be snapshotted.
+# 
+# The default value is yes for online snapshots, and no for instant
+# and offline snapshots.
+
+# SNAPSHOT_ARCHIVE_LOG = 
+
+# CLONE_NAME specifies the SID of the clone instance that will be
+# created using this snapshot.
+# 
+# The value provided for CLONE_NAME must be a valid Oracle SID.  If no
+# value is specified, a default name will be generated.
+
+# CLONE_NAME = 
+
+# PFILE_MOD specifies a filename that will be used during cloning to
+# modify Oracle initialization parameters.  It must be in a name=value
+# format similar to a pfile.
+# 
+# The value provided for PFILE_MOD must be a filename.  If no value is
+# specified, defaults initialization parameters will be used for clones.
+
+# PFILE_MOD = 
+
+# SECONDARY_HOST is the host where cloning must be done.  If not
+# specified, cloning will be done on the host where the clone command
+# is invoked.
+
+# SECONDARY_HOST = 
+
+# CACHE_OBJECT specifies the cache object (co) of Veritas Volume Manager
+# to be used for space-optimized snapshot operation. Cache object needs
+# to be specified for each diskgroup participating in the snapshot.
+# 
+# The format for cache object specification is:
+# 
+# CACHE_OBJECT = <dg1>:<co1>,<dg2>:<co2>
+# 
+# Example:
+# 
+# CACHE_OBJECT = oraarchdg:cacheobj,oradatadg:cache
+# 
+# This parameter is optional. If not specified, it will automatically 
+# select one of the active cache objects per diskgroup for snapshot 
+# operation.
+
+# CACHE_OBJECT = 
+
+# SNAPSHOT_VOL_PREFIX specifies the prefix that must be used when
+# creating the snapshot volumes.  This string will be prepended
+# to the existing volume names.
+# 
+# This must be a string.  The sum of the length of existing volume
+# name and this prefix value must not exceed 31 characters.  The
+# default value is SNAP_.
+
+# SNAPSHOT_VOL_PREFIX = SNAP_
+
+# CLONE_PATH specifies the directory location where the snapshotted
+# filesystem should be mounted.
+# 
+# If no value is specified for CLONE_PATH, a default location will be
+# selected.
+
+# CLONE_PATH = 
+
+# MAPPED_MOUNTS specifies the mount points to be used when
+# mounting and cloning a snapshot.  Mount points can be provided for
+# each diskgroup - volume pair.  If a mount point is not provided
+# for a particular pair, a default mount point will be selected.
+# 
+# This must be a semicolon-separated list of mount specifications.
+# Each specification is a key-value pair, where the key is formed by
+# joining the diskgroup and volume names by a colon.  The value is
+# the mount point for the volume.
+
+# MAPPED_MOUNTS = oradg2352_dbarch:archive=;oradg2352_dbarch:dbdata=
+
+# SOURCE_SNAPSHOT identifies the name of the mirror-breakoff snapshot to
+# use as a golden image for the space-optimized snapshot.
+# 
+# The value must be a string, which must be the name of a Flashsnap
+# configuration.
+
+# SOURCE_SNAPSHOT = 
+
+
+DATE:2017-07-13 13:59:38
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o validate --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --sos_name autotc -c autotc
+STDOUT:
+Validating database configuration for space-optimized snapshot:
+    ORACLE_SID			= orcl2
+    ORACLE_HOME			= /oracle/orahome
+    APP_MODE			= online
+    ARCHIVELOG_DEST		= /archive
+    SNAPSHOT_ARCHIVE_LOG	= yes
+Database validation successful.
+Validating database volume layout for space-optimized snapshot:
+    Data volumes ready for snapshot:
+	Volume/volume-set dbdata of diskgroup oradg2352_dbarch mounted on /dbdata.
+    Archivelog volume ready for snapshot:
+	Volume/volume-set archive of diskgroup oradg2352_dbarch mounted on /archive.
+    CACHE_OBJECT		= oradg2352_dbarch:cacheobjtc
+    SNAPSHOT_VOL_PREFIX		= SNAP_
+Database volume layout validated successfully.
+
+
+DATE:2017-07-13 14:00:00
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o snap --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --sos_name autotc -c autotc
+STDOUT:
+Validating database configuration for space-optimized snapshot:
+    ORACLE_SID			= orcl2
+    ORACLE_HOME			= /oracle/orahome
+    APP_MODE			= online
+    ARCHIVELOG_DEST		= /archive
+    SNAPSHOT_ARCHIVE_LOG	= yes
+Database validation successful.
+Putting database in backup mode ...                            Done
+Validating database volume layout for space-optimized snapshot:
+    Data volumes ready for snapshot:
+	Volume/volume-set dbdata of diskgroup oradg2352_dbarch mounted on /dbdata.
+    Archivelog volume ready for snapshot:
+	Volume/volume-set archive of diskgroup oradg2352_dbarch mounted on /archive.
+    CACHE_OBJECT		= oradg2352_dbarch:cacheobjtc
+    SNAPSHOT_VOL_PREFIX		= SNAP_
+Database volume layout validated successfully.
+Creating snapshot volumes for data volumes ...                 Done
+Taking database out of backup mode ...                         Done
+Flushing online redo logs ...                                  Done
+Creating snapshot volume for archivelog volume ...             Done
+
+
+DATE:2017-07-13 14:00:51
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o clone --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --sos_name autotc -c autotc
+STDOUT:
+Generated mount path: /var/tmp/liVujzZYI5
+Mounting snapshot volumes ...                                  Done
+Cloning using autogenerated SID ( orcUHdMf )
+Preparing parameter file for clone database ...                Done
+Mounting clone database ...                                    Done
+Starting database recovery ...
+Clone database orcUHdMf is open.
+
+
+DATE:2017-07-13 14:00:53
+HOST:l111032
+USER:oracle
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 480G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 19M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 55M 8.4G 1% /archive
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+tmpfs 6.3G 0 6.3G 0% /run/user/1001
+/dev/vx/dsk/oradg2352_dbarch/SNAP_archive 9.0G 55M 8.4G 1% /var/tmp/liVujzZYI5/archive
+/dev/vx/dsk/oradg2352_dbarch/SNAP_dbdata 9.0G 1.6G 7.0G 19% /var/tmp/liVujzZYI5/dbdata
+
+
+DATE:2017-07-13 14:00:55
+HOST:l111032
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+oracle    6079     1  0 14:01 ?        00:00:00 ora_smon_orcUHdMf
+oracle    6257  6255  0 14:01 ?        00:00:00 grep smon
+root     19828     1  4 12:42 ?        00:03:48 /crs/crshome/bin/osysmond.bin
+oracle   21903     1  0 12:44 ?        00:00:01 ora_smon_orcl2
+
+
+DATE:2017-07-13 14:00:56
+HOST:l111032
+USER:oracle
+STDIN:echo "export ORACLE_SID=orcUHdMf #autotc" >> /home/oracle/.bash_profile
+STDOUT:
+
+
+
+DATE:2017-07-13 14:00:58
+HOST:l111032
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 14:01:29 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+orcUHdMf	 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-07-13 14:01:00
+HOST:l111032
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 14:01:31 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/var/tmp/liVujzZYI5/dbdata/orcl/system01.dbf
+/var/tmp/liVujzZYI5/dbdata/orcl/sysaux01.dbf
+/var/tmp/liVujzZYI5/dbdata/orcl/undotbs01.dbf
+/var/tmp/liVujzZYI5/dbdata/orcl/users01.dbf
+/var/tmp/liVujzZYI5/dbdata/orcl/undotbs02.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-07-13 14:01:01
+HOST:l111032
+USER:oracle
+STDIN:select name from v$tempfile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 14:01:33 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/var/tmp/liVujzZYI5/dbdata/orcl/temp01.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-07-13 14:01:03
+HOST:l111032
+USER:oracle
+STDIN:perl -i -pe 's/.*#autotc.*
+//' /home/oracle/.bash_profile
+STDOUT:
+
+
+
+DATE:2017-07-13 14:01:07
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o list --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME
+STDOUT:
+Service Type          Configuration                    State
+sos                   autotc                           clone
+
+
+DATE:2017-07-13 14:01:23
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o umount --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --sos_name autotc
+STDOUT:
+Shutting down clone database orcUHdMf ...
+Database shut down.
+Unmounting snapshot volumes ...                                Done
+
+
+DATE:2017-07-13 14:01:25
+HOST:l111032
+USER:oracle
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 480G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 19M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 55M 8.4G 1% /archive
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+tmpfs 6.3G 0 6.3G 0% /run/user/1001
+
+
+DATE:2017-07-13 14:01:26
+HOST:l111032
+USER:oracle
+STDIN:ps -ef|grep smon
+STDOUT:
+oracle    6949  6947  0 14:01 ?        00:00:00 grep smon
+root     19828     1  4 12:42 ?        00:03:49 /crs/crshome/bin/osysmond.bin
+oracle   21903     1  0 12:44 ?        00:00:01 ora_smon_orcl2
+
+
+DATE:2017-07-13 14:01:34
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o destroy --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME --sos_name autotc
+STDOUT:
+Destroying snapshot volumes ...                                Done
+
+
+DATE:2017-07-13 14:01:38
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/vxsfadm -s sos -a oracle -o list --oracle_sid $ORACLE_SID --oracle_home $ORACLE_HOME
+STDOUT:
+
+
+
+DATE:2017-07-13 14:01:39
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2352_dbarch oradg2352_dbarch - -       -        -        -       -
+
+dm ams_25000_395 ams_25000_395 -      10411776 -        -        -       -
+dm ams_25000_396 ams_25000_396 -      10411776 -        -        -       -
+dm ams_25000_397 ams_25000_397 -      10411776 -        -        -       -
+dm ams_25000_398 ams_25000_398 -      10411776 -        -        -       -
+dm ams_25000_399 ams_25000_399 -      10411776 -        -        -       -
+dm ams_25000_400 ams_25000_400 -      10411776 -        -        -       -
+dm ams_25000_401 ams_25000_401 -      10411776 -        -        -       -
+dm ams_25000_402 ams_25000_402 -      10411776 -        -        -       -
+dm ams_25000_403 ams_25000_403 -      10411776 -        -        -       -
+dm ams_25000_404 ams_25000_404 -      10411776 -        -        -       -
+
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_403-01 archive-01 ENABLED 10411776 0       -        -       -
+sd ams_25000_404-01 archive-01 ENABLED 8462592 10411776 -        -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd ams_25000_404-02 archive_dcl-01 ENABLED 67840 0      -        -       -
+
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_401-01 dbdata-01 ENABLED 10411776 0        -        -       -
+sd ams_25000_402-01 dbdata-01 ENABLED 8462592  10411776 -        -       -
+dc dbdata_dco   dbdata       -        -        -        -        -       -
+v  dbdata_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl dbdata_dcl-01 dbdata_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd ams_25000_402-02 dbdata_dcl-01 ENABLED 67840 0       -        -       -
+sp oracle_snp   dbdata       -        -        -        -        -       -
+
+v  oracle       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl oracle-P01   oracle       ENABLED  18874368 -        ACTIVE   -       -
+sc oracle-S01   oracle-P01   ENABLED  18874368 0        -        -       -
+dc oracle_dco   oracle       -        -        -        -        -       -
+v  oracle_dcl   gen          ENABLED  67840    -        ACTIVE   -       -
+pl oracle_dcl-01 oracle_dcl  ENABLED  67840    -        ACTIVE   -       -
+sd ams_25000_395-02 oracle_dcl-01 ENABLED 67840 0       -        -       -
+sp dbdata_snp   oracle       -        -        -        -        -       -
+
+co cacheobjtc   -            ENABLED  -        -        ACTIVE   -       -
+v  cachetc      cacheobjtc   ENABLED  4194304  -        ACTIVE   -       -
+pl cachetc-01   cachetc      ENABLED  4194304  -        ACTIVE   -       -
+sd ams_25000_395-01 cachetc-01 ENABLED 4194304 0        -        -       -
+
+
+DATE:2017-07-13 14:01:41
+HOST:l111032
+USER:root
+STDIN:vxedit -g oradg2352_dbarch -rf rm oracle
+STDOUT:
+
+
+
+DATE:2017-07-13 14:01:43
+HOST:l111032
+USER:root
+STDIN:vxcache -g oradg2352_dbarch stop cacheobjtc
+STDOUT:
+
+
+
+DATE:2017-07-13 14:01:44
+HOST:l111032
+USER:root
+STDIN:vxedit -g oradg2352_dbarch -rf rm cacheobjtc
+STDOUT:
+
+
+
+DATE:2017-07-13 14:01:46
+HOST:l111032
+USER:root
+STDIN:vxsnap -g oradg2352_dbarch unprepare dbdata
+STDOUT:
+
+
+
+DATE:2017-07-13 14:01:48
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2352_dbarch oradg2352_dbarch - -       -        -        -       -
+
+dm ams_25000_395 ams_25000_395 -      10411776 -        -        -       -
+dm ams_25000_396 ams_25000_396 -      10411776 -        -        -       -
+dm ams_25000_397 ams_25000_397 -      10411776 -        -        -       -
+dm ams_25000_398 ams_25000_398 -      10411776 -        -        -       -
+dm ams_25000_399 ams_25000_399 -      10411776 -        -        -       -
+dm ams_25000_400 ams_25000_400 -      10411776 -        -        -       -
+dm ams_25000_401 ams_25000_401 -      10411776 -        -        -       -
+dm ams_25000_402 ams_25000_402 -      10411776 -        -        -       -
+dm ams_25000_403 ams_25000_403 -      10411776 -        -        -       -
+dm ams_25000_404 ams_25000_404 -      10411776 -        -        -       -
+
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_403-01 archive-01 ENABLED 10411776 0       -        -       -
+sd ams_25000_404-01 archive-01 ENABLED 8462592 10411776 -        -       -
+dc archive_dco  archive      -        -        -        -        -       -
+v  archive_dcl  gen          ENABLED  67840    -        ACTIVE   -       -
+pl archive_dcl-01 archive_dcl ENABLED 67840    -        ACTIVE   -       -
+sd ams_25000_404-02 archive_dcl-01 ENABLED 67840 0      -        -       -
+
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_401-01 dbdata-01 ENABLED 10411776 0        -        -       -
+sd ams_25000_402-01 dbdata-01 ENABLED 8462592  10411776 -        -       -
+
+
+DATE:2017-07-13 14:01:49
+HOST:l111032
+USER:root
+STDIN:vxsnap -g oradg2352_dbarch unprepare archive
+STDOUT:
+
+
+
+DATE:2017-07-13 14:01:51
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch
+STDOUT:
+TY NAME         ASSOC        KSTATE   LENGTH   PLOFFS   STATE    TUTIL0  PUTIL0
+dg oradg2352_dbarch oradg2352_dbarch - -       -        -        -       -
+
+dm ams_25000_395 ams_25000_395 -      10411776 -        -        -       -
+dm ams_25000_396 ams_25000_396 -      10411776 -        -        -       -
+dm ams_25000_397 ams_25000_397 -      10411776 -        -        -       -
+dm ams_25000_398 ams_25000_398 -      10411776 -        -        -       -
+dm ams_25000_399 ams_25000_399 -      10411776 -        -        -       -
+dm ams_25000_400 ams_25000_400 -      10411776 -        -        -       -
+dm ams_25000_401 ams_25000_401 -      10411776 -        -        -       -
+dm ams_25000_402 ams_25000_402 -      10411776 -        -        -       -
+dm ams_25000_403 ams_25000_403 -      10411776 -        -        -       -
+dm ams_25000_404 ams_25000_404 -      10411776 -        -        -       -
+
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl archive-01   archive      ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_403-01 archive-01 ENABLED 10411776 0       -        -       -
+sd ams_25000_404-01 archive-01 ENABLED 8462592 10411776 -        -       -
+
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+pl dbdata-01    dbdata       ENABLED  18874368 -        ACTIVE   -       -
+sd ams_25000_401-01 dbdata-01 ENABLED 10411776 0        -        -       -
+sd ams_25000_402-01 dbdata-01 ENABLED 8462592  10411776 -        -       -
+
+***Removing free disk of node "l111032"***
+
+
+
+DATE:2017-07-13 14:01:53
+HOST:l111032
+USER:root
+STDIN:vxprint|grep dm
+STDOUT:
+dm ams_25000_395 ams_25000_395 -      10411776 -        -        -       -
+dm ams_25000_396 ams_25000_396 -      10411776 -        -        -       -
+dm ams_25000_397 ams_25000_397 -      10411776 -        -        -       -
+dm ams_25000_398 ams_25000_398 -      10411776 -        -        -       -
+dm ams_25000_399 ams_25000_399 -      10411776 -        -        -       -
+dm ams_25000_400 ams_25000_400 -      10411776 -        -        -       -
+dm ams_25000_401 ams_25000_401 -      10411776 -        -        -       -
+dm ams_25000_402 ams_25000_402 -      10411776 -        -        -       -
+dm ams_25000_403 ams_25000_403 -      10411776 -        -        -       -
+dm ams_25000_404 ams_25000_404 -      10411776 -        -        -       -
+dm ams_25000_405 ams_25000_405 -      10411776 -        -        -       -
+dm ams_25000_406 ams_25000_406 -      10411776 -        -        -       -
+dm ams_25000_407 ams_25000_407 -      10467328 -        -        -       -
+
+
+DATE:2017-07-13 14:01:54
+HOST:l111032
+USER:root
+STDIN:vxdisk reclaim ams_25000_395 ams_25000_396 ams_25000_397 ams_25000_398 ams_25000_399 ams_25000_400 ams_25000_401 ams_25000_402 ams_25000_403 ams_25000_404 ams_25000_405 ams_25000_406 ams_25000_407
+STDOUT:
+Disk ams_25000_395 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_396 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_397 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_398 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_399 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_400 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_401 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_402 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_403 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_404 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_405 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_406 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_407 : Skipped. Disk not reclaimable or wrong media type.
+
+
+DATE:2017-07-13 14:01:56
+HOST:l111032
+USER:root
+STDIN:vxdg -qa free|awk '$5==0 {print}'
+STDOUT:
+oradg2352_dbarch ams_25000_395 ams_25000_395 ams_25000_395 0         10411776  -
+oradg2352_dbarch ams_25000_396 ams_25000_396 ams_25000_396 0         10411776  -
+oradg2352_dbarch ams_25000_397 ams_25000_397 ams_25000_397 0         10411776  -
+oradg2352_dbarch ams_25000_398 ams_25000_398 ams_25000_398 0         10411776  -
+oradg2352_dbarch ams_25000_399 ams_25000_399 ams_25000_399 0         10411776  -
+oradg2352_dbarch ams_25000_400 ams_25000_400 ams_25000_400 0         10411776  -
+oradg2352_ocrvote ams_25000_406 ams_25000_406 ams_25000_406 0         10411776  -
+
+
+DATE:2017-07-13 14:01:58
+HOST:l111032
+USER:root
+STDIN:vxdg -g oradg2352_dbarch rmdisk ams_25000_395 ams_25000_396 ams_25000_397 ams_25000_398 ams_25000_399 ams_25000_400
+STDOUT:
+
+
+
+
+Flag line to indicate case is completed.
+
+
+
+
+
+Case Result:Passed
+DATE:2017-07-13 14:01:58
+Duration:13m8s

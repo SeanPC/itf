@@ -1,0 +1,512 @@
+
+
+DATE:2017-04-21 13:54:48
+HOST:a84vm01
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster clus201202 (
+	UserNames = { admin = INOgNInKOjOOmWOiNL }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system a84vm01 (
+	)
+
+system a84vm02 (
+	)
+
+group crs_grp (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSMount ocrvote_mnt (
+		Critical = 0
+		MountPoint = "/ocrvote"
+		BlockDevice = "/dev/vx/dsk/oradg2579_ocrvote/ocrvote"
+		)
+
+	CSSD cssd (
+		Critical = 0
+		CRSHOME = "/crs/crshome"
+		OnlineWaitLimit = 5
+		OfflineWaitLimit = 3
+		)
+
+	CVMVolDg ocrvote_voldg (
+		Critical = 0
+		CVMDiskGroup = oradg2579_ocrvote
+		CVMVolume = { ocrvote }
+		CVMActivation = sw
+		)
+
+	requires group cvm online local firm
+	cssd requires ocrvote_mnt
+	ocrvote_mnt requires ocrvote_voldg
+
+
+	// resource dependency tree
+	//
+	//	group crs_grp
+	//	{
+	//	CSSD cssd
+	//	    {
+	//	    CFSMount ocrvote_mnt
+	//	        {
+	//	        CVMVolDg ocrvote_voldg
+	//	        }
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = clus201202
+		CVMNodeId = { a84vm01 = 0, a84vm02 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/usr/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group oradb_grp (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSMount oraarch_mnt (
+		Critical = 0
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg2579_dbarch/archive"
+		)
+
+	CFSMount oradata_mnt (
+		Critical = 0
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg2579_dbarch/dbdata"
+		)
+
+	CVMVolDg data_voldg (
+		Critical = 0
+		CVMDiskGroup = oradg2579_dbarch
+		CVMVolume = { dbdata, archive }
+		CVMActivation = sw
+		)
+
+	Oracle oradb (
+		Critical = 0
+		Sid @a84vm01 = orcl1
+		Sid @a84vm02 = orcl2
+		Owner = oracle
+		Home = "/oracle/orahome"
+		StartUpOpt = SRVCTLSTART
+		ShutDownOpt = SRVCTLSTOP
+		LevelTwoMonitorFreq = 0
+		)
+
+	requires group crs_grp online local firm
+	oraarch_mnt requires data_voldg
+	oradata_mnt requires data_voldg
+	oradb requires oraarch_mnt
+	oradb requires oradata_mnt
+
+
+	// resource dependency tree
+	//
+	//	group oradb_grp
+	//	{
+	//	Oracle oradb
+	//	    {
+	//	    CFSMount oraarch_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    CFSMount oradata_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    }
+	//	}
+
+***umount vxfs on node a84vm01***
+
+
+
+DATE:2017-04-21 13:54:49
+HOST:a84vm01
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.00 6.31 79% 60076 4% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.86 3% 902 1% /var
+/dev/hd3 4.00 3.98 1% 265 1% /tmp
+/dev/hd1 10.00 7.76 23% 1906 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.61 28% 8890 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 9.00 8.38 7% 6 1% /ocrvote
+
+***umount vxfs on node a84vm02***
+
+
+
+DATE:2017-04-21 13:54:49
+HOST:a84vm02
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.12 11.71 62% 55014 2% /
+/dev/hd2 5.00 3.31 34% 39884 5% /usr
+/dev/hd9var 5.00 4.88 3% 829 1% /var
+/dev/hd3 5.00 4.30 14% 1442 1% /tmp
+/dev/hd1 5.00 5.00 1% 42 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.62 28% 8731 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 9.00 8.38 7% 6 1% /ocrvote
+
+
+DATE:2017-04-21 13:54:50
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+
+DATE:2017-04-21 13:54:51
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-04-21 13:54:52
+HOST:a84vm01
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+autotcfendg
+
+
+DATE:2017-04-21 13:54:53
+HOST:a84vm01
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+emc_clariion0_0 auto:cdsdisk    -            -            online
+emc_clariion0_1 auto:cdsdisk    -            -            online remote
+emc_clariion0_2 auto:cdsdisk    -            -            online exported
+emc_clariion0_3 auto:cdsdisk    -            -            online
+emc_clariion0_4 auto:cdsdisk    -            -            online
+emc_clariion0_5 auto:cdsdisk    -            -            online
+emc_clariion0_6 auto:cdsdisk    emc_clariion0_6  oradg2579_dbarch online shared
+emc_clariion0_7 auto:cdsdisk    emc_clariion0_7  oradg2579_ocrvote online shared
+emc_clariion0_8 auto:cdsdisk    emc_clariion0_8  oradg2579_ocrvote online shared
+emc_clariion0_9 auto:cdsdisk    emc_clariion0_9  oradg2579_ocrvote online shared
+emc_clariion0_10 auto:cdsdisk    -            -            online
+emc_clariion0_11 auto:cdsdisk    -            -            online
+emc_clariion0_12 auto:cdsdisk    -            -            online
+emc_clariion0_13 auto:cdsdisk    -            -            online
+emc_clariion0_14 auto:cdsdisk    -            -            online
+emc_clariion0_15 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_16 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_17 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_18 auto:cdsdisk    -            -            online
+emc_clariion0_19 auto:cdsdisk    -            -            online
+emc_clariion0_20 auto:cdsdisk    -            -            online
+emc_clariion0_21 auto:cdsdisk    -            -            online
+emc_clariion0_22 auto:cdsdisk    -            -            online
+emc_clariion0_23 auto:cdsdisk    -            -            online
+emc_clariion0_24 auto:cdsdisk    -            -            online
+emc_clariion0_25 auto:cdsdisk    -            -            online
+emc_clariion0_26 auto:cdsdisk    -            -            online
+emc_clariion0_27 auto:cdsdisk    -            -            online
+emc_clariion0_28 auto:cdsdisk    -            -            online
+emc_clariion0_29 auto:cdsdisk    emc_clariion0_29  oradg2579_dbarch online shared
+emc_clariion0_30 auto:cdsdisk    emc_clariion0_30  oradg2579_dbarch online shared
+emc_clariion0_31 auto:cdsdisk    emc_clariion0_31  oradg2579_dbarch online shared
+emc_clariion0_32 auto:cdsdisk    emc_clariion0_32  oradg2579_dbarch online shared
+ibm_vscsi0_0 auto:LVM        -            -            LVM
+
+
+DATE:2017-04-21 13:54:54
+HOST:a84vm01
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+oradg2579_dbarch enabled,shared,cds   1492657603.43.a84vm01
+oradg2579_ocrvote enabled,shared,cds   1492657601.41.a84vm01
+
+
+DATE:2017-04-21 13:54:55
+HOST:a84vm01
+USER:root
+STDIN:vxdisk list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+emc_clariion0_0 auto:cdsdisk    -            -            online
+emc_clariion0_1 auto:cdsdisk    -            -            online remote
+emc_clariion0_2 auto:cdsdisk    -            -            online exported
+emc_clariion0_3 auto:cdsdisk    -            -            online
+emc_clariion0_4 auto:cdsdisk    -            -            online
+emc_clariion0_5 auto:cdsdisk    -            -            online
+emc_clariion0_6 auto:cdsdisk    emc_clariion0_6  oradg2579_dbarch online shared
+emc_clariion0_7 auto:cdsdisk    emc_clariion0_7  oradg2579_ocrvote online shared
+emc_clariion0_8 auto:cdsdisk    emc_clariion0_8  oradg2579_ocrvote online shared
+emc_clariion0_9 auto:cdsdisk    emc_clariion0_9  oradg2579_ocrvote online shared
+emc_clariion0_10 auto:cdsdisk    -            -            online
+emc_clariion0_11 auto:cdsdisk    -            -            online
+emc_clariion0_12 auto:cdsdisk    -            -            online
+emc_clariion0_13 auto:cdsdisk    -            -            online
+emc_clariion0_14 auto:cdsdisk    -            -            online
+emc_clariion0_15 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_16 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_17 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_18 auto:cdsdisk    -            -            online
+emc_clariion0_19 auto:cdsdisk    -            -            online
+emc_clariion0_20 auto:cdsdisk    -            -            online
+emc_clariion0_21 auto:cdsdisk    -            -            online
+emc_clariion0_22 auto:cdsdisk    -            -            online
+emc_clariion0_23 auto:cdsdisk    -            -            online
+emc_clariion0_24 auto:cdsdisk    -            -            online
+emc_clariion0_25 auto:cdsdisk    -            -            online
+emc_clariion0_26 auto:cdsdisk    -            -            online
+emc_clariion0_27 auto:cdsdisk    -            -            online
+emc_clariion0_28 auto:cdsdisk    -            -            online
+emc_clariion0_29 auto:cdsdisk    emc_clariion0_29  oradg2579_dbarch online shared
+emc_clariion0_30 auto:cdsdisk    emc_clariion0_30  oradg2579_dbarch online shared
+emc_clariion0_31 auto:cdsdisk    emc_clariion0_31  oradg2579_dbarch online shared
+emc_clariion0_32 auto:cdsdisk    emc_clariion0_32  oradg2579_dbarch online shared
+ibm_vscsi0_0 auto:LVM        -            -            LVM
+
+
+DATE:2017-04-21 13:54:56
+HOST:a84vm01
+USER:root
+STDIN:for disk in emc_clariion0_2; do vxdisk unexport $disk; done
+STDOUT:
+
+
+
+DATE:2017-04-21 13:54:56
+HOST:a84vm01
+USER:root
+STDIN:cat -n /etc/vx/vxvm.exclude
+STDOUT:
+     1	exclude_all 0
+     2	paths
+     3	hdisk7 C6-T1-01_0:W0x5006016008603750:L0x6000000000000 emc_clariion0_1
+     4	#
+     5	controllers
+     6	#
+     7	product
+     8	#
+
+
+DATE:2017-04-21 13:54:59
+HOST:a84vm01
+USER:root
+STDIN:for disk in emc_clariion0_1; do vxdmpadm include dmpnodename=$disk; done
+STDOUT:
+
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-04-21 13:54:59
+HOST:a84vm02
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+autotcfendg
+
+
+DATE:2017-04-21 13:55:01
+HOST:a84vm02
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+emc_clariion0_0 auto:cdsdisk    -            -            online
+emc_clariion0_1 auto:cdsdisk    -            -            online exported
+emc_clariion0_3 auto:cdsdisk    -            -            online
+emc_clariion0_4 auto:cdsdisk    -            -            online
+emc_clariion0_5 auto:cdsdisk    -            -            online
+emc_clariion0_6 auto:cdsdisk    emc_clariion0_6  oradg2579_dbarch online shared
+emc_clariion0_7 auto:cdsdisk    emc_clariion0_7  oradg2579_ocrvote online shared
+emc_clariion0_8 auto:cdsdisk    emc_clariion0_8  oradg2579_ocrvote online shared
+emc_clariion0_9 auto:cdsdisk    emc_clariion0_9  oradg2579_ocrvote online shared
+emc_clariion0_10 auto:cdsdisk    -            -            online
+emc_clariion0_11 auto:cdsdisk    -            -            online
+emc_clariion0_12 auto:cdsdisk    -            -            online
+emc_clariion0_13 auto:cdsdisk    -            -            online
+emc_clariion0_14 auto:cdsdisk    -            -            online
+emc_clariion0_15 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_16 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_17 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_18 auto:cdsdisk    -            -            online
+emc_clariion0_19 auto:cdsdisk    -            -            online
+emc_clariion0_20 auto:cdsdisk    -            -            online
+emc_clariion0_21 auto:cdsdisk    -            -            online
+emc_clariion0_22 auto:cdsdisk    -            -            online
+emc_clariion0_23 auto:cdsdisk    -            -            online
+emc_clariion0_24 auto:cdsdisk    -            -            online
+emc_clariion0_25 auto:cdsdisk    -            -            online
+emc_clariion0_26 auto:cdsdisk    -            -            online
+emc_clariion0_27 auto:cdsdisk    -            -            online
+emc_clariion0_28 auto:cdsdisk    -            -            online
+emc_clariion0_29 auto:cdsdisk    emc_clariion0_29  oradg2579_dbarch online shared
+emc_clariion0_30 auto:cdsdisk    emc_clariion0_30  oradg2579_dbarch online shared
+emc_clariion0_31 auto:cdsdisk    emc_clariion0_31  oradg2579_dbarch online shared
+emc_clariion0_32 auto:cdsdisk    emc_clariion0_32  oradg2579_dbarch online shared
+ibm_vscsi0_0 auto:LVM        -            -            LVM
+
+
+DATE:2017-04-21 13:55:01
+HOST:a84vm02
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+oradg2579_dbarch enabled,shared,cds   1492657603.43.a84vm01
+oradg2579_ocrvote enabled,shared,cds   1492657601.41.a84vm01
+
+
+DATE:2017-04-21 13:55:02
+HOST:a84vm02
+USER:root
+STDIN:vxdisk list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+emc_clariion0_0 auto:cdsdisk    -            -            online
+emc_clariion0_1 auto:cdsdisk    -            -            online exported
+emc_clariion0_3 auto:cdsdisk    -            -            online
+emc_clariion0_4 auto:cdsdisk    -            -            online
+emc_clariion0_5 auto:cdsdisk    -            -            online
+emc_clariion0_6 auto:cdsdisk    emc_clariion0_6  oradg2579_dbarch online shared
+emc_clariion0_7 auto:cdsdisk    emc_clariion0_7  oradg2579_ocrvote online shared
+emc_clariion0_8 auto:cdsdisk    emc_clariion0_8  oradg2579_ocrvote online shared
+emc_clariion0_9 auto:cdsdisk    emc_clariion0_9  oradg2579_ocrvote online shared
+emc_clariion0_10 auto:cdsdisk    -            -            online
+emc_clariion0_11 auto:cdsdisk    -            -            online
+emc_clariion0_12 auto:cdsdisk    -            -            online
+emc_clariion0_13 auto:cdsdisk    -            -            online
+emc_clariion0_14 auto:cdsdisk    -            -            online
+emc_clariion0_15 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_16 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_17 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_18 auto:cdsdisk    -            -            online
+emc_clariion0_19 auto:cdsdisk    -            -            online
+emc_clariion0_20 auto:cdsdisk    -            -            online
+emc_clariion0_21 auto:cdsdisk    -            -            online
+emc_clariion0_22 auto:cdsdisk    -            -            online
+emc_clariion0_23 auto:cdsdisk    -            -            online
+emc_clariion0_24 auto:cdsdisk    -            -            online
+emc_clariion0_25 auto:cdsdisk    -            -            online
+emc_clariion0_26 auto:cdsdisk    -            -            online
+emc_clariion0_27 auto:cdsdisk    -            -            online
+emc_clariion0_28 auto:cdsdisk    -            -            online
+emc_clariion0_29 auto:cdsdisk    emc_clariion0_29  oradg2579_dbarch online shared
+emc_clariion0_30 auto:cdsdisk    emc_clariion0_30  oradg2579_dbarch online shared
+emc_clariion0_31 auto:cdsdisk    emc_clariion0_31  oradg2579_dbarch online shared
+emc_clariion0_32 auto:cdsdisk    emc_clariion0_32  oradg2579_dbarch online shared
+ibm_vscsi0_0 auto:LVM        -            -            LVM
+
+
+DATE:2017-04-21 13:55:03
+HOST:a84vm02
+USER:root
+STDIN:for disk in emc_clariion0_1; do vxdisk unexport $disk; done
+STDOUT:
+
+
+
+DATE:2017-04-21 13:55:04
+HOST:a84vm02
+USER:root
+STDIN:cat -n /etc/vx/vxvm.exclude
+STDOUT:
+     1	exclude_all 0
+     2	paths
+     3	hdisk8 C3-T1-01_0:W0x5006016008603750:L0x7000000000000 emc_clariion0_2
+     4	#
+     5	controllers
+     6	#
+     7	product
+     8	#
+
+
+DATE:2017-04-21 13:55:06
+HOST:a84vm02
+USER:root
+STDIN:for disk in emc_clariion0_2; do vxdmpadm include dmpnodename=$disk; done
+STDOUT:
+

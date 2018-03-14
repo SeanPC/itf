@@ -1,0 +1,3953 @@
+
+==================== Operation Log for TC oracle_dbdst ====================
+DATE:2017-04-26 11:25:58
+Nodes:a84vm02 a84vm01
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-04-26 11:25:58
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-04-26 11:25:58
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:11686774 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5188605 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3297790384 (3.0 GiB)  TX bytes:5320778860 (4.9 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:17712 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:17712 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:2354601 (2.2 MiB)  TX bytes:2354601 (2.2 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-04-26 11:25:59
+HOST:a84vm02
+USER:root
+STDIN:ssh -l root a84vm02
+STDOUT:
+
+
+
+DATE:2017-04-26 11:26:01
+HOST:a84vm01
+USER:root
+STDIN:ssh -l root a84vm01
+STDOUT:
+
+
+
+DATE:2017-04-26 11:26:03
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+
+DATE:2017-04-26 11:26:04
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-04-26 11:26:04
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:11686977 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5188777 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3297824596 (3.0 GiB)  TX bytes:5320808050 (4.9 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:17712 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:17712 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:2354601 (2.2 MiB)  TX bytes:2354601 (2.2 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-04-26 11:26:05
+HOST:a84vm02
+USER:root
+STDIN:ssh -l root a84vm02
+STDOUT:
+
+
+
+DATE:2017-04-26 11:26:07
+HOST:a84vm01
+USER:root
+STDIN:ssh -l root a84vm01
+STDOUT:
+
+
+
+DATE:2017-04-26 11:26:09
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+
+DATE:2017-04-26 11:26:09
+HOST:a84vm01
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+a84vm01
+a84vm02
+
+***Getting hostname of node***
+
+
+
+DATE:2017-04-26 11:26:10
+HOST:a84vm02
+USER:root
+STDIN:hostname
+STDOUT:
+a84vm02
+
+***Getting os version***
+
+
+
+DATE:2017-04-26 11:26:11
+HOST:a84vm02
+USER:root
+STDIN:uname
+STDOUT:
+AIX
+
+
+DATE:2017-04-26 11:26:13
+HOST:a84vm02
+USER:root
+STDIN:oslevel -s
+STDOUT:
+7200-01-01-1642
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-04-26 11:26:13
+HOST:a84vm02
+USER:root
+STDIN:lslpp -l|grep -i vrts
+STDOUT:
+  VRTSamf                    7.1.0.0  COMMITTED  Veritas AMF
+  VRTSaslapm                 7.1.0.0  COMMITTED  Array Support Libraries and
+  VRTScavf                   7.1.0.0  COMMITTED  Veritas cfs and cvm agents
+  VRTScps                    7.1.0.0  COMMITTED  Veritas Co-ordination Point
+  VRTSdbac                   7.1.0.0  COMMITTED  Veritas Oracle Real
+  VRTSdbed                   7.1.0.0  COMMITTED  Storage Management Software
+  VRTSfsadv                  7.1.0.0  COMMITTED  Veritas File System Advanced
+  VRTSgab                    7.1.0.0  COMMITTED  Veritas Group Membership and
+  VRTSglm                    7.1.0.0  COMMITTED  Veritas LOCK MGR
+  VRTSgms                    7.1.0.0  COMMITTED  Veritas Global Messaging
+  VRTSllt                    7.1.0.0  COMMITTED  Veritas Low Latency Transport 
+  VRTSodm                    7.1.0.0  COMMITTED  Veritas Extension for Oracle
+  VRTSperl                  5.20.1.3  COMMITTED  Perl 5.16.1 for Veritas
+  VRTSsfcpi                  7.1.0.0  COMMITTED  Veritas InfoScale Installer
+  VRTSsfmh                   7.1.0.0  COMMITTED  Veritas Infoscale Operations
+  VRTSspt                    7.1.0.0  COMMITTED  Veritas Support Tools
+  VRTSvbs                    7.1.0.0  COMMITTED  Virtual Business Services
+  VRTSvcs                    7.1.0.0  COMMITTED  Veritas Cluster Server
+  VRTSvcsag                  7.1.0.0  COMMITTED  Veritas Cluster Server Bundled
+  VRTSvcsea                  7.1.0.0  COMMITTED  Veritas High Availability
+  VRTSvcswiz                 7.1.0.0  COMMITTED  Veritas Cluster Server Wizards
+  VRTSveki                   7.1.0.0  COMMITTED  Veritas Kernel Interface
+  VRTSvlic                  3.2.71.4  COMMITTED  Veritas License Utilities
+  VRTSvxfen                  7.1.0.0  COMMITTED  Veritas I/O Fencing 
+  VRTSvxfs                   7.1.0.0  COMMITTED  Veritas File System
+  VRTSvxvm                   7.1.0.0  COMMITTED  Veritas Volume Manager
+  VRTSamf                    7.1.0.0  COMMITTED  Veritas AMF
+  VRTSaslapm                 7.1.0.0  COMMITTED  Array Support Libraries and
+  VRTScavf                   7.1.0.0  COMMITTED  Veritas cfs and cvm agents
+  VRTScps                    7.1.0.0  COMMITTED  Veritas Co-ordination Point
+  VRTSdbac                   7.1.0.0  COMMITTED  Veritas Oracle Real
+  VRTSgab                    7.1.0.0  COMMITTED  Veritas Group Membership and
+  VRTSglm                    7.1.0.0  COMMITTED  Veritas LOCK MGR
+  VRTSgms                    7.1.0.0  COMMITTED  Veritas Global Messaging
+  VRTSllt                    7.1.0.0  COMMITTED  Veritas Low Latency Transport 
+  VRTSodm                    7.1.0.0  COMMITTED  Veritas Extension for Oracle
+  VRTSperl                  5.20.1.3  COMMITTED  Perl 5.16.1 for Veritas
+  VRTSsfcpi                  7.1.0.0  COMMITTED  Veritas InfoScale Installer
+  VRTSsfmh                   7.1.0.0  COMMITTED  Veritas Infoscale Operations
+  VRTSvbs                    7.1.0.0  COMMITTED  Virtual Business Services
+  VRTSvcs                    7.1.0.0  COMMITTED  Veritas Cluster Server
+  VRTSvcsag                  7.1.0.0  COMMITTED  Veritas Cluster Server Bundled
+  VRTSvcsea                  7.1.0.0  COMMITTED  Veritas High Availability
+  VRTSveki                   7.1.0.0  COMMITTED  Veritas Kernel Interface
+  VRTSvxfen                  7.1.0.0  COMMITTED  Veritas I/O Fencing 
+  VRTSvxfs                   7.1.0.0  COMMITTED  Veritas File System
+  VRTSvxvm                   7.1.0.0  COMMITTED  Veritas Volume Manager
+
+
+DATE:2017-04-26 11:26:14
+HOST:a84vm02
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster clus201202 (
+	UserNames = { admin = INOgNInKOjOOmWOiNL }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system a84vm01 (
+	)
+
+system a84vm02 (
+	)
+
+group crs_grp (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSMount ocrvote_mnt (
+		Critical = 0
+		MountPoint = "/ocrvote"
+		BlockDevice = "/dev/vx/dsk/oradg2579_ocrvote/ocrvote"
+		)
+
+	CSSD cssd (
+		Critical = 0
+		CRSHOME = "/crs/crshome"
+		OnlineWaitLimit = 5
+		OfflineWaitLimit = 3
+		)
+
+	CVMVolDg ocrvote_voldg (
+		Critical = 0
+		CVMDiskGroup = oradg2579_ocrvote
+		CVMVolume = { ocrvote }
+		CVMActivation = sw
+		)
+
+	requires group cvm online local firm
+	cssd requires ocrvote_mnt
+	ocrvote_mnt requires ocrvote_voldg
+
+
+	// resource dependency tree
+	//
+	//	group crs_grp
+	//	{
+	//	CSSD cssd
+	//	    {
+	//	    CFSMount ocrvote_mnt
+	//	        {
+	//	        CVMVolDg ocrvote_voldg
+	//	        }
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = clus201202
+		CVMNodeId = { a84vm01 = 0, a84vm02 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/usr/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group oradb_grp (
+	SystemList = { a84vm01 = 0, a84vm02 = 1 }
+	Parallel = 1
+	AutoStartList = { a84vm01, a84vm02 }
+	)
+
+	CFSMount oraarch_mnt (
+		Critical = 0
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg2579_dbarch/archive"
+		)
+
+	CFSMount oradata_mnt (
+		Critical = 0
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg2579_dbarch/dbdata"
+		)
+
+	CVMVolDg data_voldg (
+		Critical = 0
+		CVMDiskGroup = oradg2579_dbarch
+		CVMVolume = { dbdata, archive }
+		CVMActivation = sw
+		)
+
+	Oracle oradb (
+		Critical = 0
+		Sid @a84vm01 = orcl1
+		Sid @a84vm02 = orcl2
+		Owner = oracle
+		Home = "/oracle/orahome"
+		StartUpOpt = SRVCTLSTART
+		ShutDownOpt = SRVCTLSTOP
+		LevelTwoMonitorFreq = 0
+		)
+
+	requires group crs_grp online local firm
+	oraarch_mnt requires data_voldg
+	oradata_mnt requires data_voldg
+	oradb requires oraarch_mnt
+	oradb requires oradata_mnt
+
+
+	// resource dependency tree
+	//
+	//	group oradb_grp
+	//	{
+	//	Oracle oradb
+	//	    {
+	//	    CFSMount oraarch_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    CFSMount oradata_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    }
+	//	}
+
+
+====STEP: Checking status of Oracle database
+DATE:2017-04-26 11:26:14
+
+***Checking if relink oracle odm libray to Veritas odm libray***
+
+
+
+DATE:2017-04-26 11:26:15
+HOST:a84vm02
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx    1 oracle   oinstall         28 Apr 21 14:19 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib/libodm64.so
+
+
+DATE:2017-04-26 11:26:16
+HOST:a84vm01
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx    1 oracle   oinstall         28 Apr 21 14:17 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib/libodm64.so
+
+***Checking if Oracle instance is OPEN***
+
+
+
+DATE:2017-04-26 11:26:17
+HOST:a84vm02
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:26:17 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+orcl2		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Checking if Archive log mode is enabled***
+
+
+
+DATE:2017-04-26 11:26:19
+HOST:a84vm02
+USER:oracle
+STDIN:archive log list;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:26:19 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+Database log mode	       Archive Mode
+Automatic archival	       Enabled
+Archive destination	       /archive
+Oldest online log sequence     13
+Next log sequence to archive   14
+Current log sequence	       14
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Getting datafile path and name***
+
+
+
+DATE:2017-04-26 11:26:21
+HOST:a84vm02
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:26:21 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/dbdata/orcl/system01.dbf
+/dbdata/orcl/sysaux01.dbf
+/dbdata/orcl/undotbs01.dbf
+/dbdata/orcl/users01.dbf
+/dbdata/orcl/undotbs02.dbf
+/dbdata/orcl/part1.dbf
+/dbdata/orcl/part2.dbf
+/dbdata/orcl/part3.dbf
+/dbdata/orcl/part4.dbf
+
+9 rows selected.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+====STEP: Prepare volumes to make volume sets
+DATE:2017-04-26 11:26:21
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /archive***
+
+
+
+DATE:2017-04-26 11:26:22
+HOST:a84vm02
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.12 11.20 63% 56396 3% /
+/dev/hd2 5.00 3.31 34% 39881 5% /usr
+/dev/hd9var 5.00 4.81 4% 1044 1% /var
+/dev/hd3 5.00 4.30 14% 1506 1% /tmp
+/dev/hd1 5.00 5.00 1% 57 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.64 28% 8625 1% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 15.20 14.01 8% 48 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 15.20 12.41 19% 36 1% /dbdata
+
+
+DATE:2017-04-26 11:26:23
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2579_dbarch/archive
+STDOUT:
+vxfs
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /dbdata***
+
+
+
+DATE:2017-04-26 11:26:24
+HOST:a84vm02
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.12 11.20 63% 56396 3% /
+/dev/hd2 5.00 3.31 34% 39881 5% /usr
+/dev/hd9var 5.00 4.81 4% 1044 1% /var
+/dev/hd3 5.00 4.30 14% 1506 1% /tmp
+/dev/hd1 5.00 5.00 1% 57 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.64 28% 8625 1% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/archive 15.20 14.01 8% 48 1% /archive
+/dev/vx/dsk/oradg2579_dbarch/dbdata 15.20 12.41 19% 36 1% /dbdata
+
+
+DATE:2017-04-26 11:26:25
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2579_dbarch/dbdata
+STDOUT:
+vxfs
+
+***Checking and clear existing Environment.***
+
+
+
+DATE:2017-04-26 11:26:27
+HOST:a84vm02
+USER:oracle
+STDIN:select table_name from dba_tables where table_name='SALES';
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:26:26 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+TABLE_NAME
+------------------------------
+SALES
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:26:29
+HOST:a84vm02
+USER:oracle
+STDIN:drop table sales;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:26:27 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Table dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:26:30
+HOST:a84vm02
+USER:oracle
+STDIN:select name from v$tablespace;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:26:29 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+------------------------------
+SYSTEM
+SYSAUX
+UNDOTBS1
+USERS
+TEMP
+UNDOTBS2
+PART1
+PART2
+PART3
+PART4
+
+10 rows selected.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:26:39
+HOST:a84vm02
+USER:oracle
+STDIN:drop tablespace part1 including contents and datafiles;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:26:30 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:26:47
+HOST:a84vm02
+USER:oracle
+STDIN:drop tablespace part2 including contents and datafiles;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:26:39 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:26:57
+HOST:a84vm02
+USER:oracle
+STDIN:drop tablespace part3 including contents and datafiles;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:26:48 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:27:06
+HOST:a84vm02
+USER:oracle
+STDIN:drop tablespace part4 including contents and datafiles;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:26:57 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:27:08
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsppadm unassign /dbdata
+STDOUT:
+
+
+
+DATE:2017-04-26 11:27:09
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsppadm unassign /archive
+STDOUT:
+
+
+
+DATE:2017-04-26 11:27:10
+HOST:a84vm02
+USER:root
+STDIN:vxprint -g oradg2579_dbarch|awk '$2=="dbdata" {print}'
+STDOUT:
+vt dbdata       -            ENABLED  -        -        ACTIVE   -       -
+
+
+DATE:2017-04-26 11:27:15
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /dbdata
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol1                    5345280	1606277	3739003
+
+CLASS=MEDIUM
+dbdata-b4vset                 5242880	40717	5202163
+
+CLASS=SLOW
+autotcvol2                    5345280	58	5345222
+
+
+DATE:2017-04-26 11:29:34
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsvoladm remove /dbdata autotcvol1
+STDOUT:
+
+
+
+DATE:2017-04-26 11:30:00
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsvoladm remove /dbdata autotcvol2
+STDOUT:
+
+
+
+DATE:2017-04-26 11:30:00
+HOST:a84vm02
+USER:root
+STDIN:vxprint -g oradg2579_dbarch|awk '$2=="archive" {print}'
+STDOUT:
+vt archive      -            ENABLED  -        -        ACTIVE   -       -
+
+
+DATE:2017-04-26 11:30:05
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /archive
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol5                    5345280	81711	5263569
+
+CLASS=MEDIUM
+archive-b4vset                5242880	178942	5063938
+
+CLASS=SLOW
+autotcvol6                    5345280	4155	5341125
+
+
+DATE:2017-04-26 11:30:38
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsvoladm remove /archive autotcvol5
+STDOUT:
+
+
+
+DATE:2017-04-26 11:30:41
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsvoladm remove /archive autotcvol6
+STDOUT:
+
+
+***Offline Group oradb_grp on all active nodes***
+
+
+
+DATE:2017-04-26 11:30:42
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+a84vm01    SysState                RUNNING
+a84vm02    SysState                RUNNING
+
+
+DATE:2017-04-26 11:30:43
+HOST:a84vm02
+USER:root
+STDIN:cat /var/VRTSvcs/log/engine_A.log|wc -l|awk '{print $1}'
+STDOUT:
+3779
+
+
+DATE:2017-04-26 11:30:44
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -offline oradb_grp -any
+STDOUT:
+VCS NOTICE V-16-1-50733 Attempting to offline group on system a84vm01
+VCS NOTICE V-16-1-50733 Attempting to offline group on system a84vm02
+
+
+DATE:2017-04-26 11:30:55
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |ONLINE|STOPPING|
+oradb_grp    State                 a84vm02    |ONLINE|STOPPING|
+
+
+DATE:2017-04-26 11:31:06
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |ONLINE|STOPPING|
+oradb_grp    State                 a84vm02    |ONLINE|STOPPING|
+
+
+DATE:2017-04-26 11:31:17
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |OFFLINE|
+oradb_grp    State                 a84vm02    |PARTIAL|STOPPING|
+
+
+DATE:2017-04-26 11:31:27
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |OFFLINE|
+oradb_grp    State                 a84vm02    |OFFLINE|
+
+
+DATE:2017-04-26 11:31:28
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |OFFLINE|
+oradb_grp    State                 a84vm02    |OFFLINE|
+
+
+DATE:2017-04-26 11:31:29
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch list dbdata
+STDOUT:
+VOLUME                 INDEX        LENGTH     KSTATE  CONTEXT
+dbdata-b4vset              0      10485760    ENABLED  -
+autotcvol1                 1      10690560    ENABLED  -
+autotcvol2                 2      10690560    ENABLED  -
+
+
+DATE:2017-04-26 11:31:30
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch rmvol dbdata autotcvol2
+STDOUT:
+
+
+
+DATE:2017-04-26 11:31:31
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch rmvol dbdata autotcvol1
+STDOUT:
+
+
+
+DATE:2017-04-26 11:31:32
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch rmvol dbdata dbdata-b4vset
+STDOUT:
+
+
+
+DATE:2017-04-26 11:31:33
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch rename dbdata-b4vset dbdata
+STDOUT:
+
+
+
+DATE:2017-04-26 11:31:34
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch list archive
+STDOUT:
+VOLUME                 INDEX        LENGTH     KSTATE  CONTEXT
+archive-b4vset             0      10485760    ENABLED  -
+autotcvol5                 1      10690560    ENABLED  -
+autotcvol6                 2      10690560    ENABLED  -
+
+
+DATE:2017-04-26 11:31:35
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch rmvol archive autotcvol6
+STDOUT:
+
+
+
+DATE:2017-04-26 11:31:37
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch rmvol archive autotcvol5
+STDOUT:
+
+
+
+DATE:2017-04-26 11:31:38
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch rmvol archive archive-b4vset
+STDOUT:
+
+
+
+DATE:2017-04-26 11:31:39
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch rename archive-b4vset archive
+STDOUT:
+
+
+***Removing volumes which begin with autotcvol from oradg2579_dbarch "oradg2579_dbarch" on node "a84vm02" ***
+
+
+
+DATE:2017-04-26 11:31:40
+HOST:a84vm02
+USER:root
+STDIN:vxprint -g oradg2579_dbarch|awk '$1=="v" && $2 ~ /^autotcvol/ {print}'
+STDOUT:
+v  autotcvol1   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+v  autotcvol2   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+v  autotcvol3   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+v  autotcvol4   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+v  autotcvol5   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+v  autotcvol6   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+v  autotcvol7   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+v  autotcvol8   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+
+
+DATE:2017-04-26 11:31:41
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol1
+STDOUT:
+
+
+
+DATE:2017-04-26 11:31:42
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol2
+STDOUT:
+
+
+
+DATE:2017-04-26 11:31:43
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol3
+STDOUT:
+
+
+
+DATE:2017-04-26 11:31:44
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol4
+STDOUT:
+
+
+
+DATE:2017-04-26 11:31:45
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol5
+STDOUT:
+
+
+
+DATE:2017-04-26 11:31:46
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol6
+STDOUT:
+
+
+
+DATE:2017-04-26 11:31:47
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol7
+STDOUT:
+
+
+
+DATE:2017-04-26 11:31:48
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol8
+STDOUT:
+
+
+***Removing volumes which begin with autotcvol from oradg2579_dbarch "oradg2579_dbarch" on node "a84vm02" ***
+
+
+
+DATE:2017-04-26 11:31:49
+HOST:a84vm02
+USER:root
+STDIN:vxprint -g oradg2579_dbarch|awk '$1=="v" && $2 ~ /^autotcvol/ {print}'
+STDOUT:
+
+
+***Removing free disk of node "a84vm02"***
+
+
+
+DATE:2017-04-26 11:31:49
+HOST:a84vm02
+USER:root
+STDIN:vxprint|grep dm
+STDOUT:
+dm emc_clariion0_5 emc_clariion0_5 -  4120320  -        -        -       -
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_11 emc_clariion0_11 - 10411776 -       -        -       -
+dm emc_clariion0_12 emc_clariion0_12 - 10411776 -       -        -       -
+dm emc_clariion0_13 emc_clariion0_13 - 10411776 -       -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+dm emc_clariion0_7 emc_clariion0_7 -  10411776 -        -        -       -
+dm emc_clariion0_8 emc_clariion0_8 -  10411776 -        -        -       -
+
+
+DATE:2017-04-26 11:31:50
+HOST:a84vm02
+USER:root
+STDIN:vxdisk reclaim emc_clariion0_5 emc_clariion0_6 emc_clariion0_10 emc_clariion0_11 emc_clariion0_12 emc_clariion0_13 emc_clariion0_20 emc_clariion0_21 emc_clariion0_22 emc_clariion0_23 emc_clariion0_24 emc_clariion0_26 emc_clariion0_27 emc_clariion0_29 emc_clariion0_7 emc_clariion0_8
+STDOUT:
+Disk emc_clariion0_5 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_6 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_10 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_11 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_12 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_13 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_20 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_21 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_22 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_23 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_24 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_26 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_27 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_29 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_7 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_8 : Skipped. Disk not reclaimable or wrong media type.
+
+
+DATE:2017-04-26 11:31:51
+HOST:a84vm02
+USER:root
+STDIN:vxdg -qa free|awk '$5==0 {print}'
+STDOUT:
+oradg2579_dbarch emc_clariion0_5 emc_clariion0_5 emc_clariion0_5 0         4120320   -
+oradg2579_dbarch emc_clariion0_11 emc_clariion0_11 emc_clariion0_11 0         10411776  -
+oradg2579_dbarch emc_clariion0_12 emc_clariion0_12 emc_clariion0_12 0         10411776  -
+oradg2579_dbarch emc_clariion0_13 emc_clariion0_13 emc_clariion0_13 0         10411776  -
+oradg2579_dbarch emc_clariion0_20 emc_clariion0_20 emc_clariion0_20 0         10411776  -
+oradg2579_dbarch emc_clariion0_21 emc_clariion0_21 emc_clariion0_21 0         10411776  -
+oradg2579_dbarch emc_clariion0_22 emc_clariion0_22 emc_clariion0_22 0         10411776  -
+oradg2579_dbarch emc_clariion0_23 emc_clariion0_23 emc_clariion0_23 0         10411776  -
+oradg2579_dbarch emc_clariion0_24 emc_clariion0_24 emc_clariion0_24 0         10411776  -
+oradg2579_dbarch emc_clariion0_29 emc_clariion0_29 emc_clariion0_29 0         10411776  -
+
+
+DATE:2017-04-26 11:31:55
+HOST:a84vm02
+USER:root
+STDIN:vxdg -g oradg2579_dbarch rmdisk emc_clariion0_5 emc_clariion0_11 emc_clariion0_12 emc_clariion0_13 emc_clariion0_20 emc_clariion0_21 emc_clariion0_22 emc_clariion0_23 emc_clariion0_24 emc_clariion0_29
+STDOUT:
+
+
+***Online Group oradb_grp on all active nodes***
+
+
+
+DATE:2017-04-26 11:31:56
+HOST:a84vm02
+USER:root
+STDIN:cat /var/VRTSvcs/log/engine_A.log|wc -l|awk '{print $1}'
+STDOUT:
+3800
+
+
+DATE:2017-04-26 11:31:57
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -online oradb_grp -any
+STDOUT:
+VCS NOTICE V-16-1-50735 Attempting to online group on system a84vm01
+VCS NOTICE V-16-1-50735 Attempting to online group on system a84vm02
+
+
+DATE:2017-04-26 11:32:08
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |OFFLINE|STARTING|
+oradb_grp    State                 a84vm02    |OFFLINE|STARTING|
+
+
+DATE:2017-04-26 11:32:19
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |PARTIAL|STARTING|
+oradb_grp    State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-26 11:32:29
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |PARTIAL|STARTING|
+oradb_grp    State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-26 11:32:40
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |PARTIAL|STARTING|
+oradb_grp    State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-26 11:32:51
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |ONLINE|
+oradb_grp    State                 a84vm02    |ONLINE|
+
+
+DATE:2017-04-26 11:32:52
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |ONLINE|
+oradb_grp    State                 a84vm02    |ONLINE|
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /archive***
+
+
+
+DATE:2017-04-26 11:32:53
+HOST:a84vm02
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.12 11.18 63% 56465 3% /
+/dev/hd2 5.00 3.31 34% 39881 5% /usr
+/dev/hd9var 5.00 4.81 4% 1044 1% /var
+/dev/hd3 5.00 4.30 14% 1510 1% /tmp
+/dev/hd1 5.00 5.00 1% 57 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.64 28% 8625 1% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.22 36% 32 1% /dbdata
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.45 11% 41 1% /archive
+
+
+DATE:2017-04-26 11:32:54
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2579_dbarch/archive
+STDOUT:
+vxfs
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /dbdata***
+
+
+
+DATE:2017-04-26 11:32:55
+HOST:a84vm02
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 30.12 11.18 63% 56465 3% /
+/dev/hd2 5.00 3.31 34% 39881 5% /usr
+/dev/hd9var 5.00 4.81 4% 1044 1% /var
+/dev/hd3 5.00 4.30 14% 1510 1% /tmp
+/dev/hd1 5.00 5.00 1% 57 1% /home
+/dev/hd11admin 0.12 0.12 1% 5 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 5.00 3.64 28% 8625 1% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+/dev/vx/dsk/oradg2579_ocrvote/ocrvote 5.00 4.40 13% 6 1% /ocrvote
+/dev/vx/dsk/oradg2579_dbarch/dbdata 5.00 3.22 36% 32 1% /dbdata
+/dev/vx/dsk/oradg2579_dbarch/archive 5.00 4.45 11% 41 1% /archive
+
+
+DATE:2017-04-26 11:32:56
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2579_dbarch/dbdata
+STDOUT:
+vxfs
+
+
+DATE:2017-04-26 11:32:57
+HOST:a84vm02
+USER:root
+STDIN:vxassist -g oradg2579_dbarch maxsize
+STDOUT:
+Maximum volume size: 20674560 (10095Mb)
+
+***Getting disk list by specified size***
+
+
+***Getting avaiable disks***
+
+
+
+DATE:2017-04-26 11:32:58
+HOST:a84vm02
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-04-26 11:32:58
+HOST:a84vm01
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-04-26 11:32:59
+HOST:a84vm02
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+ibm_vscsi0        IBM_VSCSI      VSCSI                CONNECTED    A/A         1         0001
+emc_clariion0     EMC_CLARiiON   CETV2140800019       CONNECTED    A/A        27         0533
+
+
+DATE:2017-04-26 11:33:01
+HOST:a84vm02
+USER:root
+STDIN:vxdisk scandisks;vxdisk list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc_clariion0_0 auto:cdsdisk    -            -            online
+emc_clariion0_1 auto:cdsdisk    -            -            online
+emc_clariion0_2 auto:cdsdisk    -            -            online
+emc_clariion0_3 auto:cdsdisk    -            -            online
+emc_clariion0_4 auto:cdsdisk    -            -            online
+emc_clariion0_5 auto:cdsdisk    -            -            online
+emc_clariion0_6 auto:cdsdisk    emc_clariion0_6  oradg2579_dbarch online shared
+emc_clariion0_7 auto:cdsdisk    emc_clariion0_7  oradg2579_ocrvote online shared
+emc_clariion0_8 auto:cdsdisk    emc_clariion0_8  oradg2579_ocrvote online shared
+emc_clariion0_10 auto:cdsdisk    emc_clariion0_10  oradg2579_dbarch online shared
+emc_clariion0_11 auto:cdsdisk    -            -            online
+emc_clariion0_12 auto:cdsdisk    -            -            online
+emc_clariion0_13 auto:cdsdisk    -            -            online
+emc_clariion0_14 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_15 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_16 auto:cdsdisk    -            (autotcfendg) online
+emc_clariion0_17 auto:cdsdisk    -            -            online
+emc_clariion0_18 auto:cdsdisk    -            -            online
+emc_clariion0_19 auto:cdsdisk    -            -            online
+emc_clariion0_20 auto:cdsdisk    -            -            online
+emc_clariion0_21 auto:cdsdisk    -            -            online
+emc_clariion0_22 auto:cdsdisk    -            -            online
+emc_clariion0_23 auto:cdsdisk    -            -            online
+emc_clariion0_24 auto:cdsdisk    -            -            online
+emc_clariion0_26 auto:cdsdisk    emc_clariion0_26  oradg2579_dbarch online shared
+emc_clariion0_27 auto:cdsdisk    emc_clariion0_27  oradg2579_dbarch online shared
+emc_clariion0_29 auto:cdsdisk    -            -            online
+ibm_vscsi0_0 auto:LVM        -            -            LVM
+
+
+DATE:2017-04-26 11:33:04
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSsfmh/adm/dclisetup.sh
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:05
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/vxlist disk
+STDOUT:
+TY   DEVICE           DISK             DISKGROUP            SIZE  FREE STATUS
+disk emc_clariion0_0  -                -                   1.96g     - free
+disk emc_clariion0_1  -                -                   1.96g     - free
+disk emc_clariion0_2  -                -                   1.96g     - free
+disk emc_clariion0_3  -                -                   1.96g     - free
+disk emc_clariion0_4  -                -                   1.96g     - free
+disk emc_clariion0_5  -                -                   1.96g     - free
+disk emc_clariion0_6  emc_clariion0_6  oradg2579_dbarch    4.96g  0.00 imported
+disk emc_clariion0_7  emc_clariion0_7  oradg2579_ocrvote   4.96g  0.00 imported
+disk emc_clariion0_8  emc_clariion0_8  oradg2579_ocrvote   4.96g 4.92g imported
+disk emc_clariion0_10 emc_clariion0_10 oradg2579_dbarch    4.96g 4.92g imported
+disk emc_clariion0_11 -                -                   4.96g     - free
+disk emc_clariion0_12 -                -                   4.96g     - free
+disk emc_clariion0_13 -                -                   4.96g     - free
+disk emc_clariion0_14 -                autotcfendg       989.87m     - deported
+disk emc_clariion0_15 -                autotcfendg       989.87m     - deported
+disk emc_clariion0_16 -                autotcfendg       989.87m     - deported
+disk emc_clariion0_17 -                -                   1.96g     - free
+disk emc_clariion0_18 -                -                   1.96g     - free
+disk emc_clariion0_19 -                -                   1.96g     - free
+disk emc_clariion0_20 -                -                   4.96g     - free
+disk emc_clariion0_21 -                -                   4.96g     - free
+disk emc_clariion0_22 -                -                   4.96g     - free
+disk emc_clariion0_23 -                -                   4.96g     - free
+disk emc_clariion0_24 -                -                   4.96g     - free
+disk emc_clariion0_26 emc_clariion0_26 oradg2579_dbarch    4.96g  0.00 imported
+disk emc_clariion0_27 emc_clariion0_27 oradg2579_dbarch    4.96g 4.92g imported
+disk emc_clariion0_29 -                -                   4.96g     - free
+disk ibm_vscsi0_0     -                -                       -     - LVM
+
+
+DATE:2017-04-26 11:33:08
+HOST:a84vm02
+USER:root
+STDIN:vxdg -g oradg2579_dbarch adddisk emc_clariion0_29 emc_clariion0_24 emc_clariion0_23 emc_clariion0_22 emc_clariion0_21
+STDOUT:
+
+
+***Making autotcvol1 with size=5220M in oradg2579_dbarch***
+
+
+
+DATE:2017-04-26 11:33:08
+HOST:a84vm02
+USER:root
+STDIN:for i in `vxprint -g oradg2579_dbarch|grep ^v|grep autotcvol1|awk '{print $2}'`;do vxedit -g oradg2579_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:10
+HOST:a84vm02
+USER:root
+STDIN:vxassist -g oradg2579_dbarch make autotcvol1 5220M
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:11
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch set user=oracle autotcvol1
+STDOUT:
+
+
+***Making autotcvol2 with size=5220M in oradg2579_dbarch***
+
+
+
+DATE:2017-04-26 11:33:12
+HOST:a84vm02
+USER:root
+STDIN:for i in `vxprint -g oradg2579_dbarch|grep ^v|grep autotcvol2|awk '{print $2}'`;do vxedit -g oradg2579_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:14
+HOST:a84vm02
+USER:root
+STDIN:vxassist -g oradg2579_dbarch make autotcvol2 5220M
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:15
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch set user=oracle autotcvol2
+STDOUT:
+
+
+***Making autotcvol3 with size=5220M in oradg2579_dbarch***
+
+
+
+DATE:2017-04-26 11:33:16
+HOST:a84vm02
+USER:root
+STDIN:for i in `vxprint -g oradg2579_dbarch|grep ^v|grep autotcvol3|awk '{print $2}'`;do vxedit -g oradg2579_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:18
+HOST:a84vm02
+USER:root
+STDIN:vxassist -g oradg2579_dbarch make autotcvol3 5220M
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:19
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch set user=oracle autotcvol3
+STDOUT:
+
+
+***Making autotcvol4 with size=5220M in oradg2579_dbarch***
+
+
+
+DATE:2017-04-26 11:33:20
+HOST:a84vm02
+USER:root
+STDIN:for i in `vxprint -g oradg2579_dbarch|grep ^v|grep autotcvol4|awk '{print $2}'`;do vxedit -g oradg2579_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:22
+HOST:a84vm02
+USER:root
+STDIN:vxassist -g oradg2579_dbarch make autotcvol4 5220M
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:23
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch set user=oracle autotcvol4
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:24
+HOST:a84vm02
+USER:root
+STDIN:vxassist -g oradg2579_dbarch maxsize
+STDOUT:
+Maximum volume size: 29970432 (14634Mb)
+
+***Getting disk list by specified size***
+
+
+
+DATE:2017-04-26 11:33:26
+HOST:a84vm02
+USER:root
+STDIN:vxdg -g oradg2579_dbarch adddisk emc_clariion0_20 emc_clariion0_13 emc_clariion0_12 emc_clariion0_11 emc_clariion0_5
+STDOUT:
+
+
+***Making autotcvol5 with size=5220M in oradg2579_dbarch***
+
+
+
+DATE:2017-04-26 11:33:27
+HOST:a84vm02
+USER:root
+STDIN:for i in `vxprint -g oradg2579_dbarch|grep ^v|grep autotcvol5|awk '{print $2}'`;do vxedit -g oradg2579_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:28
+HOST:a84vm02
+USER:root
+STDIN:vxassist -g oradg2579_dbarch make autotcvol5 5220M
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:29
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch set user=oracle autotcvol5
+STDOUT:
+
+
+***Making autotcvol6 with size=5220M in oradg2579_dbarch***
+
+
+
+DATE:2017-04-26 11:33:30
+HOST:a84vm02
+USER:root
+STDIN:for i in `vxprint -g oradg2579_dbarch|grep ^v|grep autotcvol6|awk '{print $2}'`;do vxedit -g oradg2579_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:31
+HOST:a84vm02
+USER:root
+STDIN:vxassist -g oradg2579_dbarch make autotcvol6 5220M
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:32
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch set user=oracle autotcvol6
+STDOUT:
+
+
+***Making autotcvol7 with size=5220M in oradg2579_dbarch***
+
+
+
+DATE:2017-04-26 11:33:33
+HOST:a84vm02
+USER:root
+STDIN:for i in `vxprint -g oradg2579_dbarch|grep ^v|grep autotcvol7|awk '{print $2}'`;do vxedit -g oradg2579_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:35
+HOST:a84vm02
+USER:root
+STDIN:vxassist -g oradg2579_dbarch make autotcvol7 5220M
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:36
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch set user=oracle autotcvol7
+STDOUT:
+
+
+***Making autotcvol8 with size=5220M in oradg2579_dbarch***
+
+
+
+DATE:2017-04-26 11:33:37
+HOST:a84vm02
+USER:root
+STDIN:for i in `vxprint -g oradg2579_dbarch|grep ^v|grep autotcvol8|awk '{print $2}'`;do vxedit -g oradg2579_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:38
+HOST:a84vm02
+USER:root
+STDIN:vxassist -g oradg2579_dbarch make autotcvol8 5220M
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:39
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch set user=oracle autotcvol8
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:40
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch set user=oracle dbdata
+STDOUT:
+
+
+
+DATE:2017-04-26 11:33:41
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch set user=oracle archive
+STDOUT:
+
+
+
+====STEP: Doing dbdst operation
+DATE:2017-04-26 11:33:41
+
+
+DATE:2017-04-26 11:33:50
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+
+DATE:2017-04-26 11:33:51
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o list
+STDOUT:
+TSDB Parameters for orcl2
+-----------------------------------
+Maxclass	=  8
+Minclass	=  2
+Stat-Interval	=  10
+Sweep Information = 11HH:21MM, Frequency = 1
+Purge Information = 11HH:21MM, Frequency = 1
+
+
+TSDB Storage Classes for orcl2
+-----------------------------------
+Name = BALANCE : Description = BALANCE Storage Class
+Name = FAST : Description = FAST Storage+@chunk=256K
+Name = MEDIUM : Description = MEDIUM Storage+@chunk=512K
+Name = PRIMARY : Description = PRIMARY Storage Class
+Name = SECONDARY : Description = SECONDARY Storage Class
+Name = SLOW : Description = SLOW Storage+@chunk=1M
+
+SCHEDULED RECURRING JOBS INFORMATION
+------------------------------------
+TIME=YYYY-MM-DD@11:21 CMD=/opt/VRTSdbed/bin/internal/tsdb_enforce_all.sh, ARGS=/archive 
+
+
+DATE:2017-04-26 11:33:53
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o list
+STDOUT:
+TSDB Parameters for orcl2
+-----------------------------------
+Maxclass	=  8
+Minclass	=  2
+Stat-Interval	=  10
+Sweep Information = 11HH:21MM, Frequency = 1
+Purge Information = 11HH:21MM, Frequency = 1
+
+
+TSDB Storage Classes for orcl2
+-----------------------------------
+Name = BALANCE : Description = BALANCE Storage Class
+Name = FAST : Description = FAST Storage+@chunk=256K
+Name = MEDIUM : Description = MEDIUM Storage+@chunk=512K
+Name = PRIMARY : Description = PRIMARY Storage Class
+Name = SECONDARY : Description = SECONDARY Storage Class
+Name = SLOW : Description = SLOW Storage+@chunk=1M
+
+SCHEDULED RECURRING JOBS INFORMATION
+------------------------------------
+TIME=YYYY-MM-DD@11:21 CMD=/opt/VRTSdbed/bin/internal/tsdb_enforce_all.sh, ARGS=/archive 
+
+***Offline Group oradb_grp on all active nodes***
+
+
+
+DATE:2017-04-26 11:33:54
+HOST:a84vm02
+USER:root
+STDIN:cat /var/VRTSvcs/log/engine_A.log|wc -l|awk '{print $1}'
+STDOUT:
+3823
+
+
+DATE:2017-04-26 11:33:55
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -offline oradb_grp -any
+STDOUT:
+VCS NOTICE V-16-1-50733 Attempting to offline group on system a84vm01
+VCS NOTICE V-16-1-50733 Attempting to offline group on system a84vm02
+
+
+DATE:2017-04-26 11:34:06
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |ONLINE|STOPPING|
+oradb_grp    State                 a84vm02    |ONLINE|STOPPING|
+
+
+DATE:2017-04-26 11:34:16
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |ONLINE|STOPPING|
+oradb_grp    State                 a84vm02    |ONLINE|STOPPING|
+
+
+DATE:2017-04-26 11:34:28
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |PARTIAL|STOPPING|
+oradb_grp    State                 a84vm02    |ONLINE|STOPPING|
+
+
+DATE:2017-04-26 11:34:38
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |OFFLINE|
+oradb_grp    State                 a84vm02    |OFFLINE|
+
+
+DATE:2017-04-26 11:34:39
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |OFFLINE|
+oradb_grp    State                 a84vm02    |OFFLINE|
+
+***Converting volume dbdata to volume set***
+
+
+
+DATE:2017-04-26 11:34:52
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_convert -S $ORACLE_SID -M /dev/vx/dsk/oradg2579_dbarch/dbdata -v autotcvol1,autotcvol2
+STDOUT:
+
+
+
+DATE:2017-04-26 11:34:53
+HOST:a84vm02
+USER:root
+STDIN:/usr/sbin/vxvset -g oradg2579_dbarch list dbdata
+STDOUT:
+VOLUME                 INDEX        LENGTH     KSTATE  CONTEXT
+dbdata-b4vset              0      10485760    ENABLED  -
+autotcvol1                 1      10690560    ENABLED  -
+autotcvol2                 2      10690560    ENABLED  -
+
+***Converting volume archive to volume set***
+
+
+
+DATE:2017-04-26 11:35:06
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_convert -S $ORACLE_SID -M /dev/vx/dsk/oradg2579_dbarch/archive -v autotcvol5,autotcvol6
+STDOUT:
+
+
+
+DATE:2017-04-26 11:35:07
+HOST:a84vm02
+USER:root
+STDIN:/usr/sbin/vxvset -g oradg2579_dbarch list archive
+STDOUT:
+VOLUME                 INDEX        LENGTH     KSTATE  CONTEXT
+archive-b4vset             0      10485760    ENABLED  -
+autotcvol5                 1      10690560    ENABLED  -
+autotcvol6                 2      10690560    ENABLED  -
+
+***Online Group oradb_grp on all active nodes***
+
+
+
+DATE:2017-04-26 11:35:08
+HOST:a84vm02
+USER:root
+STDIN:cat /var/VRTSvcs/log/engine_A.log|wc -l|awk '{print $1}'
+STDOUT:
+3844
+
+
+DATE:2017-04-26 11:35:09
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -online oradb_grp -any
+STDOUT:
+VCS NOTICE V-16-1-50735 Attempting to online group on system a84vm01
+VCS NOTICE V-16-1-50735 Attempting to online group on system a84vm02
+
+
+DATE:2017-04-26 11:35:20
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |OFFLINE|STARTING|
+oradb_grp    State                 a84vm02    |OFFLINE|STARTING|
+
+
+DATE:2017-04-26 11:35:30
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |PARTIAL|STARTING|
+oradb_grp    State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-26 11:35:41
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |PARTIAL|STARTING|
+oradb_grp    State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-26 11:35:52
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |PARTIAL|STARTING|
+oradb_grp    State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-26 11:36:03
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |ONLINE|
+oradb_grp    State                 a84vm02    |ONLINE|
+
+
+DATE:2017-04-26 11:36:04
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |ONLINE|
+oradb_grp    State                 a84vm02    |ONLINE|
+
+
+DATE:2017-04-26 11:36:05
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsvoladm list /dbdata
+STDOUT:
+devid   size                 used                 avail                name                             locality
+0	5242880              1647040              3595840              dbdata-b4vset                   	0
+1	5345280              16                   5345264              autotcvol1                      	0
+2	5345280              16                   5345264              autotcvol2                      	0
+
+
+DATE:2017-04-26 11:36:05
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsvoladm list /archive
+STDOUT:
+devid   size                 used                 avail                name                             locality
+0	5242880              265010               4977870              archive-b4vset                  	0
+1	5345280              259                  5345021              autotcvol5                      	0
+2	5345280              684                  5344596              autotcvol6                      	0
+
+***Define Classes for all volumes in volume set***
+
+
+
+DATE:2017-04-26 11:36:10
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_classify -S $ORACLE_SID -M /dev/vx/dsk/oradg2579_dbarch/dbdata -v autotcvol1:FAST
+STDOUT:
+
+
+
+DATE:2017-04-26 11:36:15
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_classify -S $ORACLE_SID -M /dev/vx/dsk/oradg2579_dbarch/dbdata -v autotcvol2:SLOW
+STDOUT:
+
+
+
+DATE:2017-04-26 11:36:20
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_classify -S $ORACLE_SID -M /dev/vx/dsk/oradg2579_dbarch/dbdata -v dbdata-b4vset:MEDIUM
+STDOUT:
+
+
+
+DATE:2017-04-26 11:36:24
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /dbdata
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol1                    5345280	16	5345264
+
+CLASS=MEDIUM
+dbdata-b4vset                 5242880	1647040	3595840
+
+CLASS=SLOW
+autotcvol2                    5345280	34	5345246
+
+
+DATE:2017-04-26 11:36:29
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_classify -S $ORACLE_SID -M /dev/vx/dsk/oradg2579_dbarch/archive -v autotcvol5:FAST
+STDOUT:
+
+
+
+DATE:2017-04-26 11:36:33
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_classify -S $ORACLE_SID -M /dev/vx/dsk/oradg2579_dbarch/archive -v autotcvol6:SLOW
+STDOUT:
+
+
+
+DATE:2017-04-26 11:36:38
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_classify -S $ORACLE_SID -M /dev/vx/dsk/oradg2579_dbarch/archive -v archive-b4vset:MEDIUM
+STDOUT:
+
+
+
+DATE:2017-04-26 11:36:42
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /archive
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol5                    5345280	259	5345021
+
+CLASS=MEDIUM
+archive-b4vset                5242880	265010	4977870
+
+CLASS=SLOW
+autotcvol6                    5345280	684	5344596
+
+
+DATE:2017-04-26 11:36:50
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+***Define Policy and check if files move for /dbdata***
+
+
+
+DATE:2017-04-26 11:36:51
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /dbdata/orcl/*.ctl
+STDOUT:
+         Volume  Extent Type     File
+  dbdata-b4vset         Data     /dbdata/orcl/control01.ctl
+
+
+DATE:2017-04-26 11:37:00
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -d /dbdata -P FAST=*.ctl
+STDOUT:
+Assign placement policy file successful on filesystem /dbdata
+Begin enforcing filesystem /dbdata ...
+Enforce placement policy successful on filesystem /dbdata
+
+
+DATE:2017-04-26 11:37:02
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -l -d /dbdata
+STDOUT:
+FAST=*.ctl
+
+
+DATE:2017-04-26 11:37:03
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /dbdata/orcl/*.ctl
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol1         Data     /dbdata/orcl/control01.ctl
+
+***Part of the ctl files have move to autotcvol1***
+
+
+***execute sql sentences to create tables***
+
+
+
+DATE:2017-04-26 11:37:04
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:cat /opt/itf/tmp/dbdst_pre.3500.sql;rm -f /opt/itf/tmp/dbdst_pre.3500.sql
+STDOUT:
+CREATE TABLESPACE part1 DATAFILE '/dbdata/orcl/part1.dbf' SIZE 100M REUSE;
+CREATE TABLESPACE part2 DATAFILE '/dbdata/orcl/part2.dbf' SIZE 100M REUSE;
+CREATE TABLESPACE part3 DATAFILE '/dbdata/orcl/part3.dbf' SIZE 100M REUSE;
+CREATE TABLESPACE part4 DATAFILE '/dbdata/orcl/part4.dbf' SIZE 100M REUSE;
+CREATE TABLE sales ( invoice_no NUMBER(10), sale_date DATE NOT NULL ) PARTITION BY RANGE (sale_date)( PARTITION sales_yr1 VALUES LESS THAN (TO_DATE('01-JAN-2000','DD-MON-YYYY')) TABLESPACE part1, PARTITION sales_yr2 VALUES LESS THAN (TO_DATE('01-JAN-2001','DD-MON-YYYY')) TABLESPACE part2, PARTITION sales_yr3 VALUES LESS THAN (MAXVALUE) TABLESPACE part3);
+declare
+i number(10);
+sql_stmt varchar2(1000);
+begin
+i:=0;
+while ( i < 100000 ) loop
+insert into sales values(01,'28-NOV-1995');
+insert into sales values(02,'28-nov-2001');
+insert into sales values(03,'28-JUN-2004');
+i:=i+1;
+end loop;
+commit;
+end;
+/
+
+
+DATE:2017-04-26 11:37:05
+HOST:a84vm02
+USER:root
+STDIN:ls -l /tmp/dbdst_pre.3500.sql
+STDOUT:
+-rw-r--r--    1 root     system          907 Apr 26 11:37 /tmp/dbdst_pre.3500.sql
+
+
+DATE:2017-04-26 11:37:20
+HOST:a84vm02
+USER:oracle
+STDIN:sqlplus / as sysdba @/tmp/dbdst_pre.3500.sql
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:37:06 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace created.
+
+
+Tablespace created.
+
+
+Tablespace created.
+
+
+Tablespace created.
+
+
+Table created.
+
+
+PL/SQL procedure successfully completed.
+
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:37:21
+HOST:a84vm02
+USER:root
+STDIN:rm -f /tmp/dbdst_pre.3500.sql
+STDOUT:
+
+
+
+DATE:2017-04-26 11:37:29
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+***Modify create time of below dbf file in case below dbf file is created one day before***
+
+
+
+DATE:2017-04-26 11:37:30
+HOST:a84vm02
+USER:root
+STDIN:ls -l /archive | head -5
+STDOUT:
+total 173992
+-r--r-----    1 oracle   oinstall    2161152 Jul 01 2002  1_10_942251867.dbf
+-r--r-----    1 oracle   oinstall       1024 Jul 01 2002  1_11_942251867.dbf
+-r--r-----    1 oracle   oinstall       1536 Jul 01 2002  1_12_942251867.dbf
+-r--r-----    1 oracle   oinstall    2069504 Jul 01 2002  1_13_942251867.dbf
+
+
+DATE:2017-04-26 11:37:31
+HOST:a84vm02
+USER:root
+STDIN:touch -t 200207010800.01 /archive/1_10_942251867.dbf;ls -l /archive/1_10_942251867.dbf
+STDOUT:
+-r--r-----    1 oracle   oinstall    2161152 Jul 01 2002  /archive/1_10_942251867.dbf
+
+
+DATE:2017-04-26 11:37:31
+HOST:a84vm02
+USER:root
+STDIN:touch -t 200207010800.01 /archive/1_11_942251867.dbf;ls -l /archive/1_11_942251867.dbf
+STDOUT:
+-r--r-----    1 oracle   oinstall       1024 Jul 01 2002  /archive/1_11_942251867.dbf
+
+
+DATE:2017-04-26 11:37:32
+HOST:a84vm02
+USER:root
+STDIN:touch -t 200207010800.01 /archive/1_12_942251867.dbf;ls -l /archive/1_12_942251867.dbf
+STDOUT:
+-r--r-----    1 oracle   oinstall       1536 Jul 01 2002  /archive/1_12_942251867.dbf
+
+
+DATE:2017-04-26 11:37:33
+HOST:a84vm02
+USER:root
+STDIN:touch -t 200207010800.01 /archive/1_13_942251867.dbf;ls -l /archive/1_13_942251867.dbf
+STDOUT:
+-r--r-----    1 oracle   oinstall    2069504 Jul 01 2002  /archive/1_13_942251867.dbf
+
+
+DATE:2017-04-26 11:37:35
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o definechunk=FAST:256K
+STDOUT:
+
+
+
+DATE:2017-04-26 11:37:37
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o definechunk=MEDIUM:512K
+STDOUT:
+
+
+
+DATE:2017-04-26 11:37:39
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o definechunk=SLOW:1M
+STDOUT:
+
+
+
+DATE:2017-04-26 11:37:41
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o list
+STDOUT:
+TSDB Parameters for orcl2
+-----------------------------------
+Maxclass	=  8
+Minclass	=  2
+Stat-Interval	=  10
+Sweep Information = 11HH:21MM, Frequency = 1
+Purge Information = 11HH:21MM, Frequency = 1
+
+
+TSDB Storage Classes for orcl2
+-----------------------------------
+Name = BALANCE : Description = BALANCE Storage Class
+Name = FAST : Description = FAST Storage+@chunk=256K
+Name = MEDIUM : Description = MEDIUM Storage+@chunk=512K
+Name = PRIMARY : Description = PRIMARY Storage Class
+Name = SECONDARY : Description = SECONDARY Storage Class
+Name = SLOW : Description = SLOW Storage+@chunk=1M
+
+SCHEDULED RECURRING JOBS INFORMATION
+------------------------------------
+TIME=YYYY-MM-DD@11:21 CMD=/opt/VRTSdbed/bin/internal/tsdb_enforce_all.sh, ARGS=/archive 
+
+***Define Policy and check if files move for /archive***
+
+
+
+DATE:2017-04-26 11:37:49
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+
+DATE:2017-04-26 11:37:50
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /archive/*.dbf
+STDOUT:
+         Volume  Extent Type     File
+ archive-b4vset         Data     /archive/1_10_942251867.dbf
+
+ archive-b4vset         Data     /archive/1_11_942251867.dbf
+
+ archive-b4vset         Data     /archive/1_12_942251867.dbf
+
+ archive-b4vset         Data     /archive/1_13_942251867.dbf
+
+ archive-b4vset         Data     /archive/1_14_942251867.dbf
+
+     autotcvol5         Data     /archive/1_15_942251867.dbf
+
+     autotcvol5         Data     /archive/1_16_942251867.dbf
+
+ archive-b4vset         Data     /archive/2_10_942251867.dbf
+
+ archive-b4vset         Data     /archive/2_11_942251867.dbf
+
+ archive-b4vset         Data     /archive/2_12_942251867.dbf
+
+ archive-b4vset         Data     /archive/2_13_942251867.dbf
+
+     autotcvol6         Data     /archive/2_14_942251867.dbf
+
+     autotcvol6         Data     /archive/2_15_942251867.dbf
+
+     autotcvol5         Data     /archive/2_16_942251867.dbf
+
+     autotcvol6         Data     /archive/2_17_942251867.dbf
+
+ archive-b4vset         Data     /archive/2_7_942251867.dbf
+
+ archive-b4vset         Data     /archive/2_8_942251867.dbf
+
+ archive-b4vset         Data     /archive/2_9_942251867.dbf
+
+
+DATE:2017-04-26 11:38:03
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -d /archive -P FAST=*.dbf
+STDOUT:
+Assign placement policy file successful on filesystem /archive
+Begin enforcing filesystem /archive ...
+Enforce placement policy successful on filesystem /archive
+
+
+DATE:2017-04-26 11:38:05
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -l -d /archive
+STDOUT:
+FAST=*.dbf
+
+
+DATE:2017-04-26 11:38:06
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /archive/*.dbf
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_10_942251867.dbf
+
+     autotcvol5         Data     /archive/1_11_942251867.dbf
+
+     autotcvol5         Data     /archive/1_12_942251867.dbf
+
+     autotcvol5         Data     /archive/1_13_942251867.dbf
+
+     autotcvol5         Data     /archive/1_14_942251867.dbf
+
+     autotcvol5         Data     /archive/1_15_942251867.dbf
+
+     autotcvol5         Data     /archive/1_16_942251867.dbf
+
+     autotcvol5         Data     /archive/2_10_942251867.dbf
+
+     autotcvol5         Data     /archive/2_11_942251867.dbf
+
+     autotcvol5         Data     /archive/2_12_942251867.dbf
+
+     autotcvol5         Data     /archive/2_13_942251867.dbf
+
+     autotcvol5         Data     /archive/2_14_942251867.dbf
+
+     autotcvol5         Data     /archive/2_15_942251867.dbf
+
+     autotcvol5         Data     /archive/2_16_942251867.dbf
+
+     autotcvol5         Data     /archive/2_17_942251867.dbf
+
+     autotcvol5         Data     /archive/2_7_942251867.dbf
+
+     autotcvol5         Data     /archive/2_8_942251867.dbf
+
+     autotcvol5         Data     /archive/2_9_942251867.dbf
+
+***All of the dbf files have move to autotcvol5***
+
+
+***move file by dbdst_partition_move and check***
+
+
+
+DATE:2017-04-26 11:38:14
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+
+DATE:2017-04-26 11:38:15
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /dbdata/orcl/part1.dbf
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol1         Data     /dbdata/orcl/part1.dbf
+
+
+DATE:2017-04-26 11:41:39
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_partition_move -S $ORACLE_SID -T sales -p sales_yr1 -c SLOW
+STDOUT:
+Assign placement policy file successful on filesystem /dbdata
+Begin enforcing filesystem /dbdata ...
+Enforce placement policy successful on filesystem /dbdata
+
+
+DATE:2017-04-26 11:41:40
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /dbdata/orcl/part1.dbf
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol2         Data     /dbdata/orcl/part1.dbf
+
+***Attention.All file offsets are located in autotcvol2***
+
+
+***move file by dbdst_tbs_move and check***
+
+
+
+DATE:2017-04-26 11:41:48
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+
+DATE:2017-04-26 11:41:49
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /dbdata/orcl/part4.dbf
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol2         Data     /dbdata/orcl/part4.dbf
+
+
+DATE:2017-04-26 11:45:37
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_tbs_move -S $ORACLE_SID -t part4 -c FAST
+STDOUT:
+Assign placement policy file successful on filesystem /dbdata
+Begin enforcing filesystem /dbdata ...
+Enforce placement policy successful on filesystem /dbdata
+
+
+DATE:2017-04-26 11:45:37
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /dbdata/orcl/part4.dbf
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol1         Data     /dbdata/orcl/part4.dbf
+
+***Attention.All file offsets are located in autotcvol1***
+
+
+***Making a plan to move files which will happen in 2 minutes***
+
+
+
+DATE:2017-04-26 11:45:39
+HOST:a84vm02
+USER:root
+STDIN:ntpdate 172.16.8.14
+STDOUT:
+26 Apr 11:45:39 ntpdate[20644216]: adjust time server 172.16.8.14 offset 0.001115
+
+
+DATE:2017-04-26 11:45:40
+HOST:a84vm02
+USER:root
+STDIN:date
+STDOUT:
+Wed Apr 26 11:45:40 CST 2017
+
+
+DATE:2017-04-26 11:45:43
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o maxclass=8,minclass=2,statinterval=10
+STDOUT:
+
+
+
+DATE:2017-04-26 11:45:46
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o sweeptime=11:47,sweepinterval=1
+STDOUT:
+
+
+
+DATE:2017-04-26 11:45:49
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o purgetime=11:47,purgeinterval=1
+STDOUT:
+
+
+
+DATE:2017-04-26 11:45:51
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o list
+STDOUT:
+TSDB Parameters for orcl2
+-----------------------------------
+Maxclass	=  8
+Minclass	=  2
+Stat-Interval	=  10
+Sweep Information = 11HH:47MM, Frequency = 1
+Purge Information = 11HH:47MM, Frequency = 1
+
+
+TSDB Storage Classes for orcl2
+-----------------------------------
+Name = BALANCE : Description = BALANCE Storage Class
+Name = FAST : Description = FAST Storage+@chunk=256K
+Name = MEDIUM : Description = MEDIUM Storage+@chunk=512K
+Name = PRIMARY : Description = PRIMARY Storage Class
+Name = SECONDARY : Description = SECONDARY Storage Class
+Name = SLOW : Description = SLOW Storage+@chunk=1M
+
+SCHEDULED RECURRING JOBS INFORMATION
+------------------------------------
+TIME=YYYY-MM-DD@11:47 CMD=/opt/VRTSdbed/bin/internal/tsdb_enforce_all.sh, ARGS=/archive 
+
+***Move file by dbdst_file_move with and check ***
+
+
+
+DATE:2017-04-26 11:45:59
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+
+DATE:2017-04-26 11:46:00
+HOST:a84vm02
+USER:oracle
+STDIN:for i in 1_10_942251867.dbf 1_11_942251867.dbf 1_12_942251867.dbf 1_13_942251867.dbf;do /opt/VRTS/bin/fsmap /archive/$i;done
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_10_942251867.dbf
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_11_942251867.dbf
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_12_942251867.dbf
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_13_942251867.dbf
+
+
+DATE:2017-04-26 11:46:08
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_file_move -S $ORACLE_SID -o archive -c SLOW:1
+STDOUT:
+Assign placement policy file successful on filesystem /archive
+Filesystem /archive is scheduled to be enforced at sweeptime
+
+***Sleep 3 minutes***
+
+
+
+DATE:2017-04-26 11:49:09
+HOST:a84vm02
+USER:root
+STDIN:date
+STDOUT:
+Wed Apr 26 11:49:09 CST 2017
+
+***Checking moving result sequence 1***
+
+
+
+DATE:2017-04-26 11:49:10
+HOST:a84vm02
+USER:oracle
+STDIN:for i in 1_10_942251867.dbf 1_11_942251867.dbf 1_12_942251867.dbf 1_13_942251867.dbf;do /opt/VRTS/bin/fsmap /archive/$i;done
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_10_942251867.dbf
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_11_942251867.dbf
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_12_942251867.dbf
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_13_942251867.dbf
+
+***Checking moving result sequence 2***
+
+
+
+DATE:2017-04-26 11:51:11
+HOST:a84vm02
+USER:oracle
+STDIN:for i in 1_10_942251867.dbf 1_11_942251867.dbf 1_12_942251867.dbf 1_13_942251867.dbf;do /opt/VRTS/bin/fsmap /archive/$i;done
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol6         Data     /archive/1_10_942251867.dbf
+         Volume  Extent Type     File
+     autotcvol6         Data     /archive/1_11_942251867.dbf
+         Volume  Extent Type     File
+     autotcvol6         Data     /archive/1_12_942251867.dbf
+         Volume  Extent Type     File
+     autotcvol6         Data     /archive/1_13_942251867.dbf
+
+***The orginal dbf files under /archive which has been changed time has been move to autotcvol6***
+
+
+
+DATE:2017-04-26 11:51:20
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_addvol -S $ORACLE_SID -M /dev/vx/dsk/oradg2579_dbarch/dbdata -v autotcvol3:MEDIUM
+STDOUT:
+
+
+
+DATE:2017-04-26 11:51:24
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /dbdata
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol1                    5345280	2015943	3329337
+
+CLASS=MEDIUM
+autotcvol3                    5345280	16	5345264
+dbdata-b4vset                 5242880	42692	5200188
+---------------------------------------------------------------
+SUMMARY:                      10588160	42708	10545452
+
+CLASS=SLOW
+autotcvol2                    5345280	28	5345252
+
+
+DATE:2017-04-26 11:51:26
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -l -d /dbdata
+STDOUT:
+FAST=*.ctl
+
+
+DATE:2017-04-26 11:51:31
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -R -d /dbdata
+STDOUT:
+Assign placement policy file successful on filesystem /dbdata
+
+
+DATE:2017-04-26 11:53:38
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -d /dbdata -P MEDIUM=*.dbf
+STDOUT:
+Assign placement policy file successful on filesystem /dbdata
+Begin enforcing filesystem /dbdata ...
+Enforce placement policy successful on filesystem /dbdata
+
+
+DATE:2017-04-26 11:53:40
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -l -d /dbdata
+STDOUT:
+MEDIUM=*.dbf
+
+
+DATE:2017-04-26 11:53:42
+HOST:a84vm02
+USER:oracle
+STDIN:create tablespace part5 datafile '/dbdata/orcl/part5.dbf' size 100M;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:53:41 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace created.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:53:56
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /dbdata
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol1                    5345280	218748	5126532
+
+CLASS=MEDIUM
+autotcvol3                    5345280	949880	4395400
+dbdata-b4vset                 5242880	992614	4250266
+---------------------------------------------------------------
+SUMMARY:                      10588160	1942494	8645666
+
+CLASS=SLOW
+autotcvol2                    5345280	46	5345234
+
+***Attenion,Used size of MEDIUM Class has grown.***
+
+
+
+DATE:2017-04-26 11:54:29
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_addvol -S $ORACLE_SID -M /dev/vx/dsk/oradg2579_dbarch/dbdata -v autotcvol4:MEDIUM
+STDOUT:
+
+
+
+DATE:2017-04-26 11:54:33
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /dbdata
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol1                    5345280	218747	5126533
+
+CLASS=MEDIUM
+autotcvol3                    5345280	636016	4709264
+autotcvol4                    5345280	627745	4717535
+dbdata-b4vset                 5242880	680126	4562754
+---------------------------------------------------------------
+SUMMARY:                      15933440	1943887	13989553
+
+CLASS=SLOW
+autotcvol2                    5345280	23	5345257
+
+
+DATE:2017-04-26 11:54:38
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -R -d /dbdata
+STDOUT:
+Assign placement policy file successful on filesystem /dbdata
+
+
+DATE:2017-04-26 11:54:49
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -d /dbdata -P MEDIUM=*.dbf
+STDOUT:
+Assign placement policy file successful on filesystem /dbdata
+Begin enforcing filesystem /dbdata ...
+Enforce placement policy successful on filesystem /dbdata
+
+
+DATE:2017-04-26 11:54:51
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -l -d /dbdata
+STDOUT:
+MEDIUM=*.dbf
+
+
+DATE:2017-04-26 11:54:53
+HOST:a84vm02
+USER:oracle
+STDIN:create tablespace part6 datafile '/dbdata/orcl/part6.dbf' size 100M;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:54:52 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace created.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:54:57
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /dbdata
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol1                    5345280	218748	5126532
+
+CLASS=MEDIUM
+autotcvol3                    5345280	670306	4674974
+autotcvol4                    5345280	661561	4683719
+dbdata-b4vset                 5242880	714455	4528425
+---------------------------------------------------------------
+SUMMARY:                      15933440	2046322	13887118
+
+CLASS=SLOW
+autotcvol2                    5345280	23	5345257
+
+
+DATE:2017-04-26 11:55:02
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_rmvol -S $ORACLE_SID -M /dev/vx/dsk/oradg2579_dbarch/dbdata -v autotcvol4
+STDOUT:
+SFORA dbdst_rmvol ERROR V-81-6223 Could not remove volume autotcvol4 from vset.
+RETURN:1
+RESULT:WARNING
+
+
+DATE:2017-04-26 11:55:21
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_rmvol -S $ORACLE_SID -M /dev/vx/dsk/oradg2579_dbarch/dbdata -v autotcvol4
+STDOUT:
+
+
+
+DATE:2017-04-26 11:55:25
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /dbdata
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol1                    5345280	218747	5126533
+
+CLASS=MEDIUM
+autotcvol3                    5345280	983658	4361622
+dbdata-b4vset                 5242880	1062543	4180337
+---------------------------------------------------------------
+SUMMARY:                      10588160	2046201	8541959
+
+CLASS=SLOW
+autotcvol2                    5345280	38	5345242
+
+
+DATE:2017-04-26 11:55:29
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /dbdata
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol1                    5345280	218747	5126533
+
+CLASS=MEDIUM
+autotcvol3                    5345280	983658	4361622
+dbdata-b4vset                 5242880	1062543	4180337
+---------------------------------------------------------------
+SUMMARY:                      10588160	2046201	8541959
+
+CLASS=SLOW
+autotcvol2                    5345280	38	5345242
+
+
+DATE:2017-04-26 11:55:33
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /archive
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol5                    5345280	161362	5183918
+
+CLASS=MEDIUM
+archive-b4vset                5242880	179261	5063619
+
+CLASS=SLOW
+autotcvol6                    5345280	4151	5341129
+
+
+DATE:2017-04-26 11:55:35
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o list
+STDOUT:
+TSDB Parameters for orcl2
+-----------------------------------
+Maxclass	=  8
+Minclass	=  2
+Stat-Interval	=  10
+Sweep Information = 11HH:47MM, Frequency = 1
+Purge Information = 11HH:47MM, Frequency = 1
+
+
+TSDB Storage Classes for orcl2
+-----------------------------------
+Name = BALANCE : Description = BALANCE Storage Class
+Name = FAST : Description = FAST Storage+@chunk=256K
+Name = MEDIUM : Description = MEDIUM Storage+@chunk=512K
+Name = PRIMARY : Description = PRIMARY Storage Class
+Name = SECONDARY : Description = SECONDARY Storage Class
+Name = SLOW : Description = SLOW Storage+@chunk=1M
+
+SCHEDULED RECURRING JOBS INFORMATION
+------------------------------------
+TIME=YYYY-MM-DD@11:47 CMD=/opt/VRTSdbed/bin/internal/tsdb_enforce_all.sh, ARGS=/archive 
+
+
+DATE:2017-04-26 11:55:37
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_report -S $ORACLE_SID -o audit
+STDOUT:
+
+AUDIT DATETIME            AUDIT DESCRIPTION
+------------------------------------------------------------------------
+2017-04-26 11:08:27       ADMIN;Added;class name=FAST
+2017-04-26 11:08:29       ADMIN;Added;class name=MEDIUM
+2017-04-26 11:08:31       ADMIN;Added;class name=SLOW
+2017-04-26 11:10:52       Addvol;SUCCESS;volume autotcvol1 belongs to storage_class FAST
+2017-04-26 11:10:56       Addvol;SUCCESS;volume autotcvol2 belongs to storage_class SLOW
+2017-04-26 11:11:01       Addvol;SUCCESS;volume dbdata-b4vset belongs to storage_class MEDIUM
+2017-04-26 11:11:10       Addvol;SUCCESS;volume autotcvol5 belongs to storage_class FAST
+2017-04-26 11:11:15       Addvol;SUCCESS;volume autotcvol6 belongs to storage_class SLOW
+2017-04-26 11:11:20       Addvol;SUCCESS;volume archive-b4vset belongs to storage_class MEDIUM
+2017-04-26 11:11:43       PrstPol;Added;FAST = *.ctl
+2017-04-26 11:11:43       PrstPol;SUCCESS;Preset policy for directory /dbdata
+2017-04-26 11:12:18       ADMIN;New Chunk Size;class name=FAST chunk=256K
+2017-04-26 11:12:20       ADMIN;New Chunk Size;class name=MEDIUM chunk=512K
+2017-04-26 11:12:22       ADMIN;New Chunk Size;class name=SLOW chunk=1M
+2017-04-26 11:12:43       PrstPol;Added;FAST = *.dbf
+2017-04-26 11:12:43       PrstPol;SUCCESS;Preset policy for directory /archive
+2017-04-26 11:15:00       PartnMv;SUCCESS;Partition sales_yr1 of Table SYS.sales will be relocated to storage_class SLOW
+2017-04-26 11:19:24       TbsMove;SUCCESS;Tablespace PART4 will be relocated to storage class FAST
+2017-04-26 11:19:30       ADMIN;Modified Successfully;max/min class=8/2, statinterval=10, sweeptime=22:0, purgetime=20:0, swp/prg freq=1/30
+2017-04-26 11:19:32       ADMIN;Modified Successfully;max/min class=8/2, statinterval=10, sweeptime=11:21, purgetime=20:0, swp/prg freq=1/30
+2017-04-26 11:19:34       ADMIN;Modified Successfully;max/min class=8/2, statinterval=10, sweeptime=11:21, purgetime=11:21, swp/prg freq=1/1
+2017-04-26 11:19:53       ArchMv;SUCCESS;Age > 1 days relocate to SLOW;
+2017-04-26 11:36:10       Addvol;SUCCESS;volume autotcvol1 belongs to storage_class FAST
+2017-04-26 11:36:15       Addvol;SUCCESS;volume autotcvol2 belongs to storage_class SLOW
+2017-04-26 11:36:20       Addvol;SUCCESS;volume dbdata-b4vset belongs to storage_class MEDIUM
+2017-04-26 11:36:28       Addvol;SUCCESS;volume autotcvol5 belongs to storage_class FAST
+2017-04-26 11:36:33       Addvol;SUCCESS;volume autotcvol6 belongs to storage_class SLOW
+2017-04-26 11:36:38       Addvol;SUCCESS;volume archive-b4vset belongs to storage_class MEDIUM
+2017-04-26 11:37:00       PrstPol;Added;FAST = *.ctl
+2017-04-26 11:37:00       PrstPol;SUCCESS;Preset policy for directory /dbdata
+2017-04-26 11:37:35       ADMIN;New Chunk Size;class name=FAST chunk=256K
+2017-04-26 11:37:37       ADMIN;New Chunk Size;class name=MEDIUM chunk=512K
+2017-04-26 11:37:39       ADMIN;New Chunk Size;class name=SLOW chunk=1M
+2017-04-26 11:38:03       PrstPol;Added;FAST = *.dbf
+2017-04-26 11:38:03       PrstPol;SUCCESS;Preset policy for directory /archive
+2017-04-26 11:41:39       PartnMv;SUCCESS;Partition sales_yr1 of Table SYS.sales will be relocated to storage_class SLOW
+2017-04-26 11:45:37       TbsMove;SUCCESS;Tablespace PART4 will be relocated to storage class FAST
+2017-04-26 11:45:42       ADMIN;Modified Successfully;max/min class=8/2, statinterval=10, sweeptime=11:21, purgetime=11:21, swp/prg freq=1/1
+2017-04-26 11:45:45       ADMIN;Modified Successfully;max/min class=8/2, statinterval=10, sweeptime=11:47, purgetime=11:21, swp/prg freq=1/1
+2017-04-26 11:45:48       ADMIN;Modified Successfully;max/min class=8/2, statinterval=10, sweeptime=11:47, purgetime=11:47, swp/prg freq=1/1
+2017-04-26 11:46:08       ArchMv;SUCCESS;Age > 1 days relocate to SLOW;
+2017-04-26 11:51:15       Addvol;SUCCESS;volume autotcvol3 added to storage_class MEDIUM for vset dbdata
+2017-04-26 11:51:31       PrstPol;SUCCESS;Remove preset policy for directory /dbdata
+2017-04-26 11:53:38       PrstPol;Added;MEDIUM = *.dbf
+2017-04-26 11:53:38       PrstPol;SUCCESS;Preset policy for directory /dbdata
+2017-04-26 11:54:00       Addvol;SUCCESS;volume autotcvol4 added to storage_class MEDIUM for vset dbdata
+2017-04-26 11:54:38       PrstPol;SUCCESS;Remove preset policy for directory /dbdata
+2017-04-26 11:54:49       PrstPol;Added;MEDIUM = *.dbf
+2017-04-26 11:54:49       PrstPol;SUCCESS;Preset policy for directory /dbdata
+2017-04-26 11:55:21       Rmvol;SUCCESS;volume autotcvol4 removed from vset dbdata
+
+
+DATE:2017-04-26 11:55:39
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_report -S $ORACLE_SID -o policy
+STDOUT:
+
+TSDB Database Policy Report
+-----------------------------------------------------------
+
+Plan Name = archivelog:archive1 
+Plan Type = ARCHIVE LOG
+Rule Name =  DBED_relocate_age_ino2_ 
+Directory=/dev/vx/dsk/oradg2579_dbarch/archive : . 
+Rule Description =  SLOW >= 1 days
+
+Plan Name = preset_dir:/archive 
+Plan Type = PRESET POLICY DIRECTORY
+Rule Name =  DBED_precreate_ino2_FAST 
+Directory=/dev/vx/dsk/oradg2579_dbarch/archive : . 
+Rule Description =  FAST=*.dbf
+
+Plan Name = preset_dir:/dbdata 
+Plan Type = PRESET POLICY DIRECTORY
+Rule Name =  DBED_precreate_ino2_MEDIUM 
+Directory=/dev/vx/dsk/oradg2579_dbarch/dbdata : . 
+Rule Description =  MEDIUM=*.dbf
+
+Plan Name = tbs_move:PART4 
+Plan Type = TBS MOVE
+Rule Name =  DBED_relocate_once_ino4_FAST 
+Directory=/dev/vx/dsk/oradg2579_dbarch/dbdata : orcl/ 
+Rule Description =  FAST
+
+
+====STEP: Clear test envrionment
+DATE:2017-04-26 11:55:39
+
+
+DATE:2017-04-26 11:55:40
+HOST:a84vm02
+USER:oracle
+STDIN:select table_name from dba_tables where table_name='SALES';
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:55:39 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+TABLE_NAME
+------------------------------
+SALES
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:55:41
+HOST:a84vm02
+USER:oracle
+STDIN:drop table sales;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:55:40 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Table dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:55:43
+HOST:a84vm02
+USER:oracle
+STDIN:select name from v$tablespace;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:55:42 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+------------------------------
+SYSTEM
+SYSAUX
+UNDOTBS1
+USERS
+TEMP
+UNDOTBS2
+PART1
+PART2
+PART3
+PART4
+PART5
+
+NAME
+------------------------------
+PART6
+
+12 rows selected.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:55:51
+HOST:a84vm02
+USER:oracle
+STDIN:drop tablespace part1 including contents and datafiles;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:55:43 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:56:00
+HOST:a84vm02
+USER:oracle
+STDIN:drop tablespace part2 including contents and datafiles;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:55:52 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:56:09
+HOST:a84vm02
+USER:oracle
+STDIN:drop tablespace part3 including contents and datafiles;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:56:01 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:56:18
+HOST:a84vm02
+USER:oracle
+STDIN:drop tablespace part4 including contents and datafiles;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:56:10 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:56:27
+HOST:a84vm02
+USER:oracle
+STDIN:drop tablespace part5 including contents and datafiles;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:56:18 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:56:36
+HOST:a84vm02
+USER:oracle
+STDIN:drop tablespace part6 including contents and datafiles;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Apr 26 11:56:28 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace dropped.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-04-26 11:56:37
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsppadm unassign /dbdata
+STDOUT:
+
+
+
+DATE:2017-04-26 11:56:38
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsppadm unassign /archive
+STDOUT:
+
+
+
+DATE:2017-04-26 11:56:39
+HOST:a84vm02
+USER:root
+STDIN:vxprint -g oradg2579_dbarch|awk '$2=="dbdata" {print}'
+STDOUT:
+vt dbdata       -            ENABLED  -        -        ACTIVE   -       -
+
+
+DATE:2017-04-26 11:56:43
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /dbdata
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol1                    5345280	218740	5126540
+
+CLASS=MEDIUM
+autotcvol3                    5345280	693314	4651966
+dbdata-b4vset                 5242880	738384	4504496
+---------------------------------------------------------------
+SUMMARY:                      10588160	1431698	9156462
+
+CLASS=SLOW
+autotcvol2                    5345280	29	5345251
+
+
+DATE:2017-04-26 11:57:19
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsvoladm remove /dbdata autotcvol1
+STDOUT:
+
+
+
+DATE:2017-04-26 11:58:34
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsvoladm remove /dbdata autotcvol3
+STDOUT:
+
+
+
+DATE:2017-04-26 11:58:44
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsvoladm remove /dbdata autotcvol2
+STDOUT:
+
+
+
+DATE:2017-04-26 11:58:45
+HOST:a84vm02
+USER:root
+STDIN:vxprint -g oradg2579_dbarch|awk '$2=="archive" {print}'
+STDOUT:
+vt archive      -            ENABLED  -        -        ACTIVE   -       -
+
+
+DATE:2017-04-26 11:58:49
+HOST:a84vm02
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /archive
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol5                    5345280	161362	5183918
+
+CLASS=MEDIUM
+archive-b4vset                5242880	179252	5063628
+
+CLASS=SLOW
+autotcvol6                    5345280	4151	5341129
+
+
+DATE:2017-04-26 11:58:54
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsvoladm remove /archive autotcvol5
+STDOUT:
+
+
+
+DATE:2017-04-26 11:58:59
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTS/bin/fsvoladm remove /archive autotcvol6
+STDOUT:
+
+
+***Offline Group oradb_grp on all active nodes***
+
+
+
+DATE:2017-04-26 11:59:00
+HOST:a84vm02
+USER:root
+STDIN:cat /var/VRTSvcs/log/engine_A.log|wc -l|awk '{print $1}'
+STDOUT:
+3865
+
+
+DATE:2017-04-26 11:59:01
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -offline oradb_grp -any
+STDOUT:
+VCS NOTICE V-16-1-50733 Attempting to offline group on system a84vm01
+VCS NOTICE V-16-1-50733 Attempting to offline group on system a84vm02
+
+
+DATE:2017-04-26 11:59:12
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |ONLINE|STOPPING|
+oradb_grp    State                 a84vm02    |ONLINE|STOPPING|
+
+
+DATE:2017-04-26 11:59:22
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |ONLINE|STOPPING|
+oradb_grp    State                 a84vm02    |ONLINE|STOPPING|
+
+
+DATE:2017-04-26 11:59:33
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |PARTIAL|STOPPING|
+oradb_grp    State                 a84vm02    |OFFLINE|
+
+
+DATE:2017-04-26 11:59:44
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |OFFLINE|
+oradb_grp    State                 a84vm02    |OFFLINE|
+
+
+DATE:2017-04-26 11:59:45
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |OFFLINE|
+oradb_grp    State                 a84vm02    |OFFLINE|
+
+
+DATE:2017-04-26 11:59:46
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch list dbdata
+STDOUT:
+VOLUME                 INDEX        LENGTH     KSTATE  CONTEXT
+dbdata-b4vset              0      10485760    ENABLED  -
+autotcvol1                 1      10690560    ENABLED  -
+autotcvol2                 2      10690560    ENABLED  -
+autotcvol3                 3      10690560    ENABLED  -
+
+
+DATE:2017-04-26 11:59:47
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch rmvol dbdata autotcvol3
+STDOUT:
+
+
+
+DATE:2017-04-26 11:59:48
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch rmvol dbdata autotcvol2
+STDOUT:
+
+
+
+DATE:2017-04-26 11:59:49
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch rmvol dbdata autotcvol1
+STDOUT:
+
+
+
+DATE:2017-04-26 11:59:50
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch rmvol dbdata dbdata-b4vset
+STDOUT:
+
+
+
+DATE:2017-04-26 11:59:51
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch rename dbdata-b4vset dbdata
+STDOUT:
+
+
+
+DATE:2017-04-26 11:59:52
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch list archive
+STDOUT:
+VOLUME                 INDEX        LENGTH     KSTATE  CONTEXT
+archive-b4vset             0      10485760    ENABLED  -
+autotcvol5                 1      10690560    ENABLED  -
+autotcvol6                 2      10690560    ENABLED  -
+
+
+DATE:2017-04-26 11:59:53
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch rmvol archive autotcvol6
+STDOUT:
+
+
+
+DATE:2017-04-26 11:59:54
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch rmvol archive autotcvol5
+STDOUT:
+
+
+
+DATE:2017-04-26 11:59:55
+HOST:a84vm02
+USER:root
+STDIN:vxvset -g oradg2579_dbarch rmvol archive archive-b4vset
+STDOUT:
+
+
+
+DATE:2017-04-26 11:59:56
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch rename archive-b4vset archive
+STDOUT:
+
+
+***Removing volumes which begin with autotcvol from oradg2579_dbarch "oradg2579_dbarch" on node "a84vm02" ***
+
+
+
+DATE:2017-04-26 11:59:56
+HOST:a84vm02
+USER:root
+STDIN:vxprint -g oradg2579_dbarch|awk '$1=="v" && $2 ~ /^autotcvol/ {print}'
+STDOUT:
+v  autotcvol1   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+v  autotcvol2   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+v  autotcvol3   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+v  autotcvol4   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+v  autotcvol5   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+v  autotcvol6   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+v  autotcvol7   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+v  autotcvol8   fsgen        ENABLED  10690560 -        ACTIVE   -       -
+
+
+DATE:2017-04-26 11:59:57
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol1
+STDOUT:
+
+
+
+DATE:2017-04-26 12:00:29
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol2
+STDOUT:
+
+
+
+DATE:2017-04-26 12:00:30
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol3
+STDOUT:
+
+
+
+DATE:2017-04-26 12:00:31
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol4
+STDOUT:
+
+
+
+DATE:2017-04-26 12:00:32
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol5
+STDOUT:
+
+
+
+DATE:2017-04-26 12:00:33
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol6
+STDOUT:
+
+
+
+DATE:2017-04-26 12:00:34
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol7
+STDOUT:
+
+
+
+DATE:2017-04-26 12:00:35
+HOST:a84vm02
+USER:root
+STDIN:vxedit -g oradg2579_dbarch -rf rm autotcvol8
+STDOUT:
+
+
+***Removing volumes which begin with autotcvol from oradg2579_dbarch "oradg2579_dbarch" on node "a84vm02" ***
+
+
+
+DATE:2017-04-26 12:00:36
+HOST:a84vm02
+USER:root
+STDIN:vxprint -g oradg2579_dbarch|awk '$1=="v" && $2 ~ /^autotcvol/ {print}'
+STDOUT:
+
+
+***Removing free disk of node "a84vm02"***
+
+
+
+DATE:2017-04-26 12:00:37
+HOST:a84vm02
+USER:root
+STDIN:vxprint|grep dm
+STDOUT:
+dm emc_clariion0_5 emc_clariion0_5 -  4120320  -        -        -       -
+dm emc_clariion0_6 emc_clariion0_6 -  10411776 -        -        -       -
+dm emc_clariion0_10 emc_clariion0_10 - 10411776 -       -        -       -
+dm emc_clariion0_11 emc_clariion0_11 - 10411776 -       -        -       -
+dm emc_clariion0_12 emc_clariion0_12 - 10411776 -       -        -       -
+dm emc_clariion0_13 emc_clariion0_13 - 10411776 -       -        -       -
+dm emc_clariion0_20 emc_clariion0_20 - 10411776 -       -        -       -
+dm emc_clariion0_21 emc_clariion0_21 - 10411776 -       -        -       -
+dm emc_clariion0_22 emc_clariion0_22 - 10411776 -       -        -       -
+dm emc_clariion0_23 emc_clariion0_23 - 10411776 -       -        -       -
+dm emc_clariion0_24 emc_clariion0_24 - 10411776 -       -        -       -
+dm emc_clariion0_26 emc_clariion0_26 - 10411776 -       -        -       -
+dm emc_clariion0_27 emc_clariion0_27 - 10411776 -       -        -       -
+dm emc_clariion0_29 emc_clariion0_29 - 10411776 -       -        -       -
+dm emc_clariion0_7 emc_clariion0_7 -  10411776 -        -        -       -
+dm emc_clariion0_8 emc_clariion0_8 -  10411776 -        -        -       -
+
+
+DATE:2017-04-26 12:00:38
+HOST:a84vm02
+USER:root
+STDIN:vxdisk reclaim emc_clariion0_5 emc_clariion0_6 emc_clariion0_10 emc_clariion0_11 emc_clariion0_12 emc_clariion0_13 emc_clariion0_20 emc_clariion0_21 emc_clariion0_22 emc_clariion0_23 emc_clariion0_24 emc_clariion0_26 emc_clariion0_27 emc_clariion0_29 emc_clariion0_7 emc_clariion0_8
+STDOUT:
+Disk emc_clariion0_5 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_6 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_10 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_11 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_12 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_13 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_20 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_21 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_22 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_23 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_24 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_26 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_27 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_29 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_7 : Skipped. Disk not reclaimable or wrong media type.
+Disk emc_clariion0_8 : Skipped. Disk not reclaimable or wrong media type.
+
+
+DATE:2017-04-26 12:00:39
+HOST:a84vm02
+USER:root
+STDIN:vxdg -qa free|awk '$5==0 {print}'
+STDOUT:
+oradg2579_dbarch emc_clariion0_5 emc_clariion0_5 emc_clariion0_5 0         4120320   -
+oradg2579_dbarch emc_clariion0_11 emc_clariion0_11 emc_clariion0_11 0         10411776  -
+oradg2579_dbarch emc_clariion0_12 emc_clariion0_12 emc_clariion0_12 0         10411776  -
+oradg2579_dbarch emc_clariion0_13 emc_clariion0_13 emc_clariion0_13 0         10411776  -
+oradg2579_dbarch emc_clariion0_20 emc_clariion0_20 emc_clariion0_20 0         10411776  -
+oradg2579_dbarch emc_clariion0_21 emc_clariion0_21 emc_clariion0_21 0         10411776  -
+oradg2579_dbarch emc_clariion0_22 emc_clariion0_22 emc_clariion0_22 0         10411776  -
+oradg2579_dbarch emc_clariion0_23 emc_clariion0_23 emc_clariion0_23 0         10411776  -
+oradg2579_dbarch emc_clariion0_24 emc_clariion0_24 emc_clariion0_24 0         10411776  -
+oradg2579_dbarch emc_clariion0_29 emc_clariion0_29 emc_clariion0_29 0         10411776  -
+
+
+DATE:2017-04-26 12:00:44
+HOST:a84vm02
+USER:root
+STDIN:vxdg -g oradg2579_dbarch rmdisk emc_clariion0_5 emc_clariion0_11 emc_clariion0_12 emc_clariion0_13 emc_clariion0_20 emc_clariion0_21 emc_clariion0_22 emc_clariion0_23 emc_clariion0_24 emc_clariion0_29
+STDOUT:
+
+
+***Online Group oradb_grp on all active nodes***
+
+
+
+DATE:2017-04-26 12:00:45
+HOST:a84vm02
+USER:root
+STDIN:cat /var/VRTSvcs/log/engine_A.log|wc -l|awk '{print $1}'
+STDOUT:
+3886
+
+
+DATE:2017-04-26 12:00:46
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -online oradb_grp -any
+STDOUT:
+VCS NOTICE V-16-1-50735 Attempting to online group on system a84vm01
+VCS NOTICE V-16-1-50735 Attempting to online group on system a84vm02
+
+
+DATE:2017-04-26 12:00:57
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |OFFLINE|STARTING|
+oradb_grp    State                 a84vm02    |OFFLINE|STARTING|
+
+
+DATE:2017-04-26 12:01:08
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |PARTIAL|STARTING|
+oradb_grp    State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-26 12:01:19
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |PARTIAL|STARTING|
+oradb_grp    State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-26 12:01:30
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |PARTIAL|STARTING|
+oradb_grp    State                 a84vm02    |PARTIAL|STARTING|
+
+
+DATE:2017-04-26 12:01:41
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |ONLINE|
+oradb_grp    State                 a84vm02    |ONLINE|
+
+
+DATE:2017-04-26 12:01:41
+HOST:a84vm02
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 a84vm01    |ONLINE|
+oradb_grp    State                 a84vm02    |ONLINE|
+
+
+Case Result:Passed
+DATE:2017-04-26 12:01:42
+Duration:35m44s

@@ -1,0 +1,164 @@
+#des:support platform linux,aix,solaris
+#P:55
+oLog step "Checking basic environment of testbed"
+#check if login without password by root and oracle user
+checkNode root
+for node in $NODES
+do
+	getHostnameOSProduct $node
+done
+
+oLog step "checking if exist native vgs or pool,drop them if existing"
+dropNativeDg
+
+oLog step "Checking dmp_native_support status,if it is on,turn it off"
+setDmpNativeSupport "$NODES" off
+
+oLog step "Getting two disks to make native vg or zpool"
+disks=`getDisk $NODE1 share` || exit 201
+disk=`echo "$disks"|awk '$2>2200{print $1}'|grep thick|tail -2`
+if [ `echo "$disk"|wc -l` -lt 2 ]
+then
+	disk=`echo "$disks"|awk '$2>2200{print $1}'|tail -2`
+fi
+disk=(`echo $disk|xargs -n 10`)
+[ ${#disk[*]} -ne 2 ] && oLog error "Failed to get two disks with size greater than 2G" &&  myexit 201
+
+oLog step "Create the 1st vg/zpool,then mount filesystem,add IO,checking the IO shoud not go througn dmp devices"
+path=`getPathByDmpNode $NODE1 "${disk[0]}"` || exit 201
+removeDiskFromVxvm "${disk[0]}"
+makeNativeDg $NODE1 autotcvg1 $path
+makeNativeLv $NODE1 autotcvg1 autotclv1 2G fs
+mountNativeFS $NODE1 autotcvg1 autotclv1
+RExec root $NODE1 "vxdisk scandisks"
+fsStressStart $NODE1 /autotclv1
+sleep 5
+RExec root $NODE1 "vxdmpadm iostat reset;vxdmpadm -u k iostat show groupby=dmpnode dmpnodename=${disk[0]} interval=1 count=30"
+checkio="$out"
+fsStressStop $NODE1
+if echo "$checkio"|awk '$1=="'${disk[0]}'"{print $5}'|grep -vi "^0k" > /dev/null 2>&1  
+then
+	oLog error "IO should not go through on dmp devices when dmp_native_support=off"
+	RExec root $NODE1 "umount /autotclv1"
+	myexit 1
+fi
+
+oLog step "Umount /autotclv1,turn dmp_native_support on"
+RExec root $NODE1 "umount /autotclv1"
+[ $type = S ] && vgPoolDeport $NODE1 autotcvg1
+setDmpNativeSupport $NODE1 on
+RExec root $NODE1 "vxdmpadm native ls" "autotcvg1"
+
+oLog step "Mount /autotclv1,checking the IO should go througn dmp devices"
+mountNativeFS $NODE1 autotcvg1 autotclv1
+fsStressStart $NODE1 /autotclv1
+sleep 5
+RExec root $NODE1 "vxdmpadm iostat reset;vxdmpadm -u k iostat show groupby=dmpnode dmpnodename=${disk[0]} interval=1 count=30"
+checkio="$out"
+fsStressStop $NODE1
+RExec root $NODE1 "umount /autotclv1"
+if ! echo "$checkio"|awk '$1=="'${disk[0]}'"{print $5}'|grep -vi "^0k" > /dev/null 2>&1
+then
+        oLog error "IO should go through on dmp devices when dmp_native_support=on"
+        myexit 1
+fi
+
+oLog step "Create the 2nd vg/zpool,then mount filesystem,add IO,checking the IO shoud go through dmp devices"
+if [ $type = A ]
+then
+	tmpname=tmp$RANDOM
+	for node in $NODES
+	do
+		RExec root $node "vxdmpadm setattr dmpnode ${disk[1]} name=$tmpname"
+	done
+	disk[1]=$tmpname
+fi
+RExec root $NODE1 "/opt/VRTS/bin/vxdiskunsetup -Cf ${disk[1]}"
+case $type in 
+	L)
+		makeNativeDg $NODE1 autotcvg2 /dev/vx/dmp/${disk[1]}
+		ssh $node "mkfs.ext4" 2>&1 |grep -iP "not\s+found" > /dev/null 2>&1 && fs=ext3 || fs=ext4
+		;;
+	A)
+		makeNativeDg $NODE1 autotcvg2 ${disk[1]}
+		fs=jfs
+		;;
+	S)
+		makeNativeDg $NODE1 autotcvg2 ${disk[1]}
+		fs=zfs
+		;;
+esac
+makeNativeLv $NODE1 autotcvg2 autotclv2 2G fs
+mountNativeFS $NODE1 autotcvg2 autotclv2
+RExec root $NODE1 "vxdisk scandisks;vxdmpadm native ls" "autotcvg2"
+fsStressStart $NODE1 /autotclv2
+sleep 5
+RExec root $NODE1 "vxdmpadm iostat reset;vxdmpadm -u k iostat show groupby=dmpnode dmpnodename=${disk[1]} interval=1 count=30"
+checkio="$out"
+fsStressStop $NODE1
+if ! echo "$checkio"|awk '$1=="'${disk[1]}'"{print $5}'|grep -vi "^0k" > /dev/null 2>&1
+then
+        oLog error "IO should go through on dmp devices when vg/zpool created by dmp device"
+        myexit 1
+fi
+
+oLog step "Check the other nodes dmp_native_support status,if it is off,turn it on"
+setDmpNativeSupport "$OTHER" on
+
+oLog step "Deport the 2nd vg on the local node and import on another node"
+RExec root $NODE1 "find /autotclv2 -type f|xargs cksum"
+cksum0="$out"
+RExec root $NODE1 "umount /autotclv2"
+vgPoolDeport $NODE1 autotcvg2
+another_node=`echo "$OTHER"|awk '{print $1}'`
+vgPoolImport $another_node autotcvg2 ${disk[1]}
+mountNativeFS $another_node autotcvg2 autotclv2
+RExec root $another_node "find /autotclv2 -type f|xargs cksum"
+cksum1="$out"
+if [ "$cksum0" = "$cksum1" ]
+then
+        oLog des "the cksum value keep the same!"
+else
+        oLog error "the cksum values are different"
+        myexit 1
+fi
+RExec root $another_node "umount /autotclv2"
+vgPoolDeport $another_node autotcvg2
+
+
+oLog step "Let the 2nd vg under VCS Management and do switch operation"
+if [ $type = A ]
+then
+	majornum=`getMajorNum "$NODES"` || exit 1
+	for node in $NODES
+	do
+		vgPoolImport $node autotcvg2 ${disk[1]} $majornum
+	done
+fi
+newmaincf=$BASE/tmp/main.cf.$PID
+cat $MAINCF > $newmaincf
+genLvmSgConf autotcvg2 autotclv2 $fs >> $newmaincf
+oLog des "Show maincf which added lvm service group"
+LExec "cat $newmaincf"
+importMainCf $newmaincf || exit 1
+group=`cat $newmaincf|grep -oP "autotcsg_nativevgpool\d+"|head -1`
+rm -f $newmaincf
+waitGroupOnline $NODE1 $group || myexit 1
+RExec root $NODE1 "/opt/VRTS/bin/hagrp -state"
+current_node=`echo "$out"|grep -P "^$group.*ONLINE"|awk '{print $3}'`
+for node in `echo "$NODES"|sed "s/$current_node//g"`
+do
+        switchGroup $node $group
+done
+switchGroup $current_node $group
+[ "$current_node" != "$NODE1" ] && switchGroup $NODE1 $group
+stopGroup $NODE1 $group
+[ $type = S ] && vgPoolImport $NODE1 autotcvg2
+
+oLog step "Drop vg/pool created in the tc"
+dropNativeDg
+
+oLog step "Turn dmp_native_support to be off on all nodes"
+setDmpNativeSupport "$NODES" off
+oLog flag
+myexit 10

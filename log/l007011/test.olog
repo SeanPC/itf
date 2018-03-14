@@ -1,0 +1,2196 @@
+
+==================== Operation Log for TC test ====================
+DATE:2017-08-09 16:24:24
+Nodes:l007011 l007012
+
+***Getting avaiable disks***
+
+
+
+DATE:2017-08-09 16:24:24
+HOST:l007011
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-08-09 16:24:24
+HOST:l007012
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-08-09 16:24:25
+HOST:l007011
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+ams_wms0          AMS_WMS        75013813             CONNECTED    A/A-A      30         0000
+disk              Disk           DISKS                CONNECTED    Disk        1         D306
+emc_clariion0     EMC_CLARiiON   CKM00121900328       CONNECTED    CLR-ALUA    8         0532
+
+
+DATE:2017-08-09 16:24:25
+HOST:l007011
+USER:root
+STDIN:vxdisk scandisks;vxdisk list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_wms0_361 auto:cdsdisk    -            (fen605)     online
+ams_wms0_362 auto:cdsdisk    -            (fen605)     online
+ams_wms0_363 auto:cdsdisk    -            (fen605)     online
+ams_wms0_364 auto:cdsdisk    -            -            online
+ams_wms0_365 auto:cdsdisk    -            -            online
+ams_wms0_366 auto:LVM        -            -            LVM
+ams_wms0_367 auto:LVM        -            -            LVM
+ams_wms0_368 auto:cdsdisk    -            -            online
+ams_wms0_369 auto:cdsdisk    -            -            online
+ams_wms0_370 auto:cdsdisk    -            -            online
+ams_wms0_371 auto:cdsdisk    -            -            online
+ams_wms0_372 auto:cdsdisk    -            -            online
+ams_wms0_373 auto:cdsdisk    -            -            online
+ams_wms0_374 auto:cdsdisk    -            -            online
+ams_wms0_375 auto:cdsdisk    -            -            online
+ams_wms0_376 auto:cdsdisk    -            -            online
+ams_wms0_377 auto:cdsdisk    -            -            online
+ams_wms0_378 auto:cdsdisk    -            -            online
+ams_wms0_379 auto:cdsdisk    -            -            online
+ams_wms0_380 auto:cdsdisk    -            -            online
+ams_wms0_381 auto:cdsdisk    -            -            online
+ams_wms0_382 auto:cdsdisk    -            -            online
+ams_wms0_383 auto:cdsdisk    -            -            online
+ams_wms0_384 auto:cdsdisk    -            -            online
+ams_wms0_385 auto:cdsdisk    -            -            online
+ams_wms0_386 auto:cdsdisk    -            -            online
+ams_wms0_387 auto:cdsdisk    -            -            online
+ams_wms0_388 auto:cdsdisk    -            -            online
+ams_wms0_389 auto:cdsdisk    -            -            online
+ams_wms0_390 auto:cdsdisk    -            -            online
+emc_clariion0_314 auto:cdsdisk    -            -            online
+emc_clariion0_315 auto:cdsdisk    -            -            online
+emc_clariion0_316 auto:cdsdisk    -            -            online
+emc_clariion0_317 auto:cdsdisk    -            -            online
+emc_clariion0_318 auto:cdsdisk    -            -            online
+emc_clariion0_319 auto:cdsdisk    -            -            online
+emc_clariion0_320 auto:cdsdisk    -            -            online
+emc_clariion0_321 auto:cdsdisk    -            -            online
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-08-09 16:24:26
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSsfmh/adm/dclisetup.sh
+STDOUT:
+
+
+
+DATE:2017-08-09 16:24:27
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/vxlist disk
+STDOUT:
+TY   DEVICE              DISK   DISKGROUP      SIZE   FREE STATUS
+disk ams_wms0_361        -      fen605        4.96g      - deported
+disk ams_wms0_362        -      fen605        4.96g      - deported
+disk ams_wms0_363        -      fen605        4.96g      - deported
+disk ams_wms0_364        -      -             4.96g      - free
+disk ams_wms0_365        -      -             4.96g      - free
+disk ams_wms0_366        -      -                 -      - LVM
+disk ams_wms0_367        -      -                 -      - LVM
+disk ams_wms0_368        -      -             4.96g      - free
+disk ams_wms0_369        -      -             4.96g      - free
+disk ams_wms0_370        -      -             4.96g      - free
+disk ams_wms0_371        -      -             4.96g      - free
+disk ams_wms0_372        -      -             4.96g      - free
+disk ams_wms0_373        -      -             4.96g      - free
+disk ams_wms0_374        -      -             4.96g      - free
+disk ams_wms0_375        -      -             4.96g      - free
+disk ams_wms0_376        -      -             4.96g      - free
+disk ams_wms0_377        -      -             4.96g      - free
+disk ams_wms0_378        -      -             4.96g      - free
+disk ams_wms0_379        -      -             4.96g      - free
+disk ams_wms0_380        -      -             4.96g      - free
+disk ams_wms0_381        -      -             4.96g      - free
+disk ams_wms0_382        -      -             4.96g      - free
+disk ams_wms0_383        -      -             4.96g      - free
+disk ams_wms0_384        -      -             4.96g      - free
+disk ams_wms0_385        -      -             4.96g      - free
+disk ams_wms0_386        -      -             4.96g      - free
+disk ams_wms0_387        -      -             4.96g      - free
+disk ams_wms0_388        -      -             4.96g      - free
+disk ams_wms0_389        -      -             4.96g      - free
+disk ams_wms0_390        -      -             4.96g      - free
+disk emc_clariion0_314   -      -             4.96g      - free
+disk emc_clariion0_315   -      -             4.96g      - free
+disk emc_clariion0_316   -      -             4.96g      - free
+disk emc_clariion0_317   -      -             4.96g      - free
+disk emc_clariion0_318   -      -             4.96g      - free
+disk emc_clariion0_319   -      -             4.96g      - free
+disk emc_clariion0_320   -      -             4.96g      - free
+disk emc_clariion0_321   -      -             4.96g      - free
+disk sda                 -      -                 -      - uninitialized
+
+
+DATE:2017-08-09 16:24:28
+HOST:l007011
+USER:root
+STDIN:vxdisk list emc_clariion0_321 emc_clariion0_320 emc_clariion0_319 emc_clariion0_318 emc_clariion0_317 emc_clariion0_316 emc_clariion0_315 emc_clariion0_314 ams_wms0_390 ams_wms0_389 ams_wms0_388 ams_wms0_387 ams_wms0_386 ams_wms0_385 ams_wms0_384 ams_wms0_383 ams_wms0_382 ams_wms0_381 ams_wms0_380 ams_wms0_379 ams_wms0_378 ams_wms0_377 ams_wms0_376 ams_wms0_375 ams_wms0_374 ams_wms0_373 ams_wms0_372 ams_wms0_371 ams_wms0_370 ams_wms0_369 ams_wms0_368 ams_wms0_365 ams_wms0_364
+STDOUT:
+Device:    emc_clariion0_321
+devicetag: emc_clariion0_321
+type:      auto
+hostid:    
+disk:      name= id=1502252426.339.l007012.cdc.veritas.com
+group:     name= id=1502256283.345.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_321s3 char=/dev/vx/rdmp/emc_clariion0_321s3
+guid:      {11c25b24-7cba-11e7-9067-0605044cb73b}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000FCCBE8C933E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502257154 seqno=0.22
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdai     	state=enabled	type=active/optimized(p)
+sdaq     	state=enabled	type=active/non-optimized
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_320
+devicetag: emc_clariion0_320
+type:      auto
+hostid:    
+disk:      name= id=1502262373.403.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_320s3 char=/dev/vx/rdmp/emc_clariion0_320s3
+guid:      {3afcf88e-7cd1-11e7-bf17-f15dc419f574}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000FAC3EBC333E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502262373 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdau     	state=enabled	type=active/optimized(p)
+sdam     	state=enabled	type=active/non-optimized
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_319
+devicetag: emc_clariion0_319
+type:      auto
+hostid:    
+disk:      name= id=1502155866.54.l007012.cdc.veritas.com
+group:     name= id=1502184195.83.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_319s3 char=/dev/vx/rdmp/emc_clariion0_319s3
+guid:      {3f7c74f0-7bd9-11e7-8910-6d55c1088b23}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000F8C3EBC333E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185916 seqno=0.70
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdah     	state=enabled	type=active/optimized(p)
+sdap     	state=enabled	type=active/non-optimized
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_318
+devicetag: emc_clariion0_318
+type:      auto
+hostid:    
+disk:      name= id=1502262370.398.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_318s3 char=/dev/vx/rdmp/emc_clariion0_318s3
+guid:      {390e0036-7cd1-11e7-921f-3557cc1cf82c}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000F6C3EBC333E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502262370 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdat     	state=enabled	type=active/optimized(p)
+sdal     	state=enabled	type=active/non-optimized
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_317
+devicetag: emc_clariion0_317
+type:      auto
+hostid:    
+disk:      name= id=1502262367.393.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_317s3 char=/dev/vx/rdmp/emc_clariion0_317s3
+guid:      {37236f0e-7cd1-11e7-bba4-465222561b6a}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000F4C3EBC333E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502262367 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdao     	state=enabled	type=active/non-optimized
+sdag     	state=enabled	type=active/optimized(p)
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_316
+devicetag: emc_clariion0_316
+type:      auto
+hostid:    
+disk:      name= id=1502152937.2985.l007011.cdc.veritas.com
+group:     name= id=1502184195.83.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_316s3 char=/dev/vx/rdmp/emc_clariion0_316s3
+guid:      {6d988272-7bd2-11e7-a345-1351814abcb0}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000F2C3EBC333E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185916 seqno=0.88
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdas     	state=enabled	type=active/optimized(p)
+sdak     	state=enabled	type=active/non-optimized
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_315
+devicetag: emc_clariion0_315
+type:      auto
+hostid:    
+disk:      name= id=1502252415.319.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_315s3 char=/dev/vx/rdmp/emc_clariion0_315s3
+guid:      {0b3b5062-7cba-11e7-ba4e-53d8635b0618}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000F0C3EBC333E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252415 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdaf     	state=enabled	type=active/optimized(p)
+sdan     	state=enabled	type=active/non-optimized
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_314
+devicetag: emc_clariion0_314
+type:      auto
+hostid:    
+disk:      name= id=1502262364.388.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_314s3 char=/dev/vx/rdmp/emc_clariion0_314s3
+guid:      {35385b5a-7cd1-11e7-8152-296e0a367883}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000EEC3EBC333E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502262364 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdaj     	state=enabled	type=active/non-optimized
+sdar     	state=enabled	type=active/optimized(p)
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_390
+devicetag: ams_wms0_390
+type:      auto
+hostid:    
+disk:      name= id=1502252412.314.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_390s3 char=/dev/vx/rdmp/ams_wms0_390s3
+guid:      {099ddaae-7cba-11e7-8aa8-7f52a71741d9}
+udid:      HITACHI%5FDF600F%5F75013813%5F0186
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252412 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdae     	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_389
+devicetag: ams_wms0_389
+type:      auto
+hostid:    
+disk:      name= id=1502252409.309.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_389s3 char=/dev/vx/rdmp/ams_wms0_389s3
+guid:      {07cf0b26-7cba-11e7-bd07-665fc543e6e6}
+udid:      HITACHI%5FDF600F%5F75013813%5F0185
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252409 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdad     	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_388
+devicetag: ams_wms0_388
+type:      auto
+hostid:    
+disk:      name= id=1502252406.304.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_388s3 char=/dev/vx/rdmp/ams_wms0_388s3
+guid:      {0611182e-7cba-11e7-a1f3-b9135f559214}
+udid:      HITACHI%5FDF600F%5F75013813%5F0184
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252406 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdac     	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_387
+devicetag: ams_wms0_387
+type:      auto
+hostid:    
+disk:      name= id=1502252403.299.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_387s3 char=/dev/vx/rdmp/ams_wms0_387s3
+guid:      {0441d812-7cba-11e7-8e3b-854d3d61e6b6}
+udid:      HITACHI%5FDF600F%5F75013813%5F0183
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252403 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdab     	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_386
+devicetag: ams_wms0_386
+type:      auto
+hostid:    
+disk:      name= id=1502252400.294.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_386s3 char=/dev/vx/rdmp/ams_wms0_386s3
+guid:      {028a14d0-7cba-11e7-bd65-37dbb86c0902}
+udid:      HITACHI%5FDF600F%5F75013813%5F0182
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252400 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdaa     	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_385
+devicetag: ams_wms0_385
+type:      auto
+hostid:    
+disk:      name= id=1502252397.289.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_385s3 char=/dev/vx/rdmp/ams_wms0_385s3
+guid:      {00ae74e4-7cba-11e7-b6b1-a6b18d6cad8c}
+udid:      HITACHI%5FDF600F%5F75013813%5F0181
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252397 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdz      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_384
+devicetag: ams_wms0_384
+type:      auto
+hostid:    
+disk:      name= id=1502252394.284.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_384s3 char=/dev/vx/rdmp/ams_wms0_384s3
+guid:      {feb60724-7cb9-11e7-ac3d-2f706470ee18}
+udid:      HITACHI%5FDF600F%5F75013813%5F0180
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252394 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdy      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_383
+devicetag: ams_wms0_383
+type:      auto
+hostid:    
+disk:      name= id=1502155871.64.l007012.cdc.veritas.com
+group:     name= id=1502184197.85.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/ams_wms0_383s3 char=/dev/vx/rdmp/ams_wms0_383s3
+guid:      {42ad077a-7bd9-11e7-8507-6f60f81cd7ec}
+udid:      HITACHI%5FDF600F%5F75013813%5F017F
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185917 seqno=0.42
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdx      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_382
+devicetag: ams_wms0_382
+type:      auto
+hostid:    
+disk:      name= id=1502252390.279.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_382s3 char=/dev/vx/rdmp/ams_wms0_382s3
+guid:      {fcb4b538-7cb9-11e7-baf0-b342bd198bd4}
+udid:      HITACHI%5FDF600F%5F75013813%5F017E
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252391 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdw      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_381
+devicetag: ams_wms0_381
+type:      auto
+hostid:    
+disk:      name= id=1502124116.1365.l007012.cdc.veritas.com
+group:     name= id=1502184197.85.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/ams_wms0_381s3 char=/dev/vx/rdmp/ams_wms0_381s3
+guid:      {535143e2-7b8f-11e7-9d7c-8302a83b1b95}
+udid:      HITACHI%5FDF600F%5F75013813%5F017D
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185916 seqno=0.42
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdv      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_380
+devicetag: ams_wms0_380
+type:      auto
+hostid:    
+disk:      name= id=1502155863.49.l007012.cdc.veritas.com
+group:     name= id=1502184201.87.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/ams_wms0_380s3 char=/dev/vx/rdmp/ams_wms0_380s3
+guid:      {3dd9da34-7bd9-11e7-a348-b2fe2a196e92}
+udid:      HITACHI%5FDF600F%5F75013813%5F017C
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185917 seqno=0.60
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdu      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_379
+devicetag: ams_wms0_379
+type:      auto
+hostid:    
+disk:      name= id=1499917048.78.l007011.cdc.veritas.com
+group:     name= id=1502184201.87.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/ams_wms0_379s3 char=/dev/vx/rdmp/ams_wms0_379s3
+guid:      {97fe731a-677c-11e7-bb39-8c3c7e4f1196}
+udid:      HITACHI%5FDF600F%5F75013813%5F017B
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185917 seqno=0.64
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdt      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_378
+devicetag: ams_wms0_378
+type:      auto
+hostid:    
+disk:      name= id=1502252387.274.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_378s3 char=/dev/vx/rdmp/ams_wms0_378s3
+guid:      {fae41758-7cb9-11e7-8f50-e09c1273b282}
+udid:      HITACHI%5FDF600F%5F75013813%5F017A
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252388 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sds      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_377
+devicetag: ams_wms0_377
+type:      auto
+hostid:    
+disk:      name= id=1500460954.211.l007011.cdc.veritas.com
+group:     name= id=1502184201.87.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/ams_wms0_377s3 char=/dev/vx/rdmp/ams_wms0_377s3
+guid:      {f9896c9c-6c6e-11e7-b7f5-7e545e694b26}
+udid:      HITACHI%5FDF600F%5F75013813%5F0179
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185917 seqno=0.43
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdr      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_376
+devicetag: ams_wms0_376
+type:      auto
+hostid:    
+disk:      name= id=1502252384.269.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_376s3 char=/dev/vx/rdmp/ams_wms0_376s3
+guid:      {f926f318-7cb9-11e7-93c0-aebaf56ed8ae}
+udid:      HITACHI%5FDF600F%5F75013813%5F0178
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252385 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdq      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_375
+devicetag: ams_wms0_375
+type:      auto
+hostid:    
+disk:      name= id=1502152927.2952.l007011.cdc.veritas.com
+group:     name= id=1502184201.87.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/ams_wms0_375s3 char=/dev/vx/rdmp/ams_wms0_375s3
+guid:      {67b9e5c6-7bd2-11e7-94f1-0255d63f9652}
+udid:      HITACHI%5FDF600F%5F75013813%5F0177
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185917 seqno=0.43
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdp      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_374
+devicetag: ams_wms0_374
+type:      auto
+hostid:    
+disk:      name= id=1502252381.264.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_374s3 char=/dev/vx/rdmp/ams_wms0_374s3
+guid:      {f76a5358-7cb9-11e7-81ae-31796d0fa799}
+udid:      HITACHI%5FDF600F%5F75013813%5F0176
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252382 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdo      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_373
+devicetag: ams_wms0_373
+type:      auto
+hostid:    
+disk:      name= id=1502252379.259.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_373s3 char=/dev/vx/rdmp/ams_wms0_373s3
+guid:      {f5b8d340-7cb9-11e7-83c9-4c727f571015}
+udid:      HITACHI%5FDF600F%5F75013813%5F0175
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252379 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdn      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_372
+devicetag: ams_wms0_372
+type:      auto
+hostid:    
+disk:      name= id=1502252376.254.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_372s3 char=/dev/vx/rdmp/ams_wms0_372s3
+guid:      {f40f4088-7cb9-11e7-85c6-164a6d4bf953}
+udid:      HITACHI%5FDF600F%5F75013813%5F0174
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252376 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdm      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_371
+devicetag: ams_wms0_371
+type:      auto
+hostid:    
+disk:      name= id=1502252373.249.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_371s3 char=/dev/vx/rdmp/ams_wms0_371s3
+guid:      {f25caf8c-7cb9-11e7-bdc2-be16a61ab342}
+udid:      HITACHI%5FDF600F%5F75013813%5F0173
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252373 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdl      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_370
+devicetag: ams_wms0_370
+type:      auto
+hostid:    
+disk:      name= id=1502252370.244.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_370s3 char=/dev/vx/rdmp/ams_wms0_370s3
+guid:      {f0a76268-7cb9-11e7-9f91-a529e04709c8}
+udid:      HITACHI%5FDF600F%5F75013813%5F0172
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252370 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdk      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_369
+devicetag: ams_wms0_369
+type:      auto
+hostid:    
+disk:      name= id=1502252367.239.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_369s3 char=/dev/vx/rdmp/ams_wms0_369s3
+guid:      {eeee220e-7cb9-11e7-8174-7bbf031a8f2e}
+udid:      HITACHI%5FDF600F%5F75013813%5F0171
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252367 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdj      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_368
+devicetag: ams_wms0_368
+type:      auto
+hostid:    
+disk:      name= id=1502252364.234.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_368s3 char=/dev/vx/rdmp/ams_wms0_368s3
+guid:      {ed364982-7cb9-11e7-b19f-58a1e72566bc}
+udid:      HITACHI%5FDF600F%5F75013813%5F0170
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252365 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdi      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_365
+devicetag: ams_wms0_365
+type:      auto
+hostid:    
+disk:      name= id=1502244216.105.l007011.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_365s3 char=/dev/vx/rdmp/ams_wms0_365s3
+guid:      {f44740a4-7ca6-11e7-a9f1-efc8043d1d79}
+udid:      HITACHI%5FDF600F%5F75013813%5F016D
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502244216 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdf      	state=enabled	type=primary
+connectivity: l007011 
+
+Device:    ams_wms0_364
+devicetag: ams_wms0_364
+type:      auto
+hostid:    
+disk:      name= id=1502244213.103.l007011.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_364s3 char=/dev/vx/rdmp/ams_wms0_364s3
+guid:      {f2891dc8-7ca6-11e7-bbaf-d10860671bea}
+udid:      HITACHI%5FDF600F%5F75013813%5F016C
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502244213 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sde      	state=enabled	type=primary
+connectivity: l007011 
+
+
+DATE:2017-08-09 16:24:28
+HOST:l007012
+USER:root
+STDIN:vxdisk scandisks;vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_wms0_361 auto:cdsdisk    -            (fen605)     online
+ams_wms0_362 auto:cdsdisk    -            (fen605)     online
+ams_wms0_363 auto:cdsdisk    -            (fen605)     online
+ams_wms0_364 auto:none       -            -            online invalid
+ams_wms0_365 auto:none       -            -            online invalid
+ams_wms0_366 auto:LVM        -            -            LVM
+ams_wms0_367 auto:LVM        -            -            LVM
+ams_wms0_368 auto:cdsdisk    -            -            online
+ams_wms0_369 auto:cdsdisk    -            -            online
+ams_wms0_370 auto:cdsdisk    -            -            online
+ams_wms0_371 auto:cdsdisk    -            -            online
+ams_wms0_372 auto:cdsdisk    -            -            online
+ams_wms0_373 auto:cdsdisk    -            -            online
+ams_wms0_374 auto:cdsdisk    -            -            online
+ams_wms0_375 auto:cdsdisk    -            -            online
+ams_wms0_376 auto:cdsdisk    -            -            online
+ams_wms0_377 auto:cdsdisk    -            -            online
+ams_wms0_378 auto:cdsdisk    -            -            online
+ams_wms0_379 auto:cdsdisk    -            -            online
+ams_wms0_380 auto:cdsdisk    -            -            online
+ams_wms0_381 auto:cdsdisk    -            -            online
+ams_wms0_382 auto:cdsdisk    -            -            online
+ams_wms0_383 auto:cdsdisk    -            -            online
+ams_wms0_384 auto:cdsdisk    -            -            online
+ams_wms0_385 auto:cdsdisk    -            -            online
+ams_wms0_386 auto:cdsdisk    -            -            online
+ams_wms0_387 auto:cdsdisk    -            -            online
+ams_wms0_388 auto:cdsdisk    -            -            online
+ams_wms0_389 auto:cdsdisk    -            -            online
+ams_wms0_390 auto:cdsdisk    -            -            online
+emc_clariion0_314 auto:cdsdisk    -            -            online
+emc_clariion0_315 auto:cdsdisk    -            -            online
+emc_clariion0_316 auto:cdsdisk    -            -            online
+emc_clariion0_317 auto:cdsdisk    -            -            online
+emc_clariion0_318 auto:cdsdisk    -            -            online
+emc_clariion0_319 auto:cdsdisk    -            -            online
+emc_clariion0_320 auto:cdsdisk    -            -            online
+emc_clariion0_321 auto:cdsdisk    -            -            online
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-08-09 16:24:29
+HOST:l007012
+USER:root
+STDIN:vxdisk list ams_wms0_368 ams_wms0_369 ams_wms0_370 ams_wms0_371 ams_wms0_372 ams_wms0_373 ams_wms0_374 ams_wms0_375 ams_wms0_376 ams_wms0_377 ams_wms0_378 ams_wms0_379 ams_wms0_380 ams_wms0_381 ams_wms0_382 ams_wms0_383 ams_wms0_384 ams_wms0_385 ams_wms0_386 ams_wms0_387 ams_wms0_388 ams_wms0_389 ams_wms0_390 emc_clariion0_314 emc_clariion0_315 emc_clariion0_316 emc_clariion0_317 emc_clariion0_318 emc_clariion0_319 emc_clariion0_320 emc_clariion0_321
+STDOUT:
+Device:    ams_wms0_368
+devicetag: ams_wms0_368
+type:      auto
+hostid:    
+disk:      name= id=1502252364.234.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_368s3 char=/dev/vx/rdmp/ams_wms0_368s3
+guid:      {ed364982-7cb9-11e7-b19f-58a1e72566bc}
+udid:      HITACHI%5FDF600F%5F75013813%5F0170
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252365 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdi      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_369
+devicetag: ams_wms0_369
+type:      auto
+hostid:    
+disk:      name= id=1502252367.239.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_369s3 char=/dev/vx/rdmp/ams_wms0_369s3
+guid:      {eeee220e-7cb9-11e7-8174-7bbf031a8f2e}
+udid:      HITACHI%5FDF600F%5F75013813%5F0171
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252367 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdj      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_370
+devicetag: ams_wms0_370
+type:      auto
+hostid:    
+disk:      name= id=1502252370.244.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_370s3 char=/dev/vx/rdmp/ams_wms0_370s3
+guid:      {f0a76268-7cb9-11e7-9f91-a529e04709c8}
+udid:      HITACHI%5FDF600F%5F75013813%5F0172
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252370 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdk      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_371
+devicetag: ams_wms0_371
+type:      auto
+hostid:    
+disk:      name= id=1502252373.249.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_371s3 char=/dev/vx/rdmp/ams_wms0_371s3
+guid:      {f25caf8c-7cb9-11e7-bdc2-be16a61ab342}
+udid:      HITACHI%5FDF600F%5F75013813%5F0173
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252373 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdl      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_372
+devicetag: ams_wms0_372
+type:      auto
+hostid:    
+disk:      name= id=1502252376.254.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_372s3 char=/dev/vx/rdmp/ams_wms0_372s3
+guid:      {f40f4088-7cb9-11e7-85c6-164a6d4bf953}
+udid:      HITACHI%5FDF600F%5F75013813%5F0174
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252376 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdm      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_373
+devicetag: ams_wms0_373
+type:      auto
+hostid:    
+disk:      name= id=1502252379.259.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_373s3 char=/dev/vx/rdmp/ams_wms0_373s3
+guid:      {f5b8d340-7cb9-11e7-83c9-4c727f571015}
+udid:      HITACHI%5FDF600F%5F75013813%5F0175
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252379 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdn      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_374
+devicetag: ams_wms0_374
+type:      auto
+hostid:    
+disk:      name= id=1502252381.264.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_374s3 char=/dev/vx/rdmp/ams_wms0_374s3
+guid:      {f76a5358-7cb9-11e7-81ae-31796d0fa799}
+udid:      HITACHI%5FDF600F%5F75013813%5F0176
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252382 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdo      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_375
+devicetag: ams_wms0_375
+type:      auto
+hostid:    
+disk:      name= id=1502152927.2952.l007011.cdc.veritas.com
+group:     name= id=1502184201.87.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/ams_wms0_375s3 char=/dev/vx/rdmp/ams_wms0_375s3
+guid:      {67b9e5c6-7bd2-11e7-94f1-0255d63f9652}
+udid:      HITACHI%5FDF600F%5F75013813%5F0177
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185917 seqno=0.43
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdp      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_376
+devicetag: ams_wms0_376
+type:      auto
+hostid:    
+disk:      name= id=1502252384.269.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_376s3 char=/dev/vx/rdmp/ams_wms0_376s3
+guid:      {f926f318-7cb9-11e7-93c0-aebaf56ed8ae}
+udid:      HITACHI%5FDF600F%5F75013813%5F0178
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252385 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdq      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_377
+devicetag: ams_wms0_377
+type:      auto
+hostid:    
+disk:      name= id=1500460954.211.l007011.cdc.veritas.com
+group:     name= id=1502184201.87.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/ams_wms0_377s3 char=/dev/vx/rdmp/ams_wms0_377s3
+guid:      {f9896c9c-6c6e-11e7-b7f5-7e545e694b26}
+udid:      HITACHI%5FDF600F%5F75013813%5F0179
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185917 seqno=0.43
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdr      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_378
+devicetag: ams_wms0_378
+type:      auto
+hostid:    
+disk:      name= id=1502252387.274.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_378s3 char=/dev/vx/rdmp/ams_wms0_378s3
+guid:      {fae41758-7cb9-11e7-8f50-e09c1273b282}
+udid:      HITACHI%5FDF600F%5F75013813%5F017A
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252388 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sds      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_379
+devicetag: ams_wms0_379
+type:      auto
+hostid:    
+disk:      name= id=1499917048.78.l007011.cdc.veritas.com
+group:     name= id=1502184201.87.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/ams_wms0_379s3 char=/dev/vx/rdmp/ams_wms0_379s3
+guid:      {97fe731a-677c-11e7-bb39-8c3c7e4f1196}
+udid:      HITACHI%5FDF600F%5F75013813%5F017B
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185917 seqno=0.64
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdt      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_380
+devicetag: ams_wms0_380
+type:      auto
+hostid:    
+disk:      name= id=1502155863.49.l007012.cdc.veritas.com
+group:     name= id=1502184201.87.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/ams_wms0_380s3 char=/dev/vx/rdmp/ams_wms0_380s3
+guid:      {3dd9da34-7bd9-11e7-a348-b2fe2a196e92}
+udid:      HITACHI%5FDF600F%5F75013813%5F017C
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185917 seqno=0.60
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdu      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_381
+devicetag: ams_wms0_381
+type:      auto
+hostid:    
+disk:      name= id=1502124116.1365.l007012.cdc.veritas.com
+group:     name= id=1502184197.85.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/ams_wms0_381s3 char=/dev/vx/rdmp/ams_wms0_381s3
+guid:      {535143e2-7b8f-11e7-9d7c-8302a83b1b95}
+udid:      HITACHI%5FDF600F%5F75013813%5F017D
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185916 seqno=0.42
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdv      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_382
+devicetag: ams_wms0_382
+type:      auto
+hostid:    
+disk:      name= id=1502252390.279.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_382s3 char=/dev/vx/rdmp/ams_wms0_382s3
+guid:      {fcb4b538-7cb9-11e7-baf0-b342bd198bd4}
+udid:      HITACHI%5FDF600F%5F75013813%5F017E
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252391 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdw      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_383
+devicetag: ams_wms0_383
+type:      auto
+hostid:    
+disk:      name= id=1502155871.64.l007012.cdc.veritas.com
+group:     name= id=1502184197.85.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/ams_wms0_383s3 char=/dev/vx/rdmp/ams_wms0_383s3
+guid:      {42ad077a-7bd9-11e7-8507-6f60f81cd7ec}
+udid:      HITACHI%5FDF600F%5F75013813%5F017F
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185917 seqno=0.42
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdx      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_384
+devicetag: ams_wms0_384
+type:      auto
+hostid:    
+disk:      name= id=1502252394.284.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_384s3 char=/dev/vx/rdmp/ams_wms0_384s3
+guid:      {feb60724-7cb9-11e7-ac3d-2f706470ee18}
+udid:      HITACHI%5FDF600F%5F75013813%5F0180
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252394 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdy      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_385
+devicetag: ams_wms0_385
+type:      auto
+hostid:    
+disk:      name= id=1502252397.289.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_385s3 char=/dev/vx/rdmp/ams_wms0_385s3
+guid:      {00ae74e4-7cba-11e7-b6b1-a6b18d6cad8c}
+udid:      HITACHI%5FDF600F%5F75013813%5F0181
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252397 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdz      	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_386
+devicetag: ams_wms0_386
+type:      auto
+hostid:    
+disk:      name= id=1502252400.294.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_386s3 char=/dev/vx/rdmp/ams_wms0_386s3
+guid:      {028a14d0-7cba-11e7-bd65-37dbb86c0902}
+udid:      HITACHI%5FDF600F%5F75013813%5F0182
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252400 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdaa     	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_387
+devicetag: ams_wms0_387
+type:      auto
+hostid:    
+disk:      name= id=1502252403.299.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_387s3 char=/dev/vx/rdmp/ams_wms0_387s3
+guid:      {0441d812-7cba-11e7-8e3b-854d3d61e6b6}
+udid:      HITACHI%5FDF600F%5F75013813%5F0183
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252403 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdab     	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_388
+devicetag: ams_wms0_388
+type:      auto
+hostid:    
+disk:      name= id=1502252406.304.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_388s3 char=/dev/vx/rdmp/ams_wms0_388s3
+guid:      {0611182e-7cba-11e7-a1f3-b9135f559214}
+udid:      HITACHI%5FDF600F%5F75013813%5F0184
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252406 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdac     	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_389
+devicetag: ams_wms0_389
+type:      auto
+hostid:    
+disk:      name= id=1502252409.309.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_389s3 char=/dev/vx/rdmp/ams_wms0_389s3
+guid:      {07cf0b26-7cba-11e7-bd07-665fc543e6e6}
+udid:      HITACHI%5FDF600F%5F75013813%5F0185
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252409 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdad     	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    ams_wms0_390
+devicetag: ams_wms0_390
+type:      auto
+hostid:    
+disk:      name= id=1502252412.314.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/ams_wms0_390s3 char=/dev/vx/rdmp/ams_wms0_390s3
+guid:      {099ddaae-7cba-11e7-8aa8-7f52a71741d9}
+udid:      HITACHI%5FDF600F%5F75013813%5F0186
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252412 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   1
+sdae     	state=enabled	type=primary
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_314
+devicetag: emc_clariion0_314
+type:      auto
+hostid:    
+disk:      name= id=1502262364.388.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_314s3 char=/dev/vx/rdmp/emc_clariion0_314s3
+guid:      {35385b5a-7cd1-11e7-8152-296e0a367883}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000EEC3EBC333E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502262364 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdar     	state=enabled	type=active/optimized(p)
+sdaj     	state=enabled	type=active/non-optimized
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_315
+devicetag: emc_clariion0_315
+type:      auto
+hostid:    
+disk:      name= id=1502252415.319.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_315s3 char=/dev/vx/rdmp/emc_clariion0_315s3
+guid:      {0b3b5062-7cba-11e7-ba4e-53d8635b0618}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000F0C3EBC333E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502252415 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdaf     	state=enabled	type=active/optimized(p)
+sdan     	state=enabled	type=active/non-optimized
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_316
+devicetag: emc_clariion0_316
+type:      auto
+hostid:    
+disk:      name= id=1502152937.2985.l007011.cdc.veritas.com
+group:     name= id=1502184195.83.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_316s3 char=/dev/vx/rdmp/emc_clariion0_316s3
+guid:      {6d988272-7bd2-11e7-a345-1351814abcb0}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000F2C3EBC333E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185916 seqno=0.88
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdak     	state=enabled	type=active/non-optimized
+sdas     	state=enabled	type=active/optimized(p)
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_317
+devicetag: emc_clariion0_317
+type:      auto
+hostid:    
+disk:      name= id=1502262367.393.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_317s3 char=/dev/vx/rdmp/emc_clariion0_317s3
+guid:      {37236f0e-7cd1-11e7-bba4-465222561b6a}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000F4C3EBC333E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502262367 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdao     	state=enabled	type=active/non-optimized
+sdag     	state=enabled	type=active/optimized(p)
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_318
+devicetag: emc_clariion0_318
+type:      auto
+hostid:    
+disk:      name= id=1502262370.398.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_318s3 char=/dev/vx/rdmp/emc_clariion0_318s3
+guid:      {390e0036-7cd1-11e7-921f-3557cc1cf82c}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000F6C3EBC333E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502262370 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdat     	state=enabled	type=active/optimized(p)
+sdal     	state=enabled	type=active/non-optimized
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_319
+devicetag: emc_clariion0_319
+type:      auto
+hostid:    
+disk:      name= id=1502155866.54.l007012.cdc.veritas.com
+group:     name= id=1502184195.83.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_319s3 char=/dev/vx/rdmp/emc_clariion0_319s3
+guid:      {3f7c74f0-7bd9-11e7-8910-6d55c1088b23}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000F8C3EBC333E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502185916 seqno=0.70
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdah     	state=enabled	type=active/optimized(p)
+sdap     	state=enabled	type=active/non-optimized
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_320
+devicetag: emc_clariion0_320
+type:      auto
+hostid:    
+disk:      name= id=1502262373.403.l007012.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_320s3 char=/dev/vx/rdmp/emc_clariion0_320s3
+guid:      {3afcf88e-7cd1-11e7-bf17-f15dc419f574}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000FAC3EBC333E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502262373 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdau     	state=enabled	type=active/optimized(p)
+sdam     	state=enabled	type=active/non-optimized
+connectivity: l007011 l007012 
+
+Device:    emc_clariion0_321
+devicetag: emc_clariion0_321
+type:      auto
+hostid:    
+disk:      name= id=1502252426.339.l007012.cdc.veritas.com
+group:     name= id=1502256283.345.l007011.cdc.veritas.com
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_321s3 char=/dev/vx/rdmp/emc_clariion0_321s3
+guid:      {11c25b24-7cba-11e7-9067-0605044cb73b}
+udid:      DGC%5FVRAID%5FCKM00121900328%5F6006016024F03000FCCBE8C933E1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1502257154 seqno=0.22
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 enabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 enabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 enabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   2
+sdai     	state=enabled	type=active/optimized(p)
+sdaq     	state=enabled	type=active/non-optimized
+connectivity: l007011 l007012 

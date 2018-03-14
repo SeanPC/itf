@@ -1,0 +1,910 @@
+
+==================== Operation Log for TC oracle_install ====================
+DATE:2017-09-27 10:18:00
+Nodes:l109024 l109025
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-09-27 10:18:00
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-09-27 10:18:00
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:45452338 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:102880130 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3566862610 (3.3 GiB)  TX bytes:139964537250 (130.3 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:107036 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:107036 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:13716108 (13.0 MiB)  TX bytes:13716108 (13.0 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-09-27 10:18:02
+HOST:l109024
+USER:root
+STDIN:ssh -l root l109024
+STDOUT:
+
+
+
+DATE:2017-09-27 10:18:04
+HOST:l109025
+USER:root
+STDIN:ssh -l root l109025
+STDOUT:
+
+
+
+DATE:2017-09-27 10:18:10
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l109024,l109025
+STDOUT:
+
+
+
+DATE:2017-09-27 10:18:11
+HOST:l109024
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l109024
+l109025
+
+
+DATE:2017-09-27 10:18:12
+HOST:l109025
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l109024
+l109025
+
+***Getting hostname of node***
+
+
+
+DATE:2017-09-27 10:18:13
+HOST:l109024
+USER:root
+STDIN:hostname
+STDOUT:
+l109024.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-09-27 10:18:14
+HOST:l109024
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-09-27 10:18:15
+HOST:l109024
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 7.4 (Maipo)
+
+
+DATE:2017-09-27 10:18:16
+HOST:l109024
+USER:root
+STDIN:uname -r
+STDOUT:
+3.10.0-693.el7.x86_64
+
+
+DATE:2017-09-27 10:18:17
+HOST:l109024
+USER:root
+STDIN:uname -r
+STDOUT:
+3.10.0-693.el7.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-09-27 10:18:21
+HOST:l109024
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSperl-5.20.1.2-RHEL7.x86_64
+Name        : VRTSperl
+Version     : 5.20.1.2
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:23:15 AM CST
+Group       : Applications/System
+Size        : 69606903
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSperl-5.20.1.2-RHEL7.src.rpm
+Build Date  : Sat 31 Oct 2015 12:35:23 AM CST
+Build Host  : rhel6-perl.cdc.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Perl 5.20.1 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.20.1 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.60
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSveki-7.0.0.000-RHEL7.x86_64
+Name        : VRTSveki
+Version     : 7.0.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:20:11 AM CST
+Group       : Applications/System
+Size        : 114651
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:38:37 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSveki-7.0.0.000-RHEL7.src.rpm
+Build Date  : Sat 13 Jun 2015 07:21:09 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Veki by Symantec
+Description :
+Veritas Veki by Symantec
+
+Package INFO: VRTSgms-7.0.0.000-RHEL7.x86_64
+Name        : VRTSgms
+Version     : 7.0.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:22:48 AM CST
+Group       : Applications/System
+Size        : 77367
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:38:17 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSgms-7.0.0.000-RHEL7.src.rpm
+Build Date  : Thu 28 May 2015 09:25:10 PM CST
+Build Host  : iarhle7bld.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Messaging Services by Symantec
+Description :
+Veritas Group Messaging Sevice (GMS) driver by Symantec
+
+Package INFO: VRTSdbed-7.0.1.000-RHEL.x86_64
+Name        : VRTSdbed
+Version     : 7.0.1.000
+Release     : RHEL
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:25:10 AM CST
+Group       : Applications/Databases
+Size        : 262837089
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSdbed-7.0.1.000-RHEL.src.rpm
+Build Date  : Fri 30 Oct 2015 05:00:17 PM CST
+Build Host  : snapper53-64.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSodm-7.0.0.200-RHEL7.x86_64
+Name        : VRTSodm
+Version     : 7.0.0.200
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:29:45 AM CST
+Group       : Applications/System
+Size        : 1294727
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSodm-7.0.0.200-RHEL7.src.rpm
+Build Date  : Fri 22 Sep 2017 02:33:53 PM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation.
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Disk Manager by Symantec
+Description :
+Veritas Oracle Disk Manager (ODM) by Symantec
+
+Package INFO: VRTScps-7.0.1.000-RHEL7.i686
+Name        : VRTScps
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: i686
+Install Date: Tue 26 Sep 2017 10:24:51 AM CST
+Group       : Applications/System
+Size        : 55748738
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTScps-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:10:35 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Co-ordination Point Server by Symantec
+Description :
+Veritas Co-ordination Point Server by Symantec
+Build Stamp: 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSvxfen-7.0.1.300-RHEL7.x86_64
+Name        : VRTSvxfen
+Version     : 7.0.1.300
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:28:57 AM CST
+Group       : Applications/System
+Size        : 30435996
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfen-7.0.1.300-RHEL7.src.rpm
+Build Date  : Tue 19 Sep 2017 01:11:14 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas I/O Fencing by Symantec
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-514.el7.x86_64 3.10.0-693.el7.x86_64
+Build Stamp        : 7.0.1.300-2017-09-17_21.55.15
+
+Package INFO: VRTSllt-7.0.1.800-RHEL7.x86_64
+Name        : VRTSllt
+Version     : 7.0.1.800
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:28:51 AM CST
+Group       : Applications/System
+Size        : 66754983
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSllt-7.0.1.800-RHEL7.src.rpm
+Build Date  : Tue 19 Sep 2017 02:03:16 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Low Latency Transport by Symantec
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-514.el7.x86_64 3.10.0-693.el7.x86_64 [LINUX_RHEL70]
+Build Stamp: Veritas-7.0.1.800-2017-09-17_21.55.15
+
+Package INFO: VRTSfsadv-7.0.1.000-RHEL7.x86_64
+Name        : VRTSfsadv
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:24:07 AM CST
+Group       : Applications/System
+Size        : 14529918
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSfsadv-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 01 Dec 2015 07:04:25 AM CST
+Build Host  : iarhel7bld.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas File System Advanced Features by Symantec
+Description :
+Veritas File System Advanced Features by Symantec
+
+Package INFO: VRTSspt-7.0.1.000-RHEL7.noarch
+Name        : VRTSspt
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: noarch
+Install Date: Tue 26 Sep 2017 10:23:21 AM CST
+Group       : Applications/System
+Size        : 34251540
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSspt-7.0.1.000-RHEL7.src.rpm
+Build Date  : Wed 25 Nov 2015 03:28:34 PM CST
+Build Host  : sfrhel6.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Software Support Tools Package by Symantec
+Description :
+    VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSvcs-7.0.1.000-RHEL7.x86_64
+Name        : VRTSvcs
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:24:42 AM CST
+Group       : Applications/System
+Size        : 215807490
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvcs-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:26:51 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server by Symantec
+Description :
+Veritas Cluster Server and Commands by Symantec (x86_64)
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSsfmh-7.0.0.0-0.x86_64
+Name        : VRTSsfmh
+Version     : 7.0.0.0
+Release     : 0
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:25:39 AM CST
+Group       : Applications/System
+Size        : 150059360
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:36:28 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSsfmh-7.0.0.0-0.src.rpm
+Build Date  : Fri 12 Jun 2015 09:18:17 PM CST
+Build Host  : vommvsles10-64bld.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+
+Package INFO: VRTSdbac-7.0.1.300-RHEL7.x86_64
+Name        : VRTSdbac
+Version     : 7.0.1.300
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:28:55 AM CST
+Group       : Applications/System
+Size        : 21650696
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSdbac-7.0.1.300-RHEL7.src.rpm
+Build Date  : Tue 19 Sep 2017 02:23:59 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Real Application Cluster Support Package by Symantec
+Description :
+Veritas Oracle Real Application Cluster Support Package by Symantec
+Build Stamp	: 7.0.1.300-2017-09-18_23.20.00
+Supported kernel(s): 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-514.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-693.el7.x86_64
+
+Package INFO: VRTSglm-7.0.1.000-RHEL7.x86_64
+Name        : VRTSglm
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:25:15 AM CST
+Group       : Applications/System
+Size        : 747976
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSglm-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 01 Dec 2015 05:44:22 AM CST
+Build Host  : iarhel7bld.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Lock Manager (GLM) driver by Symantec
+Description :
+Veritas Group Lock Manager (GLM) driver by Symantec
+Supported kernel(s): 3.10.0-123.el7.x86_64, 3.10.0-229.el7.x86_64 or later
+
+Package INFO: VRTSvcswiz-7.0.1.000-RHEL7.x86_64
+Name        : VRTSvcswiz
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:26:08 AM CST
+Group       : Applications/System
+Size        : 10589024
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvcswiz-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:27:42 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : "Symantec Corporation"
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server Wizards by Symantec
+Description :
+"The package contains Wizards for Veritas Cluster Server by Symantec"
+
+Arch : (x86_64)
+Build Stamp : 7.0.1.000-2015-11-23_16.27.40
+
+Package INFO: VRTSvxvm-7.0.1.300-RHEL7.x86_64
+Name        : VRTSvxvm
+Version     : 7.0.1.300
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:31:26 AM CST
+Group       : Applications/System
+Size        : 636561237
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxvm-7.0.1.300-RHEL7.src.rpm
+Build Date  : Tue 29 Aug 2017 09:07:45 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Volume Manager by Symantec
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSvlic-3.02.70.008-RHEL7.x86_64
+Name        : VRTSvlic
+Version     : 3.02.70.008
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:20:03 AM CST
+Group       : Applications/System
+Size        : 1560170
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:38:39 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSvlic-3.02.70.008-RHEL7.src.rpm
+Build Date  : Mon 18 May 2015 09:59:17 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Symantec License Utilities
+Description :
+These are the Symantec License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSvcsag-7.0.1.000-RHEL7.x86_64
+Name        : VRTSvcsag
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:24:57 AM CST
+Group       : Applications/System
+Size        : 83845511
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvcsag-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:26:16 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : VCS Bundled Agents by Symantec
+Description :
+Veritas Cluster Server Bundled Agents (x86_64) by Symantec
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSamf-7.0.1.300-RHEL7.x86_64
+Name        : VRTSamf
+Version     : 7.0.1.300
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:28:59 AM CST
+Group       : System Environment/Kernel
+Size        : 26094785
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSamf-7.0.1.300-RHEL7.src.rpm
+Build Date  : Tue 19 Sep 2017 01:12:29 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-514.el7.x86_64 3.10.0-693.el7.x86_64
+Build Stamp        : 7.0.1.300-2017-09-18_22.11.18
+
+Package INFO: VRTSgab-7.0.1.300-RHEL7.x86_64
+Name        : VRTSgab
+Version     : 7.0.1.300
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:28:53 AM CST
+Group       : Applications/System
+Size        : 30882409
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSgab-7.0.1.300-RHEL7.src.rpm
+Build Date  : Tue 19 Sep 2017 01:08:01 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Membership and Atomic Broadcast by Symantec
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-514.el7.x86_64 3.10.0-693.el7.x86_64
+Build Stamp        : Veritas-7.0.1.300-2017-09-17_21.55.15
+
+Package INFO: VRTSsfcpi-7.0.1.000-GENERIC.noarch
+Name        : VRTSsfcpi
+Version     : 7.0.1.000
+Release     : GENERIC
+Architecture: noarch
+Install Date: Tue 26 Sep 2017 10:26:02 AM CST
+Group       : Applications/System
+Size        : 14004981
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSsfcpi-7.0.1.000-GENERIC.src.rpm
+Build Date  : Mon 07 Dec 2015 03:24:22 PM CST
+Build Host  : mtvre01.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+
+Package INFO: VRTSvbs-7.0.0.000-Linux.i686
+Name        : VRTSvbs
+Version     : 7.0.0.000
+Release     : Linux
+Architecture: i686
+Install Date: Tue 26 Sep 2017 10:25:49 AM CST
+Group       : Applications/System
+Size        : 58030321
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:38:28 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSvbs-7.0.0.000-Linux.src.rpm
+Build Date  : Sat 13 Jun 2015 02:01:11 PM CST
+Build Host  : snapper53-64.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Virtual Business Services by Symantec
+Description :
+Virtual Business Services by Symantec
+Build Stamp : 7.0.0.000-2015-06-12_22.21.37
+
+Package INFO: VRTScavf-7.0.1.000-RHEL7.i686
+Name        : VRTScavf
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: i686
+Install Date: Tue 26 Sep 2017 10:25:23 AM CST
+Group       : Applications/System
+Size        : 842311
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTScavf-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 01 Dec 2015 05:40:04 AM CST
+Build Host  : iarhel7bld.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+VERITAS Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+Package INFO: VRTSaslapm-7.0.1.500-RHEL7.x86_64
+Name        : VRTSaslapm
+Version     : 7.0.1.500
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:31:43 AM CST
+Group       : Applications/System
+Size        : 55935269
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSaslapm-7.0.1.500-RHEL7.src.rpm
+Build Date  : Wed 30 Aug 2017 03:21:51 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTSvcsea-7.0.1.000-RHEL7.x86_64
+Name        : VRTSvcsea
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:25:02 AM CST
+Group       : Applications/System
+Size        : 1223976
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvcsea-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:28:15 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents by Symantec
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSvxfs-7.0.1.300-RHEL7.x86_64
+Name        : VRTSvxfs
+Version     : 7.0.1.300
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 26 Sep 2017 10:29:38 AM CST
+Group       : Applications/System
+Size        : 50014179
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfs-7.0.1.300-RHEL7.src.rpm
+Build Date  : Wed 20 Sep 2017 07:42:07 PM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Filesystem by Symantec
+Description :
+Veritas Filesystem by Symantec
+
+
+====STEP: Checking if OADT existing on the driver node
+DATE:2017-09-27 10:18:21
+
+
+DATE:2017-09-27 10:18:21
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:ls -l /orainst/oradbinst
+STDOUT:
+-rwx--x--x 1 root root 62120 Aug 31 11:03 /orainst/oradbinst
+
+
+====STEP: Install oracle stuff
+DATE:2017-09-27 10:18:21
+
+
+DATE:2017-09-27 10:18:26
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:ls -l /var/orainst/l109024/log/pid
+STDOUT:
+-rw-r--r-- 1 root root 6 Sep 27 10:18 /var/orainst/l109024/log/pid
+
+
+DATE:2017-09-27 10:20:33
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/orainst/oradbinst -node l109024,l109025 -vers 112040 -type RAC -racip 10.200.109.211,10.200.109.212,10.200.109.213 -storagetype FS:VCFS -step 1-5
+STDOUT:
+2017-09-27 10:18:30    INFO Checking if nodes are wop-sshable....Passed!
+2017-09-27 10:18:32    INFO Checking if nodes belong to the same subnet....Passed!
+2017-09-27 10:18:40    INFO Checking if nodes belong to the same OS Type....Passed!
+2017-09-27 10:18:40    INFO Checking if nodes belong to the same kernel....Passed!
+2017-09-27 10:18:40    INFO Checking if the combination RHEL7 -- 112040 in support list....Passed!
+2017-09-27 10:18:40    INFO Checking if amount of SCANIP and VIP is right....Passed!
+2017-09-27 10:18:40    INFO Checking if SCANIP or VIP belong to subnet "10.200.109.0"....Passed!
+2017-09-27 10:19:10    INFO Checking if SCANIP or VIP are usable....Passed!
+2017-09-27 10:19:16    INFO Copying scripts and files to Node "l109024"....Passed!
+2017-09-27 10:19:18    INFO Copying scripts and files to Node "l109025"....Passed!
+2017-09-27 10:19:19    INFO Checking if CVM are online....Passed!
+2017-09-27 10:19:19    INFO Configuring filesystem for Oracle Installation....Passed!
+2017-09-27 10:19:50    INFO     Creating oracle dg "oradg1510_ocrvote"....Passed!
+2017-09-27 10:19:50    INFO     Creating oracle dg "oradg1510_dbarch"....Passed!
+2017-09-27 10:19:50    INFO     Creating oracle volume "ocrvote"....Passed!
+2017-09-27 10:19:50    INFO     Mounting oracle volume "ocrvote" on node "l109024"....Passed!
+2017-09-27 10:19:50    INFO     Creating oracle volume "dbdata"....Passed!
+2017-09-27 10:19:50    INFO     Mounting oracle volume "dbdata" on node "l109024"....Passed!
+2017-09-27 10:19:50    INFO     Creating oracle volume "archive"....Passed!
+2017-09-27 10:19:50    INFO     Mounting oracle volume "archive" on node "l109024"....Passed!
+2017-09-27 10:19:50    INFO Configuring required stuff and install required packages on node "l109024"....Passed!
+2017-09-27 10:19:57    INFO 	Writting resolv stuff to hosts file on node "l109024"....Passed!
+2017-09-27 10:19:57    INFO 	Setting private ip for "eno2" with ipaddr "192.200.109.24/255.255.255.0" on node "l109024"....Passed!
+2017-09-27 10:19:57    INFO 	Creating Oracle User "oracle" with password "Oracle123" on the node "l109024"....Passed!
+2017-09-27 10:19:57    INFO 	Setting oracle user profile on the node "l109024"....Passed!
+2017-09-27 10:19:57    INFO 	Generating pub key for oracle user on the node "l109024"....Passed!
+2017-09-27 10:19:57    INFO 	Setting oracle user limits on the node "l109024"....Passed!
+2017-09-27 10:19:57    INFO 	Creating directory for oracle binary on the node "l109024"....Passed!
+2017-09-27 10:19:57    INFO 	Configruring kernel parameters on the node "l109024"....Passed!
+2017-09-27 10:19:57    INFO 	Checking if YUM or Zypper is configured on the node "l109024"....Passed!
+2017-09-27 10:19:57    INFO 	Installing required pakcages on the node "l109024"....Passed!
+2017-09-27 10:19:57    INFO 	Executing additional script on the node "l109024"....Passed!
+2017-09-27 10:19:57    INFO Configuring required stuff and install required packages on node "l109025"....Passed!
+2017-09-27 10:20:04    INFO 	Writting resolv stuff to hosts file on node "l109025"....Passed!
+2017-09-27 10:20:04    INFO 	Setting private ip for "eno2" with ipaddr "192.200.109.25/255.255.255.0" on node "l109025"....Passed!
+2017-09-27 10:20:04    INFO 	Creating Oracle User "oracle" with password "Oracle123" on the node "l109025"....Passed!
+2017-09-27 10:20:04    INFO 	Setting oracle user profile on the node "l109025"....Passed!
+2017-09-27 10:20:04    INFO 	Generating pub key for oracle user on the node "l109025"....Passed!
+2017-09-27 10:20:04    INFO 	Setting oracle user limits on the node "l109025"....Passed!
+2017-09-27 10:20:04    INFO 	Creating directory for oracle binary on the node "l109025"....Passed!
+2017-09-27 10:20:04    INFO 	Mounting oracle volume "ocrvote" on the node "l109025" ....Passed!
+2017-09-27 10:20:04    INFO 	Mounting oracle volume "dbdata" on the node "l109025" ....Passed!
+2017-09-27 10:20:04    INFO 	Mounting oracle volume "archive" on the node "l109025" ....Passed!
+2017-09-27 10:20:04    INFO 	Configruring kernel parameters on the node "l109025"....Passed!
+2017-09-27 10:20:04    INFO 	Checking if YUM or Zypper is configured on the node "l109025"....Passed!
+2017-09-27 10:20:04    INFO 	Installing required pakcages on the node "l109025"....Passed!
+2017-09-27 10:20:04    INFO 	Executing additional script on the node "l109025"....Passed!
+2017-09-27 10:20:09    INFO Mounting oracle iamge to /oraimage on the node "l109024"....Passed!
+2017-09-27 10:20:19    INFO Configuring oracle user equivalence....Passed!
+2017-09-27 10:20:19    INFO STEP 1:"DOENV:Setting up environment for Oracle RAC Installation"....Passed!
+2017-09-27 10:20:19   ERROR Installing Grid binary....Failed!
+2017-09-27 10:20:25   ERROR     Installing grid binary to l109024,l109025....Failed
+2017-09-27 10:20:33     END 
+
+
+====STEP: Checking if oracle install successfully
+DATE:2017-09-27 10:20:33
+
+
+DATE:2017-09-27 10:20:33
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:cat /opt/itf/log/l109024/oracle_install.olog|grep -P ERROR
+STDOUT:
+2017-09-27 10:20:19   ERROR Installing Grid binary....Failed!
+2017-09-27 10:20:25   ERROR     Installing grid binary to l109024,l109025....Failed
+
+***Test case exit with code 1***
+
+
+
+Case Result:Failed
+DATE:2017-09-27 10:20:33
+Duration:2m33s

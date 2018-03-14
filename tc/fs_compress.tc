@@ -1,0 +1,194 @@
+#This is for filesystem compress testing
+#des:support aix soliar linux platform
+oLog step "Checking basic environment of testbed"
+#check if login without password by root and oracle user
+checkNode root
+for node in $NODES
+do
+	getHostnameOSProduct $node
+	checkProductVersByVxvm 6.0 || myexit 201
+done
+if ! checkCVMStatus 
+then
+	oLog error "CVM are not all online"
+	myexit 201
+fi
+
+oLog step "create a private diskgroup and a shared diskgroup"
+makeDgBySize $NODE1 autotcdg0 2048
+makeDgBySize $NODE1 autotcdg1 2048 -s
+
+oLog step "Making volume and filesystem and check if the dlv is higher than 9"
+makeVolBySize $NODE1 autotcdg0 autotcvol0 1G fs 
+makeVolBySize $NODE1 autotcdg1 autotcvol1 1G fs
+RExec root $NODE1 "/opt/VRTS/bin/fstyp -v /dev/vx/dsk/autotcdg0/autotcvol0|grep version"
+dlvvers=`echo "$out"|grep -oP "(?<=version\s)(\s*)[0-9]+"|sed "s/^\s+//"`
+if [ -z "$dlvvers" ]
+then
+	oLog error "Failed to get DLV version"
+elif [ "$dlvvers" -lt 9 ]
+then
+	oLog error "DLV verison is lower than 9"
+	myexit 1
+else
+	oLog des "DLV version meet requirement"
+fi
+
+oLog step "Mmount/cfsmount file systems."
+mountVxfs $NODE1 autotcdg0 autotcvol0 /autotcmnt0
+#RExec root $NODE1 "/opt/VRTS/bin/cfsmntadm add autotcdg1 autotcvol1 /autotcmnt1 all=rw && /opt/VRTS/bin/cfsmount /autotcmnt1 && /opt/VRTS/bin/cfsmntadm display"
+for node in $NODES
+do
+	mountVxfs $node autotcdg1 autotcvol1 /autotcmnt1 "-o cluster"
+done
+for node in $NODES
+do
+	RExec root $node "$cmd2"
+done
+
+oLog step "create three 100M files on mount points (file1 on private file system, file2 and file3 on shared file system)"
+copyFileToRemote $BASE/etc/mf.pl $NODE1
+RExec root $NODE1 "/tmp/tmpfile.$PID -s 104857600 -n 1 -d /autotcmnt0 && /tmp/tmpfile.$PID -s 104857600 -n 2 -d /autotcmnt1"
+RExec root $NODE1 "du -sk /autotcmnt0/mf/*;du -sk /autotcmnt1/mf/*"
+file=(`echo "$out"|awk '{print $2}'|xargs -n 10000`)
+RExec root $NODE1 "$cmd2"
+
+oLog step "Take the cksum of file3 before compression."
+RExec root $NODE1 "cksum ${file[2]}"
+cksum_value0="$out"
+
+oLog step "on each mount points, create one dirctory and fill some Data. (dir1 on private file system, dir2 on shared file system)"
+RExec root $NODE1 "mkdir -p /autotcmnt0/autotcdir0 /autotcmnt1/autotcdir1"
+RExec root $NODE1 "/tmp/tmpfile.$PID -s 104857600 -n 5 -d /autotcmnt0/autotcdir0"
+RExec root $NODE1 "/tmp/tmpfile.$PID -s 104857600 -n 5 -d /autotcmnt1/autotcdir1"
+RExec root $NODE1 "$cmd2"
+
+oLog step "Lists the supported compression algorithms,along with the supported block sizes"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -a"
+
+oLog step "Displays the compression of the files/directories before compression"
+RExec root $NODE1 "for i in ${file[0]} ${file[1]} ${file[2]};do /opt/VRTS/bin/vxcompress -l \$i;done"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -l -r /autotcmnt0/autotcdir0"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -l -r /autotcmnt1/autotcdir1"
+
+oLog step "take down file systems usage before compression"
+RExec root $NODE1 "/opt/VRTS/bin/fsadm -S compressed /autotcmnt0"
+RExec root $NODE1 "/opt/VRTS/bin/fsadm -S compressed /autotcmnt1"
+
+oLog step "Compress the three files(file1,file2,file3), file1 and file3 use the default algorithm and strength of gzip-6, file2 use the highest strength 9 then display"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress ${file[0]} ${file[2]}"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -t gzip-9 ${file[1]}"
+RExec root $NODE1 "$cmd2"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -l ${file[0]} ${file[1]} ${file[2]}"
+comp_per0=`echo "$out"|awk '{print $1}'|sed -n 2p|grep -oP "[0-9]+(?=%)"`
+if [ $comp_per0 -gt 0 ]
+then
+	oLog des "Compression percentage is greater than 0"
+else
+	oLog error "Compression percentage should greater than 0"
+	myexit 1
+fi
+
+oLog step "Check the file system usage after compression"
+RExec root $NODE1 "/opt/VRTS/bin/fsadm -S compressed /autotcmnt0"
+RExec root $NODE1 "/opt/VRTS/bin/fsadm -S compressed /autotcmnt1"
+RExec root $NODE1 "$cmd2"
+
+oLog step "Read the two compressed files(file1, file2),file just be uncompressed in memory,so the %comp will not changed"
+RExec root $NODE1 "dd if=${file[0]} of=/dev/null bs=1024k count=100"
+RExec root $NODE1 "dd if=${file[1]} of=/dev/null bs=1024k count=100"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -l ${file[0]} ${file[1]}"
+comp_per1=`echo "$out"|awk '{print $1}'|sed -n 2p|grep -oP "[0-9]+(?=%)"`
+if [ "$comp_per0" = "$comp_per1" ]
+then
+	oLog des "compression percentage keep the same"
+else
+	oLog error "compression percentage should not change"
+	myexit 1
+fi
+
+oLog step "Writing data to the two compressed files(file1, file2),the %comp will be less"
+RExec root $NODE1 "dd if=${file[0]} of=/tmp/autotctmpfile bs=1024k count=50"
+RExec root $NODE1 "cat /tmp/autotctmpfile >> ${file[0]}"
+RExec root $NODE1 "cat /tmp/autotctmpfile >> ${file[1]}"
+RExec root $NODE1 "$cmd2"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -l ${file[0]} ${file[1]}"
+comp_per2=`echo "$out"|awk '{print $1}'|sed -n 2p|grep -oP "[0-9]+(?=%)"`
+if [ "$comp_per2" -lt "$comp_per0" ]
+then
+	oLog des "compression percentage truns less"
+else
+	oLog error "compression percentage should be less"
+	myexit 1
+fi
+
+oLog step "compress file1, file2 again,then check if the compress percentage is greater"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress ${file[0]} ${file[1]}"
+RExec root $NODE1 "$cmd2"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -l ${file[0]} ${file[1]}"
+comp_per3=`echo "$out"|awk '{print $1}'|sed -n 2p|grep -oP "[0-9]+(?=%)"`
+if [ "$comp_per2" -lt "$comp_per3" ]
+then
+	oLog des "compression percentage truns greater"
+else
+	oLog error "compression percentage should be greater"
+	myexit 1
+fi
+
+oLog step "Compress the directories. one directory use strength 1, the other directory use strength 6,and display and compare the space save between before and after compression"
+RExec root $NODE1 "/opt/VRTS/bin/fsadm -S compressed /autotcmnt0"
+comp_dir[0]=`echo "$out"|sed -n 2p|awk '{print $NF}'`
+RExec root $NODE1 "/opt/VRTS/bin/fsadm -S compressed /autotcmnt1"
+comp_dir[1]=`echo "$out"|sed -n 2p|awk '{print $NF}'`
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -r -t gzip-1 /autotcmnt0/autotcdir0"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -r /autotcmnt1/autotcdir1"
+RExec root $NODE1 "$cmd2"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -l -r /autotcmnt0/autotcdir0 /autotcmnt1/autotcdir1"
+RExec root $NODE1 "/opt/VRTS/bin/fsadm -S compressed /autotcmnt0"
+comp_dir1[0]=`echo "$out"|sed -n 2p|awk '{print $NF}'`
+RExec root $NODE1 "/opt/VRTS/bin/fsadm -S compressed /autotcmnt1"
+comp_dir1[1]=`echo "$out"|sed -n 2p|awk '{print $NF}'`
+if [ ${comp_dir[0]} -lt ${comp_dir1[0]} ] && [ ${comp_dir[1]} -lt ${comp_dir1[1]} ] 
+then
+	oLog des "The space saved size increased"
+else
+	oLog error "The space saved size shoud increase"
+	myexit 1
+fi
+
+oLog step "Uncompress all files and check the compress percentage should be 0%"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -u ${file[0]} ${file[1]} ${file[2]}"
+RExec root $NODE1 "$cmd2"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -l ${file[0]} ${file[1]} ${file[2]}"
+if [ `echo "$out"|sed '1d;$d'|grep -v "^$"|awk '{print $1}'|sort -n|sort -u` = 0% ]
+then
+	oLog des "All compression percentage are 0%"
+else
+	oLog error "All compression precentage should be 0%"
+	myexit 1
+fi
+sleep 5
+oLog step "Uncompress all directores and check the compress percentage should be 0%"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -u -r /autotcmnt0/autotcdir0 /autotcmnt1/autotcdir1"
+RExec root $NODE1 "$cmd2"
+RExec root $NODE1 "/opt/VRTS/bin/vxcompress -l -r /autotcmnt0/autotcdir0 /autotcmnt1/autotcdir1"
+if echo "$out"|tail -1|grep -oP "(?<=\()0{1}" > /dev/null 2>&1
+then
+	oLog des "All compression percentage are 0%"
+else
+	oLog error "All compression precentage should be 0%"
+	myexit 1
+fi
+
+oLog step "Compare the cksum value of ${file[2]},it should keep the same"
+RExec root $NODE1 "cksum ${file[2]}"
+cksum_value1="$out"
+if [ "$cksum_value0" = "$cksum_value1" ]
+then
+	oLog des "cksum value of ${file[2]} are the same"
+else
+	oLog error "cksum value of ${file[2]} are different"
+	myexit 1
+fi
+oLog flag
+myexit 10

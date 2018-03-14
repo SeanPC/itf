@@ -1,0 +1,18 @@
+#tc for Infoscale Install and Configure testing
+#des:support aix soliar linux platform
+#VALUE:setup_content,version,freshinstall,noipc
+#value of setup_content could be one or all of "install;configure;fencing",if you don't do install operation,version and freshinstall(yes|no) is not necessary.patch_path is required if you specify noipc=yes.
+#DEFAULT:install|configure|fencing,7.1,yes,no
+#P:10
+source $BASE/etc/install/install.conf
+checkNode root novcs
+for node in $NODES
+do
+	getHostnameOSProduct $node
+	[[ "$setup_content" =~ install ]] && checkSFPkgStatus install $node && oLog error "Have found InfoScale product installed" && myexit 201
+done
+[[ "$setup_content" =~ install ]] && installPrepare && installSF $version $freshinstall
+[[ "$setup_content" =~ configure ]] && configureSF 
+[[ "$setup_content" =~ fencing ]] && fencingSF
+oLog flag
+myexit 0

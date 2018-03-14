@@ -1,0 +1,56 @@
+
+==================== Operation Log for TC test ====================
+DATE:2017-01-25 14:21:41
+Nodes:a110101
+
+***Getting hostname of node***
+
+
+
+DATE:2017-01-25 14:21:41
+HOST:a110101
+USER:root
+STDIN:hostname
+STDOUT:
+a110101.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-01-25 14:21:42
+HOST:a110101
+USER:root
+STDIN:uname
+STDOUT:
+AIX
+
+
+DATE:2017-01-25 14:21:44
+HOST:a110101
+USER:root
+STDIN:oslevel -s
+STDOUT:
+7100-03-03-1415
+
+
+DATE:2017-01-25 14:21:44
+HOST:a110101
+USER:root
+STDIN:df -g|sed 1d|xargs -n 7
+STDOUT:
+/dev/hd4 5.00 2.85 44% 16667 3% /
+/dev/hd2 6.00 3.45 43% 58233 7% /usr
+/dev/hd9var 5.00 1.78 65% 8052 2% /var
+/dev/hd3 5.00 4.93 2% 163 1% /tmp
+/dev/hd1 2.00 2.00 1% 5 1% /home
+/dev/hd11admin 0.25 0.25 1% 7 1% /admin
+/proc - - - - - /proc
+/dev/hd10opt 10.00 8.00 21% 20449 2% /opt
+/dev/livedump 0.25 0.25 1% 4 1% /var/adm/ras/livedump
+/dev/odm 0.00 0.00 -1% 6 100% /dev/odm
+
+
+Case Result:Passed
+DATE:2017-01-25 14:21:49
+Duration:0m8s

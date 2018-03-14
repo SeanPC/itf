@@ -1,0 +1,14 @@
+#!/bin/bash
+node=$1
+BASE=/opt/itf
+if [ -z "$node" ] || ! ping -c 1 $node > /dev/null 2>&1
+then
+	exit 1
+fi
+if [ $node = 10.200.109.36 -o $node = 10.200.110.197 ]
+then
+	scp -rp $BASE/bin $BASE/etc $BASE/lib $node:$BASE/
+else
+	ssh $node "rm -rf $BASE/tc/*"
+	scp -rp $BASE/bin $BASE/etc $BASE/lib $BASE/tc $node:$BASE/
+fi

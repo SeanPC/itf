@@ -1,0 +1,2425 @@
+
+==================== Operation Log for TC sf_setup ====================
+DATE:2017-03-15 11:21:20
+Nodes:l111060 l111061
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-03-15 11:21:20
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:5475002 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:3908747 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:602970294 (575.0 MiB)  TX bytes:4021249327 (3.7 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:8776 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:8776 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:980217 (957.2 KiB)  TX bytes:980217 (957.2 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-03-15 11:21:20
+HOST:l111060
+USER:root
+STDIN:ssh -l root l111060
+STDOUT:
+
+
+
+DATE:2017-03-15 11:21:21
+HOST:l111061
+USER:root
+STDIN:ssh -l root l111061
+STDOUT:
+
+
+
+DATE:2017-03-15 11:21:22
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111060,l111061
+STDOUT:
+
+
+***Getting hostname of node***
+
+
+
+DATE:2017-03-15 11:21:22
+HOST:l111060
+USER:root
+STDIN:hostname
+STDOUT:
+l111060.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-03-15 11:21:22
+HOST:l111060
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-03-15 11:21:23
+HOST:l111060
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+
+Welcome to SUSE Linux Enterprise Server 12 SP2  (x86_64) - Kernel \r (\l).
+
+
+DATE:2017-03-15 11:21:23
+HOST:l111060
+USER:root
+STDIN:uname -r
+STDOUT:
+4.4.21-69-default
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-03-15 11:21:24
+HOST:l111060
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSdbed-7.1.0.000-SLES.x86_64
+Name        : VRTSdbed
+Version     : 7.1.0.000
+Release     : SLES
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:12:59 AM UTC
+Group       : Applications/Databases
+Size        : 263456586
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:45 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSdbed-7.1.0.000-SLES.src.rpm
+Build Date  : Wed 16 Mar 2016 06:02:31 AM UTC
+Build Host  : carp11.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+Distribution: SuSE Linux
+
+Package INFO: VRTSvxfs-7.1.0.200-SLES12.x86_64
+Name        : VRTSvxfs
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:45 AM UTC
+Group       : Applications/System
+Size        : 45678105
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfs-7.1.0.200-SLES12.src.rpm
+Build Date  : Mon 06 Mar 2017 11:34:25 AM UTC
+Build Host  : iasuse12bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Filesystem
+Description :
+Veritas Filesystem
+Distribution: (none)
+
+Package INFO: VRTSdbac-7.1.0.200-SLES12.x86_64
+Name        : VRTSdbac
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:09 AM UTC
+Group       : Applications/System
+Size        : 9272094
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSdbac-7.1.0.200-SLES12.src.rpm
+Build Date  : Fri 03 Mar 2017 09:23:38 AM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Real Application Cluster Support Package
+Description :
+Veritas Oracle Real Application Cluster Support Package
+Build Stamp	: 7.1.0.200-2017-03-03_01.17.34
+Supported kernel(s): 3.12.28-4.6-default 3.12.49-11-default 4.4.21-69-default
+Distribution: (none)
+
+Package INFO: VRTScps-7.1.0.000-SLES12.x86_64
+Name        : VRTScps
+Version     : 7.1.0.000
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:12:41 AM UTC
+Group       : Applications/System
+Size        : 59161919
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:42 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTScps-7.1.0.000-SLES12.src.rpm
+Build Date  : Tue 29 Mar 2016 03:02:25 PM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Co-ordination Point Server
+Description :
+Veritas Co-ordination Point Server
+Build Stamp: 7.1.0.000-2016-03-29_04.43.15
+Distribution: (none)
+
+Package INFO: VRTSveki-7.1.0.200-SLES12.x86_64
+Name        : VRTSveki
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:16 AM UTC
+Group       : Applications/System
+Size        : 539646
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSveki-7.1.0.200-SLES12.src.rpm
+Build Date  : Tue 07 Mar 2017 06:31:56 AM UTC
+Build Host  : iasuse12bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Veki
+Description :
+Veritas Veki
+Distribution: (none)
+
+Package INFO: VRTSglm-7.1.0.200-SLES12.x86_64
+Name        : VRTSglm
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:01 AM UTC
+Group       : Applications/System
+Size        : 1226956
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSglm-7.1.0.200-SLES12.src.rpm
+Build Date  : Mon 06 Mar 2017 11:55:36 AM UTC
+Build Host  : iasuse12bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Lock Manager (GLM) driver
+Description :
+Veritas Group Lock Manager (GLM) driver
+Supported kernel(s): 3.12.28-4.6, 3.12.49-11, 4.4.21-69.1
+Distribution: (none)
+
+Package INFO: VRTSperl-5.20.1.3-SLES12.x86_64
+Name        : VRTSperl
+Version     : 5.20.1.3
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:11:44 AM UTC
+Group       : Applications/System
+Size        : 69941720
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:51 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSperl-5.20.1.3-SLES12.src.rpm
+Build Date  : Tue 02 Feb 2016 09:21:44 AM UTC
+Build Host  : perl-218-sles11.cdc.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Perl 5.20.1 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.20.1 compiled on Linux 2.6.27.19-5-default using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.60
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+Distribution: Veritas Technologies LLC
+
+Package INFO: VRTSvcsag-7.1.0.000-SLES12.x86_64
+Name        : VRTSvcsag
+Version     : 7.1.0.000
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:12:46 AM UTC
+Group       : Applications/System
+Size        : 84780660
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:56 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcsag-7.1.0.000-SLES12.src.rpm
+Build Date  : Tue 29 Mar 2016 03:14:04 PM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : VCS Bundled Agents
+Description :
+Veritas Cluster Server Bundled Agents (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+Distribution: (none)
+
+Package INFO: VRTSvxvm-7.1.0.200-SLES12.x86_64
+Name        : VRTSvxvm
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:34 AM UTC
+Group       : Applications/System
+Size        : 535030710
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxvm-7.1.0.200-SLES12.src.rpm
+Build Date  : Fri 10 Mar 2017 02:17:03 PM UTC
+Build Host  : sfhamtvbuildsles12-gmc3.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Volume Manager
+Description :
+Veritas Volume Manager for Linux
+Distribution: (none)
+
+Package INFO: VRTSgab-7.1.0.400-SLES12.x86_64
+Name        : VRTSgab
+Version     : 7.1.0.400
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:54 AM UTC
+Group       : Applications/System
+Size        : 14824279
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSgab-7.1.0.400-SLES12.src.rpm
+Build Date  : Tue 28 Feb 2017 10:37:18 AM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Membership and Atomic Broadcast
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 3.12.28-4.6-default 3.12.49-11-default 4.4.21-69-default
+Build Stamp        : Veritas-7.1.0.400-2017-02-27_21.07.39
+Distribution: (none)
+
+Package INFO: VRTSgms-7.1.0.200-SLES12.x86_64
+Name        : VRTSgms
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:04 AM UTC
+Group       : Applications/System
+Size        : 200845
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSgms-7.1.0.200-SLES12.src.rpm
+Build Date  : Mon 06 Mar 2017 11:50:13 AM UTC
+Build Host  : iasuse12bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Messaging Services
+Description :
+Veritas Group Messaging Sevice (GMS) driver
+Distribution: (none)
+
+Package INFO: VRTSvbs-7.1.0.000-GA_Linux.x86_64
+Name        : VRTSvbs
+Version     : 7.1.0.000
+Release     : GA_Linux
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:27 AM UTC
+Group       : Applications/System
+Size        : 70705720
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:54 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvbs-7.1.0.000-GA_Linux.src.rpm
+Build Date  : Wed 30 Mar 2016 04:54:45 AM UTC
+Build Host  : snapper53-64.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Virtual Business Services by Veritas
+Description :
+Virtual Business Services by Veritas
+Build Stamp : 7.1.0.000-2016-03-29_20.12.21
+Distribution: (none)
+
+Package INFO: VRTSvlic-3.02.71.004-SLES.x86_64
+Name        : VRTSvlic
+Version     : 3.02.71.004
+Release     : SLES
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:11:47 AM UTC
+Group       : Applications/System
+Size        : 1633187
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:20 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvlic-3.02.71.004-SLES.src.rpm
+Build Date  : Thu 10 Mar 2016 05:33:25 PM UTC
+Build Host  : carp11.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas License Utilities
+Description :
+These are the Veritas License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+Distribution: (none)
+
+Package INFO: VRTSfsadv-7.1.0.000-SLES12.x86_64
+Name        : VRTSfsadv
+Version     : 7.1.0.000
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:12:11 AM UTC
+Group       : Applications/System
+Size        : 14579091
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:45 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSfsadv-7.1.0.000-SLES12.src.rpm
+Build Date  : Tue 12 Apr 2016 10:43:27 AM UTC
+Build Host  : iasuse12bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas File System Advanced Features
+Description :
+Veritas File System Advanced Features
+Distribution: (none)
+
+Package INFO: VRTSvcsea-7.1.0.000-SLES12.x86_64
+Name        : VRTSvcsea
+Version     : 7.1.0.000
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:12:49 AM UTC
+Group       : Applications/System
+Size        : 1361111
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:57 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcsea-7.1.0.000-SLES12.src.rpm
+Build Date  : Tue 29 Mar 2016 03:17:55 PM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+Distribution: (none)
+
+Package INFO: VRTSaslapm-7.1.0.100-SLES12.x86_64
+Name        : VRTSaslapm
+Version     : 7.1.0.100
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:41 AM UTC
+Group       : Applications/System
+Size        : 42858671
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSaslapm-7.1.0.100-SLES12.src.rpm
+Build Date  : Fri 10 Mar 2017 02:21:24 PM UTC
+Build Host  : sfhamtvbuildsles12-gmc3.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Distribution: (none)
+
+Package INFO: VRTSvxfen-7.1.0.400-SLES12.x86_64
+Name        : VRTSvxfen
+Version     : 7.1.0.400
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:57 AM UTC
+Group       : Applications/System
+Size        : 13903460
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfen-7.1.0.400-SLES12.src.rpm
+Build Date  : Tue 28 Feb 2017 10:39:28 AM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas I/O Fencing
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 3.12.28-4.6-default 3.12.49-11-default 4.4.21-69-default
+Build Stamp        : 7.1.0.400-2017-02-27_21.07.39
+Distribution: (none)
+
+Package INFO: VRTSodm-7.1.0.200-SLES12.x86_64
+Name        : VRTSodm
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:06 AM UTC
+Group       : Applications/System
+Size        : 1438296
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSodm-7.1.0.200-SLES12.src.rpm
+Build Date  : Mon 06 Mar 2017 11:52:38 AM UTC
+Build Host  : iasuse12bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Disk Manager
+Description :
+Veritas Oracle Disk Manager (ODM)
+Distribution: (none)
+
+Package INFO: VRTSsfcpi-7.1.0.000-GENERIC.noarch
+Name        : VRTSsfcpi
+Version     : 7.1.0.000
+Release     : GENERIC
+Architecture: noarch
+Install Date: Wed 15 Mar 2017 03:14:30 AM UTC
+Group       : Applications/System
+Size        : 14121004
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:02 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSsfcpi-7.1.0.000-GENERIC.src.rpm
+Build Date  : Wed 30 Mar 2016 09:34:14 AM UTC
+Build Host  : vmd2850lx11
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+Distribution: Veritas Technologies LLC
+
+Package INFO: VRTSspt-7.1.0.000-SLES12.noarch
+Name        : VRTSspt
+Version     : 7.1.0.000
+Release     : SLES12
+Architecture: noarch
+Install Date: Wed 15 Mar 2017 03:11:50 AM UTC
+Group       : Applications/System
+Size        : 38749153
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:53 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSspt-7.1.0.000-SLES12.src.rpm
+Build Date  : Wed 16 Mar 2016 07:16:45 AM UTC
+Build Host  : sfrhel5u3.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Software Support Tools Package
+Description :
+VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+Distribution: (none)
+
+Package INFO: VRTSvcs-7.1.0.000-SLES12.x86_64
+Name        : VRTSvcs
+Version     : 7.1.0.000
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:12:35 AM UTC
+Group       : Applications/System
+Size        : 217529485
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:55 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcs-7.1.0.000-SLES12.src.rpm
+Build Date  : Tue 29 Mar 2016 03:15:33 PM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Server
+Description :
+Veritas Cluster Server and Commands (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+Distribution: (none)
+
+Package INFO: VRTSamf-7.1.0.200-SLES12.x86_64
+Name        : VRTSamf
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:59 AM UTC
+Group       : System Environment/Kernel
+Size        : 13575607
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSamf-7.1.0.200-SLES12.src.rpm
+Build Date  : Wed 01 Mar 2017 05:51:30 AM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 3.12.28-4.6-default 3.12.49-11-default 4.4.21-69-default
+Build Stamp        : 7.1.0.200-2017-02-28_21.49.47
+Distribution: (none)
+
+Package INFO: VRTSvcswiz-7.1.0.000-SLES12.x86_64
+Name        : VRTSvcswiz
+Version     : 7.1.0.000
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:35 AM UTC
+Group       : Applications/System
+Size        : 10642234
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:58 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcswiz-7.1.0.000-SLES12.src.rpm
+Build Date  : Tue 29 Mar 2016 03:18:14 PM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : "Veritas Technologies LLC"
+URL         : http://www.veritas.com/support
+Summary     : Veritas Cluster Server Wizards
+Description :
+"The package contains Wizards for Veritas Cluster Server"
+
+Arch : (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_08.18.04
+Distribution: (none)
+
+Package INFO: VRTSllt-7.1.0.500-SLES12.x86_64
+Name        : VRTSllt
+Version     : 7.1.0.500
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:51 AM UTC
+Group       : Applications/System
+Size        : 31708386
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSllt-7.1.0.500-SLES12.src.rpm
+Build Date  : Thu 02 Mar 2017 06:48:15 AM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Low Latency Transport
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 3.12.28-4.6-default 3.12.49-11-default 4.4.21-69-default [LINUX_SLES12]
+Build Stamp: Veritas-7.1.0.500-2017-02-27_21.07.39
+Distribution: (none)
+
+Package INFO: VRTSsfmh-7.1.0.0-0.x86_64
+Name        : VRTSsfmh
+Version     : 7.1.0.0
+Release     : 0
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:18 AM UTC
+Group       : Applications/System
+Size        : 166345919
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:03 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSsfmh-7.1.0.0-0.src.rpm
+Build Date  : Fri 01 Apr 2016 06:40:20 PM UTC
+Build Host  : vommvsles10-64bld.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+Distribution: Yes
+
+***Getting hostname of node***
+
+
+
+DATE:2017-03-15 11:21:24
+HOST:l111061
+USER:root
+STDIN:hostname
+STDOUT:
+l111061.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-03-15 11:21:25
+HOST:l111061
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-03-15 11:21:25
+HOST:l111061
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+
+Welcome to SUSE Linux Enterprise Server 12 SP2  (x86_64) - Kernel \r (\l).
+
+
+DATE:2017-03-15 11:21:25
+HOST:l111061
+USER:root
+STDIN:uname -r
+STDOUT:
+4.4.21-69-default
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-03-15 11:21:26
+HOST:l111061
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSllt-7.1.0.500-SLES12.x86_64
+Name        : VRTSllt
+Version     : 7.1.0.500
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:51 AM UTC
+Group       : Applications/System
+Size        : 31708386
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSllt-7.1.0.500-SLES12.src.rpm
+Build Date  : Thu 02 Mar 2017 06:48:15 AM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Low Latency Transport
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 3.12.28-4.6-default 3.12.49-11-default 4.4.21-69-default [LINUX_SLES12]
+Build Stamp: Veritas-7.1.0.500-2017-02-27_21.07.39
+Distribution: (none)
+
+Package INFO: VRTSsfmh-7.1.0.0-0.x86_64
+Name        : VRTSsfmh
+Version     : 7.1.0.0
+Release     : 0
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:20 AM UTC
+Group       : Applications/System
+Size        : 166345919
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:03 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSsfmh-7.1.0.0-0.src.rpm
+Build Date  : Fri 01 Apr 2016 06:40:20 PM UTC
+Build Host  : vommvsles10-64bld.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+Distribution: Yes
+
+Package INFO: VRTSvcsag-7.1.0.000-SLES12.x86_64
+Name        : VRTSvcsag
+Version     : 7.1.0.000
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:12:46 AM UTC
+Group       : Applications/System
+Size        : 84780660
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:56 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcsag-7.1.0.000-SLES12.src.rpm
+Build Date  : Tue 29 Mar 2016 03:14:04 PM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : VCS Bundled Agents
+Description :
+Veritas Cluster Server Bundled Agents (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+Distribution: (none)
+
+Package INFO: VRTSvxvm-7.1.0.200-SLES12.x86_64
+Name        : VRTSvxvm
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:34 AM UTC
+Group       : Applications/System
+Size        : 535030710
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxvm-7.1.0.200-SLES12.src.rpm
+Build Date  : Fri 10 Mar 2017 02:17:03 PM UTC
+Build Host  : sfhamtvbuildsles12-gmc3.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Volume Manager
+Description :
+Veritas Volume Manager for Linux
+Distribution: (none)
+
+Package INFO: VRTSgms-7.1.0.200-SLES12.x86_64
+Name        : VRTSgms
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:04 AM UTC
+Group       : Applications/System
+Size        : 200845
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSgms-7.1.0.200-SLES12.src.rpm
+Build Date  : Mon 06 Mar 2017 11:50:13 AM UTC
+Build Host  : iasuse12bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Messaging Services
+Description :
+Veritas Group Messaging Sevice (GMS) driver
+Distribution: (none)
+
+Package INFO: VRTSvlic-3.02.71.004-SLES.x86_64
+Name        : VRTSvlic
+Version     : 3.02.71.004
+Release     : SLES
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:11:47 AM UTC
+Group       : Applications/System
+Size        : 1633187
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:20 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvlic-3.02.71.004-SLES.src.rpm
+Build Date  : Thu 10 Mar 2016 05:33:25 PM UTC
+Build Host  : carp11.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas License Utilities
+Description :
+These are the Veritas License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+Distribution: (none)
+
+Package INFO: VRTSfsadv-7.1.0.000-SLES12.x86_64
+Name        : VRTSfsadv
+Version     : 7.1.0.000
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:12:12 AM UTC
+Group       : Applications/System
+Size        : 14579091
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:45 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSfsadv-7.1.0.000-SLES12.src.rpm
+Build Date  : Tue 12 Apr 2016 10:43:27 AM UTC
+Build Host  : iasuse12bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas File System Advanced Features
+Description :
+Veritas File System Advanced Features
+Distribution: (none)
+
+Package INFO: VRTSvcsea-7.1.0.000-SLES12.x86_64
+Name        : VRTSvcsea
+Version     : 7.1.0.000
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:12:49 AM UTC
+Group       : Applications/System
+Size        : 1361111
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:57 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcsea-7.1.0.000-SLES12.src.rpm
+Build Date  : Tue 29 Mar 2016 03:17:55 PM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+Distribution: (none)
+
+Package INFO: VRTSaslapm-7.1.0.100-SLES12.x86_64
+Name        : VRTSaslapm
+Version     : 7.1.0.100
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:41 AM UTC
+Group       : Applications/System
+Size        : 42858671
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSaslapm-7.1.0.100-SLES12.src.rpm
+Build Date  : Fri 10 Mar 2017 02:21:24 PM UTC
+Build Host  : sfhamtvbuildsles12-gmc3.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Distribution: (none)
+
+Package INFO: VRTSvxfen-7.1.0.400-SLES12.x86_64
+Name        : VRTSvxfen
+Version     : 7.1.0.400
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:57 AM UTC
+Group       : Applications/System
+Size        : 13903460
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfen-7.1.0.400-SLES12.src.rpm
+Build Date  : Tue 28 Feb 2017 10:39:28 AM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas I/O Fencing
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 3.12.28-4.6-default 3.12.49-11-default 4.4.21-69-default
+Build Stamp        : 7.1.0.400-2017-02-27_21.07.39
+Distribution: (none)
+
+Package INFO: VRTSodm-7.1.0.200-SLES12.x86_64
+Name        : VRTSodm
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:07 AM UTC
+Group       : Applications/System
+Size        : 1438296
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSodm-7.1.0.200-SLES12.src.rpm
+Build Date  : Mon 06 Mar 2017 11:52:38 AM UTC
+Build Host  : iasuse12bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Disk Manager
+Description :
+Veritas Oracle Disk Manager (ODM)
+Distribution: (none)
+
+Package INFO: VRTSsfcpi-7.1.0.000-GENERIC.noarch
+Name        : VRTSsfcpi
+Version     : 7.1.0.000
+Release     : GENERIC
+Architecture: noarch
+Install Date: Wed 15 Mar 2017 03:14:31 AM UTC
+Group       : Applications/System
+Size        : 14121004
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:57:02 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSsfcpi-7.1.0.000-GENERIC.src.rpm
+Build Date  : Wed 30 Mar 2016 09:34:14 AM UTC
+Build Host  : vmd2850lx11
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+Distribution: Veritas Technologies LLC
+
+Package INFO: VRTSspt-7.1.0.000-SLES12.noarch
+Name        : VRTSspt
+Version     : 7.1.0.000
+Release     : SLES12
+Architecture: noarch
+Install Date: Wed 15 Mar 2017 03:11:51 AM UTC
+Group       : Applications/System
+Size        : 38749153
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:53 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSspt-7.1.0.000-SLES12.src.rpm
+Build Date  : Wed 16 Mar 2016 07:16:45 AM UTC
+Build Host  : sfrhel5u3.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Software Support Tools Package
+Description :
+VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+Distribution: (none)
+
+Package INFO: VRTSvcs-7.1.0.000-SLES12.x86_64
+Name        : VRTSvcs
+Version     : 7.1.0.000
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:12:36 AM UTC
+Group       : Applications/System
+Size        : 217529485
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:55 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcs-7.1.0.000-SLES12.src.rpm
+Build Date  : Tue 29 Mar 2016 03:15:33 PM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Server
+Description :
+Veritas Cluster Server and Commands (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_04.43.15
+Distribution: (none)
+
+Package INFO: VRTSdbed-7.1.0.000-SLES.x86_64
+Name        : VRTSdbed
+Version     : 7.1.0.000
+Release     : SLES
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:00 AM UTC
+Group       : Applications/Databases
+Size        : 263456586
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:45 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSdbed-7.1.0.000-SLES.src.rpm
+Build Date  : Wed 16 Mar 2016 06:02:31 AM UTC
+Build Host  : carp11.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+Distribution: SuSE Linux
+
+Package INFO: VRTSvxfs-7.1.0.200-SLES12.x86_64
+Name        : VRTSvxfs
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:45 AM UTC
+Group       : Applications/System
+Size        : 45678105
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfs-7.1.0.200-SLES12.src.rpm
+Build Date  : Mon 06 Mar 2017 11:34:25 AM UTC
+Build Host  : iasuse12bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Filesystem
+Description :
+Veritas Filesystem
+Distribution: (none)
+
+Package INFO: VRTSamf-7.1.0.200-SLES12.x86_64
+Name        : VRTSamf
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:00 AM UTC
+Group       : System Environment/Kernel
+Size        : 13575607
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSamf-7.1.0.200-SLES12.src.rpm
+Build Date  : Wed 01 Mar 2017 05:51:30 AM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 3.12.28-4.6-default 3.12.49-11-default 4.4.21-69-default
+Build Stamp        : 7.1.0.200-2017-02-28_21.49.47
+Distribution: (none)
+
+Package INFO: VRTSdbac-7.1.0.200-SLES12.x86_64
+Name        : VRTSdbac
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:10 AM UTC
+Group       : Applications/System
+Size        : 9272094
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSdbac-7.1.0.200-SLES12.src.rpm
+Build Date  : Fri 03 Mar 2017 09:23:38 AM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Real Application Cluster Support Package
+Description :
+Veritas Oracle Real Application Cluster Support Package
+Build Stamp	: 7.1.0.200-2017-03-03_01.17.34
+Supported kernel(s): 3.12.28-4.6-default 3.12.49-11-default 4.4.21-69-default
+Distribution: (none)
+
+Package INFO: VRTSvcswiz-7.1.0.000-SLES12.x86_64
+Name        : VRTSvcswiz
+Version     : 7.1.0.000
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:35 AM UTC
+Group       : Applications/System
+Size        : 10642234
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:58 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcswiz-7.1.0.000-SLES12.src.rpm
+Build Date  : Tue 29 Mar 2016 03:18:14 PM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : "Veritas Technologies LLC"
+URL         : http://www.veritas.com/support
+Summary     : Veritas Cluster Server Wizards
+Description :
+"The package contains Wizards for Veritas Cluster Server"
+
+Arch : (x86_64)
+Build Stamp : 7.1.0.000-2016-03-29_08.18.04
+Distribution: (none)
+
+Package INFO: VRTScps-7.1.0.000-SLES12.x86_64
+Name        : VRTScps
+Version     : 7.1.0.000
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:12:41 AM UTC
+Group       : Applications/System
+Size        : 59161919
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:42 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTScps-7.1.0.000-SLES12.src.rpm
+Build Date  : Tue 29 Mar 2016 03:02:25 PM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Co-ordination Point Server
+Description :
+Veritas Co-ordination Point Server
+Build Stamp: 7.1.0.000-2016-03-29_04.43.15
+Distribution: (none)
+
+Package INFO: VRTSveki-7.1.0.200-SLES12.x86_64
+Name        : VRTSveki
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:16 AM UTC
+Group       : Applications/System
+Size        : 539646
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSveki-7.1.0.200-SLES12.src.rpm
+Build Date  : Tue 07 Mar 2017 06:31:56 AM UTC
+Build Host  : iasuse12bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Veki
+Description :
+Veritas Veki
+Distribution: (none)
+
+Package INFO: VRTSglm-7.1.0.200-SLES12.x86_64
+Name        : VRTSglm
+Version     : 7.1.0.200
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:01 AM UTC
+Group       : Applications/System
+Size        : 1226956
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSglm-7.1.0.200-SLES12.src.rpm
+Build Date  : Mon 06 Mar 2017 11:55:36 AM UTC
+Build Host  : iasuse12bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Lock Manager (GLM) driver
+Description :
+Veritas Group Lock Manager (GLM) driver
+Supported kernel(s): 3.12.28-4.6, 3.12.49-11, 4.4.21-69.1
+Distribution: (none)
+
+Package INFO: VRTSperl-5.20.1.3-SLES12.x86_64
+Name        : VRTSperl
+Version     : 5.20.1.3
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:11:44 AM UTC
+Group       : Applications/System
+Size        : 69941720
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:51 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSperl-5.20.1.3-SLES12.src.rpm
+Build Date  : Tue 02 Feb 2016 09:21:44 AM UTC
+Build Host  : perl-218-sles11.cdc.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Perl 5.20.1 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.20.1 compiled on Linux 2.6.27.19-5-default using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.60
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+Distribution: Veritas Technologies LLC
+
+Package INFO: VRTSgab-7.1.0.400-SLES12.x86_64
+Name        : VRTSgab
+Version     : 7.1.0.400
+Release     : SLES12
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:13:55 AM UTC
+Group       : Applications/System
+Size        : 14824279
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSgab-7.1.0.400-SLES12.src.rpm
+Build Date  : Tue 28 Feb 2017 10:37:18 AM UTC
+Build Host  : iamtvbuildsles12-gmc3.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Membership and Atomic Broadcast
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 3.12.28-4.6-default 3.12.49-11-default 4.4.21-69-default
+Build Stamp        : Veritas-7.1.0.400-2017-02-27_21.07.39
+Distribution: (none)
+
+Package INFO: VRTSvbs-7.1.0.000-GA_Linux.x86_64
+Name        : VRTSvbs
+Version     : 7.1.0.000
+Release     : GA_Linux
+Architecture: x86_64
+Install Date: Wed 15 Mar 2017 03:14:27 AM UTC
+Group       : Applications/System
+Size        : 70705720
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Tue 12 Apr 2016 04:59:54 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvbs-7.1.0.000-GA_Linux.src.rpm
+Build Date  : Wed 30 Mar 2016 04:54:45 AM UTC
+Build Host  : snapper53-64.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Virtual Business Services by Veritas
+Description :
+Virtual Business Services by Veritas
+Build Stamp : 7.1.0.000-2016-03-29_20.12.21
+Distribution: (none)
+
+
+DATE:2017-03-15 11:21:34
+HOST:l111060
+USER:root
+STDIN:ntpdate 172.16.8.14
+STDOUT:
+15 Mar 03:21:34 ntpdate[20784]: adjust time server 172.16.8.14 offset 0.031014 sec
+
+
+DATE:2017-03-15 11:21:41
+HOST:l111061
+USER:root
+STDIN:ntpdate 172.16.8.14
+STDOUT:
+15 Mar 03:21:41 ntpdate[27877]: adjust time server 172.16.8.14 offset 0.024851 sec
+
+
+DATE:2017-03-15 11:21:41
+HOST:l111060
+USER:root
+STDIN:[ -f /root/.ssh/id_rsa.pub ] || echo y|ssh-keygen -t rsa -N '' -f /root/.ssh/id_rsa
+STDOUT:
+
+
+
+DATE:2017-03-15 11:21:42
+HOST:l111060
+USER:root
+STDIN:cat /root/.ssh/id_rsa.pub
+STDOUT:
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZUoyEuwwTBSeJM6Q8HnDRSlpSmIVGZjelX7l9qIHi5yL4J81WR9B1BmT2hbMlKOZeI6AHNHUAo5tJTjuwiOC5txOUpmYbq0uYdob6/pFzEzruukABqdrAQhMFgEVOrOyw4MHRHE7nuiuX2rXD+ZeZsTIW2HM/W4gvxXWcY3TcpX/e3XpdR8W69ZP0o6M2w+8v3DfDDkyn7NNtiHrev4uFW0V+lD/ejKhsqo3MUxk7pc0POSCXy4JzMI2DAlDpeu/bFJChv69XwE68M+d51a1asug39jo6f/6+A/6+ZsfJkhQGJBRewMkf32y7HRQqyoMJbgSG0FFx3bztxNso5I5z root@l111060.cdc.veritas.com
+
+
+DATE:2017-03-15 11:21:42
+HOST:l111061
+USER:root
+STDIN:mkdir -p /root/.ssh
+STDOUT:
+
+
+
+DATE:2017-03-15 11:21:42
+HOST:l111060
+USER:root
+STDIN:ls /opt/VRTS/install/install*
+STDOUT:
+/opt/VRTS/install/installer
+
+
+DATE:2017-03-15 11:21:43
+HOST:l111060
+USER:root
+STDIN:ifconfig -a
+STDOUT:
+eth0      Link encap:Ethernet  HWaddr 00:1E:C9:EC:E6:25  
+          inet addr:10.200.111.60  Bcast:10.200.111.255  Mask:255.255.255.0
+          inet6 addr: 2001:db8:c18:111:21e:c9ff:feec:e625/64 Scope:Global
+          inet6 addr: fe80::21e:c9ff:feec:e625/64 Scope:Link
+          inet6 addr: 2001:db8:c18:111:d75:138d:e00a:b2b0/64 Scope:Global
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:548225 errors:0 dropped:4773 overruns:0 frame:0
+          TX packets:469131 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:651166959 (621.0 Mb)  TX bytes:494556955 (471.6 Mb)
+
+eth1      Link encap:Ethernet  HWaddr 00:1E:C9:EC:E6:27  
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+
+eth2      Link encap:Ethernet  HWaddr 00:15:17:85:52:90  
+          inet6 addr: fe80::215:17ff:fe85:5290/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:425 errors:0 dropped:425 overruns:0 frame:0
+          TX packets:10 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:39950 (39.0 Kb)  TX bytes:868 (868.0 b)
+          Interrupt:16 Memory:fc3e0000-fc400000 
+
+eth3      Link encap:Ethernet  HWaddr 00:15:17:85:52:91  
+          inet6 addr: fe80::215:17ff:fe85:5291/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:425 errors:0 dropped:425 overruns:0 frame:0
+          TX packets:10 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:39950 (39.0 Kb)  TX bytes:868 (868.0 b)
+          Interrupt:17 Memory:fc3a0000-fc3c0000 
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:91 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:91 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1 
+          RX bytes:17330 (16.9 Kb)  TX bytes:17330 (16.9 Kb)
+
+
+DATE:2017-03-15 11:21:43
+HOST:l111060
+USER:root
+STDIN:ifconfig -a
+STDOUT:
+eth0      Link encap:Ethernet  HWaddr 00:1E:C9:EC:E6:25  
+          inet addr:10.200.111.60  Bcast:10.200.111.255  Mask:255.255.255.0
+          inet6 addr: 2001:db8:c18:111:21e:c9ff:feec:e625/64 Scope:Global
+          inet6 addr: fe80::21e:c9ff:feec:e625/64 Scope:Link
+          inet6 addr: 2001:db8:c18:111:d75:138d:e00a:b2b0/64 Scope:Global
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:548225 errors:0 dropped:4773 overruns:0 frame:0
+          TX packets:469131 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:651166959 (621.0 Mb)  TX bytes:494556955 (471.6 Mb)
+
+eth1      Link encap:Ethernet  HWaddr 00:1E:C9:EC:E6:27  
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+
+eth2      Link encap:Ethernet  HWaddr 00:15:17:85:52:90  
+          inet6 addr: fe80::215:17ff:fe85:5290/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:425 errors:0 dropped:425 overruns:0 frame:0
+          TX packets:10 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:39950 (39.0 Kb)  TX bytes:868 (868.0 b)
+          Interrupt:16 Memory:fc3e0000-fc400000 
+
+eth3      Link encap:Ethernet  HWaddr 00:15:17:85:52:91  
+          inet6 addr: fe80::215:17ff:fe85:5291/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:425 errors:0 dropped:425 overruns:0 frame:0
+          TX packets:10 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:39950 (39.0 Kb)  TX bytes:868 (868.0 b)
+          Interrupt:17 Memory:fc3a0000-fc3c0000 
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:91 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:91 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1 
+          RX bytes:17330 (16.9 Kb)  TX bytes:17330 (16.9 Kb)
+
+
+DATE:2017-03-15 11:21:48
+HOST:l111060
+USER:root
+STDIN:ifconfig eth0 up && sleep 5 && ethtool eth0
+STDOUT:
+Settings for eth0:
+	Supported ports: [ TP ]
+	Supported link modes:   10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Supported pause frame use: No
+	Supports auto-negotiation: Yes
+	Advertised link modes:  10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Advertised pause frame use: No
+	Advertised auto-negotiation: Yes
+	Speed: 1000Mb/s
+	Duplex: Full
+	Port: Twisted Pair
+	PHYAD: 1
+	Transceiver: internal
+	Auto-negotiation: on
+	MDI-X: on
+	Supports Wake-on: g
+	Wake-on: d
+	Link detected: yes
+
+
+DATE:2017-03-15 11:21:54
+HOST:l111060
+USER:root
+STDIN:ifconfig eth1 up && sleep 5 && ethtool eth1
+STDOUT:
+Settings for eth1:
+	Supported ports: [ TP ]
+	Supported link modes:   10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Supported pause frame use: No
+	Supports auto-negotiation: Yes
+	Advertised link modes:  10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Advertised pause frame use: No
+	Advertised auto-negotiation: Yes
+	Speed: Unknown!
+	Duplex: Unknown! (255)
+	Port: Twisted Pair
+	PHYAD: 1
+	Transceiver: internal
+	Auto-negotiation: on
+	MDI-X: Unknown
+	Supports Wake-on: g
+	Wake-on: d
+	Link detected: no
+
+
+DATE:2017-03-15 11:21:59
+HOST:l111060
+USER:root
+STDIN:ifconfig eth2 up && sleep 5 && ethtool eth2
+STDOUT:
+Settings for eth2:
+	Supported ports: [ TP ]
+	Supported link modes:   10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Supported pause frame use: No
+	Supports auto-negotiation: Yes
+	Advertised link modes:  10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Advertised pause frame use: No
+	Advertised auto-negotiation: Yes
+	Speed: 100Mb/s
+	Duplex: Full
+	Port: Twisted Pair
+	PHYAD: 1
+	Transceiver: internal
+	Auto-negotiation: on
+	MDI-X: on (auto)
+	Supports Wake-on: pumbg
+	Wake-on: d
+	Current message level: 0x00000007 (7)
+			       drv probe link
+	Link detected: yes
+
+
+DATE:2017-03-15 11:22:04
+HOST:l111060
+USER:root
+STDIN:ifconfig eth3 up && sleep 5 && ethtool eth3
+STDOUT:
+Settings for eth3:
+	Supported ports: [ TP ]
+	Supported link modes:   10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Supported pause frame use: No
+	Supports auto-negotiation: Yes
+	Advertised link modes:  10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Advertised pause frame use: No
+	Advertised auto-negotiation: Yes
+	Speed: 100Mb/s
+	Duplex: Full
+	Port: Twisted Pair
+	PHYAD: 1
+	Transceiver: internal
+	Auto-negotiation: on
+	MDI-X: off (auto)
+	Supports Wake-on: d
+	Wake-on: d
+	Current message level: 0x00000007 (7)
+			       drv probe link
+	Link detected: yes
+
+
+DATE:2017-03-15 11:22:05
+HOST:l111061
+USER:root
+STDIN:ifconfig -a
+STDOUT:
+eth0      Link encap:Ethernet  HWaddr 00:1E:C9:EC:E6:02  
+          inet addr:10.200.111.61  Bcast:10.200.111.255  Mask:255.255.255.0
+          inet6 addr: 2001:db8:c18:111:bdd6:8f22:a8c:3477/64 Scope:Global
+          inet6 addr: 2001:db8:c18:111:21e:c9ff:feec:e602/64 Scope:Global
+          inet6 addr: fe80::21e:c9ff:feec:e602/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:337074 errors:0 dropped:5074 overruns:0 frame:0
+          TX packets:61204 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:473402034 (451.4 Mb)  TX bytes:4792113 (4.5 Mb)
+
+eth1      Link encap:Ethernet  HWaddr 00:1E:C9:EC:E6:04  
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+
+eth2      Link encap:Ethernet  HWaddr 00:15:17:85:45:28  
+          inet6 addr: fe80::215:17ff:fe85:4528/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:449 errors:0 dropped:449 overruns:0 frame:0
+          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:42206 (41.2 Kb)  TX bytes:680 (680.0 b)
+          Interrupt:16 Memory:fc3e0000-fc400000 
+
+eth3      Link encap:Ethernet  HWaddr 00:15:17:85:45:29  
+          inet6 addr: fe80::215:17ff:fe85:4529/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:449 errors:0 dropped:449 overruns:0 frame:0
+          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:42206 (41.2 Kb)  TX bytes:680 (680.0 b)
+          Interrupt:17 Memory:fc3a0000-fc3c0000 
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:81 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:81 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1 
+          RX bytes:16566 (16.1 Kb)  TX bytes:16566 (16.1 Kb)
+
+
+DATE:2017-03-15 11:22:05
+HOST:l111061
+USER:root
+STDIN:ifconfig -a
+STDOUT:
+eth0      Link encap:Ethernet  HWaddr 00:1E:C9:EC:E6:02  
+          inet addr:10.200.111.61  Bcast:10.200.111.255  Mask:255.255.255.0
+          inet6 addr: 2001:db8:c18:111:bdd6:8f22:a8c:3477/64 Scope:Global
+          inet6 addr: 2001:db8:c18:111:21e:c9ff:feec:e602/64 Scope:Global
+          inet6 addr: fe80::21e:c9ff:feec:e602/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:337074 errors:0 dropped:5075 overruns:0 frame:0
+          TX packets:61204 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:473402034 (451.4 Mb)  TX bytes:4792113 (4.5 Mb)
+
+eth1      Link encap:Ethernet  HWaddr 00:1E:C9:EC:E6:04  
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+
+eth2      Link encap:Ethernet  HWaddr 00:15:17:85:45:28  
+          inet6 addr: fe80::215:17ff:fe85:4528/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:449 errors:0 dropped:449 overruns:0 frame:0
+          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:42206 (41.2 Kb)  TX bytes:680 (680.0 b)
+          Interrupt:16 Memory:fc3e0000-fc400000 
+
+eth3      Link encap:Ethernet  HWaddr 00:15:17:85:45:29  
+          inet6 addr: fe80::215:17ff:fe85:4529/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:449 errors:0 dropped:449 overruns:0 frame:0
+          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:42206 (41.2 Kb)  TX bytes:680 (680.0 b)
+          Interrupt:17 Memory:fc3a0000-fc3c0000 
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:81 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:81 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1 
+          RX bytes:16566 (16.1 Kb)  TX bytes:16566 (16.1 Kb)
+
+
+DATE:2017-03-15 11:22:10
+HOST:l111061
+USER:root
+STDIN:ifconfig eth0 up && sleep 5 && ethtool eth0
+STDOUT:
+Settings for eth0:
+	Supported ports: [ TP ]
+	Supported link modes:   10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Supported pause frame use: No
+	Supports auto-negotiation: Yes
+	Advertised link modes:  10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Advertised pause frame use: No
+	Advertised auto-negotiation: Yes
+	Speed: 1000Mb/s
+	Duplex: Full
+	Port: Twisted Pair
+	PHYAD: 1
+	Transceiver: internal
+	Auto-negotiation: on
+	MDI-X: on
+	Supports Wake-on: g
+	Wake-on: d
+	Link detected: yes
+
+
+DATE:2017-03-15 11:22:15
+HOST:l111061
+USER:root
+STDIN:ifconfig eth1 up && sleep 5 && ethtool eth1
+STDOUT:
+Settings for eth1:
+	Supported ports: [ TP ]
+	Supported link modes:   10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Supported pause frame use: No
+	Supports auto-negotiation: Yes
+	Advertised link modes:  10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Advertised pause frame use: No
+	Advertised auto-negotiation: Yes
+	Speed: Unknown!
+	Duplex: Unknown! (255)
+	Port: Twisted Pair
+	PHYAD: 1
+	Transceiver: internal
+	Auto-negotiation: on
+	MDI-X: Unknown
+	Supports Wake-on: g
+	Wake-on: d
+	Link detected: no
+
+
+DATE:2017-03-15 11:22:21
+HOST:l111061
+USER:root
+STDIN:ifconfig eth2 up && sleep 5 && ethtool eth2
+STDOUT:
+Settings for eth2:
+	Supported ports: [ TP ]
+	Supported link modes:   10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Supported pause frame use: No
+	Supports auto-negotiation: Yes
+	Advertised link modes:  10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Advertised pause frame use: No
+	Advertised auto-negotiation: Yes
+	Speed: 100Mb/s
+	Duplex: Full
+	Port: Twisted Pair
+	PHYAD: 1
+	Transceiver: internal
+	Auto-negotiation: on
+	MDI-X: off (auto)
+	Supports Wake-on: pumbg
+	Wake-on: d
+	Current message level: 0x00000007 (7)
+			       drv probe link
+	Link detected: yes
+
+
+DATE:2017-03-15 11:22:26
+HOST:l111061
+USER:root
+STDIN:ifconfig eth3 up && sleep 5 && ethtool eth3
+STDOUT:
+Settings for eth3:
+	Supported ports: [ TP ]
+	Supported link modes:   10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Supported pause frame use: No
+	Supports auto-negotiation: Yes
+	Advertised link modes:  10baseT/Half 10baseT/Full 
+	                        100baseT/Half 100baseT/Full 
+	                        1000baseT/Full 
+	Advertised pause frame use: No
+	Advertised auto-negotiation: Yes
+	Speed: 100Mb/s
+	Duplex: Full
+	Port: Twisted Pair
+	PHYAD: 1
+	Transceiver: internal
+	Auto-negotiation: on
+	MDI-X: on (auto)
+	Supports Wake-on: d
+	Wake-on: d
+	Current message level: 0x00000007 (7)
+			       drv probe link
+	Link detected: yes
+
+
+DATE:2017-03-15 11:22:26
+HOST:l111060
+USER:root
+STDIN:ifconfig eth2 192.168.11.1 netmask 255.255.255.0
+STDOUT:
+
+
+
+DATE:2017-03-15 11:22:26
+HOST:l111061
+USER:root
+STDIN:ifconfig eth2 192.168.11.11 netmask 255.255.255.0
+STDOUT:
+
+
+
+DATE:2017-03-15 11:22:29
+HOST:l111060
+USER:root
+STDIN:ping -c 3 192.168.11.11
+STDOUT:
+PING 192.168.11.11 (192.168.11.11) 56(84) bytes of data.
+64 bytes from 192.168.11.11: icmp_seq=1 ttl=64 time=0.981 ms
+64 bytes from 192.168.11.11: icmp_seq=2 ttl=64 time=0.415 ms
+64 bytes from 192.168.11.11: icmp_seq=3 ttl=64 time=0.462 ms
+
+--- 192.168.11.11 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2000ms
+rtt min/avg/max/mdev = 0.415/0.619/0.981/0.257 ms
+
+
+DATE:2017-03-15 11:22:29
+HOST:l111060
+USER:root
+STDIN:ifconfig eth3 192.168.21.1 netmask 255.255.255.0
+STDOUT:
+
+
+
+DATE:2017-03-15 11:22:29
+HOST:l111061
+USER:root
+STDIN:ifconfig eth3 192.168.21.11 netmask 255.255.255.0
+STDOUT:
+
+
+
+DATE:2017-03-15 11:22:31
+HOST:l111060
+USER:root
+STDIN:ping -c 3 192.168.21.11
+STDOUT:
+PING 192.168.21.11 (192.168.21.11) 56(84) bytes of data.
+64 bytes from 192.168.21.11: icmp_seq=1 ttl=64 time=0.619 ms
+64 bytes from 192.168.21.11: icmp_seq=2 ttl=64 time=0.259 ms
+64 bytes from 192.168.21.11: icmp_seq=3 ttl=64 time=0.384 ms
+
+--- 192.168.21.11 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 1998ms
+rtt min/avg/max/mdev = 0.259/0.420/0.619/0.151 ms
+
+
+DATE:2017-03-15 11:22:32
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/expect_test.exp l111060
+STDOUT:
+spawn ssh l111060
+Warning: Permanently added 'l111060,10.200.111.60' (RSA) to the list of known hosts.
+Last failed login: Wed Mar 15 10:55:10 UTC 2017 from 10.200.111.62 on ssh:notty
+There was 1 failed login attempt since the last successful login.
+Last login: Wed Mar 15 03:21:20 2017 from 10.220.128.128
+l111060:~ # exit 0
+logout
+Connection to l111060 closed.
+
+***Replacing strings usging replaceString***
+
+
+
+DATE:2017-03-15 11:22:32
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:cat /opt/itf/tmp/expect.exp.26528
+STDOUT:
+#!/usr/bin/expect
+set timeout 20
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no l111060
+expect {
+	"#" {send "/opt/VRTS/install/installer -configure 10.200.111.60 10.200.111.61\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+set timeout 1000
+while { 1 } {
+	expect {
+		"Select a component to configure:" {send "5\r"}
+		"The installer has discovered an existing installer process" {send "n\r"}
+		"Do you want to re-configure VCS" {send "y\r"}
+		"Choose option" {send "1\r"}
+		"the unique cluster name" {send "clus6061\r"}
+		"would you like to configure heartbeat" {send "1\r"}
+		"Enter the NIC for the first private heartbeat link on" {send "eth2\r"}
+		"Enter the NIC for the second private heartbeat link on" {send "eth3\r"}
+		"Would you like to configure a second private heartbeat link" {send "y\r"}
+		"Would you like to configure a third private heartbeat link" {send "n\r"}
+		"configure lower speed" {send "y\r"}
+		"configure an additional low-priority heartbeat link" {send "n\r"}
+		"Are you using the same NICs for private heartbeat links on all systems" {send "y\r"}
+		"a unique cluster ID number between" {send " \r"}
+		"you like to check if the cluster ID is in use by another cluster" {send "n\r"}
+		"this information correct" {send "y\r"}
+		"you want to configure the Virtual IP" {send "n\r"}
+		"you like to configure the VCS cluster in secure mode" {send "n\r"}
+		"you want to proceed with non-secure installation" {send "y\r"}
+		"you wish to accept the default cluster credentials" {send "y\r"}
+		"want to add another user to the cluster" {send "n\r"}
+		"Is this information correct" {send "y\r"}
+		"you want to configure SMTP notification" {send "n\r"}
+		"want to configure SNMP notification" {send "n\r"}
+		"want to configure the Global Cluster Option" {send "n\r"}
+		"you want to stop*processes now" {send "y\r"}
+		"to continue" {send "y\r"}
+		"you like to do post SFRAC configuration checks" {send "n\r"}
+		"Would you like to send the information" {send "n\r"}
+		"Would you like to view the summary file" {send "n\r"}
+		"Fencing in enabled mode" {send "n\r"}
+		"#" {send "exit 0\r";break}
+		timeout {puts "\nEXPECT ERROR.Unkown Question '_QUESTION_'";exit 2;break}
+	}
+	sleep 0.1
+}
+expect eof
+
+
+DATE:2017-03-15 11:27:12
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/tmp/expect.exp.26528
+STDOUT:
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no l111060
+Last failed login: Wed Mar 15 10:55:10 UTC 2017 from 10.200.111.62 on ssh:notty
+There was 1 failed login attempt since the last successful login.
+Last login: Wed Mar 15 03:22:32 2017 from 10.220.128.128
+l111060:~ # /opt/VRTS/install/installer -configure 10.200.111.60 10.200.111.61
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                              Veritas InfoScale Enterprise 7.1 Configure Program                                                                               
+                                                                                          10.200.111.60 10.200.111.61                                                                                          
+
+Copyright (c) 2016 Veritas Technologies LLC.  All rights reserved.  Veritas and the Veritas Logo are trademarks or registered trademarks of Veritas Technologies LLC or its affiliates in the U.S. and other 
+countries. Other names may be trademarks of their respective owners.
+
+The Licensed Software and Documentation are deemed to be "commercial computer software" and "commercial computer software documentation" as defined in FAR Sections 12.212 and DFARS Section 227.7202.
+
+Logs are being written to /var/tmp/installer-201703150322ezk while installer is in progress.
+
+     1)  Cluster Server (VCS)
+     2)  Storage Foundation (SF)
+     3)  Storage Foundation and High Availability (SFHA)
+     4)  Storage Foundation Cluster File System HA (SFCFSHA)
+     5)  Storage Foundation for Oracle RAC (SF Oracle RAC)
+
+Select a component to configure: [1-5,q] 5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                              Veritas InfoScale Enterprise 7.1 Configure Program                                                                               
+                                                                                          10.200.111.60 10.200.111.61                                                                                          
+
+Logs are being written to /var/tmp/installer-201703150322ezk while installer is in progress
+
+    Verifying systems: 0%   _______________________________________________________________________________________________________________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss)                                                                                                                                                                0 of 7
+
+    Checking system communication -\|/-\    Verifying systems: 14%                          _______________________________________________________________________________________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:40                                                                                                                                                           1 of 7
+
+    Checking system communication .................................................................................................................................................................... Done
+    Verifying systems: 14%                          _______________________________________________________________________________________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:40                                                                                                                                                           1 of 7
+
+    Checking system communication .................................................................................................................................................................... Done
+    Checking release compatibility |/    Verifying systems: 28%                                                   ______________________________________________________________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:20                                                                                                                                                           2 of 7
+
+    Checking system communication .................................................................................................................................................................... Done
+    Checking release compatibility ................................................................................................................................................................... Done
+    Verifying systems: 28%                                                   ______________________________________________________________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:20                                                                                                                                                           2 of 7
+
+    Checking system communication .................................................................................................................................................................... Done
+    Checking release compatibility ................................................................................................................................................................... Done
+    Checking installed product -\|/-\|    Verifying systems: 42%                                                                           ______________________________________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:20                                                                                                                                                           3 of 7
+
+    Checking system communication .................................................................................................................................................................... Done
+    Checking release compatibility ................................................................................................................................................................... Done
+    Checking installed product ....................................................................................................................................................................... Done
+    Verifying systems: 42%                                                                           ______________________________________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:20                                                                                                                                                           3 of 7
+
+    Checking system communication .................................................................................................................................................................... Done
+    Checking release compatibility ................................................................................................................................................................... Done
+    Checking installed product ....................................................................................................................................................................... Done
+    Checking platform version /-    Verifying systems: 57%                                                                                                     ____________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:10                                                                                                                                                           4 of 7
+
+    Checking system communication .................................................................................................................................................................... Done
+    Checking release compatibility ................................................................................................................................................................... Done
+    Checking installed product ....................................................................................................................................................................... Done
+    Checking platform version ........................................................................................................................................................................ Done
+    Verifying systems: 57%                                                                                                     ____________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:10                                                                                                                                                           4 of 7
+
+    Checking system communication .................................................................................................................................................................... Done
+    Checking release compatibility ................................................................................................................................................................... Done
+    Checking installed product ....................................................................................................................................................................... Done
+    Checking platform version ........................................................................................................................................................................ Done
+    Checking configured component     Verifying systems: 71%                                                                                                                              ___________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:05                                                                                                                                                           5 of 7
+
+    Checking system communication .................................................................................................................................................................... Done
+    Checking release compatibility ................................................................................................................................................................... Done
+    Checking installed product ....................................................................................................................................................................... Done
+    Checking platform version ........................................................................................................................................................................ Done
+    Checking configured component .................................................................................................................................................................... Done
+    Verifying systems: 71%                                                                                                                              ___________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:05                                                                                                                                                           5 of 7
+
+    Checking system communication .................................................................................................................................................................... Done
+    Checking release compatibility ................................................................................................................................................................... Done
+    Checking installed product ....................................................................................................................................................................... Done
+    Checking platform version ........................................................................................................................................................................ Done
+    Checking configured component .................................................................................................................................................................... Done
+    Checking product licensing \|    Verifying systems: 85%                                                                                                                                                      ___________________________ 
+
+    Estimated time remaining: (mm:ss) 0:03                                                                                                                                                           6 of 7
+
+    Checking system communication .................................................................................................................................................................... Done
+    Checking release compatibility ................................................................................................................................................................... Done
+    Checking installed product ....................................................................................................................................................................... Done
+    Checking platform version ........................................................................................................................................................................ Done
+    Checking configured component .................................................................................................................................................................... Done
+    Checking product licensing ..................................................................................................................................................................... Failed
+    Verifying systems: 85%                                                                                                                                                      ___________________________ 
+
+    Estimated time remaining: (mm:ss) 0:03                                                                                                                                                           6 of 7
+
+    Checking system communication .................................................................................................................................................................... Done
+    Checking release compatibility ................................................................................................................................................................... Done
+    Checking installed product ....................................................................................................................................................................... Done
+    Checking platform version ........................................................................................................................................................................ Done
+    Checking configured component .................................................................................................................................................................... Done
+    Checking product licensing ..................................................................................................................................................................... Failed
+    Performing product prechecks /-\    Verifying systems: 100%                                                                                                                                                                                 
+
+    Estimated time remaining: (mm:ss) 0:00                                                                                                                                                           7 of 7
+
+    Checking system communication .................................................................................................................................................................... Done
+    Checking release compatibility ................................................................................................................................................................... Done
+    Checking installed product ....................................................................................................................................................................... Done
+    Checking platform version ........................................................................................................................................................................ Done
+    Checking configured component .................................................................................................................................................................... Done
+    Checking product licensing ..................................................................................................................................................................... Failed
+    Performing product prechecks ..................................................................................................................................................................... Done
+
+System verification checks completed
+
+The following warnings were discovered on the systems:
+
+CPI WARNING V-9-40-6725 Kernel Release 4.4.21-69-default is detected on 10.200.111.60, which is not supported for this product.
+
+CPI WARNING V-9-30-2683 Veritas InfoScale Enterprise does not appear to be licensed on 10.200.111.60, SFRAC may not start successfully after configure
+
+CPI WARNING V-9-40-6725 Kernel Release 4.4.21-69-default is detected on 10.200.111.61, which is not supported for this product.
+
+CPI WARNING V-9-30-2683 Veritas InfoScale Enterprise does not appear to be licensed on 10.200.111.61, SFRAC may not start successfully after configure
+
+Do you want to continue? [y,n,q] (y) y
+
+SFRAC component cannot be started because it is not covered by the license installed on the system. Would you like to enter the license menu? [y,n,q] (y) 

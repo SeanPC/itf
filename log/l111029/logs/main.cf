@@ -1,0 +1,211 @@
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster rac2930 (
+	UserNames = { admin = enoGniNkoJooMwoInl }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111029 (
+	)
+
+system l111030 (
+	)
+
+group cvm (
+	SystemList = { l111029 = 0, l111030 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111029, l111030 }
+	)
+
+	CFSMount ocrvote_mnt (
+		Critical = 0
+		MountPoint = "/ocrvote"
+		BlockDevice = "/dev/vx/dsk/oradg2012_ocrvote/ocrvote"
+		)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CSSD cssd (
+		Critical = 0
+		CRSHOME = "/crs/crshome"
+		OnlineWaitLimit = 5
+		OfflineWaitLimit = 3
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = rac2930
+		CVMNodeId = { l111029 = 0, l111030 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVolDg ocrvote_voldg (
+		Critical = 0
+		CVMDiskGroup = oradg2012_ocrvote
+		CVMVolume = { ocrvote }
+		CVMActivation = sw
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cssd requires ocrvote_mnt
+	cvm_clus requires cvm_vxconfigd
+	ocrvote_mnt requires ocrvote_voldg
+	ocrvote_mnt requires vxfsckd
+	ocrvote_voldg requires cvm_clus
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	CSSD cssd
+	//	    {
+	//	    CFSMount ocrvote_mnt
+	//	        {
+	//	        CVMVolDg ocrvote_voldg
+	//	            {
+	//	            CVMCluster cvm_clus
+	//	                {
+	//	                CVMVxconfigd cvm_vxconfigd
+	//	                }
+	//	            }
+	//	        CFSfsckd vxfsckd
+	//	            {
+	//	            CVMCluster cvm_clus
+	//	                {
+	//	                CVMVxconfigd cvm_vxconfigd
+	//	                }
+	//	            }
+	//	        }
+	//	    }
+	//	ProcessOnOnly vxattachd
+	//	}
+
+
+group ora_grp (
+	SystemList = { l111029 = 0, l111030 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111029, l111030 }
+	)
+
+	CFSMount oraarch_mnt (
+		Critical = 0
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg2012_dbarch/archive"
+		)
+
+	CFSMount oradata_mnt (
+		Critical = 0
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg2012_dbarch/dbdata"
+		)
+
+	CVMVolDg oradata_voldg (
+		Critical = 0
+		CVMDiskGroup = oradg2012_dbarch
+		CVMVolume = { dbdata, archive }
+		CVMActivation = sw
+		)
+
+	Oracle ora_pdb1 (
+		Critical = 0
+		Sid @l111029 = cdb121
+		Sid @l111030 = cdb122
+		Owner = oracle
+		Home = "/oracle/orahome"
+		PDBName = PDB1
+		OnlineWaitLimit = 5
+		OfflineWaitLimit = 3
+		)
+
+	Oracle ora_pdb2 (
+		Critical = 0
+		Sid @l111029 = cdb121
+		Sid @l111030 = cdb122
+		Owner = oracle
+		Home = "/oracle/orahome"
+		PDBName = PDB2
+		OnlineWaitLimit = 5
+		OfflineWaitLimit = 3
+		)
+
+	Oracle ora_res (
+		Critical = 0
+		Sid @l111029 = cdb121
+		Sid @l111030 = cdb122
+		Owner = oracle
+		Home = "/oracle/orahome"
+		StartUpOpt = SRVCTLSTART
+		ShutDownOpt = SRVCTLSTOP
+		OnlineWaitLimit = 5
+		OfflineWaitLimit = 3
+		)
+
+	requires group cvm online local firm
+	ora_pdb1 requires ora_res
+	ora_pdb2 requires ora_res
+	ora_res requires oraarch_mnt
+	ora_res requires oradata_mnt
+	oraarch_mnt requires oradata_voldg
+	oradata_mnt requires oradata_voldg
+
+
+	// resource dependency tree
+	//
+	//	group ora_grp
+	//	{
+	//	Oracle ora_pdb1
+	//	    {
+	//	    Oracle ora_res
+	//	        {
+	//	        CFSMount oradata_mnt
+	//	            {
+	//	            CVMVolDg oradata_voldg
+	//	            }
+	//	        CFSMount oraarch_mnt
+	//	            {
+	//	            CVMVolDg oradata_voldg
+	//	            }
+	//	        }
+	//	    }
+	//	Oracle ora_pdb2
+	//	    {
+	//	    Oracle ora_res
+	//	        {
+	//	        CFSMount oradata_mnt
+	//	            {
+	//	            CVMVolDg oradata_voldg
+	//	            }
+	//	        CFSMount oraarch_mnt
+	//	            {
+	//	            CVMVolDg oradata_voldg
+	//	            }
+	//	        }
+	//	    }
+	//	}

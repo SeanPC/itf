@@ -1,0 +1,1200 @@
+
+
+DATE:2017-05-25 06:17:40
+HOST:l111065
+USER:root
+STDIN:ps -ef|grep tmpfile
+STDOUT:
+root     21999     1  3 14:07 ?        00:00:23 /tmp/tmpfile.9337 -l /tmp/vxfs_recov.thrash.l111065.ITF_1_autotcdg2_r10_1.1.log -f 1 -t 864000 -2sxXz /autotcdir/ITF_1_autotcdg2_r10_1/worker_l111065_1
+root     22026     1  4 14:07 ?        00:00:26 /tmp/tmpfile.9337 -l /tmp/vxfs_recov.thrash.l111065.ITF_3_autotcdg2_r0_2.1.log -f 1 -t 864000 -2sxXz /autotcdir/ITF_3_autotcdg2_r0_2/worker_l111065_1
+root     22055     1  1 14:07 ?        00:00:08 /tmp/tmpfile.9337 -l /tmp/vxfs_recov.thrash.l111065.ITF_5_autotcdg3_r10_1.1.log -f 1 -t 864000 -2sxXz /autotcdir/ITF_5_autotcdg3_r10_1/worker_l111065_1
+root     22082     1  1 14:07 ?        00:00:09 /tmp/tmpfile.9337 -l /tmp/vxfs_recov.thrash.l111065.ITF_6_autotcdg3_r0_2.1.log -f 1 -t 864000 -2sxXz /autotcdir/ITF_6_autotcdg3_r0_2/worker_l111065_1
+root     22535 22533  0 14:17 ?        00:00:00 grep tmpfile
+
+
+DATE:2017-05-25 06:17:42
+HOST:l111065
+USER:root
+STDIN:kill -9 21999 22026 22055 22082
+STDOUT:
+
+
+
+DATE:2017-05-25 06:18:02
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:rm -rf /opt/itf/lock/l111065
+STDOUT:
+
+
+
+DATE:2017-05-25 06:18:04
+HOST:l111031
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sfrac31 (
+	SecureClus = 1
+	DefaultGuestAccess = 1
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111031 (
+	)
+
+system l111032 (
+	)
+
+group cvm (
+	SystemList = { l111031 = 0, l111032 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111031, l111032 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111031 = { autotcdg1 = sw }
+		ActivationMode @l111032 = { autotcdg1 = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sfrac31
+		CVMNodeId = { l111031 = 0, l111032 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group nfs_sg (
+	SystemList = { l111031 = 0, l111032 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111031, l111032 }
+	)
+
+	NFS n1 (
+		)
+
+	Phantom ph1 (
+		)
+
+
+
+	// resource dependency tree
+	//
+	//	group nfs_sg
+	//	{
+	//	NFS n1
+	//	Phantom ph1
+	//	}
+
+
+group sg11 (
+	SystemList = { l111031 = 0, l111032 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111031, l111032 }
+	)
+
+	CFSMount cfsmount1 (
+		Critical = 0
+		MountPoint = "/autotcdir/ITF_2_autotcdg1_r0_2"
+		BlockDevice = "/dev/vx/dsk/autotcdg1/autotcdg1_r0_2"
+		MountOpt @l111031 = "cluster"
+		MountOpt @l111032 = "cluster"
+		NodeList = { l111031, l111032 }
+		)
+
+	CFSMount cfsmount2 (
+		Critical = 0
+		MountPoint = "/autotcdir/ITF_4_autotcdg1_r10_1"
+		BlockDevice = "/dev/vx/dsk/autotcdg1/autotcdg1_r10_1"
+		MountOpt @l111031 = "cluster"
+		MountOpt @l111032 = "cluster"
+		NodeList = { l111031, l111032 }
+		)
+
+	CVMVolDg cvmvoldg1 (
+		Critical = 0
+		CVMDiskGroup = autotcdg1
+		CVMVolume = { autotcdg1_r0_2, autotcdg1_r10_1 }
+		CVMActivation @l111031 = sw
+		CVMActivation @l111032 = sw
+		CVMVolumeIoTest = { autotcdg1_r0_2, autotcdg1_r10_1 }
+		)
+
+	requires group cvm online local firm
+	cfsmount1 requires cvmvoldg1
+	cfsmount2 requires cvmvoldg1
+
+
+	// resource dependency tree
+	//
+	//	group sg11
+	//	{
+	//	CFSMount cfsmount1
+	//	    {
+	//	    CVMVolDg cvmvoldg1
+	//	    }
+	//	CFSMount cfsmount2
+	//	    {
+	//	    CVMVolDg cvmvoldg1
+	//	    }
+	//	}
+
+
+group sg12 (
+	SystemList = { l111031 = 0, l111032 = 2 }
+	AutoStartList = { l111031 }
+	)
+
+	DiskGroup autotcdg2_sg12 (
+		DiskGroup = autotcdg2
+		StartVolumes = 0
+		StopVolumes = 0
+		)
+
+	IP ip_l111031 (
+		Device @l111031 = p4p1
+		Device @l111032 = p4p1
+		Address = "10.200.111.86"
+		NetMask = "255.255.255.0"
+		)
+
+	Mount mnt_autotcdg2_r0_2_autotcdg2 (
+		MountPoint = "/autotcdir/ITF_3_autotcdg2_r0_2"
+		BlockDevice = "/dev/vx/dsk/autotcdg2/autotcdg2_r0_2"
+		FSType = vxfs
+		MountOpt = largefiles
+		FsckOpt = "-y"
+		)
+
+	Mount mnt_autotcdg2_r10_1_autotcdg2 (
+		MountPoint = "/autotcdir/ITF_1_autotcdg2_r10_1"
+		BlockDevice = "/dev/vx/dsk/autotcdg2/autotcdg2_r10_1"
+		FSType = vxfs
+		MountOpt = largefiles
+		FsckOpt = "-y"
+		)
+
+	NFSRestart nfsres_sg12 (
+		NFSRes = n1
+		LocksPathName = "/autotcdir/ITF_1_autotcdg2_r10_1"
+		NFSLockFailover = 1
+		)
+
+	NFSRestart nfsres_sg12_l (
+		NFSRes = n1
+		Lower = 1
+		LocksPathName = "/autotcdir/ITF_1_autotcdg2_r10_1"
+		NFSLockFailover = 1
+		)
+
+	NIC nic_sg12_p4p1 (
+		Device @l111031 = p4p1
+		Device @l111032 = p4p1
+		NetworkHosts = { "10.200.111.1" }
+		)
+
+	Proxy proxy_sg12 (
+		TargetResName = n1
+		)
+
+	Share share_autotcdg2_r0_2_autotcdg2 (
+		PathName = "/autotcdir/ITF_3_autotcdg2_r0_2"
+		Options = "rw,no_root_squash"
+		)
+
+	Share share_autotcdg2_r10_1_autotcdg2 (
+		PathName = "/autotcdir/ITF_1_autotcdg2_r10_1"
+		Options = "rw,no_root_squash"
+		)
+
+	Volume vol_autotcdg2_r0_2_autotcdg2 (
+		DiskGroup = autotcdg2
+		Volume = autotcdg2_r0_2
+		)
+
+	Volume vol_autotcdg2_r10_1_autotcdg2 (
+		DiskGroup = autotcdg2
+		Volume = autotcdg2_r10_1
+		)
+
+	ip_l111031 requires nic_sg12_p4p1
+	ip_l111031 requires share_autotcdg2_r0_2_autotcdg2
+	ip_l111031 requires share_autotcdg2_r10_1_autotcdg2
+	mnt_autotcdg2_r0_2_autotcdg2 requires vol_autotcdg2_r0_2_autotcdg2
+	mnt_autotcdg2_r10_1_autotcdg2 requires vol_autotcdg2_r10_1_autotcdg2
+	nfsres_sg12 requires ip_l111031
+	nfsres_sg12_l requires mnt_autotcdg2_r0_2_autotcdg2
+	nfsres_sg12_l requires mnt_autotcdg2_r10_1_autotcdg2
+	share_autotcdg2_r0_2_autotcdg2 requires nfsres_sg12_l
+	share_autotcdg2_r0_2_autotcdg2 requires proxy_sg12
+	share_autotcdg2_r10_1_autotcdg2 requires nfsres_sg12_l
+	share_autotcdg2_r10_1_autotcdg2 requires proxy_sg12
+	vol_autotcdg2_r0_2_autotcdg2 requires autotcdg2_sg12
+	vol_autotcdg2_r10_1_autotcdg2 requires autotcdg2_sg12
+
+
+	// resource dependency tree
+	//
+	//	group sg12
+	//	{
+	//	NFSRestart nfsres_sg12
+	//	    {
+	//	    IP ip_l111031
+	//	        {
+	//	        NIC nic_sg12_p4p1
+	//	        Share share_autotcdg2_r0_2_autotcdg2
+	//	            {
+	//	            NFSRestart nfsres_sg12_l
+	//	                {
+	//	                Mount mnt_autotcdg2_r0_2_autotcdg2
+	//	                    {
+	//	                    Volume vol_autotcdg2_r0_2_autotcdg2
+	//	                        {
+	//	                        DiskGroup autotcdg2_sg12
+	//	                        }
+	//	                    }
+	//	                Mount mnt_autotcdg2_r10_1_autotcdg2
+	//	                    {
+	//	                    Volume vol_autotcdg2_r10_1_autotcdg2
+	//	                        {
+	//	                        DiskGroup autotcdg2_sg12
+	//	                        }
+	//	                    }
+	//	                }
+	//	            Proxy proxy_sg12
+	//	            }
+	//	        Share share_autotcdg2_r10_1_autotcdg2
+	//	            {
+	//	            NFSRestart nfsres_sg12_l
+	//	                {
+	//	                Mount mnt_autotcdg2_r0_2_autotcdg2
+	//	                    {
+	//	                    Volume vol_autotcdg2_r0_2_autotcdg2
+	//	                        {
+	//	                        DiskGroup autotcdg2_sg12
+	//	                        }
+	//	                    }
+	//	                Mount mnt_autotcdg2_r10_1_autotcdg2
+	//	                    {
+	//	                    Volume vol_autotcdg2_r10_1_autotcdg2
+	//	                        {
+	//	                        DiskGroup autotcdg2_sg12
+	//	                        }
+	//	                    }
+	//	                }
+	//	            Proxy proxy_sg12
+	//	            }
+	//	        }
+	//	    }
+	//	}
+
+
+group sg21 (
+	SystemList = { l111032 = 0, l111031 = 1 }
+	AutoStartList = { l111032 }
+	)
+
+	DiskGroup autotcdg1_sg21 (
+		DiskGroup = autotcdg3
+		StartVolumes = 0
+		StopVolumes = 0
+		)
+
+	IP ip_l111032 (
+		Device @l111032 = p4p1
+		Device @l111031 = p4p1
+		Address = "10.200.111.87"
+		NetMask = "255.255.255.0"
+		)
+
+	Mount mnt_autotcdg3_r0_2_autotcdg3 (
+		MountPoint = "/autotcdir/ITF_6_autotcdg3_r0_2"
+		BlockDevice = "/dev/vx/dsk/autotcdg3/autotcdg3_r0_2"
+		FSType = vxfs
+		MountOpt = largefiles
+		FsckOpt = "-y"
+		)
+
+	Mount mnt_autotcdg3_r10_1_autotcdg3 (
+		MountPoint = "/autotcdir/ITF_5_autotcdg3_r10_1"
+		BlockDevice = "/dev/vx/dsk/autotcdg3/autotcdg3_r10_1"
+		FSType = vxfs
+		MountOpt = largefiles
+		FsckOpt = "-y"
+		)
+
+	NFSRestart nfsres_sg21 (
+		NFSRes = n1
+		LocksPathName = "/autotcdir/ITF_5_autotcdg3_r10_1"
+		NFSLockFailover = 1
+		)
+
+	NFSRestart nfsres_sg21_l (
+		NFSRes = n1
+		Lower = 1
+		LocksPathName = "/autotcdir/ITF_5_autotcdg3_r10_1"
+		NFSLockFailover = 1
+		)
+
+	NIC nic_sg21_p4p1 (
+		Device @l111032 = p4p1
+		Device @l111031 = p4p1
+		NetworkHosts = { "10.200.111.1" }
+		)
+
+	Proxy proxy_sg21 (
+		TargetResName = n1
+		)
+
+	Share share_autotcdg3_r0_2_autotcdg3 (
+		PathName = "/autotcdir/ITF_6_autotcdg3_r0_2"
+		Options = "rw,no_root_squash"
+		)
+
+	Share share_autotcdg3_r10_1_autotcdg3 (
+		PathName = "/autotcdir/ITF_5_autotcdg3_r10_1"
+		Options = "rw,no_root_squash"
+		)
+
+	Volume vol_autotcdg3_r0_2_autotcdg3 (
+		DiskGroup = autotcdg3
+		Volume = autotcdg3_r0_2
+		)
+
+	Volume vol_autotcdg3_r10_1_autotcdg3 (
+		DiskGroup = autotcdg3
+		Volume = autotcdg3_r10_1
+		)
+
+	ip_l111032 requires nic_sg21_p4p1
+	ip_l111032 requires share_autotcdg3_r0_2_autotcdg3
+	ip_l111032 requires share_autotcdg3_r10_1_autotcdg3
+	mnt_autotcdg3_r0_2_autotcdg3 requires vol_autotcdg3_r0_2_autotcdg3
+	mnt_autotcdg3_r10_1_autotcdg3 requires vol_autotcdg3_r10_1_autotcdg3
+	nfsres_sg21 requires ip_l111032
+	nfsres_sg21_l requires mnt_autotcdg3_r0_2_autotcdg3
+	nfsres_sg21_l requires mnt_autotcdg3_r10_1_autotcdg3
+	share_autotcdg3_r0_2_autotcdg3 requires nfsres_sg21_l
+	share_autotcdg3_r0_2_autotcdg3 requires proxy_sg21
+	share_autotcdg3_r10_1_autotcdg3 requires nfsres_sg21_l
+	share_autotcdg3_r10_1_autotcdg3 requires proxy_sg21
+	vol_autotcdg3_r0_2_autotcdg3 requires autotcdg1_sg21
+	vol_autotcdg3_r10_1_autotcdg3 requires autotcdg1_sg21
+
+
+	// resource dependency tree
+	//
+	//	group sg21
+	//	{
+	//	NFSRestart nfsres_sg21
+	//	    {
+	//	    IP ip_l111032
+	//	        {
+	//	        NIC nic_sg21_p4p1
+	//	        Share share_autotcdg3_r0_2_autotcdg3
+	//	            {
+	//	            NFSRestart nfsres_sg21_l
+	//	                {
+	//	                Mount mnt_autotcdg3_r0_2_autotcdg3
+	//	                    {
+	//	                    Volume vol_autotcdg3_r0_2_autotcdg3
+	//	                        {
+	//	                        DiskGroup autotcdg1_sg21
+	//	                        }
+	//	                    }
+	//	                Mount mnt_autotcdg3_r10_1_autotcdg3
+	//	                    {
+	//	                    Volume vol_autotcdg3_r10_1_autotcdg3
+	//	                        {
+	//	                        DiskGroup autotcdg1_sg21
+	//	                        }
+	//	                    }
+	//	                }
+	//	            Proxy proxy_sg21
+	//	            }
+	//	        Share share_autotcdg3_r10_1_autotcdg3
+	//	            {
+	//	            NFSRestart nfsres_sg21_l
+	//	                {
+	//	                Mount mnt_autotcdg3_r0_2_autotcdg3
+	//	                    {
+	//	                    Volume vol_autotcdg3_r0_2_autotcdg3
+	//	                        {
+	//	                        DiskGroup autotcdg1_sg21
+	//	                        }
+	//	                    }
+	//	                Mount mnt_autotcdg3_r10_1_autotcdg3
+	//	                    {
+	//	                    Volume vol_autotcdg3_r10_1_autotcdg3
+	//	                        {
+	//	                        DiskGroup autotcdg1_sg21
+	//	                        }
+	//	                    }
+	//	                }
+	//	            Proxy proxy_sg21
+	//	            }
+	//	        }
+	//	    }
+	//	}
+
+***import the maincf /opt/itf/log/l111031/logs/main.cf to cluster***
+
+
+
+DATE:2017-05-25 06:18:05
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastop -all
+STDOUT:
+
+
+
+DATE:2017-05-25 06:18:17
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+
+DATE:2017-05-25 06:18:29
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+
+DATE:2017-05-25 06:18:40
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-05-25 06:18:47
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-05-25 06:18:49
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/log/l111031/logs/main.cf l111031:/tmp/tmpfile.9337
+STDOUT:
+
+
+
+DATE:2017-05-25 06:18:50
+HOST:l111031
+USER:root
+STDIN:mv /etc/VRTSvcs/conf/config/main.cf /etc/VRTSvcs/conf/config/main.cf.orig;cat /tmp/tmpfile.9337 > /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+
+
+
+DATE:2017-05-25 06:18:53
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-05-25 06:19:04
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:19:06
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:19:08
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+HAD is already running
+
+
+DATE:2017-05-25 06:19:19
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:19:31
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:19:43
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:19:54
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:20:06
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:20:17
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:20:29
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:20:41
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:20:52
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:21:04
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:21:16
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:21:27
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:21:39
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:21:51
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:22:02
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:22:14
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:22:26
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:22:37
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:22:49
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:23:00
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:23:12
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:23:24
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:23:36
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:23:47
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:23:59
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:24:11
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:24:22
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:24:34
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:24:45
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:24:57
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:25:09
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:25:20
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:25:32
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:25:44
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:25:55
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:26:07
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:26:19
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:26:30
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:26:42
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:26:54
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:27:05
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:27:17
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:27:28
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:27:40
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:27:52
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:28:03
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:28:15
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:28:27
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:28:38
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:28:50
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:29:02
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:29:13
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:29:25
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:29:37
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:29:48
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:30:00
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:30:11
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:30:23
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:30:35
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:30:46
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+DATE:2017-05-25 06:30:48
+HOST:l111031
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                UNKNOWN
+
+
+TCERROR: Failed to start VCS agent
+
+
+
+Case Result:Failed
+DATE:2017-05-25 06:30:48
+Duration:13m8s

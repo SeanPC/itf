@@ -1,0 +1,146 @@
+#des:support platform linux,aix,solaris
+#P:55
+#VALUE:cnfsvip,nfsclient
+#DEFAULT:,10.200.109.106
+dg1=autotcdg1
+dg2=autotcdg2
+vol1=autotcvol1
+vol2=autotcvol2
+vol3=autotcvol3
+mp=(/autotcvo11 /autotcvo11/autotcvol2 /autotcckpt /autotcvol3)
+lock_option="rw,sync,insecure,no_root_squash"
+clientmp=(/nfs1 /nfs2 /nfs3)
+#cfsgrp=(cfsgrp1 cfsgrp2 cfsgrp3)
+ckpt=ckpt1
+
+
+dissmfcmds='
+svccfg -s nfs/nlockmgr setprop "application/auto_enable = false"
+svcadm refresh nfs/nlockmgr
+svcadm disable svc:/network/nfs/nlockmgr:default
+svccfg -s nfs/mapid setprop "application/auto_enable = false"
+svcadm refresh nfs/mapid
+svcadm disable svc:/network/nfs/mapid:default
+svccfg -s nfs/status setprop "application/auto_enable = false"
+svcadm refresh nfs/status
+svcadm disable svc:/network/nfs/status:default
+svccfg -s nfs/server setprop "application/auto_enable = false"
+svcadm refresh nfs/server
+svcadm disable svc:/network/nfs/server:default'
+
+oLog step "Checking basic environment of testbed"
+#check if login without password by root and oracle user
+checkNode root
+for node in $NODES
+do
+        getHostnameOSProduct $node
+done
+oLog step "Checking nfs client status"
+checkNfsStatus
+
+oLog step "copy VCS trigger files 'preonline postoffline postonline sysoffline' to /opt/VRTSvcs/bin/triggers/"
+for node in $NODES
+do
+        RExec root $node "cd /opt/VRTSvcs/bin/sample_triggers/VRTSvcs;cp -rp preonline postoffline postonline sysoffline /opt/VRTSvcs/bin/triggers/"
+done
+
+oLog step "Modify seetings to let vcs take over the control of VCS"
+for node in $NODES
+do
+        if [[ "$autotcos" =~ ^rhel|^cent ]]
+        then
+                RExec root $node "mkdir -p /locks/sm/$node;rm -rf /locks/sm/$node/sm;ln -s /var/lib/nfs/statd/sm /locks/sm/$node/sm"
+        elif [[ "$autotcos" =~ ^sles ]]
+        then
+                RExec root $node "mkdir -p /locks/sm/$node;rm -rf /locks/sm/$node/sm;ln -s /var/lib/nfs/sm /locks/sm/$node/sm"
+        elif [[ "$autotcos" =~ ^solaris ]]
+        then
+                RExec root $node "$dissmfcmds"
+        fi
+done
+
+oLog step "create 2 share diskgroup,make two volumes on the first dg and make one volume on the 2nd dg.then make vxfs on them"
+makeDgBySize $NODE1 $dg1 5000 -s
+makeDgBySize $NODE1 $dg2 1200 -s
+makeVolBySize $NODE1 $dg1 $vol1 2G fs
+makeVolBySize $NODE1 $dg1 $vol2 2G fs
+makeVolBySize $NODE1 $dg2 $vol3 1G fs
+
+oLog step "create mount point on the nodes and load IO then make ckehckpoint"
+for node in $NODES
+do
+        RExec root $node "mkdir -p ${mp[*]}"
+done
+RExec root $nfsclient "mkdir -p ${clientmp[*]}"
+cfsMount $node $dg1 $vol1 ${mp[0]} ${cfsgrp[0]}
+cfsMount $node $dg1 $vol2 ${mp[1]} ${cfsgrp[1]}
+
+oLog step "Load IO and make checkpoint for the first cfs and then mount the checkpoint"
+fsStressStart $NODE1 ${mp[0]}
+RExec root $NODE1 "/opt/VRTS/bin/fsckptadm -r create $ckpt ${mp[0]}"
+RExec root $NODE1 "/opt/VRTS/bin/cfsmntadm add ckpt $ckpt ${mp[0]} ${mp[2]} ${cfsgrp[2]} all=rw"
+RExec root $NODE1 "/opt/VRTS/bin/cfsmount ${mp[2]}"
+
+oLog step "configure lock volume for cfs filesystem and set diff options for those filesystems(have the known issue:ET1974020)"
+RExec root $NODE1 "/opt/VRTS/bin/cfsshare config $dg2 $vol3 ${mp[3]}"
+for i in 0 1
+do
+        RExec root $NODE1 "/opt/VRTS/bin/cfsshare share ${mp[$i]} $lock_option"
+done
+RExec root $NODE1 "/opt/VRTS/bin/cfsshare share ${mp[2]} rw,sync,insecure,no_root_squash,fsid=110"
+
+RExec root $NODE1 "/opt/VRTS/bin/cfsshare display" "${mp[0]}|${mp[1]}|${mp[2]}"
+
+oLog step "Add vip to access CFS from client and wait the default cfsnfssg online"
+publicnet=`getNicByIp $NODE1 $NODE1` || exit 1
+ipinfo=(`getMaskAndGatewayByIp $NODE1 $NODE1`) || exit 1
+netmask=${ipinfo[0]}
+gateway=${ipinfo[1]}
+RExec root $NODE1 "NOERROR:/opt/VRTS/bin/cfsshare addvip $publicnet $cnfsvip $netmask $gateway"
+RExec root $NODE1 "/opt/VRTS/bin/hagrp -state"
+vipgroup=`echo "$out"|grep ^vip|awk '{print $1}'|head -1`
+waitGroupOnline $NODE1 $vipgroup
+
+oLog step "Mount the CFS client using cnfsvip"
+for i in 0 1 2
+do
+        RExec root $nfsclient "showmount -e $cnfsvip"
+        RExec root $nfsclient "mount $cnfsvip:${mp[$i]} ${clientmp[$i]}"
+        fsStressStart $nfsclient ${clientmp[$i]}
+        stresspid[$i]=$fsstresspid
+done
+
+oLog step "Reboot the node which vip group is online and check if io and nfs mount exist on the nfsclient"
+RExec root $NODE1 "/opt/VRTS/bin/hagrp -state"
+vipgroup=`echo "$out"|grep ^vip|awk '{print $1}'|head -1`
+rebootnode=`echo "$out"|grep ^vip|grep ONLINE|awk '{print $3}'|head -1`
+leftonode=`echo "$NODES"|xargs -n1|grep -v $rebootnode|head -1`
+rebootNode $rebootnode
+sleep 10
+waitVCSAgentOnline $leftonode
+waitNodeGroupOnline $leftonode $vipgroup
+sleep 60
+RExec root $nfsclient "$cmd2"
+out_df="$out"
+RExec root $nfsclient "ps -ef|grep tmpfile"
+out_ps="$out"
+for i in 0 1 2
+do
+        if ! echo "$out_df"|grep -P  "\d+%\s+${clientmp[$i]}$" > /dev/null 2>&1 || (! echo "$out_ps"|grep ${clientmp[$i]} > /dev/null 2>&1 && [ $i -ne 2 ])
+        then
+                oLog error "Found nfs mount ${mp[$i]} missing or the io to ${mp[$i]} is missing"
+                waitNodeOnline $rebootnode
+                sleep 5
+		waitVCSAgentOnline $rebootnode
+                waitGroupOnline $NODE1 $vipgroup                
+                myexit 1
+        fi
+done
+RExec root $nfsclient "touch ${clientmp[2]}/file1" 
+waitNodeOnline $rebootnode
+sleep 5
+waitVCSAgentOnline $rebootnode
+waitGroupOnline $NODE1 $vipgroup
+oLog flag
+myexit 10
+

@@ -1,0 +1,3007 @@
+
+==================== Operation Log for TC oracle_dbdst ====================
+DATE:2017-07-13 16:03:05
+Nodes:l111032 l111031
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-07-13 16:03:05
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-07-13 16:03:05
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:26453280 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5235089 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:4079968077 (3.7 GiB)  TX bytes:1250780715 (1.1 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:654 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:654 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:101553 (99.1 KiB)  TX bytes:101553 (99.1 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-07-13 16:03:07
+HOST:l111032
+USER:root
+STDIN:ssh -l root l111032
+STDOUT:
+
+
+
+DATE:2017-07-13 16:03:11
+HOST:l111031
+USER:root
+STDIN:ssh -l root l111031
+STDOUT:
+
+
+
+DATE:2017-07-13 16:03:20
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111032,l111031
+STDOUT:
+
+
+
+DATE:2017-07-13 16:03:22
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+
+DATE:2017-07-13 16:03:23
+HOST:l111031
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-07-13 16:03:23
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:26453988 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5235571 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:4080065907 (3.7 GiB)  TX bytes:1250875891 (1.1 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:654 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:654 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:101553 (99.1 KiB)  TX bytes:101553 (99.1 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-07-13 16:03:25
+HOST:l111032
+USER:root
+STDIN:ssh -l root l111032
+STDOUT:
+
+
+
+DATE:2017-07-13 16:03:29
+HOST:l111031
+USER:root
+STDIN:ssh -l root l111031
+STDOUT:
+
+
+
+DATE:2017-07-13 16:03:38
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111032,l111031
+STDOUT:
+
+
+
+DATE:2017-07-13 16:03:40
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+
+DATE:2017-07-13 16:03:41
+HOST:l111031
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+***Getting hostname of node***
+
+
+
+DATE:2017-07-13 16:03:43
+HOST:l111032
+USER:root
+STDIN:hostname
+STDOUT:
+l111032.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-07-13 16:03:45
+HOST:l111032
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-07-13 16:03:46
+HOST:l111032
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 7.3 (Maipo)
+
+
+DATE:2017-07-13 16:03:48
+HOST:l111032
+USER:root
+STDIN:uname -r
+STDOUT:
+3.10.0-514.el7.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-07-13 16:03:53
+HOST:l111032
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSperl-5.20.1.2-RHEL7.x86_64
+Name        : VRTSperl
+Version     : 5.20.1.2
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:09:04 PM CST
+Group       : Applications/System
+Size        : 69606903
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSperl-5.20.1.2-RHEL7.src.rpm
+Build Date  : Sat 31 Oct 2015 12:35:23 AM CST
+Build Host  : rhel6-perl.cdc.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Perl 5.20.1 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.20.1 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.60
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSgab-7.0.1.200-RHEL7.x86_64
+Name        : VRTSgab
+Version     : 7.0.1.200
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 27 Jun 2017 09:16:58 AM CST
+Group       : Applications/System
+Size        : 25733310
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSgab-7.0.1.200-RHEL7.src.rpm
+Build Date  : Tue 20 Jun 2017 07:49:45 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Membership and Atomic Broadcast by Symantec
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-514.el7.x86_64
+Build Stamp        : Veritas-7.0.1.200-2017-06-20_02.48.26
+
+Package INFO: VRTSvxvm-7.0.1.200-RHEL7.x86_64
+Name        : VRTSvxvm
+Version     : 7.0.1.200
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 27 Jun 2017 04:53:01 PM CST
+Group       : Applications/System
+Size        : 493651476
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxvm-7.0.1.200-RHEL7.src.rpm
+Build Date  : Mon 19 Jun 2017 03:51:52 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Volume Manager by Symantec
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSvlic-3.02.70.008-RHEL7.x86_64
+Name        : VRTSvlic
+Version     : 3.02.70.008
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:05:35 PM CST
+Group       : Applications/System
+Size        : 1560170
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:38:39 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSvlic-3.02.70.008-RHEL7.src.rpm
+Build Date  : Mon 18 May 2015 09:59:17 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Symantec License Utilities
+Description :
+These are the Symantec License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSvcsag-7.0.1.000-RHEL7.x86_64
+Name        : VRTSvcsag
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:12:17 PM CST
+Group       : Applications/System
+Size        : 83845511
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvcsag-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:26:16 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : VCS Bundled Agents by Symantec
+Description :
+Veritas Cluster Server Bundled Agents (x86_64) by Symantec
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSodm-7.0.0.000-RHEL7.x86_64
+Name        : VRTSodm
+Version     : 7.0.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:08:43 PM CST
+Group       : Applications/System
+Size        : 1026505
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:38:20 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSodm-7.0.0.000-RHEL7.src.rpm
+Build Date  : Thu 28 May 2015 09:27:02 PM CST
+Build Host  : iarhle7bld.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation.
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Disk Manager by Symantec
+Description :
+Veritas Oracle Disk Manager (ODM) by Symantec
+
+Package INFO: VRTScps-7.0.1.000-RHEL7.i686
+Name        : VRTScps
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: i686
+Install Date: Mon 26 Jun 2017 04:12:00 PM CST
+Group       : Applications/System
+Size        : 55748738
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTScps-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:10:35 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Co-ordination Point Server by Symantec
+Description :
+Veritas Co-ordination Point Server by Symantec
+Build Stamp: 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSglm-7.0.1.000-RHEL7.x86_64
+Name        : VRTSglm
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:13:30 PM CST
+Group       : Applications/System
+Size        : 747976
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSglm-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 01 Dec 2015 05:44:22 AM CST
+Build Host  : iarhel7bld.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Lock Manager (GLM) driver by Symantec
+Description :
+Veritas Group Lock Manager (GLM) driver by Symantec
+Supported kernel(s): 3.10.0-123.el7.x86_64, 3.10.0-229.el7.x86_64 or later
+
+Package INFO: VRTSvbs-7.0.0.000-Linux.i686
+Name        : VRTSvbs
+Version     : 7.0.0.000
+Release     : Linux
+Architecture: i686
+Install Date: Mon 26 Jun 2017 04:14:41 PM CST
+Group       : Applications/System
+Size        : 58030321
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:38:28 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSvbs-7.0.0.000-Linux.src.rpm
+Build Date  : Sat 13 Jun 2015 02:01:11 PM CST
+Build Host  : snapper53-64.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Virtual Business Services by Symantec
+Description :
+Virtual Business Services by Symantec
+Build Stamp : 7.0.0.000-2015-06-12_22.21.37
+
+Package INFO: VRTSvcswiz-7.0.1.000-RHEL7.x86_64
+Name        : VRTSvcswiz
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:15:13 PM CST
+Group       : Applications/System
+Size        : 10589024
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvcswiz-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:27:42 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : "Symantec Corporation"
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server Wizards by Symantec
+Description :
+"The package contains Wizards for Veritas Cluster Server by Symantec"
+
+Arch : (x86_64)
+Build Stamp : 7.0.1.000-2015-11-23_16.27.40
+
+Package INFO: VRTSamf-7.0.1.200-RHEL7.x86_64
+Name        : VRTSamf
+Version     : 7.0.1.200
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 27 Jun 2017 09:17:05 AM CST
+Group       : System Environment/Kernel
+Size        : 22059876
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSamf-7.0.1.200-RHEL7.src.rpm
+Build Date  : Wed 21 Jun 2017 07:12:42 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-514.el7.x86_64
+Build Stamp        : 7.0.1.200-2017-06-21_04.11.44
+
+Package INFO: VRTSveki-7.0.0.000-RHEL7.x86_64
+Name        : VRTSveki
+Version     : 7.0.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:05:47 PM CST
+Group       : Applications/System
+Size        : 114651
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:38:37 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSveki-7.0.0.000-RHEL7.src.rpm
+Build Date  : Sat 13 Jun 2015 07:21:09 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Veki by Symantec
+Description :
+Veritas Veki by Symantec
+
+Package INFO: VRTSgms-7.0.0.000-RHEL7.x86_64
+Name        : VRTSgms
+Version     : 7.0.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:08:40 PM CST
+Group       : Applications/System
+Size        : 77367
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:38:17 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSgms-7.0.0.000-RHEL7.src.rpm
+Build Date  : Thu 28 May 2015 09:25:10 PM CST
+Build Host  : iarhle7bld.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Messaging Services by Symantec
+Description :
+Veritas Group Messaging Sevice (GMS) driver by Symantec
+
+Package INFO: VRTSspt-7.0.1.000-RHEL7.noarch
+Name        : VRTSspt
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: noarch
+Install Date: Mon 26 Jun 2017 04:09:17 PM CST
+Group       : Applications/System
+Size        : 34251540
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSspt-7.0.1.000-RHEL7.src.rpm
+Build Date  : Wed 25 Nov 2015 03:28:34 PM CST
+Build Host  : sfrhel6.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Software Support Tools Package by Symantec
+Description :
+    VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSvcs-7.0.1.000-RHEL7.x86_64
+Name        : VRTSvcs
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:11:43 PM CST
+Group       : Applications/System
+Size        : 215807490
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvcs-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:26:51 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server by Symantec
+Description :
+Veritas Cluster Server and Commands by Symantec (x86_64)
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSdbed-7.0.1.000-RHEL.x86_64
+Name        : VRTSdbed
+Version     : 7.0.1.000
+Release     : RHEL
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:13:20 PM CST
+Group       : Applications/Databases
+Size        : 262837089
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSdbed-7.0.1.000-RHEL.src.rpm
+Build Date  : Fri 30 Oct 2015 05:00:17 PM CST
+Build Host  : snapper53-64.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSsfmh-7.0.0.0-0.x86_64
+Name        : VRTSsfmh
+Version     : 7.0.0.0
+Release     : 0
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:14:08 PM CST
+Group       : Applications/System
+Size        : 150059360
+License     : Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 09:36:28 PM CST, Key ID 295ead356cd4ce17
+Source RPM  : VRTSsfmh-7.0.0.0-0.src.rpm
+Build Date  : Fri 12 Jun 2015 09:18:17 PM CST
+Build Host  : vommvsles10-64bld.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+
+Package INFO: VRTSsfcpi-7.0.1.000-GENERIC.noarch
+Name        : VRTSsfcpi
+Version     : 7.0.1.000
+Release     : GENERIC
+Architecture: noarch
+Install Date: Mon 26 Jun 2017 04:15:03 PM CST
+Group       : Applications/System
+Size        : 14004981
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSsfcpi-7.0.1.000-GENERIC.src.rpm
+Build Date  : Mon 07 Dec 2015 03:24:22 PM CST
+Build Host  : mtvre01.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+
+Package INFO: VRTSvxfen-7.0.1.200-RHEL7.x86_64
+Name        : VRTSvxfen
+Version     : 7.0.1.200
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 27 Jun 2017 09:17:02 AM CST
+Group       : Applications/System
+Size        : 25416049
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfen-7.0.1.200-RHEL7.src.rpm
+Build Date  : Tue 20 Jun 2017 07:53:10 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas I/O Fencing by Symantec
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-514.el7.x86_64
+Build Stamp        : 7.0.1.200-2017-06-20_02.48.26
+
+Package INFO: VRTSdbac-7.0.1.200-RHEL7.x86_64
+Name        : VRTSdbac
+Version     : 7.0.1.200
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Wed 12 Jul 2017 09:52:26 AM CST
+Group       : Applications/System
+Size        : 17358126
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSdbac-7.0.1.200-RHEL7.src.rpm
+Build Date  : Mon 10 Jul 2017 06:13:54 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Real Application Cluster Support Package by Symantec
+Description :
+Veritas Oracle Real Application Cluster Support Package by Symantec
+Build Stamp	: 7.0.1.200-2017-07-10_03.09.46
+Supported kernel(s): 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-514.el7.x86_64 3.10.0-327.el7.x86_64
+
+Package INFO: VRTSfsadv-7.0.1.000-RHEL7.x86_64
+Name        : VRTSfsadv
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:10:08 PM CST
+Group       : Applications/System
+Size        : 14529918
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSfsadv-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 01 Dec 2015 07:04:25 AM CST
+Build Host  : iarhel7bld.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas File System Advanced Features by Symantec
+Description :
+Veritas File System Advanced Features by Symantec
+
+Package INFO: VRTSvcsea-7.0.1.000-RHEL7.x86_64
+Name        : VRTSvcsea
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:12:20 PM CST
+Group       : Applications/System
+Size        : 1223976
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvcsea-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 24 Nov 2015 08:28:15 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents by Symantec
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSaslapm-7.0.1.000-RHEL7.x86_64
+Name        : VRTSaslapm
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Mon 26 Jun 2017 04:06:31 PM CST
+Group       : Applications/System
+Size        : 27399599
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSaslapm-7.0.1.000-RHEL7.src.rpm
+Build Date  : Mon 30 Nov 2015 04:40:33 AM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTScavf-7.0.1.000-RHEL7.i686
+Name        : VRTScavf
+Version     : 7.0.1.000
+Release     : RHEL7
+Architecture: i686
+Install Date: Mon 26 Jun 2017 04:13:33 PM CST
+Group       : Applications/System
+Size        : 842311
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTScavf-7.0.1.000-RHEL7.src.rpm
+Build Date  : Tue 01 Dec 2015 05:40:04 AM CST
+Build Host  : iarhel7bld.samgpunb.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+VERITAS Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+Package INFO: VRTSllt-7.0.1.700-RHEL7.x86_64
+Name        : VRTSllt
+Version     : 7.0.1.700
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 27 Jun 2017 09:16:56 AM CST
+Group       : Applications/System
+Size        : 55175418
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSllt-7.0.1.700-RHEL7.src.rpm
+Build Date  : Tue 20 Jun 2017 09:02:25 PM CST
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Low Latency Transport by Symantec
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-123.el7.x86_64 3.10.0-229.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-514.el7.x86_64 [LINUX_RHEL70]
+Build Stamp: Veritas-7.0.1.700-2017-06-20_02.48.26
+
+Package INFO: VRTSvxfs-7.0.1.200-RHEL7.x86_64
+Name        : VRTSvxfs
+Version     : 7.0.1.200
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Tue 27 Jun 2017 04:45:18 PM CST
+Group       : Applications/System
+Size        : 44455907
+License     : Symantec Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfs-7.0.1.200-RHEL7.src.rpm
+Build Date  : Wed 24 May 2017 08:15:21 PM CST
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : Enterprise_Support@symantec.com
+Vendor      : Symantec Corporation
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Filesystem by Symantec
+Description :
+Veritas Filesystem by Symantec
+
+
+DATE:2017-07-13 16:03:54
+HOST:l111032
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sfrac31 (
+	SecureClus = 1
+	DefaultGuestAccess = 1
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111031 (
+	)
+
+system l111032 (
+	)
+
+group crs_grp (
+	SystemList = { l111031 = 0, l111032 = 1 }
+	Parallel = 1
+	AutoStartList = { l111031, l111032 }
+	)
+
+	CFSMount ocrvote_mnt (
+		Critical = 0
+		MountPoint = "/ocrvote"
+		BlockDevice = "/dev/vx/dsk/oradg2352_ocrvote/ocrvote"
+		)
+
+	CSSD cssd (
+		Critical = 0
+		CRSHOME = "/crs/crshome"
+		OnlineWaitLimit = 5
+		OfflineWaitLimit = 3
+		)
+
+	CVMVolDg ocrvote_voldg (
+		Critical = 0
+		CVMDiskGroup = oradg2352_ocrvote
+		CVMVolume = { ocrvote }
+		CVMActivation = sw
+		)
+
+	requires group cvm online local firm
+	cssd requires ocrvote_mnt
+	ocrvote_mnt requires ocrvote_voldg
+
+
+	// resource dependency tree
+	//
+	//	group crs_grp
+	//	{
+	//	CSSD cssd
+	//	    {
+	//	    CFSMount ocrvote_mnt
+	//	        {
+	//	        CVMVolDg ocrvote_voldg
+	//	        }
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { l111031 = 0, l111032 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111031, l111032 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sfrac31
+		CVMNodeId = { l111031 = 0, l111032 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group oradb_grp (
+	SystemList = { l111031 = 0, l111032 = 1 }
+	Parallel = 1
+	AutoStartList = { l111031, l111032 }
+	)
+
+	CFSMount oraarch_mnt (
+		Critical = 0
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg2352_dbarch/archive"
+		)
+
+	CFSMount oradata_mnt (
+		Critical = 0
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg2352_dbarch/dbdata"
+		)
+
+	CVMVolDg data_voldg (
+		Critical = 0
+		CVMDiskGroup = oradg2352_dbarch
+		CVMVolume = { dbdata, archive }
+		CVMActivation = sw
+		)
+
+	Oracle oradb (
+		Critical = 0
+		Sid @l111031 = orcl1
+		Sid @l111032 = orcl2
+		Owner = oracle
+		Home = "/oracle/orahome"
+		StartUpOpt = SRVCTLSTART
+		ShutDownOpt = SRVCTLSTOP
+		LevelTwoMonitorFreq = 0
+		)
+
+	requires group crs_grp online local firm
+	oraarch_mnt requires data_voldg
+	oradata_mnt requires data_voldg
+	oradb requires oraarch_mnt
+	oradb requires oradata_mnt
+
+
+	// resource dependency tree
+	//
+	//	group oradb_grp
+	//	{
+	//	Oracle oradb
+	//	    {
+	//	    CFSMount oraarch_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    CFSMount oradata_mnt
+	//	        {
+	//	        CVMVolDg data_voldg
+	//	        }
+	//	    }
+	//	}
+
+
+====STEP: Checking status of Oracle database
+DATE:2017-07-13 16:03:54
+
+***Checking if relink oracle odm libray to Veritas odm libray***
+
+
+
+DATE:2017-07-13 16:03:56
+HOST:l111032
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx 1 oracle oinstall    28 Jul 13 11:36 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib64/libodm.so
+
+
+DATE:2017-07-13 16:04:01
+HOST:l111031
+USER:root
+STDIN:ls -l /oracle/orahome/lib/libodm*|grep ^l
+STDOUT:
+lrwxrwxrwx 1 oracle oinstall    28 Jul 13 11:36 /oracle/orahome/lib/libodm11.so -> /opt/VRTSodm/lib64/libodm.so
+
+***Checking if Oracle instance is OPEN***
+
+
+
+DATE:2017-07-13 16:04:02
+HOST:l111032
+USER:oracle
+STDIN:select instance_name,status from v$instance;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 16:04:34 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+INSTANCE_NAME	 STATUS
+---------------- ------------
+orcl2		 OPEN
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Checking if Archive log mode is enabled***
+
+
+
+DATE:2017-07-13 16:04:04
+HOST:l111032
+USER:oracle
+STDIN:archive log list;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 16:04:36 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+Database log mode	       Archive Mode
+Automatic archival	       Enabled
+Archive destination	       /archive
+Oldest online log sequence     18
+Next log sequence to archive   19
+Current log sequence	       19
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+***Getting datafile path and name***
+
+
+
+DATE:2017-07-13 16:04:06
+HOST:l111032
+USER:oracle
+STDIN:select name from v$datafile;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 16:04:37 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+--------------------------------------------------------------------------------
+/dbdata/orcl/system01.dbf
+/dbdata/orcl/sysaux01.dbf
+/dbdata/orcl/undotbs01.dbf
+/dbdata/orcl/users01.dbf
+/dbdata/orcl/undotbs02.dbf
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+====STEP: Prepare volumes to make volume sets
+DATE:2017-07-13 16:04:06
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /archive***
+
+
+
+DATE:2017-07-13 16:04:07
+HOST:l111032
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 481G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 11M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 141M 8.4G 2% /archive
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+
+
+DATE:2017-07-13 16:04:09
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2352_dbarch/archive
+STDOUT:
+vxfs
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /dbdata***
+
+
+
+DATE:2017-07-13 16:04:11
+HOST:l111032
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 481G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 11M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 141M 8.4G 2% /archive
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+
+
+DATE:2017-07-13 16:04:12
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2352_dbarch/dbdata
+STDOUT:
+vxfs
+
+***Checking and clear existing Environment.***
+
+
+
+DATE:2017-07-13 16:04:14
+HOST:l111032
+USER:oracle
+STDIN:select table_name from dba_tables where table_name='SALES';
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 16:04:46 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+no rows selected
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-07-13 16:04:16
+HOST:l111032
+USER:oracle
+STDIN:select name from v$tablespace;
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 16:04:48 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+NAME
+------------------------------
+SYSTEM
+SYSAUX
+UNDOTBS1
+USERS
+TEMP
+UNDOTBS2
+
+6 rows selected.
+
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-07-13 16:04:23
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/fsppadm unassign /dbdata
+STDOUT:
+
+
+
+DATE:2017-07-13 16:04:25
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/fsppadm unassign /archive
+STDOUT:
+
+
+
+DATE:2017-07-13 16:04:26
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch|awk '$2=="dbdata" {print}'
+STDOUT:
+v  dbdata       fsgen        ENABLED  18874368 -        ACTIVE   -       -
+
+
+DATE:2017-07-13 16:04:28
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch|awk '$2=="archive" {print}'
+STDOUT:
+v  archive      fsgen        ENABLED  18874368 -        ACTIVE   -       -
+
+***Removing volumes which begin with autotcvol from oradg2352_dbarch "oradg2352_dbarch" on node "l111032" ***
+
+
+
+DATE:2017-07-13 16:04:30
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch|awk '$1=="v" && $2 ~ /^autotcvol/ {print}'
+STDOUT:
+
+
+***Removing volumes which begin with autotcvol from oradg2352_dbarch "oradg2352_dbarch" on node "l111032" ***
+
+
+
+DATE:2017-07-13 16:04:31
+HOST:l111032
+USER:root
+STDIN:vxprint -g oradg2352_dbarch|awk '$1=="v" && $2 ~ /^autotcvol/ {print}'
+STDOUT:
+
+
+***Removing free disk of node "l111032"***
+
+
+
+DATE:2017-07-13 16:04:33
+HOST:l111032
+USER:root
+STDIN:vxprint|grep dm
+STDOUT:
+dm ams_25000_245 ams_25000_245 -      10411776 -        -        -       -
+dm ams_25000_246 ams_25000_246 -      10411776 -        -        -       -
+dm ams_25000_247 ams_25000_247 -      10411776 -        -        -       -
+dm ams_25000_248 ams_25000_248 -      10411776 -        -        -       -
+dm ams_25000_249 ams_25000_249 -      10411776 -        -        -       -
+dm ams_25000_401 ams_25000_401 -      10411776 -        -        -       -
+dm ams_25000_402 ams_25000_402 -      10411776 -        -        -       -
+dm ams_25000_403 ams_25000_403 -      10411776 -        -        -       -
+dm ams_25000_404 ams_25000_404 -      10411776 -        -        -       -
+dm ams_25000_405 ams_25000_405 -      10411776 -        -        -       -
+dm ams_25000_407 ams_25000_407 -      10467328 -        -        -       -
+
+
+DATE:2017-07-13 16:04:35
+HOST:l111032
+USER:root
+STDIN:vxdisk reclaim ams_25000_245 ams_25000_246 ams_25000_247 ams_25000_248 ams_25000_249 ams_25000_401 ams_25000_402 ams_25000_403 ams_25000_404 ams_25000_405 ams_25000_407
+STDOUT:
+Disk ams_25000_245 : Done.
+Disk ams_25000_246 : Done.
+Disk ams_25000_247 : Done.
+Disk ams_25000_248 : Done.
+Disk ams_25000_249 : Done.
+Disk ams_25000_401 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_402 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_403 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_404 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_405 : Skipped. Disk not reclaimable or wrong media type.
+Disk ams_25000_407 : Skipped. Disk not reclaimable or wrong media type.
+
+
+DATE:2017-07-13 16:04:37
+HOST:l111032
+USER:root
+STDIN:vxdg -qa free|awk '$5==0 {print}'
+STDOUT:
+oradg2352_dbarch ams_25000_245 ams_25000_245 ams_25000_245 0         10411776  -
+oradg2352_dbarch ams_25000_246 ams_25000_246 ams_25000_246 0         10411776  -
+oradg2352_dbarch ams_25000_247 ams_25000_247 ams_25000_247 0         10411776  -
+oradg2352_dbarch ams_25000_248 ams_25000_248 ams_25000_248 0         10411776  -
+oradg2352_dbarch ams_25000_249 ams_25000_249 ams_25000_249 0         10411776  -
+
+
+DATE:2017-07-13 16:04:42
+HOST:l111032
+USER:root
+STDIN:vxdg -g oradg2352_dbarch rmdisk ams_25000_245 ams_25000_246 ams_25000_247 ams_25000_248 ams_25000_249
+STDOUT:
+
+
+***Online Group oradb_grp on all active nodes***
+
+
+
+DATE:2017-07-13 16:04:44
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l111031    SysState                RUNNING
+l111032    SysState                RUNNING
+
+
+DATE:2017-07-13 16:04:46
+HOST:l111032
+USER:root
+STDIN:cat /var/VRTSvcs/log/engine_A.log|wc -l|awk '{print $1}'
+STDOUT:
+39501
+
+
+DATE:2017-07-13 16:04:47
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -online oradb_grp -any
+STDOUT:
+VCS NOTICE V-16-1-50996 All instances of the parallel group (oradb_grp) are online in cluster
+
+
+DATE:2017-07-13 16:04:59
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 l111031    |ONLINE|
+oradb_grp    State                 l111032    |ONLINE|
+
+
+DATE:2017-07-13 16:05:01
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 l111031    |ONLINE|
+oradb_grp    State                 l111032    |ONLINE|
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /archive***
+
+
+
+DATE:2017-07-13 16:05:02
+HOST:l111032
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 481G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 11M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 141M 8.4G 2% /archive
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+
+
+DATE:2017-07-13 16:05:04
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2352_dbarch/archive
+STDOUT:
+vxfs
+
+***Getting volume dg,name,size,filesystem,mountpoint by mountpoint /dbdata***
+
+
+
+DATE:2017-07-13 16:05:06
+HOST:l111032
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 541G 34G 481G 7% /
+devtmpfs 32G 0 32G 0% /dev
+tmpfs 32G 0 32G 0% /dev/shm
+tmpfs 32G 11M 32G 1% /run
+tmpfs 32G 0 32G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/oradg2352_ocrvote/ocrvote 9.0G 61M 8.4G 1% /ocrvote
+/dev/vx/dsk/oradg2352_dbarch/dbdata 9.0G 1.6G 7.0G 19% /dbdata
+/dev/vx/dsk/oradg2352_dbarch/archive 9.0G 141M 8.4G 2% /archive
+tmpfs 6.3G 0 6.3G 0% /run/user/0
+
+
+DATE:2017-07-13 16:05:07
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/fstyp /dev/vx/dsk/oradg2352_dbarch/dbdata
+STDOUT:
+vxfs
+
+
+DATE:2017-07-13 16:05:09
+HOST:l111032
+USER:root
+STDIN:vxassist -g oradg2352_dbarch maxsize
+STDOUT:
+Maximum volume size: 3897344 (1903Mb)
+
+***Getting disk list by specified size***
+
+
+***Getting avaiable disks***
+
+
+
+DATE:2017-07-13 16:05:10
+HOST:l111032
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-07-13 16:05:12
+HOST:l111031
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-07-13 16:05:14
+HOST:l111032
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+ams_25000         AMS_2500       87011286             CONNECTED    A/A        40         0000
+other_disks       OTHER_DISKS    OTHER_DISKS          CONNECTED    OTHER_DISKS   1         2.12
+
+
+DATE:2017-07-13 16:05:18
+HOST:l111032
+USER:root
+STDIN:vxdisk scandisks;vxdisk list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_102 auto:cdsdisk    -            -            online thinrclm
+ams_25000_103 auto:cdsdisk    -            -            online thinrclm
+ams_25000_104 auto:cdsdisk    -            -            online thinrclm
+ams_25000_105 auto:cdsdisk    -            -            online thinrclm
+ams_25000_106 auto:cdsdisk    -            -            online thinrclm
+ams_25000_107 auto:cdsdisk    -            -            online thinrclm
+ams_25000_108 auto:cdsdisk    -            -            online thinrclm
+ams_25000_109 auto:cdsdisk    -            -            online thinrclm
+ams_25000_110 auto:cdsdisk    -            -            online thinrclm
+ams_25000_111 auto:cdsdisk    -            -            online thinrclm
+ams_25000_221 auto:cdsdisk    -            -            online thinrclm
+ams_25000_222 auto:cdsdisk    -            -            online thinrclm
+ams_25000_233 auto:cdsdisk    -            -            online thinrclm
+ams_25000_234 auto:cdsdisk    -            -            online thinrclm
+ams_25000_235 auto:cdsdisk    -            -            online thinrclm
+ams_25000_245 auto:cdsdisk    -            -            online thinrclm
+ams_25000_246 auto:cdsdisk    -            -            online thinrclm
+ams_25000_247 auto:cdsdisk    -            -            online thinrclm
+ams_25000_248 auto:cdsdisk    -            -            online thinrclm
+ams_25000_249 auto:cdsdisk    -            -            online thinrclm
+ams_25000_383 auto:cdsdisk    -            -            online
+ams_25000_384 auto:cdsdisk    -            -            online
+ams_25000_385 auto:cdsdisk    -            -            online
+ams_25000_386 auto:cdsdisk    -            -            online
+ams_25000_387 auto:cdsdisk    -            -            online
+ams_25000_393 auto:cdsdisk    -            -            online
+ams_25000_394 auto:cdsdisk    -            -            online
+ams_25000_395 auto:cdsdisk    -            -            online
+ams_25000_396 auto:cdsdisk    -            -            online
+ams_25000_397 auto:cdsdisk    -            -            online
+ams_25000_398 auto:cdsdisk    -            -            online
+ams_25000_399 auto:cdsdisk    -            -            online
+ams_25000_400 auto:cdsdisk    -            -            online
+ams_25000_401 auto:cdsdisk    ams_25000_401  oradg2352_dbarch online shared
+ams_25000_402 auto:cdsdisk    ams_25000_402  oradg2352_dbarch online shared
+ams_25000_403 auto:cdsdisk    ams_25000_403  oradg2352_dbarch online shared
+ams_25000_404 auto:cdsdisk    ams_25000_404  oradg2352_dbarch online shared
+ams_25000_405 auto:cdsdisk    ams_25000_405  oradg2352_ocrvote online shared
+ams_25000_406 auto:cdsdisk    -            -            online
+ams_25000_407 auto:cdsdisk    ams_25000_407  oradg2352_ocrvote online shared
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-07-13 16:05:21
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSsfmh/adm/dclisetup.sh
+STDOUT:
+
+
+
+DATE:2017-07-13 16:05:38
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/vxlist disk
+STDOUT:
+TY   DEVICE         DISK          DISKGROUP          SIZE    FREE STATUS
+disk ams_25000_102  -             -                 4.96g       - free
+disk ams_25000_103  -             -                 4.96g       - free
+disk ams_25000_104  -             -                 4.96g       - free
+disk ams_25000_105  -             -                 4.96g       - free
+disk ams_25000_106  -             -                 4.96g       - free
+disk ams_25000_107  -             -                 4.96g       - free
+disk ams_25000_108  -             -                 4.96g       - free
+disk ams_25000_109  -             -                 4.96g       - free
+disk ams_25000_110  -             -                 4.96g       - free
+disk ams_25000_111  -             -                 4.96g       - free
+disk ams_25000_221  -             -                 4.96g       - free
+disk ams_25000_222  -             -                 4.96g       - free
+disk ams_25000_233  -             -                 4.96g       - free
+disk ams_25000_234  -             -                 4.96g       - free
+disk ams_25000_235  -             -                 4.96g       - free
+disk ams_25000_245  -             -                 4.96g       - free
+disk ams_25000_246  -             -                 4.96g       - free
+disk ams_25000_247  -             -                 4.96g       - free
+disk ams_25000_248  -             -                 4.96g       - free
+disk ams_25000_249  -             -                 4.96g       - free
+disk ams_25000_383  -             fen701            4.96g       - deported
+disk ams_25000_384  -             fen701            4.96g       - deported
+disk ams_25000_385  -             fen701            4.96g       - deported
+disk ams_25000_386  -             -                 4.96g       - free
+disk ams_25000_387  -             -                 4.96g       - free
+disk ams_25000_393  -             -                 4.96g       - free
+disk ams_25000_394  -             -                 4.96g       - free
+disk ams_25000_395  -             -                 4.96g       - free
+disk ams_25000_396  -             -                 4.96g       - free
+disk ams_25000_397  -             -                 4.96g       - free
+disk ams_25000_398  -             -                 4.96g       - free
+disk ams_25000_399  -             -                 4.96g       - free
+disk ams_25000_400  -             -                 4.96g       - free
+disk ams_25000_401  ams_25000_401 oradg2352_dbarch  4.96g    0.00 imported
+disk ams_25000_402  ams_25000_402 oradg2352_dbarch  4.96g 951.75m imported
+disk ams_25000_403  ams_25000_403 oradg2352_dbarch  4.96g    0.00 imported
+disk ams_25000_404  ams_25000_404 oradg2352_dbarch  4.96g 951.75m imported
+disk ams_25000_405  ams_25000_405 oradg2352_ocrvote 4.96g 978.87m imported
+disk ams_25000_406  -             -                 4.96g       - free
+disk ams_25000_407  ams_25000_407 oradg2352_ocrvote 4.99g    0.00 imported
+disk sda            -             -                     -       - uninitialized
+
+
+DATE:2017-07-13 16:05:44
+HOST:l111032
+USER:root
+STDIN:vxdg -g oradg2352_dbarch adddisk ams_25000_406 ams_25000_400 ams_25000_399 ams_25000_398 ams_25000_397 ams_25000_396 ams_25000_395 ams_25000_394
+STDOUT:
+
+
+***Making autotcvol1 with size=9316M in oradg2352_dbarch***
+
+
+
+DATE:2017-07-13 16:05:46
+HOST:l111032
+USER:root
+STDIN:for i in `vxprint -g oradg2352_dbarch|grep ^v|grep autotcvol1|awk '{print $2}'`;do vxedit -g oradg2352_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-07-13 16:05:48
+HOST:l111032
+USER:root
+STDIN:vxassist -g oradg2352_dbarch make autotcvol1 9316M
+STDOUT:
+
+
+
+DATE:2017-07-13 16:05:50
+HOST:l111032
+USER:root
+STDIN:vxedit -g oradg2352_dbarch set user=oracle autotcvol1
+STDOUT:
+
+
+***Making autotcvol2 with size=9316M in oradg2352_dbarch***
+
+
+
+DATE:2017-07-13 16:05:51
+HOST:l111032
+USER:root
+STDIN:for i in `vxprint -g oradg2352_dbarch|grep ^v|grep autotcvol2|awk '{print $2}'`;do vxedit -g oradg2352_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-07-13 16:05:53
+HOST:l111032
+USER:root
+STDIN:vxassist -g oradg2352_dbarch make autotcvol2 9316M
+STDOUT:
+
+
+
+DATE:2017-07-13 16:05:55
+HOST:l111032
+USER:root
+STDIN:vxedit -g oradg2352_dbarch set user=oracle autotcvol2
+STDOUT:
+
+
+***Making autotcvol3 with size=9316M in oradg2352_dbarch***
+
+
+
+DATE:2017-07-13 16:05:56
+HOST:l111032
+USER:root
+STDIN:for i in `vxprint -g oradg2352_dbarch|grep ^v|grep autotcvol3|awk '{print $2}'`;do vxedit -g oradg2352_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-07-13 16:05:58
+HOST:l111032
+USER:root
+STDIN:vxassist -g oradg2352_dbarch make autotcvol3 9316M
+STDOUT:
+
+
+
+DATE:2017-07-13 16:06:00
+HOST:l111032
+USER:root
+STDIN:vxedit -g oradg2352_dbarch set user=oracle autotcvol3
+STDOUT:
+
+
+***Making autotcvol4 with size=9316M in oradg2352_dbarch***
+
+
+
+DATE:2017-07-13 16:06:02
+HOST:l111032
+USER:root
+STDIN:for i in `vxprint -g oradg2352_dbarch|grep ^v|grep autotcvol4|awk '{print $2}'`;do vxedit -g oradg2352_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-07-13 16:06:03
+HOST:l111032
+USER:root
+STDIN:vxassist -g oradg2352_dbarch make autotcvol4 9316M
+STDOUT:
+
+
+
+DATE:2017-07-13 16:06:05
+HOST:l111032
+USER:root
+STDIN:vxedit -g oradg2352_dbarch set user=oracle autotcvol4
+STDOUT:
+
+
+
+DATE:2017-07-13 16:06:07
+HOST:l111032
+USER:root
+STDIN:vxassist -g oradg2352_dbarch maxsize
+STDOUT:
+Maximum volume size: 10874880 (5310Mb)
+
+***Getting disk list by specified size***
+
+
+
+DATE:2017-07-13 16:06:30
+HOST:l111032
+USER:root
+STDIN:vxdg -g oradg2352_dbarch adddisk ams_25000_393 ams_25000_387 ams_25000_386 ams_25000_249 ams_25000_248 ams_25000_247 ams_25000_246 ams_25000_245
+STDOUT:
+
+
+***Making autotcvol5 with size=9316M in oradg2352_dbarch***
+
+
+
+DATE:2017-07-13 16:06:32
+HOST:l111032
+USER:root
+STDIN:for i in `vxprint -g oradg2352_dbarch|grep ^v|grep autotcvol5|awk '{print $2}'`;do vxedit -g oradg2352_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-07-13 16:06:34
+HOST:l111032
+USER:root
+STDIN:vxassist -g oradg2352_dbarch make autotcvol5 9316M
+STDOUT:
+
+
+
+DATE:2017-07-13 16:06:36
+HOST:l111032
+USER:root
+STDIN:vxedit -g oradg2352_dbarch set user=oracle autotcvol5
+STDOUT:
+
+
+***Making autotcvol6 with size=9316M in oradg2352_dbarch***
+
+
+
+DATE:2017-07-13 16:06:37
+HOST:l111032
+USER:root
+STDIN:for i in `vxprint -g oradg2352_dbarch|grep ^v|grep autotcvol6|awk '{print $2}'`;do vxedit -g oradg2352_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-07-13 16:06:39
+HOST:l111032
+USER:root
+STDIN:vxassist -g oradg2352_dbarch make autotcvol6 9316M
+STDOUT:
+
+
+
+DATE:2017-07-13 16:06:41
+HOST:l111032
+USER:root
+STDIN:vxedit -g oradg2352_dbarch set user=oracle autotcvol6
+STDOUT:
+
+
+***Making autotcvol7 with size=9316M in oradg2352_dbarch***
+
+
+
+DATE:2017-07-13 16:06:43
+HOST:l111032
+USER:root
+STDIN:for i in `vxprint -g oradg2352_dbarch|grep ^v|grep autotcvol7|awk '{print $2}'`;do vxedit -g oradg2352_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-07-13 16:06:46
+HOST:l111032
+USER:root
+STDIN:vxassist -g oradg2352_dbarch make autotcvol7 9316M
+STDOUT:
+
+
+
+DATE:2017-07-13 16:06:48
+HOST:l111032
+USER:root
+STDIN:vxedit -g oradg2352_dbarch set user=oracle autotcvol7
+STDOUT:
+
+
+***Making autotcvol8 with size=9316M in oradg2352_dbarch***
+
+
+
+DATE:2017-07-13 16:06:49
+HOST:l111032
+USER:root
+STDIN:for i in `vxprint -g oradg2352_dbarch|grep ^v|grep autotcvol8|awk '{print $2}'`;do vxedit -g oradg2352_dbarch -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-07-13 16:06:52
+HOST:l111032
+USER:root
+STDIN:vxassist -g oradg2352_dbarch make autotcvol8 9316M
+STDOUT:
+
+
+
+DATE:2017-07-13 16:06:53
+HOST:l111032
+USER:root
+STDIN:vxedit -g oradg2352_dbarch set user=oracle autotcvol8
+STDOUT:
+
+
+
+DATE:2017-07-13 16:06:55
+HOST:l111032
+USER:root
+STDIN:vxedit -g oradg2352_dbarch set user=oracle dbdata
+STDOUT:
+
+
+
+DATE:2017-07-13 16:06:56
+HOST:l111032
+USER:root
+STDIN:vxedit -g oradg2352_dbarch set user=oracle archive
+STDOUT:
+
+
+
+====STEP: Doing dbdst operation
+DATE:2017-07-13 16:06:56
+
+
+DATE:2017-07-13 16:07:11
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+
+DATE:2017-07-13 16:07:13
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o list
+STDOUT:
+TSDB Parameters for orcl2
+-----------------------------------
+Maxclass	=  8
+Minclass	=  2
+Stat-Interval	=  10
+Sweep Information = 14HH:21MM, Frequency = 1
+Purge Information = 14HH:21MM, Frequency = 1
+
+
+TSDB Storage Classes for orcl2
+-----------------------------------
+Name = BALANCE : Description = BALANCE Storage Class
+Name = FAST : Description = FAST Storage+@chunk=256K
+Name = MEDIUM : Description = MEDIUM Storage+@chunk=512K
+Name = PRIMARY : Description = PRIMARY Storage Class
+Name = SECONDARY : Description = SECONDARY Storage Class
+Name = SLOW : Description = SLOW Storage+@chunk=1M
+
+SCHEDULED RECURRING JOBS INFORMATION
+------------------------------------
+TIME=YYYY-MM-DD@14:21 CMD=/opt/VRTSdbed/bin/internal/tsdb_enforce_all.sh, ARGS=/archive 
+
+
+DATE:2017-07-13 16:07:16
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o list
+STDOUT:
+TSDB Parameters for orcl2
+-----------------------------------
+Maxclass	=  8
+Minclass	=  2
+Stat-Interval	=  10
+Sweep Information = 14HH:21MM, Frequency = 1
+Purge Information = 14HH:21MM, Frequency = 1
+
+
+TSDB Storage Classes for orcl2
+-----------------------------------
+Name = BALANCE : Description = BALANCE Storage Class
+Name = FAST : Description = FAST Storage+@chunk=256K
+Name = MEDIUM : Description = MEDIUM Storage+@chunk=512K
+Name = PRIMARY : Description = PRIMARY Storage Class
+Name = SECONDARY : Description = SECONDARY Storage Class
+Name = SLOW : Description = SLOW Storage+@chunk=1M
+
+SCHEDULED RECURRING JOBS INFORMATION
+------------------------------------
+TIME=YYYY-MM-DD@14:21 CMD=/opt/VRTSdbed/bin/internal/tsdb_enforce_all.sh, ARGS=/archive 
+
+***Offline Group oradb_grp on all active nodes***
+
+
+
+DATE:2017-07-13 16:07:17
+HOST:l111032
+USER:root
+STDIN:cat /var/VRTSvcs/log/engine_A.log|wc -l|awk '{print $1}'
+STDOUT:
+39502
+
+
+DATE:2017-07-13 16:07:19
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -offline oradb_grp -any
+STDOUT:
+VCS NOTICE V-16-1-50733 Attempting to offline group on system l111031
+VCS NOTICE V-16-1-50733 Attempting to offline group on system l111032
+
+
+DATE:2017-07-13 16:07:31
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 l111031    |ONLINE|STOPPING|
+oradb_grp    State                 l111032    |ONLINE|STOPPING|
+
+
+DATE:2017-07-13 16:07:42
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 l111031    |OFFLINE|
+oradb_grp    State                 l111032    |OFFLINE|
+
+
+DATE:2017-07-13 16:07:44
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 l111031    |OFFLINE|
+oradb_grp    State                 l111032    |OFFLINE|
+
+***Converting volume dbdata to volume set***
+
+
+
+DATE:2017-07-13 16:08:03
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_convert -S $ORACLE_SID -M /dev/vx/dsk/oradg2352_dbarch/dbdata -v autotcvol1,autotcvol2
+STDOUT:
+
+
+
+DATE:2017-07-13 16:08:05
+HOST:l111032
+USER:root
+STDIN:/usr/sbin/vxvset -g oradg2352_dbarch list dbdata
+STDOUT:
+VOLUME                 INDEX        LENGTH     KSTATE  CONTEXT
+dbdata-b4vset              0      18874368    ENABLED  -
+autotcvol1                 1      19079168    ENABLED  -
+autotcvol2                 2      19079168    ENABLED  -
+
+***Converting volume archive to volume set***
+
+
+
+DATE:2017-07-13 16:08:29
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_convert -S $ORACLE_SID -M /dev/vx/dsk/oradg2352_dbarch/archive -v autotcvol5,autotcvol6
+STDOUT:
+
+
+
+DATE:2017-07-13 16:08:31
+HOST:l111032
+USER:root
+STDIN:/usr/sbin/vxvset -g oradg2352_dbarch list archive
+STDOUT:
+VOLUME                 INDEX        LENGTH     KSTATE  CONTEXT
+archive-b4vset             0      18874368    ENABLED  -
+autotcvol5                 1      19079168    ENABLED  -
+autotcvol6                 2      19079168    ENABLED  -
+
+***Online Group oradb_grp on all active nodes***
+
+
+
+DATE:2017-07-13 16:08:32
+HOST:l111032
+USER:root
+STDIN:cat /var/VRTSvcs/log/engine_A.log|wc -l|awk '{print $1}'
+STDOUT:
+39523
+
+
+DATE:2017-07-13 16:08:34
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -online oradb_grp -any
+STDOUT:
+VCS NOTICE V-16-1-50735 Attempting to online group on system l111031
+VCS NOTICE V-16-1-50735 Attempting to online group on system l111032
+
+
+DATE:2017-07-13 16:08:46
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 l111031    |PARTIAL|STARTING|
+oradb_grp    State                 l111032    |PARTIAL|STARTING|
+
+
+DATE:2017-07-13 16:08:57
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 l111031    |PARTIAL|STARTING|
+oradb_grp    State                 l111032    |PARTIAL|STARTING|
+
+
+DATE:2017-07-13 16:09:09
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 l111031    |PARTIAL|STARTING|
+oradb_grp    State                 l111032    |PARTIAL|STARTING|
+
+
+DATE:2017-07-13 16:09:20
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 l111031    |ONLINE|
+oradb_grp    State                 l111032    |ONLINE|
+
+
+DATE:2017-07-13 16:09:22
+HOST:l111032
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state oradb_grp
+STDOUT:
+#Group       Attribute             System     Value
+oradb_grp    State                 l111031    |ONLINE|
+oradb_grp    State                 l111032    |ONLINE|
+
+
+DATE:2017-07-13 16:09:24
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/fsvoladm list /dbdata
+STDOUT:
+devid   size                 used                 avail                name
+0	9437184              1633714              7803470              dbdata-b4vset
+1	9539584              16                   9539568              autotcvol1
+2	9539584              16                   9539568              autotcvol2
+
+
+DATE:2017-07-13 16:09:25
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/fsvoladm list /archive
+STDOUT:
+devid   size                 used                 avail                name
+0	9437184              149118               9288066              archive-b4vset
+1	9539584              323                  9539261              autotcvol5
+2	9539584              16                   9539568              autotcvol6
+
+***Define Classes for all volumes in volume set***
+
+
+
+DATE:2017-07-13 16:09:30
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_classify -S $ORACLE_SID -M /dev/vx/dsk/oradg2352_dbarch/dbdata -v autotcvol1:FAST
+STDOUT:
+
+
+
+DATE:2017-07-13 16:09:34
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_classify -S $ORACLE_SID -M /dev/vx/dsk/oradg2352_dbarch/dbdata -v autotcvol2:SLOW
+STDOUT:
+
+
+
+DATE:2017-07-13 16:09:38
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_classify -S $ORACLE_SID -M /dev/vx/dsk/oradg2352_dbarch/dbdata -v dbdata-b4vset:MEDIUM
+STDOUT:
+
+
+
+DATE:2017-07-13 16:09:42
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /dbdata
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol1                    9539584	34	9539550
+
+CLASS=MEDIUM
+dbdata-b4vset                 9437184	1633714	7803470
+
+CLASS=SLOW
+autotcvol2                    9539584	16	9539568
+
+
+DATE:2017-07-13 16:09:47
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_classify -S $ORACLE_SID -M /dev/vx/dsk/oradg2352_dbarch/archive -v autotcvol5:FAST
+STDOUT:
+
+
+
+DATE:2017-07-13 16:09:51
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_classify -S $ORACLE_SID -M /dev/vx/dsk/oradg2352_dbarch/archive -v autotcvol6:SLOW
+STDOUT:
+
+
+
+DATE:2017-07-13 16:09:55
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_classify -S $ORACLE_SID -M /dev/vx/dsk/oradg2352_dbarch/archive -v archive-b4vset:MEDIUM
+STDOUT:
+
+
+
+DATE:2017-07-13 16:09:59
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /archive
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol5                    9539584	323	9539261
+
+CLASS=MEDIUM
+archive-b4vset                9437184	149118	9288066
+
+CLASS=SLOW
+autotcvol6                    9539584	16	9539568
+
+
+DATE:2017-07-13 16:10:06
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+***Define Policy and check if files move for /dbdata***
+
+
+
+DATE:2017-07-13 16:10:08
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /dbdata/orcl/*.ctl
+STDOUT:
+         Volume  Extent Type     File
+  dbdata-b4vset         Data     /dbdata/orcl/control01.ctl
+
+  dbdata-b4vset         Data     /dbdata/orcl/control02.ctl
+
+
+DATE:2017-07-13 16:10:18
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -d /dbdata -P FAST=*.ctl
+STDOUT:
+Assign placement policy file successful on filesystem /dbdata
+Begin enforcing filesystem /dbdata ...
+Enforce placement policy successful on filesystem /dbdata
+
+
+DATE:2017-07-13 16:10:21
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -l -d /dbdata
+STDOUT:
+FAST=*.ctl
+
+
+DATE:2017-07-13 16:10:23
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /dbdata/orcl/*.ctl
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol1         Data     /dbdata/orcl/control01.ctl
+  dbdata-b4vset         Data     /dbdata/orcl/control01.ctl
+
+     autotcvol1         Data     /dbdata/orcl/control02.ctl
+  dbdata-b4vset         Data     /dbdata/orcl/control02.ctl
+
+***Part of the ctl files have move to autotcvol1***
+
+
+***execute sql sentences to create tables***
+
+
+
+DATE:2017-07-13 16:10:24
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:cat /opt/itf/tmp/dbdst_pre.17156.sql;rm -f /opt/itf/tmp/dbdst_pre.17156.sql
+STDOUT:
+CREATE TABLESPACE part1 DATAFILE '/dbdata/orcl/part1.dbf' SIZE 100M REUSE;
+CREATE TABLESPACE part2 DATAFILE '/dbdata/orcl/part2.dbf' SIZE 100M REUSE;
+CREATE TABLESPACE part3 DATAFILE '/dbdata/orcl/part3.dbf' SIZE 100M REUSE;
+CREATE TABLESPACE part4 DATAFILE '/dbdata/orcl/part4.dbf' SIZE 100M REUSE;
+CREATE TABLE sales ( invoice_no NUMBER(10), sale_date DATE NOT NULL ) PARTITION BY RANGE (sale_date)( PARTITION sales_yr1 VALUES LESS THAN (TO_DATE('01-JAN-2000','DD-MON-YYYY')) TABLESPACE part1, PARTITION sales_yr2 VALUES LESS THAN (TO_DATE('01-JAN-2001','DD-MON-YYYY')) TABLESPACE part2, PARTITION sales_yr3 VALUES LESS THAN (MAXVALUE) TABLESPACE part3);
+declare
+i number(10);
+sql_stmt varchar2(1000);
+begin
+i:=0;
+while ( i < 100000 ) loop
+insert into sales values(01,'28-NOV-1995');
+insert into sales values(02,'28-nov-2001');
+insert into sales values(03,'28-JUN-2004');
+i:=i+1;
+end loop;
+commit;
+end;
+/
+
+
+DATE:2017-07-13 16:10:26
+HOST:l111032
+USER:root
+STDIN:ls -l /tmp/dbdst_pre.17156.sql
+STDOUT:
+-rw-r--r-- 1 root root 907 Jul 13 16:10 /tmp/dbdst_pre.17156.sql
+
+
+DATE:2017-07-13 16:10:47
+HOST:l111032
+USER:oracle
+STDIN:sqlplus / as sysdba @/tmp/dbdst_pre.17156.sql
+STDOUT:
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jul 13 16:10:59 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+Tablespace created.
+
+
+Tablespace created.
+
+
+Tablespace created.
+
+
+Tablespace created.
+
+
+Table created.
+
+
+PL/SQL procedure successfully completed.
+
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, OLAP, Data Mining
+and Real Application Testing options
+
+
+DATE:2017-07-13 16:10:49
+HOST:l111032
+USER:root
+STDIN:rm -f /tmp/dbdst_pre.17156.sql
+STDOUT:
+
+
+
+DATE:2017-07-13 16:10:56
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+***Modify create time of below dbf file in case below dbf file is created one day before***
+
+
+
+DATE:2017-07-13 16:10:58
+HOST:l111032
+USER:root
+STDIN:ls -l /archive | head -5
+STDOUT:
+total 184379
+-r--r----- 1 oracle oinstall    66560 Jul  1  2002 1_10_949230855.dbf
+-r--r----- 1 oracle oinstall   214528 Jul  1  2002 1_11_949230855.dbf
+-r--r----- 1 oracle oinstall     1024 Jul  1  2002 1_12_949230855.dbf
+-r--r----- 1 oracle oinstall     1024 Jul  1  2002 1_13_949230855.dbf
+
+
+DATE:2017-07-13 16:10:59
+HOST:l111032
+USER:root
+STDIN:touch -t 200207010800.01 /archive/1_10_949230855.dbf;ls -l /archive/1_10_949230855.dbf
+STDOUT:
+-r--r----- 1 oracle oinstall 66560 Jul  1  2002 /archive/1_10_949230855.dbf
+
+
+DATE:2017-07-13 16:11:01
+HOST:l111032
+USER:root
+STDIN:touch -t 200207010800.01 /archive/1_11_949230855.dbf;ls -l /archive/1_11_949230855.dbf
+STDOUT:
+-r--r----- 1 oracle oinstall 214528 Jul  1  2002 /archive/1_11_949230855.dbf
+
+
+DATE:2017-07-13 16:11:03
+HOST:l111032
+USER:root
+STDIN:touch -t 200207010800.01 /archive/1_12_949230855.dbf;ls -l /archive/1_12_949230855.dbf
+STDOUT:
+-r--r----- 1 oracle oinstall 1024 Jul  1  2002 /archive/1_12_949230855.dbf
+
+
+DATE:2017-07-13 16:11:04
+HOST:l111032
+USER:root
+STDIN:touch -t 200207010800.01 /archive/1_13_949230855.dbf;ls -l /archive/1_13_949230855.dbf
+STDOUT:
+-r--r----- 1 oracle oinstall 1024 Jul  1  2002 /archive/1_13_949230855.dbf
+
+
+DATE:2017-07-13 16:11:07
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o definechunk=FAST:256K
+STDOUT:
+
+
+
+DATE:2017-07-13 16:11:14
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o definechunk=MEDIUM:512K
+STDOUT:
+
+
+
+DATE:2017-07-13 16:11:17
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o definechunk=SLOW:1M
+STDOUT:
+
+
+
+DATE:2017-07-13 16:11:19
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o list
+STDOUT:
+TSDB Parameters for orcl2
+-----------------------------------
+Maxclass	=  8
+Minclass	=  2
+Stat-Interval	=  10
+Sweep Information = 14HH:21MM, Frequency = 1
+Purge Information = 14HH:21MM, Frequency = 1
+
+
+TSDB Storage Classes for orcl2
+-----------------------------------
+Name = BALANCE : Description = BALANCE Storage Class
+Name = FAST : Description = FAST Storage+@chunk=256K
+Name = MEDIUM : Description = MEDIUM Storage+@chunk=512K
+Name = PRIMARY : Description = PRIMARY Storage Class
+Name = SECONDARY : Description = SECONDARY Storage Class
+Name = SLOW : Description = SLOW Storage+@chunk=1M
+
+SCHEDULED RECURRING JOBS INFORMATION
+------------------------------------
+TIME=YYYY-MM-DD@14:21 CMD=/opt/VRTSdbed/bin/internal/tsdb_enforce_all.sh, ARGS=/archive 
+
+***Define Policy and check if files move for /archive***
+
+
+
+DATE:2017-07-13 16:11:26
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+
+DATE:2017-07-13 16:11:31
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /archive/*.dbf
+STDOUT:
+         Volume  Extent Type     File
+ archive-b4vset         Data     /archive/1_10_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_11_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_12_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_13_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_14_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_15_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_16_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_17_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_18_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_19_949230855.dbf
+
+     autotcvol5         Data     /archive/1_20_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_3_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_4_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_5_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_6_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_7_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_8_949230855.dbf
+
+ archive-b4vset         Data     /archive/1_9_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_10_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_11_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_12_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_13_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_14_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_15_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_16_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_17_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_18_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_1_949230855.dbf
+
+     autotcvol5         Data     /archive/2_19_949230855.dbf
+
+     autotcvol5         Data     /archive/2_20_949230855.dbf
+
+     autotcvol5         Data     /archive/2_21_949230855.dbf
+
+     autotcvol5         Data     /archive/2_22_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_2_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_3_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_4_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_5_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_6_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_7_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_8_949230855.dbf
+
+ archive-b4vset         Data     /archive/2_9_949230855.dbf
+
+
+DATE:2017-07-13 16:11:42
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -d /archive -P FAST=*.dbf
+STDOUT:
+Assign placement policy file successful on filesystem /archive
+Begin enforcing filesystem /archive ...
+Enforce placement policy successful on filesystem /archive
+
+
+DATE:2017-07-13 16:11:45
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -l -d /archive
+STDOUT:
+FAST=*.dbf
+
+
+DATE:2017-07-13 16:11:46
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /archive/*.dbf
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_10_949230855.dbf
+
+     autotcvol5         Data     /archive/1_11_949230855.dbf
+
+     autotcvol5         Data     /archive/1_12_949230855.dbf
+
+     autotcvol5         Data     /archive/1_13_949230855.dbf
+
+     autotcvol5         Data     /archive/1_14_949230855.dbf
+
+     autotcvol5         Data     /archive/1_15_949230855.dbf
+
+     autotcvol5         Data     /archive/1_16_949230855.dbf
+
+     autotcvol5         Data     /archive/1_17_949230855.dbf
+
+     autotcvol5         Data     /archive/1_18_949230855.dbf
+
+     autotcvol5         Data     /archive/1_19_949230855.dbf
+
+     autotcvol5         Data     /archive/1_20_949230855.dbf
+
+     autotcvol5         Data     /archive/1_3_949230855.dbf
+
+     autotcvol5         Data     /archive/1_4_949230855.dbf
+
+     autotcvol5         Data     /archive/1_5_949230855.dbf
+
+     autotcvol5         Data     /archive/1_6_949230855.dbf
+
+     autotcvol5         Data     /archive/1_7_949230855.dbf
+
+     autotcvol5         Data     /archive/1_8_949230855.dbf
+
+     autotcvol5         Data     /archive/1_9_949230855.dbf
+
+     autotcvol5         Data     /archive/2_10_949230855.dbf
+
+     autotcvol5         Data     /archive/2_11_949230855.dbf
+
+     autotcvol5         Data     /archive/2_12_949230855.dbf
+
+     autotcvol5         Data     /archive/2_13_949230855.dbf
+
+     autotcvol5         Data     /archive/2_14_949230855.dbf
+
+     autotcvol5         Data     /archive/2_15_949230855.dbf
+
+     autotcvol5         Data     /archive/2_16_949230855.dbf
+
+     autotcvol5         Data     /archive/2_17_949230855.dbf
+
+     autotcvol5         Data     /archive/2_18_949230855.dbf
+
+     autotcvol5         Data     /archive/2_1_949230855.dbf
+
+     autotcvol5         Data     /archive/2_19_949230855.dbf
+
+     autotcvol5         Data     /archive/2_20_949230855.dbf
+
+     autotcvol5         Data     /archive/2_21_949230855.dbf
+
+     autotcvol5         Data     /archive/2_22_949230855.dbf
+
+     autotcvol5         Data     /archive/2_2_949230855.dbf
+
+     autotcvol5         Data     /archive/2_3_949230855.dbf
+
+     autotcvol5         Data     /archive/2_4_949230855.dbf
+
+     autotcvol5         Data     /archive/2_5_949230855.dbf
+
+     autotcvol5         Data     /archive/2_6_949230855.dbf
+
+     autotcvol5         Data     /archive/2_7_949230855.dbf
+
+     autotcvol5         Data     /archive/2_8_949230855.dbf
+
+     autotcvol5         Data     /archive/2_9_949230855.dbf
+
+***All of the dbf files have move to autotcvol5***
+
+
+***move file by dbdst_partition_move and check***
+
+
+
+DATE:2017-07-13 16:11:54
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+
+DATE:2017-07-13 16:11:55
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /dbdata/orcl/part1.dbf
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol1         Data     /dbdata/orcl/part1.dbf
+
+
+DATE:2017-07-13 16:12:08
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_partition_move -S $ORACLE_SID -T sales -p sales_yr1 -c SLOW
+STDOUT:
+Assign placement policy file successful on filesystem /dbdata
+Begin enforcing filesystem /dbdata ...
+Enforce placement policy successful on filesystem /dbdata
+
+
+DATE:2017-07-13 16:12:15
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /dbdata/orcl/part1.dbf
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol2         Data     /dbdata/orcl/part1.dbf
+
+***Attention.All file offsets are located in autotcvol2***
+
+
+***move file by dbdst_tbs_move and check***
+
+
+
+DATE:2017-07-13 16:12:22
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+
+DATE:2017-07-13 16:12:24
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /dbdata/orcl/part4.dbf
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol1         Data     /dbdata/orcl/part4.dbf
+
+
+DATE:2017-07-13 16:12:37
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_tbs_move -S $ORACLE_SID -t part4 -c SLOW
+STDOUT:
+Assign placement policy file successful on filesystem /dbdata
+Begin enforcing filesystem /dbdata ...
+Enforce placement policy successful on filesystem /dbdata
+
+
+DATE:2017-07-13 16:12:39
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/fsmap /dbdata/orcl/part4.dbf
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol2         Data     /dbdata/orcl/part4.dbf
+
+***Attention.All file offsets are located in autotcvol2***
+
+
+***Making a plan to move files which will happen in 2 minutes***
+
+
+
+DATE:2017-07-13 16:12:48
+HOST:l111032
+USER:root
+STDIN:ntpdate 172.16.8.14
+STDOUT:
+13 Jul 16:13:19 ntpdate[1338]: adjust time server 172.16.8.14 offset 0.012227 sec
+
+
+DATE:2017-07-13 16:12:49
+HOST:l111032
+USER:root
+STDIN:date
+STDOUT:
+Thu Jul 13 16:13:21 CST 2017
+
+
+DATE:2017-07-13 16:12:52
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o maxclass=8,minclass=2,statinterval=10
+STDOUT:
+
+
+
+DATE:2017-07-13 16:12:56
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o sweeptime=16:14,sweepinterval=1
+STDOUT:
+
+
+
+DATE:2017-07-13 16:12:59
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o purgetime=16:14,purgeinterval=1
+STDOUT:
+
+
+
+DATE:2017-07-13 16:13:02
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_admin -S $ORACLE_SID -o list
+STDOUT:
+TSDB Parameters for orcl2
+-----------------------------------
+Maxclass	=  8
+Minclass	=  2
+Stat-Interval	=  10
+Sweep Information = 16HH:14MM, Frequency = 1
+Purge Information = 16HH:14MM, Frequency = 1
+
+
+TSDB Storage Classes for orcl2
+-----------------------------------
+Name = BALANCE : Description = BALANCE Storage Class
+Name = FAST : Description = FAST Storage+@chunk=256K
+Name = MEDIUM : Description = MEDIUM Storage+@chunk=512K
+Name = PRIMARY : Description = PRIMARY Storage Class
+Name = SECONDARY : Description = SECONDARY Storage Class
+Name = SLOW : Description = SLOW Storage+@chunk=1M
+
+SCHEDULED RECURRING JOBS INFORMATION
+------------------------------------
+TIME=YYYY-MM-DD@16:14 CMD=/opt/VRTSdbed/bin/internal/tsdb_enforce_all.sh, ARGS=/archive 
+
+***Move file by dbdst_file_move with and check ***
+
+
+
+DATE:2017-07-13 16:13:09
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTSdbed/bin/dbed_update -S $ORACLE_SID -H $ORACLE_HOME
+STDOUT:
+Gathering offline data...                                      Done
+
+
+DATE:2017-07-13 16:13:10
+HOST:l111032
+USER:oracle
+STDIN:for i in 1_10_949230855.dbf 1_11_949230855.dbf 1_12_949230855.dbf 1_13_949230855.dbf;do /opt/VRTS/bin/fsmap /archive/$i;done
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_10_949230855.dbf
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_11_949230855.dbf
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_12_949230855.dbf
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_13_949230855.dbf
+
+
+DATE:2017-07-13 16:13:21
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_file_move -S $ORACLE_SID -o archive -c SLOW:1
+STDOUT:
+Assign placement policy file successful on filesystem /archive
+Filesystem /archive is scheduled to be enforced at sweeptime
+
+***Sleep 3 minutes***
+
+
+
+DATE:2017-07-13 16:16:22
+HOST:l111032
+USER:root
+STDIN:date
+STDOUT:
+Thu Jul 13 16:16:54 CST 2017
+
+***Checking moving result sequence 1***
+
+
+
+DATE:2017-07-13 16:16:24
+HOST:l111032
+USER:oracle
+STDIN:for i in 1_10_949230855.dbf 1_11_949230855.dbf 1_12_949230855.dbf 1_13_949230855.dbf;do /opt/VRTS/bin/fsmap /archive/$i;done
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_10_949230855.dbf
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_11_949230855.dbf
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_12_949230855.dbf
+         Volume  Extent Type     File
+     autotcvol5         Data     /archive/1_13_949230855.dbf
+
+***Checking moving result sequence 2***
+
+
+
+DATE:2017-07-13 16:18:26
+HOST:l111032
+USER:oracle
+STDIN:for i in 1_10_949230855.dbf 1_11_949230855.dbf 1_12_949230855.dbf 1_13_949230855.dbf;do /opt/VRTS/bin/fsmap /archive/$i;done
+STDOUT:
+         Volume  Extent Type     File
+     autotcvol6         Data     /archive/1_10_949230855.dbf
+         Volume  Extent Type     File
+     autotcvol6         Data     /archive/1_11_949230855.dbf
+         Volume  Extent Type     File
+     autotcvol6         Data     /archive/1_12_949230855.dbf
+         Volume  Extent Type     File
+     autotcvol6         Data     /archive/1_13_949230855.dbf
+
+***The orginal dbf files under /archive which has been changed time has been move to autotcvol6***
+
+
+
+DATE:2017-07-13 16:18:37
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_addvol -S $ORACLE_SID -M /dev/vx/dsk/oradg2352_dbarch/dbdata -v autotcvol3:MEDIUM
+STDOUT:
+
+
+
+DATE:2017-07-13 16:18:41
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_show_fs -S $ORACLE_SID -m /dbdata
+STDOUT:
+
+MAXCLASS=8
+MINCLASS=2
+TOTAL CLASS=3
+
+VOLUME NAME                   SIZE	USED	AVAILABLE
+-----------                   ----	----	---------
+
+CLASS=FAST
+autotcvol1                    9539584	209303	9330281
+
+CLASS=MEDIUM
+autotcvol3                    9539584	16	9539568
+dbdata-b4vset                 9437184	1631844	7805340
+---------------------------------------------------------------
+SUMMARY:                      18976768	1631860	17344908
+
+CLASS=SLOW
+autotcvol2                    9539584	204832	9334752
+
+
+DATE:2017-07-13 16:18:43
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -l -d /dbdata
+STDOUT:
+FAST=*.ctl
+
+
+DATE:2017-07-13 16:18:49
+HOST:l111032
+USER:oracle
+STDIN:/opt/VRTS/bin/dbdst_preset_policy -S $ORACLE_SID -R -d /dbdata
+STDOUT:
+Assign placement policy file successful on filesystem /dbdata

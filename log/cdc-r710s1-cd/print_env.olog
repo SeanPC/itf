@@ -1,0 +1,200 @@
+
+==================== Operation Log for TC print_env ====================
+DATE:2017-02-23 15:46:25
+Nodes:cdc-r710s1-cd cdc-r710s0-cd
+
+
+====STEP: Check and Print environment
+DATE:2017-02-23 15:46:25
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-02-23 15:46:26
+HOST:cdc-r710s1-cd
+USER:root
+STDIN:ssh -l root cdc-r710s1-cd
+STDOUT:
+
+
+
+DATE:2017-02-23 15:46:29
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:ssh -l root cdc-r710s0-cd
+STDOUT:
+
+
+
+DATE:2017-02-23 15:46:35
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh cdc-r710s1-cd,cdc-r710s0-cd
+STDOUT:
+
+
+
+DATE:2017-02-23 15:46:36
+HOST:cdc-r710s1-cd
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+cdc-r710s0-cd
+cdc-r710s1-cd
+
+
+DATE:2017-02-23 15:46:37
+HOST:cdc-r710s0-cd
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+cdc-r710s0-cd
+cdc-r710s1-cd
+
+
+DATE:2017-02-23 15:46:39
+HOST:cdc-r710s1-cd
+USER:root
+STDIN:[ -f /etc/VRTSvcs/conf/config/main.cf ] && cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster clus2021 (
+	UserNames = { admin = ankHkiJikHkiJi }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system cdc-r710s0-cd (
+	)
+
+system cdc-r710s1-cd (
+	)
+
+group crs_grp (
+	SystemList = { cdc-r710s0-cd = 0, cdc-r710s1-cd = 1 }
+	Parallel = 1
+	AutoStartList = { cdc-r710s0-cd, cdc-r710s1-cd }
+	)
+
+	CFSMount ocrvote_mnt (
+		MountPoint = "/ocrvote"
+		BlockDevice = "/dev/vx/dsk/oradg1229_ocrvote/ocrvote"
+		)
+
+	CSSD cssd (
+		CRSHOME = "/crs/crshome"
+		)
+
+	cssd requires ocrvote_mnt
+
+
+	// resource dependency tree
+	//
+	//	group crs_grp
+	//	{
+	//	CSSD cssd
+	//	    {
+	//	    CFSMount ocrvote_mnt
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { cdc-r710s0-cd = 0, cdc-r710s1-cd = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { cdc-r710s0-cd, cdc-r710s1-cd }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = clus2021
+		CVMNodeId = { cdc-r710s0-cd = 0, cdc-r710s1-cd = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group oradg_grp (
+	SystemList = { cdc-r710s0-cd = 0, cdc-r710s1-cd = 1 }
+	Parallel = 1
+	AutoStartList = { cdc-r710s0-cd, cdc-r710s1-cd }
+	)
+
+	CFSMount oraarch_mnt (
+		MountPoint = "/archive"
+		BlockDevice = "/dev/vx/dsk/oradg1229_dbarch/archive"
+		)
+
+	CFSMount oradata_mnt (
+		MountPoint = "/dbdata"
+		BlockDevice = "/dev/vx/dsk/oradg1229_dbarch/dbdata"
+		)
+
+	Oracle oradb (
+		Sid @cdc-r710s0-cd = orcl1
+		Sid @cdc-r710s1-cd = orcl2
+		Owner = oracle
+		Home = "/oracle/orahome"
+		)
+
+
+
+	// resource dependency tree
+	//
+	//	group oradg_grp
+	//	{
+	//	CFSMount oraarch_mnt
+	//	CFSMount oradata_mnt
+	//	Oracle oradb
+	//	}
+
+
+Case Result:Passed
+DATE:2017-02-23 15:46:39
+Duration:0m14s

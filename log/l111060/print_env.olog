@@ -1,0 +1,236 @@
+
+==================== Operation Log for TC print_env ====================
+DATE:2017-08-11 15:56:15
+Nodes:l111060 l111061
+
+
+====STEP: Check and Print environment
+DATE:2017-08-11 15:56:15
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-08-11 15:56:15
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:63637075 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:11147180 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:9736544983 (9.0 GiB)  TX bytes:2615721873 (2.4 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:2460 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:2460 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:401327 (391.9 KiB)  TX bytes:401327 (391.9 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-08-11 15:56:16
+HOST:l111060
+USER:root
+STDIN:ssh -l root l111060
+STDOUT:
+
+
+
+DATE:2017-08-11 15:56:18
+HOST:l111061
+USER:root
+STDIN:ssh -l root l111061
+STDOUT:
+
+
+
+DATE:2017-08-11 15:56:24
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111060,l111061
+STDOUT:
+
+
+
+DATE:2017-08-11 15:56:24
+HOST:l111060
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111060
+l111061
+
+
+DATE:2017-08-11 15:56:25
+HOST:l111061
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111060
+l111061
+
+
+DATE:2017-08-11 15:56:26
+HOST:l111060
+USER:root
+STDIN:[ -f /etc/VRTSvcs/conf/config/main.cf ] && cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sf_test (
+	UserNames = { admin = JlmElgLimHmmKumGlj }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111060 (
+	)
+
+system l111061 (
+	)
+
+group cvm (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111060 = { dg1 = sw }
+		ActivationMode @l111061 = { dg1 = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sf_test
+		CVMNodeId = { l111060 = 0, l111061 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group privgrp (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	AutoStartList = { l111060 }
+	)
+
+	DiskGroup privdg1 (
+		DiskGroup = dg2
+		)
+
+	Mount pmnt1 (
+		MountPoint = "/MNT"
+		BlockDevice = "/dev/vx/dsk/dg2/vol1"
+		FSType = vxfs
+		MountOpt = rw
+		FsckOpt = "-n"
+		)
+
+	pmnt1 requires privdg1
+
+
+	// resource dependency tree
+	//
+	//	group privgrp
+	//	{
+	//	Mount pmnt1
+	//	    {
+	//	    DiskGroup privdg1
+	//	    }
+	//	}
+
+
+group sg11 (
+	SystemList = { l111060 = 0, l111061 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111060, l111061 }
+	)
+
+	CFSMount cfsmount1 (
+		Critical = 0
+		MountPoint = "/dg1/vol1"
+		BlockDevice = "/dev/vx/dsk/dg1/vol1"
+		MountOpt @l111060 = "cluster"
+		MountOpt @l111061 = "cluster"
+		NodeList = { l111060, l111061 }
+		)
+
+	CVMVolDg cvmvoldg1 (
+		Critical = 0
+		CVMDiskGroup = dg1
+		CVMVolume = { vol1 }
+		CVMActivation @l111060 = sw
+		CVMActivation @l111061 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount1 requires cvmvoldg1
+
+
+	// resource dependency tree
+	//
+	//	group sg11
+	//	{
+	//	CFSMount cfsmount1
+	//	    {
+	//	    CVMVolDg cvmvoldg1
+	//	    }
+	//	}
+
+
+Case Result:Failed
+DATE:2017-08-11 15:56:26
+Duration:0m11s

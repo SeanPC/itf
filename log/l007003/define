@@ -1,0 +1,3 @@
+export autotcvip1="10.200.7.23"
+export autotcvip2="10.200.7.24"
+export nfsclient="cdc-nfs-client-cd-02"

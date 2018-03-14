@@ -1,0 +1,56 @@
+#tc for oracle single instance failover testing
+#des:support aix solars linux platform
+#VALUE:oracle
+#DEFAULT:oracle
+#P:84
+
+oLog step "Checking basic environment of testbed"
+#check if login without password by root and oracle user
+checkNode root
+checkNode $oracle
+getHostnameOSProduct $NODE1
+RExec root $NODE1 "cat $autotcmaincf"
+oracle_group=`echo "$out"|grep -B 100 -P "^\s+Oracle "|grep -oP "(?<=^group )\w+"|tail -1`
+if [ -z "$oracle_group" ]
+then
+        oLog error "Failed to get Oracle Group name"
+        myexit 201
+fi
+if echo "$out"|grep -A 4 -P "group\s+$oracle_group"|grpe -P "Parallel\s+=\s+1" > /dev/null 2>&1
+then
+	oLog error "This case just support oracle SI"
+	myexit 201
+fi
+
+oLog step "Checking status of Oracle database"
+checkOdmLink
+if ! checkGroupStatus $NODE1 $oracle_group 
+then
+	oLog error "Oracle Servie Group $oracle_group is not online"
+	myexit 201
+fi
+
+oLog step "Switch oracle group among nodes,expecting it could be online on all nodes"
+roundSwitchGroup $oracle_group
+
+oLog step "Reboot one node,expecting it will failover to another node"
+RExec root $NODE1 "/opt/VRTS/bin/hagrp -state"
+current_node=`echo "$out"|grep -P "^$oracle_group.*ONLINE"|awk '{print $3}'`
+waitNodeReboot $current_node
+another_node=`echo "$NODES"|sed "s/$current_node//"|awk '{print $1}'`
+waitGroupOnline $another_node $oracle_group
+RExec root $NODE1 "/opt/VRTS/bin/hagrp -state"
+failover_node=`echo "$out"|grep -P "^$group.*ONLINE"|awk '{print $3}'`
+if [ -z "$failover_node" ] || [ "$current_node" = "$failover_node" ]
+then
+	oLog error "Oracle group $oracle_group did not faileover to another node"
+	myexit 201
+fi
+sleep 10
+oLog step "check if oracle group is on the 1st node,if not,switch it to the 1st node"
+if [ "$failover_node" != "$NODE1" ]
+then
+	switchGroup $NODE1 $oracle_group
+fi
+oLog flag
+myexit 0

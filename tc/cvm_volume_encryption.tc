@@ -1,0 +1,259 @@
+#DES: support from inforcale 7.1 and later on Linux
+#P:55
+
+
+sg_prefix=autotcsg
+mnt_prefix=/autotcmnt
+password=root
+dg_prefix=autotcdg
+vol_prefix=autotcvol
+
+oLog step "checking basic environment of testbed"
+#check if login without password by root
+checkNode root
+for node in $NODES
+do
+    getHostnameOSProduct $node
+    checkProductVersByVxvm 7.1 || myexit 201
+done
+
+oLog step "check CVM status"
+checkCVMStatus || myexit 201
+
+oLog des "Getting master node name"
+master=`getMasterNode` || exit 201
+oLog des "The current master node is $master"
+if [ "$master" != "$NODE1" ]
+then
+        oLog des "Change $NODE1 to be cvm master node"
+        RExec root $NODE1 "/opt/VRTS/bin/vxclustadm setmaster $NODE1"
+fi
+
+oLog step "Create one share disk group with encryption using the -o encrypted option"
+makeDgBySize $NODE1 ${dg_prefix}0 10240 '-o encrypted -s'
+
+oLog step "Create one private disk group and one share disk group without encryption"
+makeDgBySizeAndMirror $NODE1 ${dg_prefix}1 10240 2 
+makeDgBySizeAndMirror $NODE1 ${dg_prefix}2 10240 4 -s 
+
+oLog step "On encrypted share disk group, create one encryped volume"
+RExec root $NODE1 "(echo ${password}1;echo ${password}1)| /opt/VRTS/bin/vxassist -g ${dg_prefix}0 make ${vol_prefix}0 4g"
+
+oLog step "On no encrypted private disk group, create one encrypted volume"
+RExec root $NODE1 "(echo ${password}1;echo ${password}1)| /opt/VRTS/bin/vxassist -g ${dg_prefix}1 make ${vol_prefix}1 4g layout=mirror encrypted=on"
+
+oLog step "On no encrypted share disk group, create one no encrypted volume and one encryped volume"
+RExec root $NODE1 "(echo ${password}1;echo ${password}1)| /opt/VRTS/bin/vxassist -g ${dg_prefix}2 make ${vol_prefix}2 3g layout=stripe-mirror encrypted=on"
+RExec root $NODE1 "/opt/VRTS/bin/vxassist -g ${dg_prefix}2 make ${vol_prefix}3 3g layout=stripe"
+
+oLog step "List encrypted volumes, all encrypted volumes should be show as encrypted"
+RExec root $NODE1 "vxencrypt list"
+check0=$out
+for i in {0..2}
+do
+        if echo "$check0"|grep ${vol_prefix}$i |awk '{print $2$3$4}' |grep -vx 'encryptedwithpassword' >/dev/null 2>&1
+        then 
+                oLog error "${vol_prefix}$i is not encrypted"
+                myexit 1
+        else         
+                oLog des "${vol_prefix}$i is encrypted"
+        fi   
+done
+if echo "$check0"|grep ${vol_prefix}3 |awk '{print $2$3}' |grep -vx 'notencrypted' >/dev/null 2>&1
+then 
+        oLog error "${vol_prefix}3 is not shown as [not encrypted]"
+        myexit 1
+else         
+        oLog des "${vol_prefix}3 is not encrypted"
+fi
+
+oLog step "Changing the encryption password for volumes"
+for i in {0..2}
+do
+RExec root $NODE1 "(echo ${password}1;echo $password;echo $password)| vxencrypt -g ${dg_prefix}$i passwd ${vol_prefix}$i"
+done
+RExec root $NODE1 "NOERROR:vxencrypt -g ${dg_prefix}2 passwd ${vol_prefix}3" 'ERROR'
+
+oLog step "Deport all DGs"
+for i in {0..2}
+do
+RExec root $NODE1 "/opt/VRTS/bin/vxdg deport ${dg_prefix}$i"
+done
+RExec root $NODE1 "/opt/VRTS/bin/vxdg list" 
+
+oLog step "Import all DGs and start all volumes. All encrypted volumes should promote input password. check all volumes are enabled"
+RExec root $NODE1 "(echo $password)|/opt/VRTS/bin/vxdg -s import ${dg_prefix}0"
+RExec root $NODE1 "(echo $password)|/opt/VRTS/bin/vxdg import ${dg_prefix}1"
+RExec root $NODE1 "(echo $password)|/opt/VRTS/bin/vxdg -s import ${dg_prefix}2"
+RExec root $NODE1 "/opt/VRTS/bin/vxdg list"  
+if echo "$out"|grep ${dg_prefix} |awk '{print $1}' |wc -l |grep -vx 3 >/dev/null 2>&1
+then 
+        oLog error "Not all dgs are imported"
+        myexit 1
+else         
+        oLog des "All dgs are imported"
+fi
+
+RExec root $NODE1 "/opt/VRTS/bin/vxprint -v" 
+if echo "$out"|grep -i disabled >/dev/null 2>&1
+then 
+        oLog error "Not all volumes are enabled"
+        myexit 1
+else         
+        oLog des "All volumes are enabled"
+fi
+
+oLog step "Create VXFS, mount the private volume and CFSmount the share volumes"
+for i in {0..2}
+do
+mkVxfs $NODE1 ${dg_prefix}$i ${vol_prefix}$i
+done
+mkVxfs $NODE1 ${dg_prefix}2 ${vol_prefix}3
+
+cfsMount $NODE1 ${dg_prefix}0 ${vol_prefix}0 ${mnt_prefix}0 ${sg_prefix}0 'all=cluster'
+cfsMount $NODE1 ${dg_prefix}2 ${vol_prefix}2 ${mnt_prefix}1 ${sg_prefix}1 'all=cluster'
+cfsMount $NODE1 ${dg_prefix}2 ${vol_prefix}3 ${mnt_prefix}2 ${sg_prefix}2 'all=cluster'
+
+mountVxfs $NODE1 ${dg_prefix}1 ${vol_prefix}1 ${mnt_prefix}3 
+NODE2=`echo "$NODES"|sed -r 's/ /\n/g'|tail -1`
+RExec root $NODE2 "mkdir -p ${mnt_prefix}3"
+
+oLog step "Fill some data into all VXFS"    
+copyFileToRemoteKeepName $BASE/etc/mf.pl $NODE1
+for i in {0..3}
+do
+        RExec root $NODE1 "mkdir -p ${mnt_prefix}$i/mffile && /mf.pl.$PID -d ${mnt_prefix}$i/mffile -n 5 -s10 -L M"
+done
+
+oLog step "Create a failover service group for private volume" 
+RExec root $NODE1 "umount ${mnt_prefix}3"
+RExec root $NODE1 "/opt/VRTS/bin/vxdg deport ${dg_prefix}1"
+
+
+newmaincf=$BASE/tmp/main.cf.$PID
+RExec root $NODE1 "cat /etc/VRTSvcs/conf/config/main.cf"
+echo "$out" > $newmaincf
+genDgFailoverConf ${dg_prefix}1 ${vol_prefix}1 ${mnt_prefix}3 >> $newmaincf
+oLog des "Show maincf which added failover service group"
+LExec "cat $newmaincf"
+importMainCf $newmaincf || exit 1
+privgroup=`cat $newmaincf|grep -oP "privsg\d+"|head -1`
+oLog des "The failover SG name is $privgroup"
+rm -f $newmaincf
+
+oLog step "Stop VCS on all nodes and then start VCS, all resources of the encrypted volumes cannot be online, the resources of no encrypted volume can be online"
+waitGroupOnline $NODE1 ${sg_prefix}2
+sleep 10
+RExec root $NODE1 "/opt/VRTS/bin/hagrp -state"  
+check1=$out
+if echo "$check1"|grep ONLINE |grep $privgroup >/dev/null 2>&1
+then 
+        oLog error "$privgroup should not be online"
+        myexit 1
+else         
+        oLog des "$privgroup cannot be online"
+fi 
+
+for i in 0 1
+do
+        if echo "$check1"|grep ONLINE |grep ${sg_prefix}$i >/dev/null 2>&1
+        then 
+                oLog error "${sg_prefix}$i should not be online"
+                myexit 1
+        else         
+                oLog des "${sg_prefix}$i cannot be online"
+        fi      
+done
+
+         
+oLog step "Create a password file, then encrypted volumes can auto startup without input password" 
+for node in $NODES
+do
+RExec root $node "mkdir -p /etc/vx/encryption"
+RExec root $node "touch /etc/vx/encryption/password_file"
+        for i in {0..2}
+        do
+        RExec root $node "echo ${dg_prefix}$i ${vol_prefix}$i $password >> /etc/vx/encryption/password_file"
+        done
+RExec root $node "cat /etc/vx/encryption/password_file"
+done
+
+oLog step "Stop VCS on all nodes and then start VCS, check all resources are online automaticly"
+oLog des "Stop VCS on all nodes"
+RExec root $NODE1 "/opt/VRTS/bin/cfsumount ${mnt_prefix}2"
+forceStopVCSAgentALL
+oLog des "Start VCS on all nodes"
+startVCSAgentALL
+for i in {0..2}
+do
+        waitGroupOnline $NODE1 ${sg_prefix}$i
+done
+waitGroupOnline $NODE1 $privgroup
+RExec root $NODE1 "/opt/VRTS/bin/hagrp -clear $privgroup -any"
+
+oLog step "Switch the failover service group to another node and switch back, it should auto switch successfully" 
+RExec root $NODE1 "/opt/VRTS/bin/hagrp -state"
+current_node=`echo "$out"|grep -P "^$privgroup.*ONLINE"|awk '{print $3}'`
+for node in `echo "$NODES"|sed "s/$current_node//g"`
+do
+        switchGroup $node $privgroup
+done
+switchGroup $current_node $privgroup
+[ "$current_node" != "$NODE1" ] && switchGroup $NODE1 $privgroup
+
+oLog step "Load I/O on all VXFS"
+for i in {0..3}
+do
+        fsStressStart $NODE1 ${mnt_prefix}$i
+        stresspid[$i]=$fsstresspid     
+done
+
+oLog step "Create snapshot on encrypted volumes"
+RExec root $NODE1 "/opt/VRTS/bin/vxprint -g ${dg_prefix}0"
+RExec root $NODE1 "/opt/VRTS/bin/vxassist -g ${dg_prefix}0 snapstart ${vol_prefix}0"
+RExec root $NODE1 "/opt/VRTS/bin/vxassist -g ${dg_prefix}0 snapshot ${vol_prefix}0"
+RExec root $NODE1 "/opt/VRTS/bin/vxprint -g ${dg_prefix}0"
+
+oLog step "Check the snapshot volume should also be encrypted"
+RExec root $NODE1 "vxencrypt list -g ${dg_prefix}0"
+if echo "$out"|grep SNAP |awk '{print $2$3$4}' |grep -vx 'encryptedwithpassword' >/dev/null 2>&1
+then 
+        oLog error "SNAP-${vol_prefix}0 is not encrypted"
+        myexit 1
+else         
+        oLog des "SNAP-${vol_prefix}0 is encrypted"
+fi          
+
+oLog step "Stop/Start the snapshot volume check if the encrypted work fine. Expected promote password when start the snapshot volume"
+oLog des "Stop the snapshot volume"
+RExec root $NODE1 "/opt/VRTS/bin/vxvol -g ${dg_prefix}0 stop SNAP-${vol_prefix}0"
+RExec root $NODE1 "/opt/VRTS/bin/vxprint -v |grep SNAP"
+if echo "$out"|grep -i disabled >/dev/null 2>&1
+then
+        oLog des "SNAP-${vol_prefix}0 is DISABLED"
+else
+        oLog error "SNAP-${vol_prefix}0 is not DISABLED"
+        myexit 1
+fi
+
+oLog des "Start the snapshot volume"
+RExec root $NODE1 "(echo $password)|/opt/VRTS/bin/vxvol -g ${dg_prefix}0 start SNAP-${vol_prefix}0"
+RExec root $NODE1 "/opt/VRTS/bin/vxprint -v |grep SNAP"
+if echo "$out"|grep -i enabled >/dev/null 2>&1
+then
+        oLog des "SNAP-${vol_prefix}0 is ENABLED"
+else
+        oLog error "SNAP-${vol_prefix}0 is not ENABLED"
+        myexit 1
+fi
+
+oLog step "stop io"
+fsStressStop $NODE1 "${stresspid[*]}"
+for node in $NODES
+do
+rm -rf /etc/vx/encryption
+done
+
+
+oLog flag
+myexit 10

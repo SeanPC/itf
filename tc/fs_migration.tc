@@ -1,0 +1,212 @@
+#des:Linux(supoort from 7.1 and native fs of ext3 is not supported),solaris only support ufs
+#P:51
+oLog step "checking basic environment of testbed"
+slv1=autotclv1
+slv2=autotclv2
+checkNode root
+for node in $NODES
+do
+        getHostnameOSProduct $node
+	case $type in
+        L)
+                checkProductVersByVxvm 7.1 || myexit 201
+		if getNativeFs |grep ext3 >/dev/null 2>&1
+		then
+		        oLog error "$autotcos-ext3 is not supported!"
+		        myexit 1
+		fi	
+                ;;
+        A)
+                ;;
+        S)
+                ;;
+	esac
+done
+oLog step "checking if exist native vgs or pool,drop them if existing"
+dropNativeDg
+
+oLog step "Checking dmp_native_support status,if it is on,trun it to be off"
+setDmpNativeSupport "$NODES" off
+
+oLog step "create 2 LVM VGs,volume and native fs under native multipathing"
+if [ "$type" = S ]
+then
+	disks=`getDisk $NODE1 local` || exit 201
+	disks=`echo "$disks"|awk '$2>2200{print $1}'`
+	diskn=`echo "$disks"|xargs -n1|wc -l`
+	if [ $diskn -lt 2 ]
+	then
+		oLog error "Failed to find out enough disks with size larger the 2G "
+		myexit 201
+	fi
+	paths=`getPathByDmpNode $NODE1 "$disks"` || exit 201
+	device[0]=`echo "$paths"|xargs -n10000|awk '{print $1}'`
+	device[1]=`echo "$paths"|xargs -n10000|awk '{print $2}'`
+	RExec root $NODE1 "/opt/VRTS/bin/vxdmpadm getsubpaths"
+        dmpnodes=`echo "$out"|grep -P "${device[0]}|${device[1]}"|awk '{print $4}'`
+        if [ -n "$dmpnodes" ]
+        then
+                for dmpnode in $dmpnodes
+                do
+                        removeDiskFromVxvm $dmpnode
+                done
+        else
+                myexit 1
+        fi
+	makeUFS $NODE1 ${device[0]} $slv1
+	makeUFS $NODE1 ${device[1]} $slv2
+	deviceslv2="/dev/dsk/${device[1]}"
+else
+	disks=`getDiskBySizeWithPath $NODE1 3000 local` || exit 201
+	path=`getPathByDmpNode $NODE1 "$disks"` || exit 201
+	removeDiskFromVxvm "$disks"
+	makeNativeDg $NODE1 autotcvg1 $path
+	makeNativeLv $NODE1 autotcvg1 autotclv1 2G fs
+	mountNativeFS $NODE1 autotcvg1 autotclv1
+	disks=`getDiskBySizeWithPath $NODE1 3000 local` || exit 201
+	path=`getPathByDmpNode $NODE1 "$disks"` || exit 201
+	removeDiskFromVxvm "$disks"
+	makeNativeDg $NODE1 autotcvg2 $path
+	makeNativeLv $NODE1 autotcvg2 autotclv2 2G fs
+	mountNativeFS $NODE1 autotcvg2 autotclv2
+fi
+	    
+
+oLog step "Fill data into these 2 native FSs"
+copyFileToRemote $BASE/etc/mf.pl $NODE1
+RExec root $NODE1 "/tmp/tmpfile.$PID -s 1048576 -n 1700 -d /autotclv1"
+RExec root $NODE1 "/tmp/tmpfile.$PID -s 1048576 -n 1700 -d /autotclv2"
+
+oLog step "Do cksum for these native FSs"
+getCksum $NODE1 /autotclv1
+cksumbf0="$out"
+getCksum $NODE1 /autotclv2
+cksumbf1="$out"
+
+oLog step "Create 2 target disk groups and volumes"
+if [ "$type" = S ]
+then
+        disks=`getDiskBySizeWithPath $NODE1 2200 local` || exit 201
+        RExec root $NODE1 "vxdg init autotcdg1 $disks && vxassist -g autotcdg1 make autotcvol1 maxsize"
+        disks=`getDiskBySizeWithPath $NODE1 2200 local` || exit 201
+        RExec root $NODE1 "vxdg init autotcdg2 $disks && vxassist -g autotcdg2 make autotcvol2 maxsize"
+else
+	disks=`getDiskBySizeWithPath $NODE1 3000 local` || exit 201
+	RExec root $NODE1 "vxdg init autotcdg1 $disks && vxassist -g autotcdg1 make autotcvol1 2G"
+	disks=`getDiskBySizeWithPath $NODE1 3000 local` || exit 201
+	RExec root $NODE1 "vxdg init autotcdg2 $disks && vxassist -g autotcdg2 make autotcvol2 2G"
+fi
+
+oLog step "Verify the migration readyness using fsmigadm analyze for these source FS"
+RExec root $NODE1 "/opt/VRTS/bin/fsmigadm analyze /dev/vx/rdsk/autotcdg1/autotcvol1 /autotclv1" 
+RExec root $NODE1 "/opt/VRTS/bin/fsmigadm analyze /dev/vx/rdsk/autotcdg2/autotcvol2 /autotclv2"
+
+oLog step "with first fs,start migrating the mountpoints using fsmigadm start and check the migration progress using fsmigadm status"
+response="
+#,,,/opt/VRTS/bin/fsmigadm start /dev/vx/rdsk/autotcdg1/autotcvol1 /autotclv1
+Continue with file system Migration,,,y,,,60
+Continue with mkfs on target device,,,y,,,60
+"
+interactByResponse 0 $NODE1 "$response"
+for i in  `seq 20`
+do
+	sleep 10
+	RExec root $NODE1 "/opt/VRTS/bin/fsmigadm status /autotclv1"
+	echo "$out"|grep progress >/dev/null 2>&1 && break
+done
+
+oLog step "with first fs,during migrating,pause/resume the migration"
+RExec root $NODE1 "/opt/VRTS/bin/fsmigadm pause /autotclv1"
+RExec root $NODE1 "/opt/VRTS/bin/fsmigadm status /autotclv1"
+for i in `seq 20`
+do
+	echo "$out"|grep paused >/dev/null 2>&1 && break
+	sleep 3
+done
+RExec root $NODE1 "/opt/VRTS/bin/fsmigadm resume /autotclv1"
+for i in `seq 20`
+do
+	RExec root $NODE1 "/opt/VRTS/bin/fsmigadm status /autotclv1"
+	echo "$out"|grep progress >/dev/null 2>&1 && break
+	sleep 3
+done
+for i in `seq 30`
+do
+	RExec root $NODE1 "/opt/VRTS/bin/fsmigadm status /autotclv1"
+	echo "$out" |grep -P "Migration\s+completed" >/dev/null 2>&1 && break
+	sleep 30
+done
+
+oLog step "with first fs,ensure that migration completes without errors,perform commit operation"
+RExec root $NODE1 "/opt/VRTS/bin/fsmigadm commit /autotclv1"
+RExec root $NODE1 "$cmd2" "/dev/vx/dsk/autotcdg1/autotcvol1"
+
+oLog step "with first fs,verify the data has been migrated to VxFS and do cksum for the VxFS FS"
+RExec root $NODE1 "/opt/VRTS/bin/fstyp /dev/vx/dsk/autotcdg1/autotcvol1" "vxfs"
+getCksum $NODE1 /autotclv1
+cksumaf0="$out"
+
+oLog step "with first fs,compare the cksum result before and after migrate"
+if [ "$cksumbf0" = "$cksumaf0" ]
+then
+        oLog des "the cksum value keep the same!"
+else
+        oLog error "the cksum values are different"
+        myexit 1
+fi
+
+oLog step "with second fs,start migrating the mountpoints using fsmigadm start and check the migration progress using fsmigadm status" 
+response="
+#,,,/opt/VRTS/bin/fsmigadm start /dev/vx/rdsk/autotcdg2/autotcvol2 /autotclv2
+Continue with file system Migration,,,y,,,60
+Continue with mkfs on target device,,,y,,,60
+"
+interactByResponse 0 $NODE1 "$response"
+for i in  `seq 20`
+do
+	sleep 10
+	RExec root $NODE1 "/opt/VRTS/bin/fsmigadm status /autotclv2"
+        echo "$out"|grep progress >/dev/null 2>&1 && break
+done
+
+oLog step "with second fs,during migrating, abort the migration"
+RExec root $NODE1 "(echo y)|/opt/VRTS/bin/fsmigadm abort -y /autotclv2"
+case $type in
+        L)
+		RExec root $NODE1 "mount |grep /autotclv2"
+		fs=ext4
+                ;;
+        A)
+		RExec root $NODE1 "mount |grep /autotclv2"
+		fs=jfs
+                ;;
+        S)
+		RExec root $NODE1 "$cmd2"
+		if echo "$out"|grep autotclv2|grep $deviceslv2 >/dev/null 2>&1
+		then
+			RExec root $NODE1 "fstyp $deviceslv2"
+			fs=ufs
+		else
+			oLog error "the fs type changed after abort the migration"
+			myexit 1
+		fi
+                ;;
+esac
+if ! echo "$out" |grep $fs >/dev/null 2>&1
+then
+	oLog error "the fs type changed after abort the migration"
+	myexit 1
+fi
+
+oLog step "with second fs,do cksum and compare result"
+getCksum $NODE1 /autotclv2
+cksumaf1="$out"
+if [ "$cksumbf1" = "$cksumaf1" ]
+then
+        oLog des "the cksum value keep the same!"
+else
+        oLog error "the cksum values are different"
+        myexit 1
+fi
+oLog flag
+myexit 10

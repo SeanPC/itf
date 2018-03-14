@@ -1,0 +1,252 @@
+
+
+DATE:2017-05-23 00:51:43
+HOST:cdcnfsclientcd03
+USER:root
+STDIN:ps -ef|grep tmpfile
+STDOUT:
+root      6737  6735  0 08:51 ?        00:00:00 grep tmpfile
+
+
+DATE:2017-05-23 00:52:04
+HOST:l111031
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sf_rac (
+	UserNames = { admin = HQRjQLqNRmRRpZRlQO }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111031 (
+	)
+
+system l111032 (
+	)
+
+group cvm (
+	SystemList = { l111031 = 0, l111032 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111031, l111032 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111031 = { autotcdg1 = sw }
+		ActivationMode @l111032 = { autotcdg1 = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sf_rac
+		CVMNodeId = { l111031 = 0, l111032 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+***umount vxfs on node l111031***
+
+
+
+DATE:2017-05-23 00:52:05
+HOST:l111031
+USER:root
+STDIN:
+STDOUT:
+
+
+***umount vxfs on node l111032***
+
+
+
+DATE:2017-05-23 00:52:06
+HOST:l111032
+USER:root
+STDIN:
+STDOUT:
+
+
+
+DATE:2017-05-23 00:52:07
+HOST:l111031
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+/tmp/exec: line 1: /opt/VRTS/bin/sfcache: No such file or directory
+RETURN:127
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-05-23 00:52:07
+Duration:0m24s
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-05-23 00:52:08
+HOST:l111031
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfencoorddg
+
+
+DATE:2017-05-23 00:52:09
+HOST:l111031
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_102 auto:cdsdisk    -            (vxfencoorddg) online thinrclm
+ams_25000_103 auto:cdsdisk    -            (vxfencoorddg) online thinrclm
+ams_25000_104 auto:cdsdisk    -            (vxfencoorddg) online thinrclm
+ams_25000_105 auto:cdsdisk    -            -            online thinrclm
+ams_25000_106 auto:cdsdisk    -            -            online thinrclm
+ams_25000_107 auto:cdsdisk    -            -            online thinrclm
+ams_25000_108 auto:cdsdisk    -            -            online thinrclm
+ams_25000_109 auto:cdsdisk    -            -            online thinrclm
+ams_25000_110 auto:cdsdisk    -            -            online thinrclm
+ams_25000_111 auto:cdsdisk    -            -            online thinrclm
+ams_25000_221 auto:cdsdisk    -            -            online thinrclm
+ams_25000_222 auto:cdsdisk    -            -            online thinrclm
+ams_25000_233 auto:cdsdisk    -            -            online thinrclm
+ams_25000_234 auto:cdsdisk    -            -            online thinrclm
+ams_25000_235 auto:cdsdisk    -            -            online thinrclm
+ams_25000_245 auto:cdsdisk    -            -            online thinrclm
+ams_25000_246 auto:cdsdisk    -            -            online thinrclm
+ams_25000_247 auto:cdsdisk    -            -            online thinrclm
+ams_25000_248 auto:cdsdisk    -            -            online thinrclm
+ams_25000_249 auto:cdsdisk    -            -            online thinrclm
+ams_25000_383 auto:cdsdisk    -            -            online
+ams_25000_384 auto:cdsdisk    -            -            online
+ams_25000_385 auto:cdsdisk    -            -            online
+ams_25000_386 auto:cdsdisk    -            -            online
+ams_25000_387 auto:cdsdisk    -            -            online
+ams_25000_393 auto:cdsdisk    -            -            online
+ams_25000_394 auto:cdsdisk    -            -            online
+ams_25000_395 auto:cdsdisk    -            -            online
+ams_25000_396 auto:cdsdisk    -            -            online
+ams_25000_397 auto:cdsdisk    -            -            online
+ams_25000_398 auto:cdsdisk    -            -            online
+ams_25000_399 auto:cdsdisk    -            -            online
+ams_25000_400 auto:cdsdisk    -            -            online
+ams_25000_401 auto:cdsdisk    -            -            online
+ams_25000_402 auto:cdsdisk    -            -            online
+ams_25000_403 auto:cdsdisk    -            -            online
+ams_25000_404 auto:cdsdisk    -            -            online
+ams_25000_405 auto:cdsdisk    -            -            online
+ams_25000_406 auto:cdsdisk    -            -            online
+ams_25000_407 auto:cdsdisk    -            -            online
+sdap         auto:none       -            -            online invalid
+
+
+DATE:2017-05-23 00:52:10
+HOST:l111031
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-05-23 00:52:11
+HOST:l111032
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfencoorddg
+
+
+DATE:2017-05-23 00:52:12
+HOST:l111032
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_102 auto:cdsdisk    -            (vxfencoorddg) online thinrclm
+ams_25000_103 auto:cdsdisk    -            (vxfencoorddg) online thinrclm
+ams_25000_104 auto:cdsdisk    -            (vxfencoorddg) online thinrclm
+ams_25000_105 auto:cdsdisk    -            -            online thinrclm
+ams_25000_106 auto:cdsdisk    -            -            online thinrclm
+ams_25000_107 auto:cdsdisk    -            -            online thinrclm
+ams_25000_108 auto:cdsdisk    -            -            online thinrclm
+ams_25000_109 auto:cdsdisk    -            -            online thinrclm
+ams_25000_110 auto:cdsdisk    -            -            online thinrclm
+ams_25000_111 auto:cdsdisk    -            -            online thinrclm
+ams_25000_221 auto:cdsdisk    -            -            online thinrclm
+ams_25000_222 auto:cdsdisk    -            -            online thinrclm
+ams_25000_233 auto:cdsdisk    -            -            online thinrclm
+ams_25000_234 auto:cdsdisk    -            -            online thinrclm
+ams_25000_235 auto:cdsdisk    -            -            online thinrclm
+ams_25000_245 auto:cdsdisk    -            -            online thinrclm
+ams_25000_246 auto:cdsdisk    -            -            online thinrclm
+ams_25000_247 auto:cdsdisk    -            -            online thinrclm
+ams_25000_248 auto:cdsdisk    -            -            online thinrclm
+ams_25000_249 auto:cdsdisk    -            -            online thinrclm
+ams_25000_383 auto:cdsdisk    -            -            online
+ams_25000_384 auto:cdsdisk    -            -            online
+ams_25000_385 auto:cdsdisk    -            -            online
+ams_25000_386 auto:cdsdisk    -            -            online
+ams_25000_387 auto:cdsdisk    -            -            online
+ams_25000_393 auto:cdsdisk    -            -            online
+ams_25000_394 auto:cdsdisk    -            -            online
+ams_25000_395 auto:cdsdisk    -            -            online
+ams_25000_396 auto:cdsdisk    -            -            online
+ams_25000_397 auto:cdsdisk    -            -            online
+ams_25000_398 auto:cdsdisk    -            -            online
+ams_25000_399 auto:cdsdisk    -            -            online
+ams_25000_400 auto:cdsdisk    -            -            online
+ams_25000_401 auto:cdsdisk    -            -            online
+ams_25000_402 auto:cdsdisk    -            -            online
+ams_25000_403 auto:cdsdisk    -            -            online
+ams_25000_404 auto:cdsdisk    -            -            online
+ams_25000_405 auto:cdsdisk    -            -            online
+ams_25000_406 auto:cdsdisk    -            -            online
+ams_25000_407 auto:cdsdisk    -            -            online
+sdap         auto:none       -            -            online invalid
+
+
+DATE:2017-05-23 00:52:13
+HOST:l111032
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID

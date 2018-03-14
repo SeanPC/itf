@@ -1,0 +1,72 @@
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sfrac64 (
+	SecureClus = 1
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111064 (
+	)
+
+system l111065 (
+	)
+
+group cvm (
+	SystemList = { l111064 = 0, l111065 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111064, l111065 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111064 = { B15891848244950B = sw, a42925139444963a = sw,
+			 f04908001344976f = sw,
+			 q97018739244987q = sw,
+			 o81600011344999o = sw,
+			 autotcdg1 = sw }
+		ActivationMode @l111065 = { B15891848244950B = sw, a42925139444963a = sw,
+			 f04908001344976f = sw,
+			 q97018739244987q = sw,
+			 o81600011344999o = sw,
+			 autotcdg1 = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sfrac64
+		CVMNodeId = { l111064 = 0, l111065 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}

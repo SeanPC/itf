@@ -1,0 +1,4 @@
+nfsclient='cdc-nfs-client-cd-02'
+cmd2='df -h|sed 1d|xargs -n 6'
+cmd2='df -h|sed 1d|xargs -n 6'
+exp_encl='^emc0'

@@ -1,0 +1,96 @@
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster testlily (
+	SecureClus = 1
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l007001 (
+	)
+
+system l007002 (
+	)
+
+group cvm (
+	SystemList = { l007001 = 0, l007002 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l007001, l007002 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l007001 = { test = sw, fssdg = sw, autotcdg = sw }
+		ActivationMode @l007002 = { test = sw, fssdg = sw, autotcdg = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = testlily
+		CVMNodeId = { l007001 = 0, l007002 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+group vxfen (
+	SystemList = { l007001 = 0, l007002 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	)
+
+	CoordPoint coordpoint (
+		LevelTwoMonitorFreq = 5
+		)
+
+	Phantom RES_phantom_vxfen (
+		)
+
+
+
+	// resource dependency tree
+	//
+	//	group vxfen
+	//	{
+	//	Phantom RES_phantom_vxfen
+	//	CoordPoint coordpoint
+	//	}

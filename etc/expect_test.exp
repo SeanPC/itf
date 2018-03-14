@@ -1,0 +1,9 @@
+#!/usr/bin/expect
+set timeout 20
+set node [lindex $argv 0]
+spawn ssh $node
+expect {
+	"#" {send "exit 0\r"}
+	timeout {exit 1}
+}
+expect eof

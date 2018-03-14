@@ -1,0 +1,269 @@
+
+
+DATE:2017-05-15 07:45:30
+HOST:s090105
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster cluster0506 (
+	UserNames = { admin = bklDkfKhlGllJtlFki }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system s090105 (
+	)
+
+system s090106 (
+	)
+
+group cvm (
+	SystemList = { s090105 = 0, s090106 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { s090105, s090106 }
+	)
+
+	CFSfsckd vxfsckd (
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = cluster0506
+		CVMNodeId = { s090105 = 0, s090106 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+***umount vxfs on node s090105***
+
+
+
+DATE:2017-05-15 07:45:31
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 671M 332M 67% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 787M 224M 78% /autotcmnt1
+
+
+DATE:2017-05-15 07:45:32
+HOST:s090105
+USER:root
+STDIN:umount /autotcmnt0;umount /autotcmnt1;
+STDOUT:
+
+
+***umount vxfs on node s090106***
+
+
+
+DATE:2017-05-15 07:45:33
+HOST:s090106
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 5.3G 115G 5% /
+tmpfs 1.5G 0 1.5G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 786M 224M 78% /autotcmnt1
+
+
+DATE:2017-05-15 07:45:34
+HOST:s090106
+USER:root
+STDIN:umount /autotcmnt1;
+STDOUT:
+
+
+
+DATE:2017-05-15 07:45:36
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      DEVICE
+
+
+DATE:2017-05-15 07:45:37
+HOST:s090106
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      DEVICE
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-05-15 07:45:38
+HOST:s090105
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-05-15 07:45:39
+HOST:s090105
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc_clariion0_226 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_234 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_235 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_236 auto:cdsdisk    -            -            online
+emc_clariion0_237 auto:cdsdisk    -            -            online
+emc_clariion0_238 auto:cdsdisk    -            -            online
+emc_clariion0_239 auto:cdsdisk    -            -            online
+emc_clariion0_240 auto:cdsdisk    -            -            online
+emc_clariion0_242 auto:cdsdisk    -            -            online
+emc_clariion0_243 auto:cdsdisk    -            -            online
+emc_clariion0_244 auto:cdsdisk    -            -            online
+emc_clariion0_247 auto:cdsdisk    -            -            online
+emc_clariion0_248 auto:cdsdisk    -            -            online
+emc_clariion0_249 auto:cdsdisk    -            -            online
+emc_clariion0_250 auto:cdsdisk    -            -            online
+emc_clariion0_251 auto:cdsdisk    -            -            online
+emc_clariion0_252 auto:cdsdisk    -            -            online
+emc_clariion0_264 auto:cdsdisk    -            -            online
+emc_clariion0_265 auto:cdsdisk    -            -            online
+emc_clariion0_266 auto:cdsdisk    -            -            online
+emc_clariion0_267 auto:cdsdisk    -            -            online
+emc_clariion0_268 auto:cdsdisk    -            -            online
+emc_clariion0_269 auto:cdsdisk    -            -            online
+emc_clariion0_270 auto:cdsdisk    -            -            online
+emc_clariion0_271 auto:cdsdisk    emc_clariion0_271  autotcdg1    online shared
+emc_clariion0_272 auto:cdsdisk    emc_clariion0_272  autotcdg0    online
+emc_clariion0_312 auto:cdsdisk    -            -            online
+emc_clariion0_313 auto:cdsdisk    -            -            online
+sddi         auto:none       -            -            online invalid
+
+
+DATE:2017-05-15 07:45:40
+HOST:s090105
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcdg0    enabled,cds          1494833305.155.s090105.cdc.veritas.com
+autotcdg1    enabled,shared,cds   1494833307.157.s090105.cdc.veritas.com
+
+
+DATE:2017-05-15 07:45:41
+HOST:s090105
+USER:root
+STDIN:vxdg destroy autotcdg0
+STDOUT:
+
+
+
+DATE:2017-05-15 07:45:42
+HOST:s090105
+USER:root
+STDIN:vxdg destroy autotcdg1
+STDOUT:
+
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-05-15 07:45:43
+HOST:s090106
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-05-15 07:45:44
+HOST:s090106
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc_clariion0_226 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_234 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_235 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_236 auto:cdsdisk    -            -            online
+emc_clariion0_237 auto:cdsdisk    -            -            online
+emc_clariion0_238 auto:cdsdisk    -            -            online
+emc_clariion0_239 auto:cdsdisk    -            -            online
+emc_clariion0_240 auto:cdsdisk    -            -            online
+emc_clariion0_242 auto:cdsdisk    -            -            online
+emc_clariion0_243 auto:cdsdisk    -            -            online
+emc_clariion0_244 auto:cdsdisk    -            -            online
+emc_clariion0_247 auto:cdsdisk    -            -            online
+emc_clariion0_248 auto:cdsdisk    -            -            online
+emc_clariion0_249 auto:cdsdisk    -            -            online
+emc_clariion0_250 auto:cdsdisk    -            -            online
+emc_clariion0_251 auto:cdsdisk    -            -            online
+emc_clariion0_252 auto:cdsdisk    -            -            online
+emc_clariion0_264 auto:cdsdisk    -            -            online
+emc_clariion0_265 auto:cdsdisk    -            -            online
+emc_clariion0_266 auto:cdsdisk    -            -            online
+emc_clariion0_267 auto:cdsdisk    -            -            online
+emc_clariion0_268 auto:cdsdisk    -            -            online
+emc_clariion0_269 auto:cdsdisk    -            -            online
+emc_clariion0_270 auto:cdsdisk    -            -            online
+emc_clariion0_271 auto:cdsdisk    -            -            online
+emc_clariion0_272 auto:cdsdisk    -            -            online
+emc_clariion0_312 auto:cdsdisk    -            -            online
+emc_clariion0_313 auto:cdsdisk    -            -            online
+sddi         auto:none       -            -            online invalid
+
+
+DATE:2017-05-15 07:45:45
+HOST:s090106
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID

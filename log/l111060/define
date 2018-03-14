@@ -1,0 +1,5 @@
+export freshinstall="yes"
+export noipc="yes"
+export setup_content="configure|fencing"
+export version="7.1"
+export patch_path="/patch"

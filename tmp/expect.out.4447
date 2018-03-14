@@ -1,0 +1,441 @@
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no l109024
+Last login: Fri Feb 24 11:10:51 2017 from i128-eng128.cdc.veritas.com
+[1ml109024:~ #[m /opt/VRTS/install/installer -configure 10.200.109.24 10.200.109.25
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[H[J[7m                                                                     Veritas InfoScale Enterprise 7.2 Configure Program                                                                      [m
+[7m                                                                                 10.200.109.24 10.200.109.25                                                                                 [m
+
+Copyright (c) 2016 Veritas Technologies LLC.  All rights reserved.  Veritas and the Veritas Logo are trademarks or registered trademarks of Veritas Technologies LLC or its affiliates in the
+U.S. and other countries. Other names may be trademarks of their respective owners.
+
+The Licensed Software and Documentation are deemed to be "commercial computer software" and "commercial computer software documentation" as defined in FAR Sections 12.212 and DFARS Section 
+227.7202.
+
+Logs are being written to /var/tmp/installer-201702241111Sns while installer is in progress.
+
+[1m     1[0m)  Cluster Server (VCS)
+[1m     2[0m)  Storage Foundation (SF)
+[1m     3[0m)  Storage Foundation and High Availability (SFHA)
+[1m     4[0m)  Storage Foundation Cluster File System HA (SFCFSHA)
+[1m     5[0m)  Storage Foundation for Oracle RAC (SF Oracle RAC)
+
+[1mSelect a component to configure: [1-5,q][0m 5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[H[J[7m                                                                     Veritas InfoScale Enterprise 7.2 Configure Program                                                                      [m
+[7m                                                                                 10.200.109.24 10.200.109.25                                                                                 [m
+
+Logs are being written to /var/tmp/installer-201702241111Sns while installer is in progress
+
+7    Verifying systems: 0%   [7m[m_____________________________________________________________________________________________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss)                                                                                                                                              0 of 7
+
+    Checking system communication -\|/-8    Verifying systems: 14%  [7m                     [m________________________________________________________________________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:30                                                                                                                                         1 of 7
+
+    Checking system communication .................................................................................................................................................. Done
+8    Verifying systems: 14%  [7m                     [m________________________________________________________________________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:30                                                                                                                                         1 of 7
+
+    Checking system communication .................................................................................................................................................. Done
+    Checking release compatibility \|8    Verifying systems: 28%  [7m                                           [m__________________________________________________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:15                                                                                                                                         2 of 7
+
+    Checking system communication .................................................................................................................................................. Done
+    Checking release compatibility ................................................................................................................................................. Done
+8    Verifying systems: 28%  [7m                                           [m__________________________________________________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:15                                                                                                                                         2 of 7
+
+    Checking system communication .................................................................................................................................................. Done
+    Checking release compatibility ................................................................................................................................................. Done
+    Checking installed product /-\|/-\|/-8    Verifying systems: 42%  [7m                                                                 [m____________________________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:20                                                                                                                                         3 of 7
+
+    Checking system communication .................................................................................................................................................. Done
+    Checking release compatibility ................................................................................................................................................. Done
+    Checking installed product ..................................................................................................................................................... Done
+8    Verifying systems: 42%  [7m                                                                 [m____________________________________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:20                                                                                                                                         3 of 7
+
+    Checking system communication .................................................................................................................................................. Done
+    Checking release compatibility ................................................................................................................................................. Done
+    Checking installed product ..................................................................................................................................................... Done
+    Checking platform version \|8    Verifying systems: 57%  [7m                                                                                         [m____________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:10                                                                                                                                         4 of 7
+
+    Checking system communication .................................................................................................................................................. Done
+    Checking release compatibility ................................................................................................................................................. Done
+    Checking installed product ..................................................................................................................................................... Done
+    Checking platform version ...................................................................................................................................................... Done
+8    Verifying systems: 57%  [7m                                                                                         [m____________________________________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:10                                                                                                                                         4 of 7
+
+    Checking system communication .................................................................................................................................................. Done
+    Checking release compatibility ................................................................................................................................................. Done
+    Checking installed product ..................................................................................................................................................... Done
+    Checking platform version ...................................................................................................................................................... Done
+    Checking configured component 8    Verifying systems: 71%  [7m                                                                                                               [m______________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:05                                                                                                                                         5 of 7
+
+    Checking system communication .................................................................................................................................................. Done
+    Checking release compatibility ................................................................................................................................................. Done
+    Checking installed product ..................................................................................................................................................... Done
+    Checking platform version ...................................................................................................................................................... Done
+    Checking configured component .................................................................................................................................................. Done
+8    Verifying systems: 71%  [7m                                                                                                               [m______________________________________________ 
+
+    Estimated time remaining: (mm:ss) 0:05                                                                                                                                         5 of 7
+
+    Checking system communication .................................................................................................................................................. Done
+    Checking release compatibility ................................................................................................................................................. Done
+    Checking installed product ..................................................................................................................................................... Done
+    Checking platform version ...................................................................................................................................................... Done
+    Checking configured component .................................................................................................................................................. Done
+    Checking product licensing /-8    Verifying systems: 85%  [7m                                                                                                                                     [m________________________ 
+
+    Estimated time remaining: (mm:ss) 0:03                                                                                                                                         6 of 7
+
+    Checking system communication .................................................................................................................................................. Done
+    Checking release compatibility ................................................................................................................................................. Done
+    Checking installed product ..................................................................................................................................................... Done
+    Checking platform version ...................................................................................................................................................... Done
+    Checking configured component .................................................................................................................................................. Done
+    Checking product licensing ..................................................................................................................................................... Done
+8    Verifying systems: 85%  [7m                                                                                                                                     [m________________________ 
+
+    Estimated time remaining: (mm:ss) 0:03                                                                                                                                         6 of 7
+
+    Checking system communication .................................................................................................................................................. Done
+    Checking release compatibility ................................................................................................................................................. Done
+    Checking installed product ..................................................................................................................................................... Done
+    Checking platform version ...................................................................................................................................................... Done
+    Checking configured component .................................................................................................................................................. Done
+    Checking product licensing ..................................................................................................................................................... Done
+    Performing product prechecks \|/8    Verifying systems: 100% [7m                                                                                                                                                             [m 
+
+    Estimated time remaining: (mm:ss) 0:00                                                                                                                                         7 of 7
+
+    Checking system communication .................................................................................................................................................. Done
+    Checking release compatibility ................................................................................................................................................. Done
+    Checking installed product ..................................................................................................................................................... Done
+    Checking platform version ...................................................................................................................................................... Done
+    Checking configured component .................................................................................................................................................. Done
+    Checking product licensing ..................................................................................................................................................... Done
+    Performing product prechecks ................................................................................................................................................... Done
+
+[1mSystem verification checks completed successfully[0m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[H[J[7m                                                                     Veritas InfoScale Enterprise 7.2 Configure Program                                                                      [m
+[7m                                                                                 10.200.109.24 10.200.109.25                                                                                 [m
+
+[1m     1[0m)  Configure SF Oracle RAC sub-components
+[1m     2[0m)  Prepare to Install Oracle
+[1m     3[0m)  Install Oracle Clusterware/Grid Infrastructure and Database
+[1m     4[0m)  Post Oracle Installation Tasks
+[1m     5[0m)  Exit SF Oracle RAC Configuration
+
+[1mChoose option: [1-5,q] (1)[0m 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[H[J[7m                                                                     Veritas InfoScale Enterprise 7.2 Configure Program                                                                      [m
+[7m                                                                                 10.200.109.24 10.200.109.25                                                                                 [m
+
+To configure VCS, answer the set of questions on the next screen.
+
+When [b] is presented after a question, 'b' may be entered to go back to the first question of the configuration set.
+
+When [?] is presented after a question, '?' may be entered for help or additional information about the question.
+
+Following each set of questions, the information you have entered will be presented for confirmation.  To repeat the set of questions and correct any previous errors, enter 'n' at the 
+confirmation prompt.
+
+No configuration changes are made to the systems until all configuration questions are completed and confirmed.
+
+[1mPress [Enter] to continue:[0m y
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[H[J[7m                                                                     Veritas InfoScale Enterprise 7.2 Configure Program                                                                      [m
+[7m                                                                                 10.200.109.24 10.200.109.25                                                                                 [m
+
+[1mTo configure VCS for InfoScale Enterprise the following information is required:
+[0m
+	A unique cluster name
+	Two or more NICs per system used for heartbeat links
+	A unique cluster ID number between 0-65535
+
+All systems are being configured to create one cluster.
+
+[1mEnter the unique cluster name: [q,?][0m clus2425
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[H[J[7m                                                                     Veritas InfoScale Enterprise 7.2 Configure Program                                                                      [m
+[7m                                                                                 10.200.109.24 10.200.109.25                                                                                 [m
+
+[1m     1[0m)  Configure the heartbeat links using LLT over Ethernet
+[1m     2[0m)  Configure the heartbeat links using LLT over UDP
+[1m     3[0m)  Configure the heartbeat links using LLT over RDMA
+[1m     4[0m)  Automatically detect configuration for LLT over Ethernet
+[1m     b[0m)  Back to previous menu
+
+[1mHow would you like to configure heartbeat links? [1-4,b,q,?] (4)[0m 1
+
+    Discovering NICs on 10.200.109.24 .................................................................................................................... Discovered eth0 eth1 eth2 eth3
+
+[1mEnter the NIC for the first private heartbeat link on 10.200.109.24: [b,q,?] (eth1)[0m eth1
+
+[1mEnter the NIC for the second private heartbeat link on 10.200.109.24: [b,q,?] (eth2)[0m eth3
+
+[1mWould you like to configure a third private heartbeat link? [y,n,q,b,?] (n)[0m n
+
+[1mAre you using the same NICs for private heartbeat links on all systems? [y,n,q,b,?] (y)[0m y
+    Checking media speed for eth1 on 10.200.109.24 ............................................................................................................................. 1000Mb/s
+    Checking media speed for eth3 on 10.200.109.24 .............................................................................................................................. 100Mb/s
+    Checking media speed for eth1 on 10.200.109.25 ............................................................................................................................. 1000Mb/s
+    Checking media speed for eth3 on 10.200.109.25 .............................................................................................................................. 100Mb/s
+
+
+CPI WARNING V-9-40-2958 The private NICs do not have same media speed.
+
+[1mIt is recommended that the media speed be same for all the private NICs. Consult your Operating System manual for information on how to set the Media Speed.
+[0m
+[1mDo you want to continue with current heartbeat configuration? [y,n,q] (y)[0m y
+[1mDo you want to configure lower speed NICs as low-priority links? [y,n,q,?] (y)[0m 
+EXPECT ERROR.Unkown Question '_QUESTION_'
+expectresult:1

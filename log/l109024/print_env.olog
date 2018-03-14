@@ -1,0 +1,47 @@
+
+==================== Operation Log for TC print_env ====================
+DATE:2017-09-27 11:04:04
+Nodes:l109024 l109025
+
+
+====STEP: Check and Print environment
+DATE:2017-09-27 11:04:04
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-09-27 11:04:04
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+i128-eng128.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:75:7F  
+          inet addr:10.220.128.128  Bcast:10.220.128.255  Mask:255.255.255.0
+          inet6 addr: fe80::250:56ff:fe88:757f/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:45490086 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:102956075 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3571955777 (3.3 GiB)  TX bytes:140039452933 (130.4 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:107088 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:107088 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:13721821 (13.0 MiB)  TX bytes:13721821 (13.0 MiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-09-27 11:04:05
+HOST:l109024
+USER:root
+STDIN:ssh -l root l109024
+STDOUT:
+

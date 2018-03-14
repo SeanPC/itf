@@ -1,0 +1,89 @@
+#tc for oracle Oracle Rac Fault Injection testing
+#des:support aix solars linux platform
+#VALUE:oracle
+#DEFAULT:oracle
+#P:95
+
+oLog step "Checking basic environment of testbed"
+#check if login without password by root and oracle user
+checkNode root
+checkNode $oracle
+getHostnameOSProduct $NODE1
+RExec root $NODE1 "cat $autotcmaincf"
+oracle_group=`echo "$out"|grep -B 100 -P "^\s+Oracle "|grep -oP "(?<=^group )\w+"|tail -1`
+if [ -z "$oracle_group" ]
+then
+        oLog error "Failed to get Oracle Group name"
+        myexit 201
+fi
+if ! echo "$out"|grep -A 4 -P "group\s+$oracle_group"|grep -P "Parallel\s+=\s+1" > /dev/null 2>&1
+then
+        oLog error "This case just support oracle RAC"
+        myexit 201
+fi
+
+oLog step "Showing CRS status"
+RExec oracle $NODE1 "crsctl status resource -t"
+oLog step "Checking fencing is configured"
+
+if ! checkFencingStatus
+then
+	oLog error "Fencing status is not right"
+	myexit 201
+fi
+
+oLog step "Checking status of Oracle database"
+checkOdmLink
+if ! checkGroupStatus $NODE1 $oracle_group 
+then
+        oLog error "Oracle Servie Group $oracle_group are not all online"
+        myexit 201
+fi
+oLog step "Begin split brain testing with Oracle Rac"
+RExec root $NODE1 "cat /etc/llttab"
+links=`echo "$out"|grep ^link|awk '{print $2}'`
+for link in $links
+do
+	RExec root $NODE1 "lltconfig -t $link -L disable"
+done
+RExec root $NODE1 "lltconfig -a list;gabconfig -a"
+
+oLog step "Figure out the active nodes"
+out=`getNodeStatusAfterPanic`
+activenode=`echo "$out"|grep Active:|cut -d : -f 2|awk '{print $1}'`
+panicnode=`echo "$out"|grep Panic:|cut -d : -f 2|awk '{print $1}'`
+oLog des "Found active node $activenode"
+RExec root $activenode "/opt/VRTS/bin/hagrp -state"
+
+oLog step "Wating Panic node rebooting"
+waitNodeOnline $panicnode
+
+oLog step "check status after the panic node comes up"
+RExec root $NODE1 "lltconfig -a list;gabconfig -a"
+waitVCSAgentOnline $NODE1
+waitGroupOnline $NODE1 $oracle_group
+
+oLog step "Storage pull test for ocr and vote devices in staggered way and see if behaviour is as per expectation"
+RExec root $NODE1 "vxdg list|grep ocrvote"
+ocrvotedg=`echo "$out"|awk '{print $1}'`
+disablePathByDg $NODE1 $ocrvotedg
+
+oLog step "Waiting for the node to turn Faluted"
+another_node=`echo "$NODES"|sed "s/$NODE1//"|awk '{print $1}'`
+for i in {1..60}
+do
+	RExec root $another_node "hasys -list"
+	echo "$out"|grep -P "$NODE1.*FAULTED" > /dev/null 2>&1 && break
+done
+RExec root $another_node "/opt/VRTS/bin/hasys -list"
+if ! echo "$out"|grep -P "$NODE1.*FAULTED" > /dev/null 2>&1
+then
+	oLog error "Timeout to Wait $NODE1 to turn Faulted"
+	myexit 201
+fi
+
+oLog error "Checking service group after the node comes up"
+waitNodeOnline $NODE1
+RExec root $NODE1 "/opt/VRTS/bin/hagrp -state" '' 'OFFLINE'
+oLog flag
+myexit 0

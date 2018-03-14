@@ -1,0 +1,315 @@
+
+
+DATE:2017-05-25 02:12:45
+HOST:l111065
+USER:root
+STDIN:ps -ef|grep tmpfile
+STDOUT:
+
+RETURN:255
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-05-25 02:12:45
+Duration:0m0s
+
+
+DATE:2017-05-25 02:12:46
+HOST:l111051
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster sfrac51 (
+	SecureClus = 1
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111051 (
+	)
+
+system l111052 (
+	)
+
+group cvm (
+	SystemList = { l111051 = 0, l111052 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111051, l111052 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111051 = { y56801416553909y = sw }
+		ActivationMode @l111052 = { y56801416553909y = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = sfrac51
+		CVMNodeId = { l111051 = 0, l111052 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+***umount vxfs on node l111051***
+
+
+
+DATE:2017-05-25 02:12:47
+HOST:l111051
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+devtmpfs 2.0G 8.0K 2.0G 1% /dev
+tmpfs 2.0G 0 2.0G 0% /dev/shm
+tmpfs 2.0G 20M 2.0G 1% /run
+tmpfs 2.0G 0 2.0G 0% /sys/fs/cgroup
+/dev/sdcj2 79G 5.3G 70G 8% /
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 395M 0 395M 0% /run/user/0
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 669M 334M 67% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 786M 224M 78% /autotcmnt1
+
+
+DATE:2017-05-25 02:12:48
+HOST:l111051
+USER:root
+STDIN:umount /autotcmnt0;umount /autotcmnt1;
+STDOUT:
+
+
+***umount vxfs on node l111052***
+
+
+
+DATE:2017-05-25 02:12:49
+HOST:l111052
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+devtmpfs 3.9G 8.0K 3.9G 1% /dev
+tmpfs 3.9G 0 3.9G 0% /dev/shm
+tmpfs 3.9G 12M 3.9G 1% /run
+tmpfs 3.9G 0 3.9G 0% /sys/fs/cgroup
+/dev/sdch2 79G 4.9G 70G 7% /
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+tmpfs 798M 0 798M 0% /run/user/0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 786M 224M 78% /autotcmnt1
+
+
+DATE:2017-05-25 02:12:50
+HOST:l111052
+USER:root
+STDIN:umount /autotcmnt1;
+STDOUT:
+
+
+
+DATE:2017-05-25 02:12:52
+HOST:l111051
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+
+DATE:2017-05-25 02:12:53
+HOST:l111052
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-05-25 02:12:54
+HOST:l111051
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen71
+
+
+DATE:2017-05-25 02:12:55
+HOST:l111051
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc_clariion0_565 auto:cdsdisk    -            (fen71)      online
+emc_clariion0_566 auto:cdsdisk    -            (fen71)      online
+emc_clariion0_567 auto:cdsdisk    -            (fen71)      online
+emc_clariion0_568 auto:cdsdisk    -            -            online
+emc_clariion0_569 auto:cdsdisk    -            -            online
+emc_clariion0_570 auto:cdsdisk    -            -            online
+emc_clariion0_571 auto:cdsdisk    -            -            online
+emc_clariion0_572 auto:cdsdisk    -            -            online
+emc_clariion0_573 auto:cdsdisk    -            -            online
+emc_clariion0_574 auto:cdsdisk    -            -            online
+emc_clariion0_592 auto:cdsdisk    -            -            online
+emc_clariion0_593 auto:cdsdisk    -            -            online
+emc_clariion0_594 auto:cdsdisk    -            -            online
+emc_clariion0_750 auto:cdsdisk    -            -            online
+emc_clariion0_752 auto:cdsdisk    -            -            online
+emc_clariion0_753 auto:cdsdisk    -            -            online
+emc_clariion0_754 auto:cdsdisk    -            -            online
+emc_clariion0_755 auto:cdsdisk    -            -            online
+emc_clariion0_756 auto:cdsdisk    -            -            online
+emc_clariion0_808 auto:cdsdisk    -            -            online
+emc_clariion0_809 auto:cdsdisk    -            -            online
+emc_clariion0_810 auto:cdsdisk    -            -            online
+emc_clariion0_811 auto:cdsdisk    emc_clariion0_811  autotcdg1    online shared
+emc_clariion0_812 auto:cdsdisk    emc_clariion0_812  autotcdg0    online
+emc_clariion0_1599 auto:LVM        -            -            LVM
+emc_clariion0_1600 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1601 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1602 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1603 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1604 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1605 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1606 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1607 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1608 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1609 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1610 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1611 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1612 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1613 auto:cdsdisk    -            -            online thinrclm
+sdcj         auto:none       -            -            online invalid
+
+
+DATE:2017-05-25 02:12:56
+HOST:l111051
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcdg0    enabled,cds          1495678151.104.l111051
+autotcdg1    enabled,shared,cds   1495678153.106.l111051
+
+
+DATE:2017-05-25 02:12:57
+HOST:l111051
+USER:root
+STDIN:vxdg destroy autotcdg0
+STDOUT:
+
+
+
+DATE:2017-05-25 02:12:58
+HOST:l111051
+USER:root
+STDIN:vxdg destroy autotcdg1
+STDOUT:
+
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-05-25 02:12:59
+HOST:l111052
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+fen71
+
+
+DATE:2017-05-25 02:13:00
+HOST:l111052
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc_clariion0_565 auto:cdsdisk    -            (fen71)      online
+emc_clariion0_566 auto:cdsdisk    -            (fen71)      online
+emc_clariion0_567 auto:cdsdisk    -            (fen71)      online
+emc_clariion0_568 auto:cdsdisk    -            -            online
+emc_clariion0_569 auto:cdsdisk    -            -            online
+emc_clariion0_570 auto:cdsdisk    -            -            online
+emc_clariion0_571 auto:cdsdisk    -            -            online
+emc_clariion0_572 auto:cdsdisk    -            -            online
+emc_clariion0_573 auto:cdsdisk    -            -            online
+emc_clariion0_574 auto:cdsdisk    -            -            online
+emc_clariion0_593 auto:cdsdisk    -            -            online
+emc_clariion0_594 auto:cdsdisk    -            -            online
+emc_clariion0_750 auto:cdsdisk    -            -            online
+emc_clariion0_751 auto:cdsdisk    -            -            online
+emc_clariion0_752 auto:cdsdisk    -            -            online
+emc_clariion0_753 auto:cdsdisk    -            -            online
+emc_clariion0_754 auto:cdsdisk    -            -            online
+emc_clariion0_755 auto:cdsdisk    -            -            online
+emc_clariion0_756 auto:cdsdisk    -            -            online
+emc_clariion0_808 auto:cdsdisk    -            -            online
+emc_clariion0_809 auto:cdsdisk    -            -            online
+emc_clariion0_810 auto:cdsdisk    -            -            online
+emc_clariion0_811 auto:cdsdisk    -            -            online
+emc_clariion0_812 auto:cdsdisk    -            -            online
+emc_clariion0_1599 auto:LVM        -            -            LVM
+emc_clariion0_1600 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1601 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1602 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1603 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1604 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1605 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1606 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1607 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1608 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1609 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1610 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1611 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1612 auto:cdsdisk    -            -            online thinrclm
+emc_clariion0_1613 auto:cdsdisk    -            -            online thinrclm
+sdch         auto:none       -            -            online invalid
+
+
+DATE:2017-05-25 02:13:01
+HOST:l111052
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID

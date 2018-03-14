@@ -1,0 +1,3811 @@
+
+==================== Operation Log for TC fs_compress ====================
+DATE:2017-05-15 07:42:26
+Nodes:s090105 s090106
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-05-15 07:42:26
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-05-15 07:42:26
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:4439837 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:295465 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:968413491 (923.5 MiB)  TX bytes:41919929 (39.9 MiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:136 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:136 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:20280 (19.8 KiB)  TX bytes:20280 (19.8 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-05-15 07:42:27
+HOST:s090105
+USER:root
+STDIN:ssh -l root s090105
+STDOUT:
+
+
+
+DATE:2017-05-15 07:42:29
+HOST:s090106
+USER:root
+STDIN:ssh -l root s090106
+STDOUT:
+
+
+
+DATE:2017-05-15 07:42:35
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh s090105,s090106
+STDOUT:
+
+
+
+DATE:2017-05-15 07:42:36
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+s090105
+s090106
+
+
+DATE:2017-05-15 07:42:37
+HOST:s090106
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+s090105
+s090106
+
+***Getting hostname of node***
+
+
+
+DATE:2017-05-15 07:42:38
+HOST:s090105
+USER:root
+STDIN:hostname
+STDOUT:
+s090105.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-05-15 07:42:39
+HOST:s090105
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-05-15 07:42:40
+HOST:s090105
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 6.8 (Santiago)
+
+
+DATE:2017-05-15 07:42:41
+HOST:s090105
+USER:root
+STDIN:uname -r
+STDOUT:
+2.6.32-642.11.1.el6.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-05-15 07:42:45
+HOST:s090105
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSperl-5.20.1.2-RHEL6.x86_64
+Name        : VRTSperl                     Relocations: (not relocatable)
+Version     : 5.20.1.2                          Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 30 Oct 2015 04:22:28 PM UTC
+Install Date: Fri 12 May 2017 07:32:16 AM UTC      Build Host: rhel6-perl.cdc.symantec.com
+Group       : Applications/System           Source RPM: VRTSperl-5.20.1.2-RHEL6.src.rpm
+Size        : 69606898                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Perl 5.20.1 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.20.1 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.60
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSamf-7.0.1.000-RHEL6.x86_64
+Name        : VRTSamf                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:51:12 PM UTC
+Install Date: Fri 12 May 2017 07:36:23 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : System Environment/Kernel     Source RPM: VRTSamf-7.0.1.000-RHEL6.src.rpm
+Size        : 25265412                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64
+Build Stamp        : 7.0.1.000-2015-11-23_15.43.36
+
+Package INFO: VRTSdbac-7.0.1.000-RHEL6.x86_64
+Name        : VRTSdbac                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 30 Oct 2015 12:21:46 PM UTC
+Install Date: Fri 12 May 2017 07:38:18 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSdbac-7.0.1.000-RHEL6.src.rpm
+Size        : 20442630                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Real Application Cluster Support Package by Symantec
+Description :
+Veritas Oracle Real Application Cluster Support Package by Symantec
+Build Stamp	: 7.0.1.000-2015-10-30_05.00.22
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-504.el6.x86_64
+
+Package INFO: VRTSvxfs-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvxfs                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 11:03:17 PM UTC
+Install Date: Fri 12 May 2017 07:35:41 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSvxfs-7.0.1.000-RHEL6.src.rpm
+Size        : 55997872                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Filesystem by Symantec
+Description :
+Veritas Filesystem by Symantec
+
+Package INFO: VRTSvcsag-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvcsag                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:55:32 PM UTC
+Install Date: Fri 12 May 2017 07:37:28 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsag-7.0.1.000-RHEL6.src.rpm
+Size        : 83655194                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : VCS Bundled Agents by Symantec
+Description :
+Veritas Cluster Server Bundled Agents (x86_64) by Symantec
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSodm-7.0.0.000-RHEL6.x86_64
+Name        : VRTSodm                      Relocations: (not relocatable)
+Version     : 7.0.0.000                         Vendor: Symantec Corporation.
+Release     : RHEL6                         Build Date: Thu 28 May 2015 02:26:55 PM UTC
+Install Date: Fri 12 May 2017 07:32:03 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSodm-7.0.0.000-RHEL6.src.rpm
+Size        : 1696190                          License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:22 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Disk Manager by Symantec
+Description :
+Veritas Oracle Disk Manager (ODM) by Symantec
+
+Package INFO: VRTSvxvm-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvxvm                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 08:20:31 AM UTC
+Install Date: Fri 12 May 2017 07:32:56 AM UTC      Build Host: sf-rhel6ga-build.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSvxvm-7.0.1.000-RHEL6.src.rpm
+Size        : 439447898                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Volume Manager by Symantec
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSgab-7.0.1.000-RHEL6.x86_64
+Name        : VRTSgab                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:25:21 PM UTC
+Install Date: Fri 12 May 2017 07:36:10 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSgab-7.0.1.000-RHEL6.src.rpm
+Size        : 28802234                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Membership and Atomic Broadcast by Symantec
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64
+Build Stamp        : Veritas-7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTScps-7.0.1.000-RHEL6.i686
+Name        : VRTScps                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 10:49:24 PM UTC
+Install Date: Fri 12 May 2017 07:37:11 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTScps-7.0.1.000-RHEL6.src.rpm
+Size        : 55496727                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Co-ordination Point Server by Symantec
+Description :
+Veritas Co-ordination Point Server by Symantec
+Build Stamp: 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSglm-7.0.1.000-RHEL6.x86_64
+Name        : VRTSglm                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 11:02:09 PM UTC
+Install Date: Fri 12 May 2017 07:38:07 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSglm-7.0.1.000-RHEL6.src.rpm
+Size        : 423328                           License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Lock Manager (GLM) driver by Symantec
+Description :
+Veritas Group Lock Manager (GLM) driver by Symantec
+Supported kernel(s): 2.6.32-71.el6.x86_64 or later
+
+Package INFO: VRTSvbs-7.0.0.000-Linux.i686
+Name        : VRTSvbs                      Relocations: (not relocatable)
+Version     : 7.0.0.000                         Vendor: Symantec Corporation
+Release     : Linux                         Build Date: Sat 13 Jun 2015 06:01:11 AM UTC
+Install Date: Fri 12 May 2017 07:38:56 AM UTC      Build Host: snapper53-64.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSvbs-7.0.0.000-Linux.src.rpm
+Size        : 58030321                         License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:31 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Virtual Business Services by Symantec
+Description :
+Virtual Business Services by Symantec
+Build Stamp : 7.0.0.000-2015-06-12_22.21.37
+
+Package INFO: VRTSvcswiz-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvcswiz                   Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: "Symantec Corporation"
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:59:15 PM UTC
+Install Date: Fri 12 May 2017 07:39:21 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcswiz-7.0.1.000-RHEL6.src.rpm
+Size        : 10615243                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server Wizards by Symantec
+Description :
+"The package contains Wizards for Veritas Cluster Server by Symantec"
+
+Arch : (x86_64)
+Build Stamp : 7.0.1.000-2015-11-23_15.59.03
+
+Package INFO: VRTSgms-7.0.0.000-RHEL6.x86_64
+Name        : VRTSgms                      Relocations: (not relocatable)
+Version     : 7.0.0.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Thu 28 May 2015 02:24:13 PM UTC
+Install Date: Fri 12 May 2017 07:32:00 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSgms-7.0.0.000-RHEL6.src.rpm
+Size        : 84471                            License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:19 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Messaging Services by Symantec
+Description :
+Veritas Group Messaging Sevice (GMS) driver by Symantec
+
+Package INFO: VRTSspt-7.0.1.000-RHEL6.noarch
+Name        : VRTSspt                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Wed 25 Nov 2015 07:28:09 AM UTC
+Install Date: Fri 12 May 2017 07:32:28 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSspt-7.0.1.000-RHEL6.src.rpm
+Size        : 34251540                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Software Support Tools Package by Symantec
+Description :
+    VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSllt-7.0.1.300-RHEL6.x86_64
+Name        : VRTSllt                      Relocations: (not relocatable)
+Version     : 7.0.1.300                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 24 Jun 2016 02:40:29 PM UTC
+Install Date: Fri 12 May 2017 07:36:03 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSllt-7.0.1.300-RHEL6.src.rpm
+Size        : 70604661                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Low Latency Transport by Symantec
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64 [LINUX_RHEL60]
+Build Stamp: Veritas-7.0.1.300-2016-06-24_02.23.02
+
+Package INFO: VRTSvcs-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvcs                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:56:49 PM UTC
+Install Date: Fri 12 May 2017 07:36:47 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcs-7.0.1.000-RHEL6.src.rpm
+Size        : 213430328                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server by Symantec
+Description :
+Veritas Cluster Server and Commands by Symantec (x86_64)
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSdbed-7.0.1.000-RHEL.x86_64
+Name        : VRTSdbed                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL                          Build Date: Fri 30 Oct 2015 09:00:17 AM UTC
+Install Date: Fri 12 May 2017 07:37:54 AM UTC      Build Host: snapper53-64.engba.symantec.com
+Group       : Applications/Databases        Source RPM: VRTSdbed-7.0.1.000-RHEL.src.rpm
+Size        : 262837089                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSsfmh-7.0.0.0-0.x86_64
+Name        : VRTSsfmh                     Relocations: (not relocatable)
+Version     : 7.0.0.0                           Vendor: Symantec Corporation
+Release     : 0                             Build Date: Fri 12 Jun 2015 01:18:17 PM UTC
+Install Date: Fri 12 May 2017 07:38:41 AM UTC      Build Host: vommvsles10-64bld.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSsfmh-7.0.0.0-0.src.rpm
+Size        : 150059360                        License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:28 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+
+Package INFO: VRTSsfcpi-7.0.1.000-GENERIC.noarch
+Name        : VRTSsfcpi                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : GENERIC                       Build Date: Mon 07 Dec 2015 07:24:22 AM UTC
+Install Date: Fri 12 May 2017 07:39:12 AM UTC      Build Host: mtvre01.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSsfcpi-7.0.1.000-GENERIC.src.rpm
+Size        : 14004981                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+
+Package INFO: VRTSvlic-3.02.70.008-RHEL6.x86_64
+Name        : VRTSvlic                     Relocations: (not relocatable)
+Version     : 3.02.70.008                       Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 18 May 2015 01:59:03 PM UTC
+Install Date: Fri 12 May 2017 07:24:34 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvlic-3.02.70.008-RHEL6.src.rpm
+Size        : 1583589                          License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:40 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Symantec License Utilities
+Description :
+These are the Symantec License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSfsadv-7.0.1.000-RHEL6.x86_64
+Name        : VRTSfsadv                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 11:04:30 PM UTC
+Install Date: Fri 12 May 2017 07:35:52 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSfsadv-7.0.1.000-RHEL6.src.rpm
+Size        : 14558515                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas File System Advanced Features by Symantec
+Description :
+Veritas File System Advanced Features by Symantec
+
+Package INFO: VRTSvcsea-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvcsea                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 24 Nov 2015 12:32:20 AM UTC
+Install Date: Fri 12 May 2017 07:37:34 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsea-7.0.1.000-RHEL6.src.rpm
+Size        : 1221089                          License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents by Symantec
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSaslapm-7.0.1.000-RHEL6.x86_64
+Name        : VRTSaslapm                   Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 08:21:25 AM UTC
+Install Date: Fri 12 May 2017 07:27:27 AM UTC      Build Host: sf-rhel6ga-build.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSaslapm-7.0.1.000-RHEL6.src.rpm
+Size        : 52402901                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTSvxfen-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvxfen                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:36:56 PM UTC
+Install Date: Fri 12 May 2017 07:36:17 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvxfen-7.0.1.000-RHEL6.src.rpm
+Size        : 27993862                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas I/O Fencing by Symantec
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64
+Build Stamp        : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTScavf-7.0.1.000-RHEL6.i686
+Name        : VRTScavf                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 10:57:53 PM UTC
+Install Date: Fri 12 May 2017 07:38:13 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTScavf-7.0.1.000-RHEL6.src.rpm
+Size        : 831198                           License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+VERITAS Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+***check if product is higher than 6.0***
+
+
+***The product version meet requirement***
+
+
+***Getting hostname of node***
+
+
+
+DATE:2017-05-15 07:42:46
+HOST:s090106
+USER:root
+STDIN:hostname
+STDOUT:
+s090106.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-05-15 07:42:47
+HOST:s090106
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-05-15 07:42:48
+HOST:s090106
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 6.8 (Santiago)
+
+
+DATE:2017-05-15 07:42:49
+HOST:s090106
+USER:root
+STDIN:uname -r
+STDOUT:
+2.6.32-642.11.1.el6.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-05-15 07:42:53
+HOST:s090106
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSgms-7.0.0.000-RHEL6.x86_64
+Name        : VRTSgms                      Relocations: (not relocatable)
+Version     : 7.0.0.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Thu 28 May 2015 02:24:13 PM UTC
+Install Date: Fri 12 May 2017 07:18:25 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSgms-7.0.0.000-RHEL6.src.rpm
+Size        : 84471                            License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:19 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Messaging Services by Symantec
+Description :
+Veritas Group Messaging Sevice (GMS) driver by Symantec
+
+Package INFO: VRTSllt-7.0.1.300-RHEL6.x86_64
+Name        : VRTSllt                      Relocations: (not relocatable)
+Version     : 7.0.1.300                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 24 Jun 2016 02:40:29 PM UTC
+Install Date: Fri 12 May 2017 07:22:29 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSllt-7.0.1.300-RHEL6.src.rpm
+Size        : 70604661                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Low Latency Transport by Symantec
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-642.el6.x86_64 [LINUX_RHEL60]
+Build Stamp: Veritas-7.0.1.300-2016-06-24_02.23.02
+
+Package INFO: VRTSdbed-7.0.1.000-RHEL.x86_64
+Name        : VRTSdbed                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL                          Build Date: Fri 30 Oct 2015 09:00:17 AM UTC
+Install Date: Fri 12 May 2017 07:24:23 AM UTC      Build Host: snapper53-64.engba.symantec.com
+Group       : Applications/Databases        Source RPM: VRTSdbed-7.0.1.000-RHEL.src.rpm
+Size        : 262837089                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSsfcpi-7.0.1.000-GENERIC.noarch
+Name        : VRTSsfcpi                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : GENERIC                       Build Date: Mon 07 Dec 2015 07:24:22 AM UTC
+Install Date: Fri 12 May 2017 07:25:37 AM UTC      Build Host: mtvre01.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSsfcpi-7.0.1.000-GENERIC.src.rpm
+Size        : 14004981                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+
+Package INFO: VRTSperl-5.20.1.2-RHEL6.x86_64
+Name        : VRTSperl                     Relocations: (not relocatable)
+Version     : 5.20.1.2                          Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 30 Oct 2015 04:22:28 PM UTC
+Install Date: Fri 12 May 2017 07:18:43 AM UTC      Build Host: rhel6-perl.cdc.symantec.com
+Group       : Applications/System           Source RPM: VRTSperl-5.20.1.2-RHEL6.src.rpm
+Size        : 69606898                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Perl 5.20.1 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.20.1 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+    JSON-2.59
+    JSON-XS-2.34
+    Module-Build-0.4005
+    Module-Implementation-0.06
+    Test-Fatal-0.010
+    Module-Runtime-0.013
+    Try-Tiny-0.12
+    Params-Validate-1.07
+    Algorithm-Diff-1.1902
+    Compress-Raw-Zlib-2.061
+    IO-Compress-2.058
+    HTML-Tagset-3.10
+    IO-String-1.08
+    IO-Tty-1.10
+    List-Compare-0.37
+    Log-Dispatch-2.11
+    Logfile-Rotate-1.04
+    MIME-Base64-3.13
+    Net-FTP-Common-7.0.d
+    Net-Netmask-1.9016
+    Net-Telnet-3.03
+    Proc-Background-1.08
+    Test-Plan-0.03
+    Test-Simple-0.88
+    Time-ZoneInfo-0.3
+    TimeDate-2.30
+    XML-Parser-2.41
+    XML-Simple-2.16
+    URI-1.60
+    Crypt-CBC-2.32
+    Net-SNMP-v6.0.1
+    Archive-Tar-1.90
+    Net-IP-1.25
+    HTML-Parser-3.71
+    Net-DNS-0.72
+    Net-DNS-SEC-0.16
+    Expect-1.21
+    Crypt-SSLeay-0.64
+    Crypt-OpenSSL-AES-0.02
+    XML-RegExp-0.03
+    XML-DOM-1.44
+    Test-Exception-0.27
+    Sub-Uplevel-0.21_01
+    Socket-GetAddrInfo-0.11
+    Socket6-0.23
+    IO-Socket-INET6-2.69
+    Params-Util-1.03
+    Sys-Filesystem-1.30
+    Text-CSV-1.20
+    Devel-Trace-0.10
+    common-sense-3.6
+    DBI-1.615
+    DBD-SQLite-1.37
+    Switch-2.16
+    Parse-RecDescent-1.965001
+    IPC-Run-0.89
+    Email-Address-1.892
+    Email-MessageID-1.402
+    Email-Simple-2.100
+    Email-MIME-ContentType-1.015
+    Email-MIME-Encodings-1.313
+    Email-MIME-1.907
+    Class-Accessor-0.34
+    HTTP-Request-Params-1.01
+    Net-HTTP-6.02
+    LWP-MediaTypes-6.01
+    WWW-RobotRules-6.01
+    Encode-Locale-1.02
+    HTTP-Date-6.00
+    HTTP-Message-6.02
+    HTTP-Negotiate-6.00
+    HTTP-Cookies-6.00
+    Net-SSLeay-1.54
+    HTTP-Daemon-6.00
+    File-Listing-6.03
+    IO-Socket-SSL-1.94
+    LWP-Protocol-https-6.02
+    libwww-perl-6.03
+    Log-Log4perl-1.37
+    Locale-Maketext-1.23
+    BSD-Resource-1.2907
+    File-FcntlLock-0.14
+    Module-Pluggable-5.1
+
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSamf-7.0.1.000-RHEL6.x86_64
+Name        : VRTSamf                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:51:12 PM UTC
+Install Date: Fri 12 May 2017 07:22:48 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : System Environment/Kernel     Source RPM: VRTSamf-7.0.1.000-RHEL6.src.rpm
+Size        : 25265412                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64
+Build Stamp        : 7.0.1.000-2015-11-23_15.43.36
+
+Package INFO: VRTSdbac-7.0.1.000-RHEL6.x86_64
+Name        : VRTSdbac                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Fri 30 Oct 2015 12:21:46 PM UTC
+Install Date: Fri 12 May 2017 07:24:43 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSdbac-7.0.1.000-RHEL6.src.rpm
+Size        : 20442630                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Real Application Cluster Support Package by Symantec
+Description :
+Veritas Oracle Real Application Cluster Support Package by Symantec
+Build Stamp	: 7.0.1.000-2015-10-30_05.00.22
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64 2.6.32-504.el6.x86_64
+
+Package INFO: VRTSaslapm-7.0.1.000-RHEL6.x86_64
+Name        : VRTSaslapm                   Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 08:21:25 AM UTC
+Install Date: Fri 12 May 2017 07:13:58 AM UTC      Build Host: sf-rhel6ga-build.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSaslapm-7.0.1.000-RHEL6.src.rpm
+Size        : 52402901                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTSvxfs-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvxfs                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 11:03:17 PM UTC
+Install Date: Fri 12 May 2017 07:22:05 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSvxfs-7.0.1.000-RHEL6.src.rpm
+Size        : 55997872                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Filesystem by Symantec
+Description :
+Veritas Filesystem by Symantec
+
+Package INFO: VRTSvxfen-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvxfen                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:36:56 PM UTC
+Install Date: Fri 12 May 2017 07:22:42 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvxfen-7.0.1.000-RHEL6.src.rpm
+Size        : 27993862                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas I/O Fencing by Symantec
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64
+Build Stamp        : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSvcsag-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvcsag                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:55:32 PM UTC
+Install Date: Fri 12 May 2017 07:23:53 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsag-7.0.1.000-RHEL6.src.rpm
+Size        : 83655194                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : VCS Bundled Agents by Symantec
+Description :
+Veritas Cluster Server Bundled Agents (x86_64) by Symantec
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTScavf-7.0.1.000-RHEL6.i686
+Name        : VRTScavf                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 10:57:53 PM UTC
+Install Date: Fri 12 May 2017 07:24:38 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTScavf-7.0.1.000-RHEL6.src.rpm
+Size        : 831198                           License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+VERITAS Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+Package INFO: VRTSodm-7.0.0.000-RHEL6.x86_64
+Name        : VRTSodm                      Relocations: (not relocatable)
+Version     : 7.0.0.000                         Vendor: Symantec Corporation.
+Release     : RHEL6                         Build Date: Thu 28 May 2015 02:26:55 PM UTC
+Install Date: Fri 12 May 2017 07:18:28 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSodm-7.0.0.000-RHEL6.src.rpm
+Size        : 1696190                          License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:22 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Oracle Disk Manager by Symantec
+Description :
+Veritas Oracle Disk Manager (ODM) by Symantec
+
+Package INFO: VRTSvxvm-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvxvm                     Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 08:20:31 AM UTC
+Install Date: Fri 12 May 2017 07:19:30 AM UTC      Build Host: sf-rhel6ga-build.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSvxvm-7.0.1.000-RHEL6.src.rpm
+Size        : 439447898                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Volume Manager by Symantec
+Description :
+Veritas Volume Manager for Linux
+
+Package INFO: VRTSgab-7.0.1.000-RHEL6.x86_64
+Name        : VRTSgab                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:25:21 PM UTC
+Install Date: Fri 12 May 2017 07:22:36 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSgab-7.0.1.000-RHEL6.src.rpm
+Size        : 28802234                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Membership and Atomic Broadcast by Symantec
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 2.6.32-279.el6.x86_64 2.6.32-358.el6.x86_64 2.6.32-431.el6.x86_64 2.6.32-504.el6.x86_64 2.6.32-573.el6.x86_64 2.6.39-400.17.1.el6uek.x86_64
+Build Stamp        : Veritas-7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTScps-7.0.1.000-RHEL6.i686
+Name        : VRTScps                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 10:49:24 PM UTC
+Install Date: Fri 12 May 2017 07:23:41 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTScps-7.0.1.000-RHEL6.src.rpm
+Size        : 55496727                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Co-ordination Point Server by Symantec
+Description :
+Veritas Co-ordination Point Server by Symantec
+Build Stamp: 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSglm-7.0.1.000-RHEL6.x86_64
+Name        : VRTSglm                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 11:02:09 PM UTC
+Install Date: Fri 12 May 2017 07:24:32 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSglm-7.0.1.000-RHEL6.src.rpm
+Size        : 423328                           License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Group Lock Manager (GLM) driver by Symantec
+Description :
+Veritas Group Lock Manager (GLM) driver by Symantec
+Supported kernel(s): 2.6.32-71.el6.x86_64 or later
+
+Package INFO: VRTSvbs-7.0.0.000-Linux.i686
+Name        : VRTSvbs                      Relocations: (not relocatable)
+Version     : 7.0.0.000                         Vendor: Symantec Corporation
+Release     : Linux                         Build Date: Sat 13 Jun 2015 06:01:11 AM UTC
+Install Date: Fri 12 May 2017 07:25:20 AM UTC      Build Host: snapper53-64.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSvbs-7.0.0.000-Linux.src.rpm
+Size        : 58030321                         License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:31 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Virtual Business Services by Symantec
+Description :
+Virtual Business Services by Symantec
+Build Stamp : 7.0.0.000-2015-06-12_22.21.37
+
+Package INFO: VRTSvcswiz-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvcswiz                   Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: "Symantec Corporation"
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:59:15 PM UTC
+Install Date: Fri 12 May 2017 07:25:46 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcswiz-7.0.1.000-RHEL6.src.rpm
+Size        : 10615243                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server Wizards by Symantec
+Description :
+"The package contains Wizards for Veritas Cluster Server by Symantec"
+
+Arch : (x86_64)
+Build Stamp : 7.0.1.000-2015-11-23_15.59.03
+
+Package INFO: VRTSspt-7.0.1.000-RHEL6.noarch
+Name        : VRTSspt                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Wed 25 Nov 2015 07:28:09 AM UTC
+Install Date: Fri 12 May 2017 07:18:54 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSspt-7.0.1.000-RHEL6.src.rpm
+Size        : 34251540                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Software Support Tools Package by Symantec
+Description :
+    VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTSvcs-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvcs                      Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 23 Nov 2015 11:56:49 PM UTC
+Install Date: Fri 12 May 2017 07:23:26 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcs-7.0.1.000-RHEL6.src.rpm
+Size        : 213430328                        License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Server by Symantec
+Description :
+Veritas Cluster Server and Commands by Symantec (x86_64)
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+Package INFO: VRTSsfmh-7.0.0.0-0.x86_64
+Name        : VRTSsfmh                     Relocations: (not relocatable)
+Version     : 7.0.0.0                           Vendor: Symantec Corporation
+Release     : 0                             Build Date: Fri 12 Jun 2015 01:18:17 PM UTC
+Install Date: Fri 12 May 2017 07:25:07 AM UTC      Build Host: vommvsles10-64bld.engba.symantec.com
+Group       : Applications/System           Source RPM: VRTSsfmh-7.0.0.0-0.src.rpm
+Size        : 150059360                        License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:28 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+
+Package INFO: VRTSvlic-3.02.70.008-RHEL6.x86_64
+Name        : VRTSvlic                     Relocations: (not relocatable)
+Version     : 3.02.70.008                       Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 18 May 2015 01:59:03 PM UTC
+Install Date: Fri 12 May 2017 07:10:59 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvlic-3.02.70.008-RHEL6.src.rpm
+Size        : 1583589                          License: Symantec Proprietary
+Signature   : RSA/SHA1, Wed 17 Jun 2015 01:36:40 PM UTC, Key ID 295ead356cd4ce17
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Symantec License Utilities
+Description :
+These are the Symantec License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTSfsadv-7.0.1.000-RHEL6.x86_64
+Name        : VRTSfsadv                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Mon 30 Nov 2015 11:04:30 PM UTC
+Install Date: Fri 12 May 2017 07:22:19 AM UTC      Build Host: sfrhel6.samgpunb.symantec.com
+Group       : Applications/System           Source RPM: VRTSfsadv-7.0.1.000-RHEL6.src.rpm
+Size        : 14558515                         License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas File System Advanced Features by Symantec
+Description :
+Veritas File System Advanced Features by Symantec
+
+Package INFO: VRTSvcsea-7.0.1.000-RHEL6.x86_64
+Name        : VRTSvcsea                    Relocations: (not relocatable)
+Version     : 7.0.1.000                         Vendor: Symantec Corporation
+Release     : RHEL6                         Build Date: Tue 24 Nov 2015 12:32:20 AM UTC
+Install Date: Fri 12 May 2017 07:23:59 AM UTC      Build Host: vcsbuildrhel6x8664
+Group       : Applications/System           Source RPM: VRTSvcsea-7.0.1.000-RHEL6.src.rpm
+Size        : 1221089                          License: Symantec Proprietary
+Signature   : (none)
+Packager    : Enterprise_Support@symantec.com
+URL         : http://www.symantec.com/business/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents by Symantec
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.0.1.000-2015-11-23_10.30.02
+
+***check if product is higher than 6.0***
+
+
+***The product version meet requirement***
+
+
+***checking if cvm is configured and online***
+
+
+
+DATE:2017-05-15 07:42:54
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 s090105    |ONLINE|
+cvm          State                 s090106    |ONLINE|
+
+***CVM of all nodes "s090105 s090106"are all online***
+
+
+
+====STEP: create a private diskgroup and a shared diskgroup
+DATE:2017-05-15 07:42:54
+
+***Making dg "autotcdg0" with maxsize=2048***
+
+
+
+DATE:2017-05-15 07:42:55
+HOST:s090105
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+
+***Getting disk list by specified size***
+
+
+***Getting avaiable disks***
+
+
+
+DATE:2017-05-15 07:42:56
+HOST:s090105
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-05-15 07:42:57
+HOST:s090106
+USER:root
+STDIN:vxddladm set namingscheme=ebn persistence=yes
+STDOUT:
+
+
+
+DATE:2017-05-15 07:42:58
+HOST:s090105
+USER:root
+STDIN:vxdmpadm listenclosure
+STDOUT:
+ENCLR_NAME        ENCLR_TYPE     ENCLR_SNO      STATUS       ARRAY_TYPE     LUN_COUNT    FIRMWARE 
+===================================================================================================
+emc_clariion0     EMC_CLARiiON   CKM00121900328       CONNECTED    CLR-ALUA   28         0532
+disk              Disk           DISKS                CONNECTED    Disk        1         3000
+
+
+DATE:2017-05-15 07:43:00
+HOST:s090105
+USER:root
+STDIN:vxdisk scandisks;vxdisk list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc_clariion0_226 auto:cdsdisk    -            -            online
+emc_clariion0_234 auto:cdsdisk    -            -            online
+emc_clariion0_235 auto:cdsdisk    -            -            online
+emc_clariion0_236 auto:cdsdisk    -            -            online
+emc_clariion0_237 auto:cdsdisk    -            -            online
+emc_clariion0_238 auto:cdsdisk    -            -            online
+emc_clariion0_239 auto:cdsdisk    -            -            online
+emc_clariion0_240 auto:cdsdisk    -            -            online
+emc_clariion0_242 auto:cdsdisk    -            -            online
+emc_clariion0_243 auto:cdsdisk    -            -            online
+emc_clariion0_244 auto:cdsdisk    -            -            online
+emc_clariion0_247 auto:cdsdisk    -            -            online
+emc_clariion0_248 auto:cdsdisk    -            -            online
+emc_clariion0_249 auto:cdsdisk    -            -            online
+emc_clariion0_250 auto:cdsdisk    -            -            online
+emc_clariion0_251 auto:cdsdisk    -            -            online
+emc_clariion0_252 auto:cdsdisk    -            -            online
+emc_clariion0_264 auto:cdsdisk    -            -            online
+emc_clariion0_265 auto:cdsdisk    -            -            online
+emc_clariion0_266 auto:cdsdisk    -            -            online
+emc_clariion0_267 auto:cdsdisk    -            -            online
+emc_clariion0_268 auto:cdsdisk    -            -            online
+emc_clariion0_269 auto:cdsdisk    -            -            online
+emc_clariion0_270 auto:cdsdisk    -            -            online
+emc_clariion0_271 auto:cdsdisk    -            -            online
+emc_clariion0_272 auto:cdsdisk    -            -            online
+emc_clariion0_312 auto:cdsdisk    -            -            online
+emc_clariion0_313 auto:cdsdisk    -            -            online
+sddi         auto:none       -            -            online invalid
+
+
+DATE:2017-05-15 07:43:05
+HOST:s090105
+USER:root
+STDIN:/opt/VRTSsfmh/adm/dclisetup.sh
+STDOUT:
+
+
+
+DATE:2017-05-15 07:43:07
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxlist disk
+STDOUT:
+TY   DEVICE              DISK   DISKGROUP        SIZE   FREE STATUS
+disk emc_clariion0_226   -      vxfendg       989.87m      - deported
+disk emc_clariion0_234   -      vxfendg         4.96g      - deported
+disk emc_clariion0_235   -      vxfendg         4.96g      - deported
+disk emc_clariion0_236   -      -               4.96g      - free
+disk emc_clariion0_237   -      -               4.96g      - free
+disk emc_clariion0_238   -      -               4.96g      - free
+disk emc_clariion0_239   -      -               4.96g      - free
+disk emc_clariion0_240   -      -               4.96g      - free
+disk emc_clariion0_242   -      -               4.96g      - free
+disk emc_clariion0_243   -      -               4.96g      - free
+disk emc_clariion0_244   -      -               4.96g      - free
+disk emc_clariion0_247   -      -               4.96g      - free
+disk emc_clariion0_248   -      -               4.96g      - free
+disk emc_clariion0_249   -      -               4.96g      - free
+disk emc_clariion0_250   -      -               4.96g      - free
+disk emc_clariion0_251   -      -               4.96g      - free
+disk emc_clariion0_252   -      -               4.96g      - free
+disk emc_clariion0_264   -      -               4.96g      - free
+disk emc_clariion0_265   -      -               4.96g      - free
+disk emc_clariion0_266   -      -               4.96g      - free
+disk emc_clariion0_267   -      -               4.96g      - free
+disk emc_clariion0_268   -      -               4.96g      - free
+disk emc_clariion0_269   -      -               4.96g      - free
+disk emc_clariion0_270   -      -               4.96g      - free
+disk emc_clariion0_271   -      -               4.96g      - free
+disk emc_clariion0_272   -      -               4.96g      - free
+disk emc_clariion0_312   -      -             989.87m      - free
+disk emc_clariion0_313   -      -             989.87m      - free
+disk sddi                -      -                   -      - uninitialized
+
+
+DATE:2017-05-15 07:43:08
+HOST:s090105
+USER:root
+STDIN:vxdisk list emc_clariion0_272 emc_clariion0_271 emc_clariion0_270 emc_clariion0_269 emc_clariion0_268 emc_clariion0_267 emc_clariion0_266 emc_clariion0_265 emc_clariion0_264 emc_clariion0_252 emc_clariion0_251 emc_clariion0_250 emc_clariion0_249 emc_clariion0_248 emc_clariion0_247 emc_clariion0_244 emc_clariion0_243 emc_clariion0_242 emc_clariion0_240 emc_clariion0_239 emc_clariion0_238 emc_clariion0_237 emc_clariion0_236 emc_clariion0_313 emc_clariion0_312
+STDOUT:
+Device:    emc_clariion0_272
+devicetag: emc_clariion0_272
+type:      auto
+hostid:    
+disk:      name= id=1494833147.147.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_272s3 char=/dev/vx/rdmp/emc_clariion0_272s3
+guid:      {b73ebc78-393f-11e7-bb04-c0d5b268a0d0}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030002DBD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833148 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdce     	state=enabled	type=primary
+sdcf     	state=enabled	type=primary
+sddh     	state=enabled	type=secondary
+sdcd     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_271
+devicetag: emc_clariion0_271
+type:      auto
+hostid:    
+disk:      name= id=1494833145.144.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_271s3 char=/dev/vx/rdmp/emc_clariion0_271s3
+guid:      {b61a32dc-393f-11e7-afe3-9f6a14257566}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030002CBD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833146 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdcb     	state=enabled	type=primary
+sdcc     	state=enabled	type=primary
+sddg     	state=enabled	type=secondary
+sdca     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_270
+devicetag: emc_clariion0_270
+type:      auto
+hostid:    
+disk:      name= id=1494833143.141.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_270s3 char=/dev/vx/rdmp/emc_clariion0_270s3
+guid:      {b4ece36e-393f-11e7-8948-10678f015ce3}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030002BBD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833144 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdby     	state=enabled	type=primary
+sdbz     	state=enabled	type=primary
+sddf     	state=enabled	type=secondary
+sdbx     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_269
+devicetag: emc_clariion0_269
+type:      auto
+hostid:    
+disk:      name= id=1494833141.138.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_269s3 char=/dev/vx/rdmp/emc_clariion0_269s3
+guid:      {b3c33c04-393f-11e7-8e2b-1b39844d7ebf}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030002ABD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833142 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbw     	state=enabled	type=primary
+sdbv     	state=enabled	type=primary
+sdde     	state=enabled	type=secondary
+sdbu     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_268
+devicetag: emc_clariion0_268
+type:      auto
+hostid:    
+disk:      name= id=1494833140.135.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_268s3 char=/dev/vx/rdmp/emc_clariion0_268s3
+guid:      {b2a2521a-393f-11e7-9fa1-3fd9195fb3c1}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F0300029BD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833140 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbt     	state=enabled	type=primary
+sdbr     	state=enabled	type=primary
+sddd     	state=enabled	type=secondary
+sdbs     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_267
+devicetag: emc_clariion0_267
+type:      auto
+hostid:    
+disk:      name= id=1494622179.117.s090106.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_267s3 char=/dev/vx/rdmp/emc_clariion0_267s3
+guid:      {8416891c-3754-11e7-9bf5-af46131a678f}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F0300028BD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494622179 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbq     	state=enabled	type=primary
+sdbp     	state=enabled	type=primary
+sddc     	state=enabled	type=secondary
+sdbo     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_266
+devicetag: emc_clariion0_266
+type:      auto
+hostid:    
+disk:      name= id=1494833138.132.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_266s3 char=/dev/vx/rdmp/emc_clariion0_266s3
+guid:      {b17b5b66-393f-11e7-aabc-2e6e177d84e2}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F0300027BD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833138 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbn     	state=enabled	type=primary
+sdbm     	state=enabled	type=primary
+sddb     	state=enabled	type=secondary
+sdbl     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_265
+devicetag: emc_clariion0_265
+type:      auto
+hostid:    
+disk:      name= id=1494833136.129.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_265s3 char=/dev/vx/rdmp/emc_clariion0_265s3
+guid:      {b040eefa-393f-11e7-9d3f-48b9723affe0}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F0300026BD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833136 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbk     	state=enabled	type=primary
+sdbj     	state=enabled	type=primary
+sdda     	state=enabled	type=secondary
+sdbi     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_264
+devicetag: emc_clariion0_264
+type:      auto
+hostid:    
+disk:      name= id=1494833134.126.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_264s3 char=/dev/vx/rdmp/emc_clariion0_264s3
+guid:      {af15476a-393f-11e7-8049-51f7cb32c1cb}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007E58F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833134 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbh     	state=enabled	type=primary
+sdbg     	state=enabled	type=primary
+sdcz     	state=enabled	type=secondary
+sdbf     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_252
+devicetag: emc_clariion0_252
+type:      auto
+hostid:    
+disk:      name= id=1494833132.123.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_252s3 char=/dev/vx/rdmp/emc_clariion0_252s3
+guid:      {addfe116-393f-11e7-ac45-7b4663041e87}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007D58F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833132 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbe     	state=enabled	type=primary
+sdbd     	state=enabled	type=primary
+sdcy     	state=enabled	type=secondary
+sdbc     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_251
+devicetag: emc_clariion0_251
+type:      auto
+hostid:    
+disk:      name= id=1494833130.120.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_251s3 char=/dev/vx/rdmp/emc_clariion0_251s3
+guid:      {acb1133c-393f-11e7-a355-dad0407ea5d9}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007C58F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833130 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbb     	state=enabled	type=primary
+sdaz     	state=enabled	type=primary
+sdcx     	state=enabled	type=secondary
+sdba     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_250
+devicetag: emc_clariion0_250
+type:      auto
+hostid:    
+disk:      name= id=1494833128.117.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_250s3 char=/dev/vx/rdmp/emc_clariion0_250s3
+guid:      {ab881ef6-393f-11e7-a00d-059a7a5fd09e}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007B58F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833128 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sday     	state=enabled	type=primary
+sdaw     	state=enabled	type=primary
+sdcw     	state=enabled	type=secondary
+sdax     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_249
+devicetag: emc_clariion0_249
+type:      auto
+hostid:    
+disk:      name= id=1494833126.114.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_249s3 char=/dev/vx/rdmp/emc_clariion0_249s3
+guid:      {aa54ca20-393f-11e7-bf3d-41cbdf6eca21}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007A58F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833126 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdav     	state=enabled	type=primary
+sdat     	state=enabled	type=primary
+sdcv     	state=enabled	type=secondary
+sdau     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_248
+devicetag: emc_clariion0_248
+type:      auto
+hostid:    
+disk:      name= id=1494833124.111.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_248s3 char=/dev/vx/rdmp/emc_clariion0_248s3
+guid:      {a92e012a-393f-11e7-ab5b-50fd9d351739}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007958F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833124 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdas     	state=enabled	type=primary
+sdaq     	state=enabled	type=primary
+sdcu     	state=enabled	type=secondary
+sdar     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_247
+devicetag: emc_clariion0_247
+type:      auto
+hostid:    
+disk:      name= id=1494833122.108.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_247s3 char=/dev/vx/rdmp/emc_clariion0_247s3
+guid:      {a7f299f6-393f-11e7-982f-1884b6369049}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007858F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833122 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdap     	state=enabled	type=primary
+sdan     	state=enabled	type=primary
+sdct     	state=enabled	type=secondary
+sdao     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_244
+devicetag: emc_clariion0_244
+type:      auto
+hostid:    
+disk:      name= id=1494833120.105.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_244s3 char=/dev/vx/rdmp/emc_clariion0_244s3
+guid:      {a6c3647a-393f-11e7-89a0-158c305c5b33}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007758F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833120 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdam     	state=enabled	type=primary
+sdak     	state=enabled	type=primary
+sdcs     	state=enabled	type=secondary
+sdal     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_243
+devicetag: emc_clariion0_243
+type:      auto
+hostid:    
+disk:      name= id=1494833118.102.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_243s3 char=/dev/vx/rdmp/emc_clariion0_243s3
+guid:      {a59c4ecc-393f-11e7-82e6-7f49d6328344}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007658F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833118 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdaj     	state=enabled	type=primary
+sdah     	state=enabled	type=primary
+sdcr     	state=enabled	type=secondary
+sdai     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_242
+devicetag: emc_clariion0_242
+type:      auto
+hostid:    
+disk:      name= id=1494833116.99.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_242s3 char=/dev/vx/rdmp/emc_clariion0_242s3
+guid:      {a4716ae6-393f-11e7-a409-a764426b090c}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000CF2AD4E02EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833116 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdag     	state=enabled	type=primary
+sdae     	state=enabled	type=primary
+sdcq     	state=enabled	type=secondary
+sdaf     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_240
+devicetag: emc_clariion0_240
+type:      auto
+hostid:    
+disk:      name= id=1494833114.96.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_240s3 char=/dev/vx/rdmp/emc_clariion0_240s3
+guid:      {a34acf04-393f-11e7-9672-0d57c85a20c0}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000CE2AD4E02EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833114 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdad     	state=enabled	type=primary
+sdab     	state=enabled	type=primary
+sdcp     	state=enabled	type=secondary
+sdac     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_239
+devicetag: emc_clariion0_239
+type:      auto
+hostid:    
+disk:      name= id=1494833112.93.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_239s3 char=/dev/vx/rdmp/emc_clariion0_239s3
+guid:      {a22248a0-393f-11e7-b6cd-8badf33ccc8f}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000CD2AD4E02EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833112 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdaa     	state=enabled	type=primary
+sdy      	state=enabled	type=primary
+sdco     	state=enabled	type=secondary
+sdz      	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_238
+devicetag: emc_clariion0_238
+type:      auto
+hostid:    
+disk:      name= id=1494833110.90.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_238s3 char=/dev/vx/rdmp/emc_clariion0_238s3
+guid:      {a0f2b2bc-393f-11e7-8fd7-268e0972bd86}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000CC2AD4E02EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833110 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdx      	state=enabled	type=primary
+sdv      	state=enabled	type=primary
+sdcn     	state=enabled	type=secondary
+sdw      	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_237
+devicetag: emc_clariion0_237
+type:      auto
+hostid:    
+disk:      name= id=1494833108.87.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_237s3 char=/dev/vx/rdmp/emc_clariion0_237s3
+guid:      {9fcc65ea-393f-11e7-9325-17c30246b93f}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000CB2AD4E02EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833108 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdu      	state=enabled	type=primary
+sds      	state=enabled	type=primary
+sdcm     	state=enabled	type=secondary
+sdt      	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_236
+devicetag: emc_clariion0_236
+type:      auto
+hostid:    
+disk:      name= id=1494833106.84.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_236s3 char=/dev/vx/rdmp/emc_clariion0_236s3
+guid:      {9ea2de60-393f-11e7-b6af-0442591703e5}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000CA2AD4E02EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833106 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdr      	state=enabled	type=primary
+sdp      	state=enabled	type=primary
+sdcl     	state=enabled	type=secondary
+sdq      	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_313
+devicetag: emc_clariion0_313
+type:      auto
+hostid:    
+disk:      name= id=1494833151.153.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_313s3 char=/dev/vx/rdmp/emc_clariion0_313s3
+guid:      {b98c5486-393f-11e7-b8fd-c4e3f10e8bcf}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000CA245C092FE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=2027264 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833151 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdi      	state=enabled	type=primary
+sdh      	state=enabled	type=primary
+sdci     	state=enabled	type=secondary
+sdg      	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_312
+devicetag: emc_clariion0_312
+type:      auto
+hostid:    
+disk:      name= id=1494833149.150.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_312s3 char=/dev/vx/rdmp/emc_clariion0_312s3
+guid:      {b86641ca-393f-11e7-bb14-e6a0d27ee0a8}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000C9245C092FE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=2027264 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833149 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sde      	state=enabled	type=primary
+sdf      	state=enabled	type=primary
+sdch     	state=enabled	type=secondary
+sdd      	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+
+DATE:2017-05-15 07:43:10
+HOST:s090106
+USER:root
+STDIN:vxdisk scandisks;vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+emc_clariion0_226 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_234 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_235 auto:cdsdisk    -            (vxfendg)    online
+emc_clariion0_236 auto:cdsdisk    -            -            online
+emc_clariion0_237 auto:cdsdisk    -            -            online
+emc_clariion0_238 auto:cdsdisk    -            -            online
+emc_clariion0_239 auto:cdsdisk    -            -            online
+emc_clariion0_240 auto:cdsdisk    -            -            online
+emc_clariion0_242 auto:cdsdisk    -            -            online
+emc_clariion0_243 auto:cdsdisk    -            -            online
+emc_clariion0_244 auto:cdsdisk    -            -            online
+emc_clariion0_247 auto:cdsdisk    -            -            online
+emc_clariion0_248 auto:cdsdisk    -            -            online
+emc_clariion0_249 auto:cdsdisk    -            -            online
+emc_clariion0_250 auto:cdsdisk    -            -            online
+emc_clariion0_251 auto:cdsdisk    -            -            online
+emc_clariion0_252 auto:cdsdisk    -            -            online
+emc_clariion0_264 auto:cdsdisk    -            -            online
+emc_clariion0_265 auto:cdsdisk    -            -            online
+emc_clariion0_266 auto:cdsdisk    -            -            online
+emc_clariion0_267 auto:cdsdisk    -            -            online
+emc_clariion0_268 auto:cdsdisk    -            -            online
+emc_clariion0_269 auto:cdsdisk    -            -            online
+emc_clariion0_270 auto:cdsdisk    -            -            online
+emc_clariion0_271 auto:cdsdisk    -            -            online
+emc_clariion0_272 auto:cdsdisk    -            -            online
+emc_clariion0_312 auto:cdsdisk    -            -            online
+emc_clariion0_313 auto:cdsdisk    -            -            online
+sddi         auto:none       -            -            online invalid
+
+
+DATE:2017-05-15 07:43:12
+HOST:s090106
+USER:root
+STDIN:vxdisk list emc_clariion0_236 emc_clariion0_237 emc_clariion0_238 emc_clariion0_239 emc_clariion0_240 emc_clariion0_242 emc_clariion0_243 emc_clariion0_244 emc_clariion0_247 emc_clariion0_248 emc_clariion0_249 emc_clariion0_250 emc_clariion0_251 emc_clariion0_252 emc_clariion0_264 emc_clariion0_265 emc_clariion0_266 emc_clariion0_267 emc_clariion0_268 emc_clariion0_269 emc_clariion0_270 emc_clariion0_271 emc_clariion0_272 emc_clariion0_312 emc_clariion0_313
+STDOUT:
+Device:    emc_clariion0_236
+devicetag: emc_clariion0_236
+type:      auto
+hostid:    
+disk:      name= id=1494833106.84.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_236s3 char=/dev/vx/rdmp/emc_clariion0_236s3
+guid:      {9ea2de60-393f-11e7-b6af-0442591703e5}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000CA2AD4E02EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833106 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdp      	state=enabled	type=primary
+sdr      	state=enabled	type=secondary
+sdcl     	state=enabled	type=secondary
+sdq      	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_237
+devicetag: emc_clariion0_237
+type:      auto
+hostid:    
+disk:      name= id=1494833108.87.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_237s3 char=/dev/vx/rdmp/emc_clariion0_237s3
+guid:      {9fcc65ea-393f-11e7-9325-17c30246b93f}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000CB2AD4E02EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833108 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdt      	state=enabled	type=primary
+sdv      	state=enabled	type=secondary
+sdcm     	state=enabled	type=secondary
+sds      	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_238
+devicetag: emc_clariion0_238
+type:      auto
+hostid:    
+disk:      name= id=1494833110.90.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_238s3 char=/dev/vx/rdmp/emc_clariion0_238s3
+guid:      {a0f2b2bc-393f-11e7-8fd7-268e0972bd86}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000CC2AD4E02EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833110 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdw      	state=enabled	type=primary
+sdy      	state=enabled	type=secondary
+sdcn     	state=enabled	type=secondary
+sdu      	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_239
+devicetag: emc_clariion0_239
+type:      auto
+hostid:    
+disk:      name= id=1494833112.93.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_239s3 char=/dev/vx/rdmp/emc_clariion0_239s3
+guid:      {a22248a0-393f-11e7-b6cd-8badf33ccc8f}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000CD2AD4E02EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833112 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdaa     	state=enabled	type=primary
+sdx      	state=enabled	type=primary
+sdco     	state=enabled	type=secondary
+sdab     	state=enabled	type=secondary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_240
+devicetag: emc_clariion0_240
+type:      auto
+hostid:    
+disk:      name= id=1494833114.96.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_240s3 char=/dev/vx/rdmp/emc_clariion0_240s3
+guid:      {a34acf04-393f-11e7-9672-0d57c85a20c0}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000CE2AD4E02EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833114 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdad     	state=enabled	type=primary
+sdaf     	state=enabled	type=secondary
+sdcp     	state=enabled	type=secondary
+sdz      	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_242
+devicetag: emc_clariion0_242
+type:      auto
+hostid:    
+disk:      name= id=1494833116.99.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_242s3 char=/dev/vx/rdmp/emc_clariion0_242s3
+guid:      {a4716ae6-393f-11e7-a409-a764426b090c}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000CF2AD4E02EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833116 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdag     	state=enabled	type=primary
+sdai     	state=enabled	type=secondary
+sdcq     	state=enabled	type=secondary
+sdac     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_243
+devicetag: emc_clariion0_243
+type:      auto
+hostid:    
+disk:      name= id=1494833118.102.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_243s3 char=/dev/vx/rdmp/emc_clariion0_243s3
+guid:      {a59c4ecc-393f-11e7-82e6-7f49d6328344}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007658F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833118 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdaj     	state=enabled	type=primary
+sdak     	state=enabled	type=secondary
+sdcr     	state=enabled	type=secondary
+sdae     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_244
+devicetag: emc_clariion0_244
+type:      auto
+hostid:    
+disk:      name= id=1494833120.105.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_244s3 char=/dev/vx/rdmp/emc_clariion0_244s3
+guid:      {a6c3647a-393f-11e7-89a0-158c305c5b33}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007758F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833120 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdam     	state=enabled	type=primary
+sdao     	state=enabled	type=secondary
+sdcs     	state=enabled	type=secondary
+sdah     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_247
+devicetag: emc_clariion0_247
+type:      auto
+hostid:    
+disk:      name= id=1494833122.108.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_247s3 char=/dev/vx/rdmp/emc_clariion0_247s3
+guid:      {a7f299f6-393f-11e7-982f-1884b6369049}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007858F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833122 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdap     	state=enabled	type=primary
+sdar     	state=enabled	type=secondary
+sdct     	state=enabled	type=secondary
+sdal     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_248
+devicetag: emc_clariion0_248
+type:      auto
+hostid:    
+disk:      name= id=1494833124.111.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_248s3 char=/dev/vx/rdmp/emc_clariion0_248s3
+guid:      {a92e012a-393f-11e7-ab5b-50fd9d351739}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007958F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833124 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdat     	state=enabled	type=primary
+sdau     	state=enabled	type=secondary
+sdcu     	state=enabled	type=secondary
+sdan     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_249
+devicetag: emc_clariion0_249
+type:      auto
+hostid:    
+disk:      name= id=1494833126.114.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_249s3 char=/dev/vx/rdmp/emc_clariion0_249s3
+guid:      {aa54ca20-393f-11e7-bf3d-41cbdf6eca21}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007A58F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833126 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdaw     	state=enabled	type=primary
+sday     	state=enabled	type=secondary
+sdcv     	state=enabled	type=secondary
+sdaq     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_250
+devicetag: emc_clariion0_250
+type:      auto
+hostid:    
+disk:      name= id=1494833128.117.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_250s3 char=/dev/vx/rdmp/emc_clariion0_250s3
+guid:      {ab881ef6-393f-11e7-a00d-059a7a5fd09e}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007B58F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833128 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdaz     	state=enabled	type=primary
+sdbb     	state=enabled	type=secondary
+sdcw     	state=enabled	type=secondary
+sdas     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_251
+devicetag: emc_clariion0_251
+type:      auto
+hostid:    
+disk:      name= id=1494833130.120.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_251s3 char=/dev/vx/rdmp/emc_clariion0_251s3
+guid:      {acb1133c-393f-11e7-a355-dad0407ea5d9}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007C58F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833130 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbd     	state=enabled	type=primary
+sdbf     	state=enabled	type=secondary
+sdcx     	state=enabled	type=secondary
+sdav     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_252
+devicetag: emc_clariion0_252
+type:      auto
+hostid:    
+disk:      name= id=1494833132.123.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_252s3 char=/dev/vx/rdmp/emc_clariion0_252s3
+guid:      {addfe116-393f-11e7-ac45-7b4663041e87}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007D58F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833132 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbg     	state=enabled	type=primary
+sdbi     	state=enabled	type=secondary
+sdcy     	state=enabled	type=secondary
+sdax     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_264
+devicetag: emc_clariion0_264
+type:      auto
+hostid:    
+disk:      name= id=1494833134.126.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_264s3 char=/dev/vx/rdmp/emc_clariion0_264s3
+guid:      {af15476a-393f-11e7-8049-51f7cb32c1cb}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030007E58F7E62EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833134 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbk     	state=enabled	type=primary
+sdbm     	state=enabled	type=secondary
+sdcz     	state=enabled	type=secondary
+sdba     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_265
+devicetag: emc_clariion0_265
+type:      auto
+hostid:    
+disk:      name= id=1494833136.129.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_265s3 char=/dev/vx/rdmp/emc_clariion0_265s3
+guid:      {b040eefa-393f-11e7-9d3f-48b9723affe0}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F0300026BD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833136 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbq     	state=enabled	type=primary
+sdbr     	state=enabled	type=secondary
+sdda     	state=enabled	type=secondary
+sdbc     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_266
+devicetag: emc_clariion0_266
+type:      auto
+hostid:    
+disk:      name= id=1494833138.132.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_266s3 char=/dev/vx/rdmp/emc_clariion0_266s3
+guid:      {b17b5b66-393f-11e7-aabc-2e6e177d84e2}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F0300027BD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833138 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbs     	state=enabled	type=primary
+sdbt     	state=enabled	type=secondary
+sddb     	state=enabled	type=secondary
+sdbe     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_267
+devicetag: emc_clariion0_267
+type:      auto
+hostid:    
+disk:      name= id=1494622179.117.s090106.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_267s3 char=/dev/vx/rdmp/emc_clariion0_267s3
+guid:      {8416891c-3754-11e7-9bf5-af46131a678f}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F0300028BD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494622179 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbu     	state=enabled	type=primary
+sdbv     	state=enabled	type=secondary
+sddc     	state=enabled	type=secondary
+sdbh     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_268
+devicetag: emc_clariion0_268
+type:      auto
+hostid:    
+disk:      name= id=1494833140.135.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_268s3 char=/dev/vx/rdmp/emc_clariion0_268s3
+guid:      {b2a2521a-393f-11e7-9fa1-3fd9195fb3c1}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F0300029BD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833140 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdbw     	state=enabled	type=primary
+sdbx     	state=enabled	type=secondary
+sddd     	state=enabled	type=secondary
+sdbj     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_269
+devicetag: emc_clariion0_269
+type:      auto
+hostid:    
+disk:      name= id=1494833141.138.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_269s3 char=/dev/vx/rdmp/emc_clariion0_269s3
+guid:      {b3c33c04-393f-11e7-8e2b-1b39844d7ebf}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030002ABD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833142 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdby     	state=enabled	type=primary
+sdbz     	state=enabled	type=secondary
+sdde     	state=enabled	type=secondary
+sdbl     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_270
+devicetag: emc_clariion0_270
+type:      auto
+hostid:    
+disk:      name= id=1494833143.141.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_270s3 char=/dev/vx/rdmp/emc_clariion0_270s3
+guid:      {b4ece36e-393f-11e7-8948-10678f015ce3}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030002BBD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833144 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdca     	state=enabled	type=primary
+sdcb     	state=enabled	type=secondary
+sddf     	state=enabled	type=secondary
+sdbn     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_271
+devicetag: emc_clariion0_271
+type:      auto
+hostid:    
+disk:      name= id=1494833145.144.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_271s3 char=/dev/vx/rdmp/emc_clariion0_271s3
+guid:      {b61a32dc-393f-11e7-afe3-9f6a14257566}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030002CBD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833146 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdcc     	state=enabled	type=primary
+sdcd     	state=enabled	type=secondary
+sddg     	state=enabled	type=secondary
+sdbo     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_272
+devicetag: emc_clariion0_272
+type:      auto
+hostid:    
+disk:      name= id=1494833147.147.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_272s3 char=/dev/vx/rdmp/emc_clariion0_272s3
+guid:      {b73ebc78-393f-11e7-bb04-c0d5b268a0d0}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F030002DBD72ED2EE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=10411776 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833148 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdce     	state=enabled	type=primary
+sdcf     	state=enabled	type=secondary
+sddh     	state=enabled	type=secondary
+sdbp     	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_312
+devicetag: emc_clariion0_312
+type:      auto
+hostid:    
+disk:      name= id=1494833149.150.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_312s3 char=/dev/vx/rdmp/emc_clariion0_312s3
+guid:      {b86641ca-393f-11e7-bb14-e6a0d27ee0a8}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000C9245C092FE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=2027264 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833149 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdc      	state=enabled	type=primary
+sde      	state=enabled	type=secondary
+sdch     	state=enabled	type=secondary
+sdg      	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+Device:    emc_clariion0_313
+devicetag: emc_clariion0_313
+type:      auto
+hostid:    
+disk:      name= id=1494833151.153.s090105.cdc.veritas.com
+group:     name= id=
+info:      format=cdsdisk,privoffset=256,pubslice=3,privslice=3
+flags:     online ready private autoconfig autoimport
+pubpaths:  block=/dev/vx/dmp/emc_clariion0_313s3 char=/dev/vx/rdmp/emc_clariion0_313s3
+guid:      {b98c5486-393f-11e7-b8fd-c4e3f10e8bcf}
+udid:      DGC%5FRAID%205%5FCKM00121900328%5F6006016024F03000CA245C092FE1E611
+site:      -
+version:   3.1
+iosize:    min=512 (bytes) max=1024 (blocks)
+public:    slice=3 offset=65792 len=2027264 disk_offset=0
+private:   slice=3 offset=256 len=65536 disk_offset=0
+update:    time=1494833151 seqno=0.2
+ssb:       actual_seqno=0.0
+headers:   0 240
+configs:   count=1 len=51360
+logs:      count=1 len=4096
+Defined regions:
+ config   priv 000048-000239[000192]: copy=01 offset=000000 disabled
+ config   priv 000256-051423[051168]: copy=01 offset=000192 disabled
+ log      priv 051424-055519[004096]: copy=01 offset=000000 disabled
+ lockrgn  priv 055520-055663[000144]: part=00 offset=000000
+Multipathing information:
+numpaths:   4
+sdf      	state=enabled	type=primary
+sdh      	state=enabled	type=secondary
+sdci     	state=enabled	type=secondary
+sdi      	state=enabled	type=primary
+connectivity: s090105 s090106 
+
+
+DATE:2017-05-15 07:43:13
+HOST:s090105
+USER:root
+STDIN:vxdg init autotcdg0 emc_clariion0_272
+STDOUT:
+
+
+***Making dg "autotcdg1" with maxsize=2048***
+
+
+
+DATE:2017-05-15 07:43:14
+HOST:s090105
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcdg0    enabled,cds          1494833305.155.s090105.cdc.veritas.com
+
+***Getting disk list by specified size***
+
+
+
+DATE:2017-05-15 07:43:16
+HOST:s090105
+USER:root
+STDIN:vxdg -s init autotcdg1 emc_clariion0_271
+STDOUT:
+
+
+
+====STEP: Making volume and filesystem and check if the dlv is higher than 9
+DATE:2017-05-15 07:43:16
+
+***Making autotcvol0 with size=1G in autotcdg0***
+
+
+
+DATE:2017-05-15 07:43:17
+HOST:s090105
+USER:root
+STDIN:for i in `vxprint -g autotcdg0|grep ^v|grep autotcvol0|awk '{print $2}'`;do vxedit -g autotcdg0 -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-05-15 07:43:18
+HOST:s090105
+USER:root
+STDIN:vxassist -g autotcdg0 make autotcvol0 1G
+STDOUT:
+
+
+
+DATE:2017-05-15 07:43:19
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/mkfs -t vxfs /dev/vx/rdsk/autotcdg0/autotcvol0
+STDOUT:
+    version 10 layout
+    2097152 sectors, 1048576 blocks of size 1024, log size 16384 blocks
+    rcq size 1024 blocks
+    largefiles supported
+    maxlink supported
+
+***Making autotcvol1 with size=1G in autotcdg1***
+
+
+
+DATE:2017-05-15 07:43:20
+HOST:s090105
+USER:root
+STDIN:for i in `vxprint -g autotcdg1|grep ^v|grep autotcvol1|awk '{print $2}'`;do vxedit -g autotcdg1 -rf rm $i;done
+STDOUT:
+
+
+
+DATE:2017-05-15 07:43:21
+HOST:s090105
+USER:root
+STDIN:vxassist -g autotcdg1 make autotcvol1 1G
+STDOUT:
+
+
+
+DATE:2017-05-15 07:43:22
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/mkfs -t vxfs /dev/vx/rdsk/autotcdg1/autotcvol1
+STDOUT:
+    version 10 layout
+    2097152 sectors, 1048576 blocks of size 1024, log size 16384 blocks
+    rcq size 1024 blocks
+    largefiles supported
+    maxlink supported
+
+
+DATE:2017-05-15 07:43:23
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/fstyp -v /dev/vx/dsk/autotcdg0/autotcvol0|grep version
+STDOUT:
+magic a501fcf5  version 10  ctime Mon 15 May 2017 07:28:31 AM UTC
+
+***DLV version meet requirement***
+
+
+
+====STEP: Mmount/cfsmount file systems.
+DATE:2017-05-15 07:43:23
+
+
+DATE:2017-05-15 07:43:24
+HOST:s090105
+USER:root
+STDIN:mkdir -p /autotcmnt0 && mount  -t vxfs /dev/vx/dsk/autotcdg0/autotcvol0 /autotcmnt0
+STDOUT:
+
+
+
+DATE:2017-05-15 07:43:25
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 19M 943M 2% /autotcmnt0
+
+
+DATE:2017-05-15 07:43:27
+HOST:s090105
+USER:root
+STDIN:mkdir -p /autotcmnt1 && mount -o cluster -t vxfs /dev/vx/dsk/autotcdg1/autotcvol1 /autotcmnt1
+STDOUT:
+
+
+
+DATE:2017-05-15 07:43:28
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 19M 943M 2% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 19M 943M 2% /autotcmnt1
+
+
+DATE:2017-05-15 07:43:29
+HOST:s090106
+USER:root
+STDIN:mkdir -p /autotcmnt1 && mount -o cluster -t vxfs /dev/vx/dsk/autotcdg1/autotcvol1 /autotcmnt1
+STDOUT:
+
+
+
+DATE:2017-05-15 07:43:30
+HOST:s090106
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 5.3G 115G 5% /
+tmpfs 1.5G 0 1.5G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 36M 927M 4% /autotcmnt1
+
+
+DATE:2017-05-15 07:43:31
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 19M 943M 2% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 36M 927M 4% /autotcmnt1
+
+
+DATE:2017-05-15 07:43:32
+HOST:s090106
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 5.3G 115G 5% /
+tmpfs 1.5G 0 1.5G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 36M 927M 4% /autotcmnt1
+
+
+====STEP: create three 100M files on mount points (file1 on private file system, file2 and file3 on shared file system)
+DATE:2017-05-15 07:43:32
+
+
+DATE:2017-05-15 07:43:33
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/etc/mf.pl s090105:/tmp/tmpfile.26708
+STDOUT:
+
+
+
+DATE:2017-05-15 07:43:40
+HOST:s090105
+USER:root
+STDIN:/tmp/tmpfile.26708 -s 104857600 -n 1 -d /autotcmnt0 && /tmp/tmpfile.26708 -s 104857600 -n 2 -d /autotcmnt1
+STDOUT:
+
+
+
+DATE:2017-05-15 07:43:41
+HOST:s090105
+USER:root
+STDIN:du -sk /autotcmnt0/mf/*;du -sk /autotcmnt1/mf/*
+STDOUT:
+102400	/autotcmnt0/mf/mf_1_0
+103416	/autotcmnt1/mf/mf_0_0
+102408	/autotcmnt1/mf/mf_1_1
+
+
+DATE:2017-05-15 07:43:42
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 119M 850M 13% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 237M 739M 25% /autotcmnt1
+
+
+====STEP: Take the cksum of file3 before compression.
+DATE:2017-05-15 07:43:42
+
+
+DATE:2017-05-15 07:43:44
+HOST:s090105
+USER:root
+STDIN:cksum /autotcmnt1/mf/mf_1_1
+STDOUT:
+2056512108 104857600 /autotcmnt1/mf/mf_1_1
+
+
+====STEP: on each mount points, create one dirctory and fill some Data. (dir1 on private file system, dir2 on shared file system)
+DATE:2017-05-15 07:43:44
+
+
+DATE:2017-05-15 07:43:45
+HOST:s090105
+USER:root
+STDIN:mkdir -p /autotcmnt0/autotcdir0 /autotcmnt1/autotcdir1
+STDOUT:
+
+
+
+DATE:2017-05-15 07:43:49
+HOST:s090105
+USER:root
+STDIN:/tmp/tmpfile.26708 -s 104857600 -n 5 -d /autotcmnt0/autotcdir0
+STDOUT:
+
+
+
+DATE:2017-05-15 07:43:54
+HOST:s090105
+USER:root
+STDIN:/tmp/tmpfile.26708 -s 104857600 -n 5 -d /autotcmnt1/autotcdir1
+STDOUT:
+
+
+
+DATE:2017-05-15 07:43:55
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 619M 381M 62% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 739M 268M 74% /autotcmnt1
+
+
+====STEP: Lists the supported compression algorithms,along with the supported block sizes
+DATE:2017-05-15 07:43:55
+
+
+DATE:2017-05-15 07:43:56
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -a
+STDOUT:
+gzip	8k - 1024k
+
+
+====STEP: Displays the compression of the files/directories before compression
+DATE:2017-05-15 07:43:56
+
+
+DATE:2017-05-15 07:43:59
+HOST:s090105
+USER:root
+STDIN:for i in /autotcmnt0/mf/mf_1_0 /autotcmnt1/mf/mf_0_0 /autotcmnt1/mf/mf_1_1;do /opt/VRTS/bin/vxcompress -l $i;done
+STDOUT:
+%Comp   Physical    Logical  %Exts  Alg-Str  BSize  Filename
+   0%     102400     102400     0%        -      -  /autotcmnt0/mf/mf_1_0
+%Comp   Physical    Logical  %Exts  Alg-Str  BSize  Filename
+   0%     103408     103408     0%        -      -  /autotcmnt1/mf/mf_0_0
+%Comp   Physical    Logical  %Exts  Alg-Str  BSize  Filename
+   0%     102400     102400     0%        -      -  /autotcmnt1/mf/mf_1_1
+
+
+DATE:2017-05-15 07:44:01
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -l -r /autotcmnt0/autotcdir0
+STDOUT:
+%Comp   Physical    Logical  %Exts  Alg-Str  BSize  Filename
+   0%      92208      92208     0%        -      -  /autotcmnt0/autotcdir0/mf/mf_0_0
+   0%      92232      92232     0%        -      -  /autotcmnt0/autotcdir0/mf/mf_1_4
+   0%      94304      94304     0%        -      -  /autotcmnt0/autotcdir0/mf/mf_0_1
+   0%      93768      93768     0%        -      -  /autotcmnt0/autotcdir0/mf/mf_1_3
+   0%      92216      92216     0%        -      -  /autotcmnt0/autotcdir0/mf/mf_1_2
+
+Total:      5 files              0 (0%) storage savings
+
+
+DATE:2017-05-15 07:44:03
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -l -r /autotcmnt1/autotcdir1
+STDOUT:
+%Comp   Physical    Logical  %Exts  Alg-Str  BSize  Filename
+   0%     103384     103384     0%        -      -  /autotcmnt1/autotcdir1/mf/mf_0_0
+   0%     102400     102400     0%        -      -  /autotcmnt1/autotcdir1/mf/mf_1_4
+   0%     102400     102400     0%        -      -  /autotcmnt1/autotcdir1/mf/mf_1_3
+   0%     102400     102400     0%        -      -  /autotcmnt1/autotcdir1/mf/mf_0_1
+   0%     103320     103320     0%        -      -  /autotcmnt1/autotcdir1/mf/mf_1_2
+
+Total:      5 files              0 (0%) storage savings
+
+
+====STEP: take down file systems usage before compression
+DATE:2017-05-15 07:44:03
+
+
+DATE:2017-05-15 07:44:04
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/fsadm -S compressed /autotcmnt0
+STDOUT:
+ Mountpoint    Size(KB)    Available(KB)   Used(KB)   Logical_Size(KB) Space_Saved(KB)
+/autotcmnt0     1048576        389446     633173           633173             0
+
+
+DATE:2017-05-15 07:44:05
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/fsadm -S compressed /autotcmnt1
+STDOUT:
+ Mountpoint    Size(KB)    Available(KB)   Used(KB)   Logical_Size(KB) Space_Saved(KB)
+/autotcmnt1     1048576        274350     756078           756078             0
+
+
+====STEP: Compress the three files(file1,file2,file3), file1 and file3 use the default algorithm and strength of gzip-6, file2 use the highest strength 9 then display
+DATE:2017-05-15 07:44:05
+
+
+DATE:2017-05-15 07:44:10
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress /autotcmnt0/mf/mf_1_0 /autotcmnt1/mf/mf_1_1
+STDOUT:
+
+
+
+DATE:2017-05-15 07:44:13
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -t gzip-9 /autotcmnt1/mf/mf_0_0
+STDOUT:
+
+
+
+DATE:2017-05-15 07:44:14
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 583M 414M 59% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 707M 298M 71% /autotcmnt1
+
+
+DATE:2017-05-15 07:44:16
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -l /autotcmnt0/mf/mf_1_0 /autotcmnt1/mf/mf_0_0 /autotcmnt1/mf/mf_1_1
+STDOUT:
+%Comp   Physical    Logical  %Exts  Alg-Str  BSize  Filename
+ 100%        200     102400   100%   gzip-6  1024k  /autotcmnt0/mf/mf_1_0
+ 100%        200     102400   100%   gzip-9  1024k  /autotcmnt1/mf/mf_0_0
+ 100%        200     102400   100%   gzip-6  1024k  /autotcmnt1/mf/mf_1_1
+
+Total:      3 files         306600 (100%) storage savings
+
+***Compression percentage is greater than 0***
+
+
+
+====STEP: Check the file system usage after compression
+DATE:2017-05-15 07:44:16
+
+
+DATE:2017-05-15 07:44:17
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/fsadm -S compressed /autotcmnt0
+STDOUT:
+ Mountpoint    Size(KB)    Available(KB)   Used(KB)   Logical_Size(KB) Space_Saved(KB)
+/autotcmnt0     1048576        439146     580157           682357        102200
+
+
+DATE:2017-05-15 07:44:18
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/fsadm -S compressed /autotcmnt1
+STDOUT:
+ Mountpoint    Size(KB)    Available(KB)   Used(KB)   Logical_Size(KB) Space_Saved(KB)
+/autotcmnt1     1048576        350704     674630           879030        204400
+
+
+DATE:2017-05-15 07:44:20
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 551M 444M 56% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 627M 373M 63% /autotcmnt1
+
+
+====STEP: Read the two compressed files(file1, file2),file just be uncompressed in memory,so the %comp will not changed
+DATE:2017-05-15 07:44:20
+
+
+DATE:2017-05-15 07:44:21
+HOST:s090105
+USER:root
+STDIN:dd if=/autotcmnt0/mf/mf_1_0 of=/dev/null bs=1024k count=100
+STDOUT:
+100+0 records in
+100+0 records out
+104857600 bytes (105 MB) copied, 0.657412 s, 160 MB/s
+
+
+DATE:2017-05-15 07:44:23
+HOST:s090105
+USER:root
+STDIN:dd if=/autotcmnt1/mf/mf_0_0 of=/dev/null bs=1024k count=100
+STDOUT:
+100+0 records in
+100+0 records out
+104857600 bytes (105 MB) copied, 0.66988 s, 157 MB/s
+
+
+DATE:2017-05-15 07:44:25
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -l /autotcmnt0/mf/mf_1_0 /autotcmnt1/mf/mf_0_0
+STDOUT:
+%Comp   Physical    Logical  %Exts  Alg-Str  BSize  Filename
+ 100%        200     102400   100%   gzip-6  1024k  /autotcmnt0/mf/mf_1_0
+ 100%        200     102400   100%   gzip-9  1024k  /autotcmnt1/mf/mf_0_0
+
+Total:      2 files         204400 (100%) storage savings
+
+***compression percentage keep the same***
+
+
+
+====STEP: Writing data to the two compressed files(file1, file2),the %comp will be less
+DATE:2017-05-15 07:44:25
+
+
+DATE:2017-05-15 07:44:26
+HOST:s090105
+USER:root
+STDIN:dd if=/autotcmnt0/mf/mf_1_0 of=/tmp/autotctmpfile bs=1024k count=50
+STDOUT:
+50+0 records in
+50+0 records out
+52428800 bytes (52 MB) copied, 0.358961 s, 146 MB/s
+
+
+DATE:2017-05-15 07:44:27
+HOST:s090105
+USER:root
+STDIN:cat /tmp/autotctmpfile >> /autotcmnt0/mf/mf_1_0
+STDOUT:
+
+
+
+DATE:2017-05-15 07:44:29
+HOST:s090105
+USER:root
+STDIN:cat /tmp/autotctmpfile >> /autotcmnt1/mf/mf_0_0
+STDOUT:
+
+
+
+DATE:2017-05-15 07:44:29
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 570M 427M 58% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 589M 409M 60% /autotcmnt1
+
+
+DATE:2017-05-15 07:44:32
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -l /autotcmnt0/mf/mf_1_0 /autotcmnt1/mf/mf_0_0
+STDOUT:
+%Comp   Physical    Logical  %Exts  Alg-Str  BSize  Filename
+  66%      52392     154592    97%   gzip-6  1024k  /autotcmnt0/mf/mf_1_0
+  66%      52392     154592    96%   gzip-9  1024k  /autotcmnt1/mf/mf_0_0
+
+Total:      2 files         204400 (66%) storage savings
+
+***compression percentage truns less***
+
+
+
+====STEP: compress file1, file2 again,then check if the compress percentage is greater
+DATE:2017-05-15 07:44:32
+
+
+DATE:2017-05-15 07:44:35
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress /autotcmnt0/mf/mf_1_0 /autotcmnt1/mf/mf_0_0
+STDOUT:
+
+
+
+DATE:2017-05-15 07:44:36
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 570M 426M 58% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 589M 409M 60% /autotcmnt1
+
+
+DATE:2017-05-15 07:44:38
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -l /autotcmnt0/mf/mf_1_0 /autotcmnt1/mf/mf_0_0
+STDOUT:
+%Comp   Physical    Logical  %Exts  Alg-Str  BSize  Filename
+ 100%        300     153600   100%   gzip-6  1024k  /autotcmnt0/mf/mf_1_0
+ 100%        300     153600   100%   gzip-9  1024k  /autotcmnt1/mf/mf_0_0
+
+Total:      2 files         306600 (100%) storage savings
+
+***compression percentage truns greater***
+
+
+
+====STEP: Compress the directories. one directory use strength 1, the other directory use strength 6,and display and compare the space save between before and after compression
+DATE:2017-05-15 07:44:38
+
+
+DATE:2017-05-15 07:44:39
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/fsadm -S compressed /autotcmnt0
+STDOUT:
+ Mountpoint    Size(KB)    Available(KB)   Used(KB)   Logical_Size(KB) Space_Saved(KB)
+/autotcmnt0     1048576        466930     550521           703821        153300
+
+
+DATE:2017-05-15 07:44:40
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/fsadm -S compressed /autotcmnt1
+STDOUT:
+ Mountpoint    Size(KB)    Available(KB)   Used(KB)   Logical_Size(KB) Space_Saved(KB)
+/autotcmnt1     1048576        417863     602994           858494        255500
+
+
+DATE:2017-05-15 07:44:46
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -r -t gzip-1 /autotcmnt0/autotcdir0
+STDOUT:
+
+
+
+DATE:2017-05-15 07:44:54
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -r /autotcmnt1/autotcdir1
+STDOUT:
+
+
+
+DATE:2017-05-15 07:44:55
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 226M 749M 24% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 444M 545M 45% /autotcmnt1
+
+
+DATE:2017-05-15 07:44:58
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -l -r /autotcmnt0/autotcdir0 /autotcmnt1/autotcdir1
+STDOUT:
+%Comp   Physical    Logical  %Exts  Alg-Str  BSize  Filename
+ 100%        500     102400   100%   gzip-1  1024k  /autotcmnt0/autotcdir0/mf/mf_0_0
+ 100%        500     102400   100%   gzip-1  1024k  /autotcmnt0/autotcdir0/mf/mf_1_4
+ 100%        500     102400   100%   gzip-1  1024k  /autotcmnt0/autotcdir0/mf/mf_0_1
+ 100%        500     102400   100%   gzip-1  1024k  /autotcmnt0/autotcdir0/mf/mf_1_3
+ 100%        500     102400   100%   gzip-1  1024k  /autotcmnt0/autotcdir0/mf/mf_1_2
+ 100%        200     102400   100%   gzip-6  1024k  /autotcmnt1/autotcdir1/mf/mf_0_0
+ 100%        200     102400   100%   gzip-6  1024k  /autotcmnt1/autotcdir1/mf/mf_1_3
+ 100%        200     102400   100%   gzip-6  1024k  /autotcmnt1/autotcdir1/mf/mf_1_4
+ 100%        200     102400   100%   gzip-6  1024k  /autotcmnt1/autotcdir1/mf/mf_0_1
+ 100%        200     102400   100%   gzip-6  1024k  /autotcmnt1/autotcdir1/mf/mf_1_2
+
+Total:     10 files        1020500 (100%) storage savings
+
+
+DATE:2017-05-15 07:44:59
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/fsadm -S compressed /autotcmnt0
+STDOUT:
+ Mountpoint    Size(KB)    Available(KB)   Used(KB)   Logical_Size(KB) Space_Saved(KB)
+/autotcmnt0     1048576        878251     111909           774709        662800
+
+
+DATE:2017-05-15 07:45:00
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/fsadm -S compressed /autotcmnt1
+STDOUT:
+ Mountpoint    Size(KB)    Available(KB)   Used(KB)   Logical_Size(KB) Space_Saved(KB)
+/autotcmnt1     1048576        705603     296066          1062566        766500
+
+***The space saved size increased***
+
+
+
+====STEP: Uncompress all files and check the compress percentage should be 0%
+DATE:2017-05-15 07:45:00
+
+
+DATE:2017-05-15 07:45:04
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -u /autotcmnt0/mf/mf_1_0 /autotcmnt1/mf/mf_0_0 /autotcmnt1/mf/mf_1_1
+STDOUT:
+
+
+
+DATE:2017-05-15 07:45:05
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 172M 800M 18% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 400M 586M 41% /autotcmnt1
+
+
+DATE:2017-05-15 07:45:07
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -l /autotcmnt0/mf/mf_1_0 /autotcmnt1/mf/mf_0_0 /autotcmnt1/mf/mf_1_1
+STDOUT:
+%Comp   Physical    Logical  %Exts  Alg-Str  BSize  Filename
+   0%     153600     153600     0%        -      -  /autotcmnt0/mf/mf_1_0
+   0%     153600     153600     0%        -      -  /autotcmnt1/mf/mf_0_0
+   0%     102400     102400     0%        -      -  /autotcmnt1/mf/mf_1_1
+
+Total:      3 files              0 (0%) storage savings
+
+***All compression percentage are 0%***
+
+
+
+====STEP: Uncompress all directores and check the compress percentage should be 0%
+DATE:2017-05-15 07:45:12
+
+
+DATE:2017-05-15 07:45:24
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -u -r /autotcmnt0/autotcdir0 /autotcmnt1/autotcdir1
+STDOUT:
+
+
+
+DATE:2017-05-15 07:45:25
+HOST:s090105
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sddi2 126G 41G 79G 35% /
+tmpfs 1.9G 0 1.9G 0% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+/dev/vx/dsk/autotcdg0/autotcvol0 1.0G 671M 332M 67% /autotcmnt0
+/dev/vx/dsk/autotcdg1/autotcvol1 1.0G 787M 223M 78% /autotcmnt1
+
+
+DATE:2017-05-15 07:45:27
+HOST:s090105
+USER:root
+STDIN:/opt/VRTS/bin/vxcompress -l -r /autotcmnt0/autotcdir0 /autotcmnt1/autotcdir1
+STDOUT:
+%Comp   Physical    Logical  %Exts  Alg-Str  BSize  Filename
+   0%     102400     102400     0%        -      -  /autotcmnt0/autotcdir0/mf/mf_0_0
+   0%     102400     102400     0%        -      -  /autotcmnt0/autotcdir0/mf/mf_1_4
+   0%     102400     102400     0%        -      -  /autotcmnt0/autotcdir0/mf/mf_0_1
+   0%     102400     102400     0%        -      -  /autotcmnt0/autotcdir0/mf/mf_1_2
+   0%     102400     102400     0%        -      -  /autotcmnt0/autotcdir0/mf/mf_1_3
+   0%     102400     102400     0%        -      -  /autotcmnt1/autotcdir1/mf/mf_0_0
+   0%     102400     102400     0%        -      -  /autotcmnt1/autotcdir1/mf/mf_1_3
+   0%     102400     102400     0%        -      -  /autotcmnt1/autotcdir1/mf/mf_1_4
+   0%     102400     102400     0%        -      -  /autotcmnt1/autotcdir1/mf/mf_0_1
+   0%     102400     102400     0%        -      -  /autotcmnt1/autotcdir1/mf/mf_1_2
+
+Total:     10 files              0 (0%) storage savings
+
+***All compression percentage are 0%***
+
+
+
+====STEP: Compare the cksum value of /autotcmnt1/mf/mf_1_1,it should keep the same
+DATE:2017-05-15 07:45:27
+
+
+DATE:2017-05-15 07:45:29
+HOST:s090105
+USER:root
+STDIN:cksum /autotcmnt1/mf/mf_1_1
+STDOUT:
+2056512108 104857600 /autotcmnt1/mf/mf_1_1
+
+***cksum value of /autotcmnt1/mf/mf_1_1 are the same***
+
+
+
+Case Result:Passed
+DATE:2017-05-15 07:45:29
+Duration:3m3s

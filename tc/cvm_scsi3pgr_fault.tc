@@ -1,0 +1,297 @@
+#DES:supported platform(linux aix solaris )
+oLog step "checking basic environment of testbed"
+checkNode root
+for node in $NODES
+do
+        getHostnameOSProduct $node
+done
+oLog step "check CVM status"
+checkCVMStatus || myexit 201
+checkFencingStatus  || myexit 201
+
+oLog step "checking the the fencing keys before updown test"
+RExec root $NODE1 "cat /etc/vxfendg"
+fendg=`echo "$out"`
+if num_path=`getShareDiskPathNum` 
+then
+        :
+else
+        oLog des "The TC requires all LUNs with same path number!"
+        myexit 201
+fi
+checkDiskKeys $NODE1 $fendg $num_path
+
+oLog step "set up UPDOWN test"
+for node in $NODES
+do
+	RExec root $node "/opt/VRTSvcs/bin/hastop -local"
+	RExec root $node "mv -f /etc/sysconfig/llt /etc/sysconfig/llt.bak"
+	RExec root $node "echo LLT_START=0 > /etc/sysconfig/llt"
+	RExec root $node "echo LLT_STOP=1 >> /etc/sysconfig/llt"
+	RExec root $node "cat /etc/sysconfig/llt.bak"
+        RExec root $node "cat /etc/sysconfig/llt"
+	RExec root $node "sync;sync;sync"
+	rebootNode $node
+	waitNodeOffline $node
+	onlinenode=`echo "$NODES"|sed -r 's/ /\n/g'|grep -v $node`
+	sleep 30
+	checkDiskKeys $onlinenode $fendg $[$num_path/2]
+	waitNodeOnline $node
+	RExec root $node "ls /etc/sysconfig/llt.bak"
+	RExec root $node "cp /etc/sysconfig/llt.bak /etc/sysconfig/llt"
+        RExec root $node "sync;sync;sync"
+	waitNodeReboot $node
+	waitGroupOnline $onlinenode  cvm
+	checkDiskKeys $node $fendg $num_path
+done
+
+oLog step "changing the vxfenmode value to PGR_TRAINING for one of the nodes in the cluster"  
+RExec root $NODE1 "mv -f /etc/vxfenmode /etc/vxfenmode.bk"
+RExec root $NODE1 "echo vxfen_mode=PGR_TRAINING > /etc/vxfenmode"
+RExec root $node "sync;sync;sync"
+waitNodeReboot $NODE1
+for i in `seq 10`
+do
+	sleep 20
+	RExec root $NODE1 "NOERROR:gabconfig -a"
+	echo "$out"|grep -i 'Port h' > /dev/null 2>&1 && break
+done
+echo "$out"|grep -i 'Port b' > /dev/null 2>&1 && oLog error "The Port b should not be online" && myexit 1
+RExec root $NODE1 "/opt/VRTS/bin/hastatus -summ"
+echo "$out"|grep "SYSTEM STATE" -A 4|grep $NODE1|grep RUNNING >/dev/null 2>&1 && oLog error "The \"$NODE1\" should not be RUNNING" && myexit 1 
+RExec root $NODE1 "cat /etc/vxfenmode.bk |tee /etc/vxfenmode"
+RExec root $node "sync;sync;sync"
+waitNodeReboot $NODE1
+onlinenode=`echo "$NODES"|sed -r 's/ /\n/g'|tail -1`
+waitGroupOnline $onlinenode cvm
+
+oLog step "use vxdisk -f init try to  initialize one of the coordinator disk,it should be failed."
+RExec root $NODE1 "vxdisk -oalldgs list"
+fendisk=`echo "$out"|grep "($fendg)"|awk '{print $1}'|head -1`
+RExec root $NODE1 "NOERROR:vxdisk -f init $fendisk"
+echo "$out"|grep -iv "vxdisk ERROR" >/dev/null 2>&1 && oLog error "the initialization should be failed" && myexit 1
+
+oLog step "clear the coordinator disk attribute by entering \"vxdg set coordinatior=off\" and check the fencing keys"
+RExec root $NODE1 "vxdg import $fendg"
+RExec root $NODE1 "vxdg -g $fendg set coordinator=off"
+RExec root $NODE1 "vxdg deport $fendg"
+for node in $NODES
+do
+	checkDiskKeys $node $fendg $num_path
+done
+RExec root $NODE1 "vxdg import $fendg"
+RExec root $NODE1 "vxdg -g $fendg set coordinator=on"
+RExec root $NODE1 "vxdg deport $fendg"
+
+oLog step "set up 3 shared disks groups with 4 volumes and using different layout types"
+makeDgByLayoutForScsi3Fault $NODE1 sm,s,m,c 3
+
+oLog step "create file systems for each of the volumes on first two disk groups and mount them using cfsmount command"
+for node in $NODES
+do
+        RExec root $node "ls /"
+        echo "$out"|grep autotcdir >/dev/null 2>&1 && RExec root $node "rm -rf /autotcdir"
+done
+RExec root $NODE1 "vxdg list"
+datadgs=`echo "$out"|sed 1d|head -2|awk '{print $1}'`
+for dg in $datadgs
+do
+        mkvol=`makeVolumeByLayout $NODE1 $dg sm,s,m,c 2g` || exit 1
+	RExec root $NODE1 "ls /dev/vx/rdsk/$dg"
+        vols=`echo "$out"|xargs -n10`
+        for vol in $vols
+        do
+                mkVxfs $NODE1 $dg $vol
+		i=0
+		for node in $NODES
+		do
+			RExec root $node "mkdir -p /autotcdir/ITF_${dg}_$vol"
+			i=$[$i+1]
+		done
+		RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmntadm add $dg $vol /autotcdir/ITF_${dg}_$vol all=rw"
+                RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmount /autotcdir/ITF_${dg}_$vol"
+		RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmntadm display /autotcdir/ITF_${dg}_$vol"
+		[ `echo "$out"|grep MOUNTED|wc -l` -ne $i ] && oLog error "Please ensure the mountpoints are added" && myexit 1
+        done
+done
+
+oLog step "start I/O to write date on the file systems"
+case $type in
+L)
+        iotool=thrash_linux
+        ;;
+A)
+        iotool=thrash_aix
+        ;;
+S)
+        iotool=thrash_solaris
+        ;;
+esac
+for node in $NODES
+do
+	copyFileToRemote $BASE/etc/$iotool $node
+	RExec root $node "$cmd2"
+        [ $type = A ] && mpts=`echo "$out"|grep autotcdir|awk '{print $7}'|xargs -n100` || mpts=`echo "$out"|grep autotcdir|awk '{print $6}'|xargs -n100`
+        for mp in $mpts
+        do
+                fsStressStartWithThrash $node $mp
+        done
+done
+for node in $NODES
+do
+	for dg in $datadgs
+	do
+		checkDiskKeys $node $dg $num_path
+	done
+done
+
+oLog step "stop the VCS ENGINE on hosts one by one, and view the keys on data and coordinator disks"
+j=1
+for node in $NODES
+do
+	RExec root $node "/opt/VRTSvcs/bin/hastop -local"
+	RExec root $node "vxdg -qa list"
+	[ `echo "$out"|sed -e '/^$/d'|wc -l` -ne 0 ] && oLog error "Please ensure all dgs are deported" && myexit 1
+	n=`echo "$NODES"|sed -r 's/ /\n/g'|wc -l`
+	sleep 30
+	for keynode in $NODES
+	do
+        	for dg in $datadgs
+        	do
+                	checkDiskKeys $keynode $dg $[$num_path-$num_path/$n*$j] 
+        	done
+	done
+	j=$[$j+1]
+done
+
+
+oLog step "start the VCS ENGINE on hosts one by one, and view the keys on data and coordinator disks"
+j=1
+for node in $NODES
+do
+        RExec root $node "/opt/VRTSvcs/bin/hastart"
+	h=0
+	for i in `seq 20`
+	do
+		sleep 20  
+        	RExec root $node "NOERROR:/opt/VRTSvcs/bin/hastatus -summ"
+		echo "$out"|grep -i "SYSTEM STATE" -A 4|grep $node |grep RUNNING >/dev/null 2>&1 && break
+		h=$[$h+1]
+	done 
+        [ $h -eq 20 ] && oLog error "The system state is not running" && myexit 1
+	RExec root $node "vxdg -qa list"
+        [ `echo "$out"|sed -e '/^$/d'|wc -l` -ne 3 ] && oLog error "Please ensure all dgs are imported" && myexit 1
+	RExec root $node "/opt/VRTSvcs/bin/hagrp -list"
+	grps=`echo "$out"|awk '{print $1}'|sort -u|xargs -n1000`
+	for grp in $grps
+	do
+		waitNodeGroupOnline $node $grp
+	done
+        for keynode in $NODES
+        do
+                for dg in $datadgs
+                do
+                        checkDiskKeys $keynode $dg $[$num_path/$n*$j]
+                done
+        done
+        j=$[$j+1]
+done
+for node in $NODES
+do
+	fsStressStopWithThrash $node
+done
+
+oLog step "configure several cfsmount on I/O fencing disks/disk group with MDs/vset volumes"
+RExec root $NODE1 "vxdg list"
+datadg=`echo "$datadgs"|xargs -n100|sed 's/ /|/g'`
+vsetdg=`echo "$out"|grep -vP "$datadg"|sed 1d|awk '{print $1}'`
+for i in `seq 4`
+do
+	RExec root $NODE1 "/opt/VRTS/bin/vxassist -g $vsetdg make ${vsetdg}_${i}_vol1 300M layout=concat"
+	RExec root $NODE1 "/opt/VRTS/bin/vxassist -g $vsetdg make ${vsetdg}_${i}_vol2 300M layout=concat"
+	RExec root $NODE1 "/opt/VRTS/bin/vxvset -g $vsetdg make ${vsetdg}_${i}_vset ${vsetdg}_${i}_vol1"
+	RExec root $NODE1 "/opt/VRTS/bin/vxvset -g $vsetdg addvol ${vsetdg}_${i}_vset ${vsetdg}_${i}_vol2"
+	mkVxfs $NODE1 $vsetdg ${vsetdg}_${i}_vset
+	RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmntadm add $vsetdg ${vsetdg}_${i}_vset /autotcdir/ITF_${vsetdg}_${i}_vset all=rw,delaylog"
+	RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmount /autotcdir/ITF_${vsetdg}_${i}_vset"	
+	RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmntadm display /autotcdir/ITF_${vsetdg}_${i}_vset"
+done
+
+oLog step "start I/O to write date on all cfsmounts"
+for node in $NODES
+do
+        RExec root $node "$cmd2"
+        [ $type = A ] && vsetmpts=`echo "$out"|grep autotcdir|grep "_vset"|awk '{print $7}'|xargs -n100` || vsetmpts=`echo "$out"|grep autotcdir|grep "_vset"|awk '{print $6}'|xargs -n100`
+        for mp in $vsetmpts
+        do
+                fsStressStartWithThrash $node $mp
+        done
+done
+
+oLog step "take a few fast checkpoints of some of the cfsmounts and start an I/O load on the checkpoints cfsmounts"
+i=0
+for mp in $vsetmpts
+do
+	ckmp=`echo "$mp"|awk -F "/" '{print $3}'`
+	RExec root $NODE1 "/opt/VRTS/bin/fsckptadm -r create ckpt_$ckmp $mp"
+	RExec root $NODE1 "mkdir -p /autotcdir/ckpt_$ckmp"
+	RExec root $NODE1 "/opt/VRTS/bin/cfsmntadm add ckpt ckpt_$ckmp $mp /autotcdir/ckpt_$ckmp all=rw,delaylog"
+	RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmount /autotcdir/ckpt_$ckmp"
+	RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmntadm display /autotcdir/ckpt_$ckmp"
+	for node in $NODES
+	do
+		fsStressStartWithThrash $node /autotcdir/ckpt_$ckmp
+	done
+	i=$[$i+1]
+	[ $i -eq 2 ] && break
+done
+RExec root $NODE1 "$cmd2"
+[ $type = A ] && vsetmpts=`echo "$out"|grep autotcdir|grep "_vset"|awk '{print $7}'|xargs -n100` || vsetmpts=`echo "$out"|grep autotcdir|grep "_vset"|awk '{print $6}'|xargs -n100`
+vmptnum=`echo "$vsetmpts"|sed -r 's/ /\n/g'|wc -l`
+
+oLog step "pull out one heartbeat cables"
+RExec root $NODE1 "cat /etc/llttab"
+[ `echo "$out"|grep ^link|wc -l` -lt 2 ] && oLog des "only one lltlink, so skip following steps" && myexit 10
+lltlink=`echo "$out"|grep ^link|awk '{print $2}'|head -1`
+RExec root $NODE1 "lltconfig -t $lltlink -L disable"
+ 
+oLog step "check the coordinator and data disks to ensure they still have keys"
+for node in $NODES
+do
+	checkDiskKeys $node $fendg $num_path	
+	checkDiskKeys $node $vsetdg $num_path
+done
+
+oLog step "stop I/O load on all cfsmounts"
+for node in $NODES
+do
+        fsStressStopWithThrash $node
+done
+
+oLog step "reboot one node and have them rejoin"
+waitNodeReboot $NODE1
+sleep 60
+NODE2=`echo "$NODES"|sed -r 's/ /\n/g'|grep -v $NODE1`
+RExec root $NODE2 "/opt/VRTSvcs/bin/hagrp -list"
+grps=`echo "$out"|awk '{print $1}'|sort -u|xargs -n1000`
+for grp in $grps
+do
+        waitNodeGroupOnline $NODE1 $grp
+done
+
+oLog step "verify that all mounts auto online"
+i=0
+for mp in $vsetmpts
+do
+	RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmntadm display $mp"
+	[ `echo "$out"|grep MOUNTED|wc -l` -ne $n ] && oLog error "Please ensure all nodes are mounted" && myexit 1
+	i=$[$i+1]
+done
+if [ $i -ne $vmptnum ]
+then
+	oLog error "some of mountpoints are offline" && myexit 1
+else
+        oLog flag
+	myexit 10
+fi
+

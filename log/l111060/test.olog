@@ -1,0 +1,31 @@
+
+==================== Operation Log for TC test ====================
+DATE:2017-08-11 15:56:26
+Nodes:l111060 l111061
+
+
+DATE:2017-08-11 15:56:28
+HOST:10.200.109.107
+USER:root
+STDIN:ls
+STDOUT:
+a
+anaconda-ks.cfg
+Desktop
+install.log
+install.log.syslog
+
+
+DATE:2017-08-11 15:56:58
+HOST:10.200.109.107
+USER:root
+STDIN:df -k
+STDOUT:
+Timeout: aborting command ``ssh'' with signal 9
+RETURN:137
+RESULT:Failed[killed by system as timetout]
+
+
+Case Result:Failed
+DATE:2017-08-11 15:56:58
+Duration:0m32s

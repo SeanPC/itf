@@ -1,0 +1,1 @@
+cmd2='df -h|sed 1d|xargs -n 6'

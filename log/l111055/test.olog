@@ -1,0 +1,128 @@
+
+==================== Operation Log for TC test ====================
+DATE:2017-08-10 10:35:50
+Nodes:l111055 l111059
+
+
+DATE:2017-08-10 10:35:51
+HOST:l111055
+USER:root
+STDIN:cat /etc/vxfendg
+STDOUT:
+vxfendg
+
+
+DATE:2017-08-10 10:35:52
+HOST:l111055
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+ams_25000_316 auto:cdsdisk    -            (vxfendg)    online
+ams_25000_317 auto:cdsdisk    -            (vxfendg)    online
+ams_25000_724 auto:cdsdisk    -            (vxfendg)    online
+ams_25000_733 auto:cdsdisk    -            -            online
+ams_25000_734 auto:cdsdisk    -            -            online
+ams_25000_735 auto:cdsdisk    -            -            online
+ams_25000_736 auto:cdsdisk    -            -            online
+ams_25000_1734 auto:cdsdisk    -            -            online
+ams_25000_1735 auto:cdsdisk    -            -            online
+ams_25000_1736 auto:cdsdisk    -            -            online
+ams_25000_1737 auto:cdsdisk    -            -            online
+ams_25000_1738 auto:cdsdisk    -            -            online
+ams_25000_1739 auto:cdsdisk    -            -            online
+ams_25000_1740 auto:cdsdisk    -            -            online
+ams_25000_1741 auto:cdsdisk    -            -            online
+ams_25000_1742 auto:cdsdisk    -            -            online
+ams_25000_1743 auto:cdsdisk    -            -            online
+ams_25000_1781 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1782 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1783 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1784 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1785 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1786 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1787 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1788 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1789 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1790 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1791 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1792 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1793 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1794 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1795 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1796 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1797 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1798 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1844 auto:cdsdisk    -            -            online
+ams_25000_1845 auto:cdsdisk    -            -            online
+ams_25000_1846 auto:cdsdisk    -            -            online
+ams_25000_1847 auto:cdsdisk    -            -            online
+ams_25000_1848 auto:cdsdisk    -            -            online
+ams_25000_1849 auto:cdsdisk    -            -            online
+ams_25000_1850 auto:cdsdisk    -            -            online
+ams_25000_1851 auto:cdsdisk    -            -            online
+emc_clariion0_70 auto:cdsdisk    -            -            online
+emc_clariion0_71 auto:cdsdisk    -            -            online
+emc_clariion0_72 auto:cdsdisk    -            -            online
+emc_clariion0_73 auto:cdsdisk    -            -            online
+emc_clariion0_74 auto:cdsdisk    -            -            online
+emc_clariion0_75 auto:cdsdisk    -            -            online
+emc_clariion0_76 auto:cdsdisk    -            -            online
+emc_clariion0_77 auto:cdsdisk    -            -            online
+emc_clariion0_78 auto:cdsdisk    -            -            online
+emc_clariion0_79 auto:cdsdisk    -            -            online
+emc_clariion0_80 auto:cdsdisk    -            -            online
+emc_clariion0_81 auto:cdsdisk    -            -            online
+emc_clariion0_82 auto:cdsdisk    -            -            online
+emc_clariion0_83 auto:cdsdisk    -            -            online
+emc_clariion0_84 auto:cdsdisk    -            -            online
+emc_clariion0_85 auto:cdsdisk    -            -            online
+emc_clariion0_86 auto:cdsdisk    -            -            online
+emc_clariion0_87 auto:cdsdisk    -            -            online
+emc_clariion0_88 auto:cdsdisk    -            -            online
+emc_clariion0_89 auto:cdsdisk    -            -            online
+emc_clariion1_277 auto:cdsdisk    -            -            online
+emc_clariion1_278 auto:cdsdisk    -            -            online
+emc_clariion1_279 auto:cdsdisk    -            -            online
+emc_clariion1_280 auto:cdsdisk    -            -            online
+emc_clariion1_281 auto:cdsdisk    -            -            online
+emc_clariion1_282 auto:cdsdisk    -            -            online
+emc_clariion1_283 auto:cdsdisk    -            -            online
+emc_clariion1_284 auto:cdsdisk    -            -            online
+emc_clariion1_285 auto:cdsdisk    -            -            online
+emc_clariion1_286 auto:cdsdisk    -            -            online
+emc_clariion1_287 auto:cdsdisk    -            -            online
+emc_clariion1_288 auto:cdsdisk    -            -            online
+emc_clariion1_289 auto:cdsdisk    -            -            online
+emc_clariion1_290 auto:cdsdisk    -            -            online
+emc_clariion1_291 auto:cdsdisk    -            -            online
+emc_clariion1_292 auto:cdsdisk    -            -            online
+emc_clariion1_293 auto:cdsdisk    -            -            online
+emc_clariion1_294 auto:cdsdisk    -            -            online
+emc_clariion1_295 auto:cdsdisk    -            -            online
+emc_clariion1_296 auto:cdsdisk    -            -            online
+emc0_0244    auto:LVM        -            -            LVM
+emc0_0246    auto:LVM        -            -            LVM
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-08-10 10:35:53
+HOST:l111055
+USER:root
+STDIN:for disk in ams_25000_316 ams_25000_317 ams_25000_724; do /sbin/vxfenadm -s /dev/vx/rdmp/$disk|egrep "Device|Tot"; done
+STDOUT:
+Device Name: /dev/vx/rdmp/ams_25000_316
+Total Number Of Keys: 4
+Device Name: /dev/vx/rdmp/ams_25000_317
+Total Number Of Keys: 4
+Device Name: /dev/vx/rdmp/ams_25000_724
+Total Number Of Keys: 4
+
+
+TCERROR: The device's keys should be 2, but the keys are 4!!!
+
+
+
+Case Result:Failed
+DATE:2017-08-10 10:35:53
+Duration:0m3s

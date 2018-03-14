@@ -1,0 +1,36 @@
+#!/usr/bin/expect
+set timeout 20
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no l111060
+expect {
+	"#" {send "/autotcinst/7.1/LxRT-7.1-2016-04-12a/dvd2-suselinux/sles12_x86_64/installer 10.200.111.60 10.200.111.61\r"}
+	timeout {puts "\nEXPECT ERROR.Timeout to find '#'";exit 2}
+}
+set timeout 1800
+while { 1 } {
+	expect {
+		"The installer has discovered an existing installer process" {send "n\r"}
+		"Enter a Task:" {send "I\r"}
+		"Select a product to install:" {send "4\r"}
+		"you like to configure InfoScale Enterprise after installation" {send "n\r"}
+		"Would you like to configure SF Oracle RAC" {send "n\r"}
+		"Select the rpms to be installed on all systems" {send "3\r"}
+		"Do you agree with the terms of the End User License Agreement" {send "y\r"}
+		"How would you like to install the missing required" {send "1\r"}
+		"Press*to continue" {send " \r"}
+		"would you like to license the systems" {send "2\r"}
+		"Would you like to enable replication" {send "n\r"}
+		"Would you like to enable the Global Cluster Option" {send "n\r"}
+		"Which product would you like to register" {send "4\r"}
+		"Would you like to send the information" {send "n\r"}
+		"Would you like to view the summary file" {send "n\r"}
+		"Do you want to exit install" {send "y\r"}
+		"Do you want to continue" {send "y\r"}
+		"you want to stop*processes now" {send "y\r"}
+		"Do you want to restore and reuse" {send "y\r"}
+		"enable DMP support for vSCSI devices" {send "n\r"}
+		"#" {send "exit 0\r";break}
+		timeout {puts "\nEXPECT ERROR.Unkown Question '_QUESTION_'";exit 2;break}
+	}
+	sleep 0.1
+}
+expect eof

@@ -1,0 +1,71 @@
+
+==================== Operation Log for TC test ====================
+DATE:2017-01-25 14:22:07
+Nodes:s111037-gd7
+
+***Getting hostname of node***
+
+
+
+DATE:2017-01-25 14:22:08
+HOST:s111037-gd7
+USER:root
+STDIN:hostname
+STDOUT:
+s111037-gd7.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-01-25 14:22:08
+HOST:s111037-gd7
+USER:root
+STDIN:uname
+STDOUT:
+SunOS
+
+
+DATE:2017-01-25 14:22:09
+HOST:s111037-gd7
+USER:root
+STDIN:cat /etc/release
+STDOUT:
+                            Oracle Solaris 11.3 SPARC
+  Copyright (c) 1983, 2015, Oracle and/or its affiliates.  All rights reserved.
+                            Assembled 06 October 2015
+
+
+DATE:2017-01-25 14:22:09
+HOST:s111037-gd7
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+rpool/ROOT/solaris 39G 5.8G 20G 23% /
+/devices 0K 0K 0K 0% /devices
+/dev 0K 0K 0K 0% /dev
+ctfs 0K 0K 0K 0% /system/contract
+proc 0K 0K 0K 0% /proc
+mnttab 0K 0K 0K 0% /etc/mnttab
+swap 12G 3.2M 12G 1% /system/volatile
+objfs 0K 0K 0K 0% /system/object
+sharefs 0K 0K 0K 0% /etc/dfs/sharetab
+fd 0K 0K 0K 0% /dev/fd
+rpool/ROOT/solaris/var 39G 278M 20G 2% /var
+swap 12G 168K 12G 1% /tmp
+rpool/VARSHARE 39G 2.6M 20G 1% /var/share
+swap 12G 0K 12G 0% /dev/vx/dmp
+swap 12G 0K 12G 0% /dev/vx/rdmp
+rpool/export 39G 32K 20G 1% /export
+rpool/export/home 39G 32K 20G 1% /export/home
+rpool/export/home/admin 39G 33K 20G 1% /export/home/admin
+rpool 39G 73K 20G 1% /rpool
+rpool/VARSHARE/zones 39G 31K 20G 1% /system/zones
+rpool/VARSHARE/pkg 39G 32K 20G 1% /var/share/pkg
+rpool/VARSHARE/pkg/repositories 39G 31K 20G 1% /var/share/pkg/repositories
+/dev/odm 0K 0K 0K 0% /dev/odm
+
+
+Case Result:Passed
+DATE:2017-01-25 14:22:09
+Duration:0m2s

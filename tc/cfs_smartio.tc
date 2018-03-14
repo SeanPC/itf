@@ -1,0 +1,197 @@
+#DES:SFCFS 6.1/6.1.X only support on Linux,SFCFS 6.2/6.2.X/7.0/7.0.1/7.1/7.2 support on Linux/Solaris/AIX
+oLog step "checking basic environment of testbed"
+checkNode root
+for node in $NODES
+do
+        getHostnameOSProduct $node
+	if [ "$type" = L ]
+	then
+		checkProductVersByVxvm 6.1 || myexit 201
+	else
+		checkProductVersByVxvm 6.2 || myexit 201
+	fi
+done
+
+oLog step "Get I/O tool: vxbench name"
+oLog des "OS is $autotcos"
+ostype=`echo "$autotcos"|awk -F "u|SP|sp|tl" '{print $1}'|sed "s/solaris/vxbench_/;s/aix.*/vxbench/"` 
+RExec root $NODE1 "ls /opt/VRTSspt/FS/VxBench"
+[ -n $ostype ] && vxbench=`echo "$out"|grep $ostype` 
+oLog des "vxbench name is $vxbench"
+
+oLog step "check CVM status"
+checkCVMStatus || myexit 201
+
+oLog step "prepare two local disks on each node for sfcache and create one VxFS and one VxVM cache on each node"
+avdisks=`getDisk $NODE1 share` || exit 201
+disksfornode1=`echo "$avdisks"|head -2|awk '{print $1}'`
+disksfornode2=`echo "$avdisks"|head -4|tail -2|awk '{print $1}'`
+RExec root $NODE1 "/usr/sbin/sfcache create -t VxVM `echo "$disksfornode1"|head -1`"
+RExec root $NODE1 "/usr/sbin/sfcache create -t VxFS `echo "$disksfornode1"|tail -1`"
+NODE2=`echo "$NODES"|sed -r 's/ /\n/g'|tail -1`
+RExec root $NODE2 "/usr/sbin/sfcache create -t VxVM `echo "$disksfornode2"|head -1`"
+RExec root $NODE2 "/usr/sbin/sfcache create -t VxFS `echo "$disksfornode2"|tail -1`"
+for node in $NODES
+do
+	RExec root $node "/usr/sbin/sfcache list"
+done
+
+oLog step "create two data disk groups"
+makeDgByLayout $NODE1 s 2
+
+oLog step "create volumes and create file system"
+RExec root $NODE1 "vxdg list"
+dgs=`echo "$out"|grep auto|grep -iv NAME|awk '{print $1}'|xargs -n100`
+for dg in $dgs
+do
+        volinfo+=`makeVolumeByLayout $NODE1 $dg s 4g|awk '{print $1}'` || exit 1
+        RExec root $NODE1 "ls /dev/vx/rdsk/$dg"
+        vol=`echo "$out"|xargs -n1`
+        mkVxfs $NODE1 $dg `echo "$out"`
+done
+vol1=`echo "$volinfo"|sed -r 's/auto/\nauto/g'|grep autotcdg1`
+vol2=`echo "$volinfo"|sed -r 's/auto/\nauto/g'|grep autotcdg2`
+RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmntadm add autotcdg1 $vol1 /autotcdir/ITF_$vol1 sg11 all=rw"
+RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmount /autotcdir/ITF_$vol1"
+RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmntadm add autotcdg2 $vol2 /autotcdir/ITF_$vol2 sg22 all=rw,smartiomode=writeback"
+RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmount /autotcdir/ITF_$vol2"
+RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmntadm display /autotcdir/ITF_$vol1"
+RExec root $NODE1 "/opt/VRTSvxfs/cfs/bin/cfsmntadm display /autotcdir/ITF_$vol2"
+
+oLog step "load 1g file on /autotcdir/ITF_$vol1"
+RExec root $NODE1 "dd if=/dev/zero of=/autotcdir/ITF_$vol1/1gfile bs=1024k count=1024"
+
+oLog step "display information about cache area"
+for node in $NODES
+do
+        RExec root $node "/usr/sbin/sfcache list"
+        cacheareas=`echo "$out"|grep -v NAME|awk '{print $1}'|xargs -n100`
+        for cachearea in $cacheareas
+        do
+                RExec root $node "/usr/sbin/sfcache list $cachearea"
+        done
+done
+
+oLog step "set VxFS cache mode"
+RExec root $NODE1 "/usr/sbin/sfcache list"
+vxfscache=`echo "$out"|grep VxFS|awk '{print $1}'`
+vxvmcache=`echo "$out"|grep VxVM|awk '{print $1}'`
+RExec root $NODE1 "/usr/sbin/sfcache list $vxfscache"
+RExec root $NODE1 "/usr/sbin/sfcache set -r mode=nocache /autotcdir/ITF_$vol2"
+RExec root $NODE1 "/usr/sbin/sfcache list $vxfscache"
+RExec root $NODE1 "/usr/sbin/sfcache set -r mode=read /autotcdir/ITF_$vol2"
+RExec root $NODE1 "/usr/sbin/sfcache list $vxfscache"
+RExec root $NODE1 "/usr/sbin/sfcache set -r mode=writeback /autotcdir/ITF_$vol2"
+RExec root $NODE1 "/usr/sbin/sfcache list $vxfscache"
+
+oLog step "VxVM read cache:offline vxfs cache"
+RExec root $NODE1 "/usr/sbin/sfcache list"
+RExec root $NODE1 "/usr/sbin/sfcache offline $vxfscache"
+RExec root $NODE1 "/usr/sbin/sfcache list"
+oLog step "VxVM read cache:enable vxvm cache"
+RExec root $NODE1 "/usr/sbin/sfcache list $vxvmcache"
+asscache=`echo "$out"|grep autotcdg1|awk '{print $1}'`
+RExec root $NODE1 "/usr/sbin/sfcache enable $asscache"
+RExec root $NODE1 "/usr/sbin/sfcache list $vxvmcache"
+oLog step "VxVM read cache:check sfcache status before read"
+RExec root $NODE1 "/usr/sbin/sfcache stat $vxvmcache"
+oLog step "VxVM read cache:read the file from destination mountpoint"
+RExec root $NODE1 "dd if=/autotcdir/ITF_$vol1/1gfile of=/dev/null bs=1024k"
+oLog step "VxVM read cache:check sfcache status after read"
+RExec root $NODE1 "/usr/sbin/sfcache stat $vxvmcache"
+echo "$out"|grep autotcdg1|awk '{print $2}' |grep "0.00" >/dev/null 2>&1 && oLog error "Failed to get the cache status on $vol1" && myexit 1
+oLog step "VxVM read cache:online vxfs cache"
+RExec root $NODE1 "/usr/sbin/sfcache online $vxfscache"
+
+oLog step "VxFS read cache:offline vxvm cache"
+RExec root $NODE1 "/usr/sbin/sfcache list"
+RExec root $NODE1 "/usr/sbin/sfcache offline $vxvmcache"
+RExec root $NODE1 "/usr/sbin/sfcache list"
+oLog step "VxFS read cache:check sfcache status before read"
+RExec root $NODE1 "/usr/sbin/sfcache stat $vxfscache" 
+oLog step "VxFS read cache:read the file from destination mountpoint and check the cache status"
+for i in 1 2
+do
+        RExec root $NODE1 "dd if=/autotcdir/ITF_$vol1/1gfile of=/dev/null bs=1024k"
+        RExec root $NODE1 "/usr/sbin/sfcache stat $vxfscache" 
+done
+echo "$out"|grep -A 1 autotcdg1|sed 1d|awk '{print $5}'|grep -x 0 >/dev/null 2>&1 && oLog error "Failed to get the cache status on $vol1" && myexit 1
+oLog step "VxFS read cache:online vxvm cache"
+RExec root $NODE1 "/usr/sbin/sfcache online $vxvmcache"
+
+oLog step "VxFS writeback cache:check the vxfs cache status before load I/O"
+RExec root $NODE1 "/usr/sbin/sfcache list"
+RExec root $NODE1 "/usr/sbin/sfcache list $vxfscache"
+RExec root $NODE1 "/usr/sbin/sfcache stat $vxfscache"
+
+oLog step "VxFS writeback cache:load I/O for writeback cache FS"
+RExec root $NODE1 "nohup /opt/VRTSspt/FS/VxBench/$vxbench -w write -o sync -i iosize=1024,iocount=10240 /autotcdir/ITF_$vol2/file1 >/dev/null 2>&1 &"
+sleep 5
+oLog step "VxFS writeback cache:check VxFS cache status while loading I/O"
+RExec root $NODE1 "/usr/sbin/sfcache list -r /autotcdir/ITF_$vol2"
+echo "$out"|grep -A 1 WRITEBACK|sed 1d|awk '{print $3}'|grep -x 0 >/dev/null 2>&1 && oLog error "Failed to get the cache status on $vol2" && myexit 1
+RExec root $NODE1 "/usr/sbin/sfcache stat $vxfscache"
+
+oLog step "When I/O load is going ,shrink and resize the cache size"
+RExec root $NODE1 "/usr/sbin/sfcache resize 2g $vxfscache"
+RExec root $NODE1 "/usr/sbin/sfcache stat $vxfscache"
+if ! echo "$out"|grep -oP "(?<=Size:)\s+\d+"|sed 's/[[:space:]]//g'|grep -P "^2$" >/dev/null 2>&1 
+then
+	oLog error "Failed to get the changed cache size"
+	myexit 1
+fi
+RExec root $NODE1 "/usr/sbin/sfcache list $vxfscache"
+RExec root $NODE1 "/usr/sbin/sfcache resize maxsize $vxfscache"
+
+oLog step "stop I/O load"
+RExec root $NODE1 "ps -ef|grep vxbench |grep autotcdir"
+for i in `echo "$out"|grep -v grep|awk '{print $2}'`
+do
+	RExec root $NODE1 "kill -9 $i"
+done
+
+oLog step "Test sfcache load and check load file to cache"
+RExec root $NODE1 "dd if=/dev/zero of=/autotcdir/ITF_$vol2/file2 bs=1024k count=10"
+RExec root $NODE1 "/usr/sbin/sfcache list -r /autotcdir/ITF_$vol2/file2"
+RExec root $NODE1 "/usr/sbin/sfcache load -r -o sync /autotcdir/ITF_$vol2/file2"
+RExec root $NODE1 "/usr/sbin/sfcache list -r /autotcdir/ITF_$vol2/file2"
+echo "$out"|tail -1|awk '{print $1}'|grep -x 0 >/dev/null 2>&1 && oLog error "Failed to load the file to cache" && myexit 1
+
+oLog step "Test pin and check the pin is enabled"
+RExec root $NODE1 "/usr/sbin/sfcache pin /autotcdir/ITF_$vol2/file2"
+RExec root $NODE1 "/usr/sbin/sfcache list -r /autotcdir/ITF_$vol2/file2"
+echo "$out"|tail -1 |awk '{print $6}'|grep -iv yes >/dev/null 2>&1 && oLog error "Failed to change to pin status" && myexit 1
+
+oLog step "Offline/Online cache"
+RExec root $NODE1 "nohup /opt/VRTSspt/FS/VxBench/$vxbench -w write -o sync -i iosize=1024,iocount=10240 /autotcdir/ITF_$vol2/file1 >/dev/null 2>&1 &"
+RExec root $NODE1 "/usr/sbin/sfcache offline $vxfscache"
+RExec root $NODE1 "/usr/sbin/sfcache list"
+echo "$out"|grep $vxfscache |awk '{print $5}'|grep -v OFFLINE >/dev/null 2>&1 && oLog error "Failed to offline the cache area" && myexit 1
+RExec root $NODE1 "/usr/sbin/sfcache online $vxfscache"
+RExec root $NODE1 "/usr/sbin/sfcache list"
+echo "$out"|grep $vxfscache |awk '{print $5}'|grep -v ONLINE >/dev/null 2>&1 && oLog error "Failed to online the cache area" && myexit 1
+RExec root $NODE1 "/usr/sbin/sfcache list $vxfscache"
+echo "$out"|grep autotcdg2|awk '{print $4}'|grep -iv writeback >/dev/null 2>&1 &&oLog error "Failed to register back for write-back" && myexit 1 
+
+oLog step "reboot/panic/crash"
+waitNodeReboot $NODE1
+waitVCSAgentOnline $NODE1
+waitGroupOnline $NODE1 cvm
+RExec root $NODE1 "/usr/sbin/sfcache list"
+RExec root $NODE1 "/usr/sbin/sfcache stat"
+[ `echo "$out"|grep $vxfscache|wc -l` -eq 0 ] && oLog error "Failed to get cache stat after reboot" && myexit 1
+
+
+oLog step "load I/O using vxbench and check the cache status"
+RExec root $NODE1 "nohup /opt/VRTSspt/FS/VxBench/$vxbench -w write -o sync -i iosize=1024,iocount=10240 /autotcdir/ITF_$vol2/file1 >/dev/null 2>&1 &" 
+RExec root $NODE1 "/usr/sbin/sfcache stat"
+[ `echo "$out"|grep $vxfscache|wc -l` -eq 0 ] && oLog error "Failed to get cache stat after loaded I/O" && myexit 1
+
+oLog step "stop I/O load"
+RExec root $NODE1 "ps -ef|grep vxbench |grep autotcdir"
+for i in `echo "$out"|grep -v grep|awk '{print $2}'`
+do
+        RExec root $NODE1 "kill -9 $i"
+done
+oLog flag
+myexit 10

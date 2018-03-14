@@ -1,0 +1,151 @@
+spawn ssh -q -o ConnectTimeout=60 -o PasswordAuthentication=no s111037-gd4
+Last login: Mon Feb 27 08:29:01 2017 from i128-eng128.cdc
+Oracle Corporation      SunOS 5.11      11.3    September 2015
+root@s111037-gd4:~# /autotcinst/7.1/SxRT-7.1-2016-04-12a/dvd2-sol_x64/sol11_x64/installer 10.200.111.248 10.200.111.249
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[H[J[1;7m                                                          Veritas InfoScale Storage and Availability Solutions 7.1 Install Program                                                           [m
+[1;7m                                                                                10.200.111.248 10.200.111.249                                                                                [m
+
+Copyright (c) 2016 Veritas Technologies LLC.  All rights reserved.  Veritas and the Veritas Logo are trademarks or registered trademarks of Veritas Technologies LLC or its affiliates in the
+U.S. and other countries. Other names may be trademarks of their respective owners.
+
+The Licensed Software and Documentation are deemed to be "commercial computer software" and "commercial computer software documentation" as defined in FAR Sections 12.212 and DFARS Section 
+227.7202.
+
+Logs are being written to /var/tmp/installer-201702270829HxY while installer is in progress.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[H[J[1;7m                                                          Veritas InfoScale Storage and Availability Solutions 7.1 Install Program                                                           [m
+[1;7m                                                                                10.200.111.248 10.200.111.249                                                                                [m
+
+[1m
+Task Menu:
+[0m
+    [1mP[0m) Perform a Pre-Installation Check       [1mI[0m) Install a Product
+    [1mC[0m) Configure a Product Component          [1mG[0m) Upgrade a Product
+    [1mO[0m) Perform a Post-Installation Check      [1mU[0m) Uninstall a Product
+    [1mL[0m) License a Product                      [1mS[0m) Start a Product
+    [1mD[0m) View Product Descriptions              [1mX[0m) Stop a Product
+    [1mR[0m) View Product Requirements              [1m?[0m) Help
+
+[1mEnter a Task: [P,I,C,G,O,U,L,S,D,X,R,?][0m I
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[H[J[1;7m                                                          Veritas InfoScale Storage and Availability Solutions 7.1 Install Program                                                           [m
+[1;7m                                                                                10.200.111.248 10.200.111.249                                                                                [m
+
+[1mWould you like to configure InfoScale Availability after installation? [y,n,q] (n)[0m expectresult:1

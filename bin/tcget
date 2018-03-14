@@ -1,0 +1,10 @@
+#!/bin/bash
+node=$1
+tc=$2
+BASE=/opt/itf
+if [ -z "$node" ] || ! ping -c 1 $node > /dev/null 2>&1
+then
+	exit 1
+fi
+[ -z "$tc" ] && exit 1
+scp -p $node:$BASE/tc/$tc $BASE/tc/

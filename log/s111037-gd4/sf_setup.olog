@@ -1,0 +1,80 @@
+
+==================== Operation Log for TC sf_setup ====================
+DATE:2017-03-02 11:09:59
+Nodes:s111037-gd4 s111038-gd4
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-03-02 11:10:01
+HOST:s111037-gd4
+USER:root
+STDIN:ssh -l root s111037-gd4
+STDOUT:
+
+
+
+DATE:2017-03-02 11:10:04
+HOST:s111038-gd4
+USER:root
+STDIN:ssh -l root s111038-gd4
+STDOUT:
+
+
+
+DATE:2017-03-02 11:10:10
+HOST:i128-eng128.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh s111037-gd4,s111038-gd4
+STDOUT:
+
+
+***Getting hostname of node***
+
+
+
+DATE:2017-03-02 11:10:11
+HOST:s111037-gd4
+USER:root
+STDIN:hostname
+STDOUT:
+s111037-gd4.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-03-02 11:10:12
+HOST:s111037-gd4
+USER:root
+STDIN:uname
+STDOUT:
+SunOS
+
+
+DATE:2017-03-02 11:10:13
+HOST:s111037-gd4
+USER:root
+STDIN:cat /etc/release
+STDOUT:
+                            Oracle Solaris 11.3 SPARC
+  Copyright (c) 1983, 2015, Oracle and/or its affiliates.  All rights reserved.
+                            Assembled 06 October 2015
+
+
+DATE:2017-03-02 11:10:15
+HOST:s111037-gd4
+USER:root
+STDIN:ls /opt/VRTS/install/install*
+STDOUT:
+/opt/VRTS/install/installer
+
+
+TCERROR: Have found InfoScale product installed
+
+
+
+Case Result:Failed
+DATE:2017-03-02 11:10:15
+Duration:0m16s

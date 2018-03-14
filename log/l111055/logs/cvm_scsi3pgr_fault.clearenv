@@ -1,0 +1,356 @@
+
+
+DATE:2017-06-14 06:31:11
+HOST:l111055
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster rac5559 (
+	UserNames = { admin = ImnFmhMjnInnLvnHmk }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111055 (
+	)
+
+system l111059 (
+	)
+
+group cvm (
+	SystemList = { l111055 = 0, l111059 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111055, l111059 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111055 = { autotcdg1 = sw, autotcdg2 = sw }
+		ActivationMode @l111059 = { autotcdg1 = sw, autotcdg2 = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = rac5559
+		CVMNodeId = { l111055 = 0, l111059 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+***umount vxfs on node l111055***
+
+
+
+DATE:2017-06-14 06:31:11
+HOST:l111055
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sdfv2 126G 4.9G 115G 5% /
+devtmpfs 3.9G 0 3.9G 0% /dev
+tmpfs 4.0G 0 4.0G 0% /dev/shm
+tmpfs 4.0G 13M 3.9G 1% /run
+tmpfs 4.0G 0 4.0G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+
+***umount vxfs on node l111059***
+
+
+
+DATE:2017-06-14 06:31:14
+HOST:l111059
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sdfu2 127G 4.5G 116G 4% /
+devtmpfs 3.9G 0 3.9G 0% /dev
+tmpfs 4.0G 0 4.0G 0% /dev/shm
+tmpfs 4.0G 21M 3.9G 1% /run
+tmpfs 4.0G 0 4.0G 0% /sys/fs/cgroup
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+release.veritas.com:/re 1.8T 1.7T 84G 96% /mnt
+release.veritas.com:/re/ALL/rt 2.1T 2.0T 107G 95% /net/release.veritas.com/re/ALL/rt
+
+
+DATE:2017-06-14 06:31:15
+HOST:l111055
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+
+DATE:2017-06-14 06:31:16
+HOST:l111059
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-06-14 06:31:17
+HOST:l111055
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-06-14 06:31:18
+HOST:l111055
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_316 auto:cdsdisk    -            (vxfendg)    online
+ams_25000_317 auto:cdsdisk    -            (vxfendg)    online
+ams_25000_724 auto:cdsdisk    -            (vxfendg)    online
+ams_25000_733 auto:cdsdisk    -            -            online
+ams_25000_734 auto:cdsdisk    -            -            online
+ams_25000_735 auto:cdsdisk    -            -            online
+ams_25000_736 auto:cdsdisk    -            -            online
+ams_25000_1734 auto:cdsdisk    -            -            online
+ams_25000_1735 auto:cdsdisk    -            -            online
+ams_25000_1736 auto:cdsdisk    -            -            online
+ams_25000_1737 auto:cdsdisk    -            -            online
+ams_25000_1738 auto:cdsdisk    -            -            online
+ams_25000_1739 auto:cdsdisk    -            -            online
+ams_25000_1740 auto:cdsdisk    -            -            online
+ams_25000_1741 auto:cdsdisk    -            -            online
+ams_25000_1742 auto:cdsdisk    -            -            online
+ams_25000_1743 auto:cdsdisk    -            -            online
+ams_25000_1781 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1782 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1783 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1784 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1785 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1786 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1787 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1788 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1789 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1790 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1791 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1792 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1793 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1794 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1795 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1796 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1797 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1798 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1844 auto:cdsdisk    -            -            online
+ams_25000_1845 auto:cdsdisk    -            -            online
+ams_25000_1846 auto:cdsdisk    -            -            online
+ams_25000_1847 auto:cdsdisk    -            -            online
+ams_25000_1848 auto:cdsdisk    -            -            online
+ams_25000_1849 auto:cdsdisk    -            -            online
+ams_25000_1850 auto:cdsdisk    -            -            online
+ams_25000_1851 auto:cdsdisk    -            -            online
+emc_clariion0_70 auto:cdsdisk    -            -            online
+emc_clariion0_71 auto:cdsdisk    -            -            online
+emc_clariion0_72 auto:cdsdisk    -            -            online
+emc_clariion0_73 auto:cdsdisk    -            -            online
+emc_clariion0_74 auto:cdsdisk    -            -            online
+emc_clariion0_75 auto:cdsdisk    -            -            online
+emc_clariion0_76 auto:cdsdisk    -            -            online
+emc_clariion0_77 auto:cdsdisk    -            -            online
+emc_clariion0_78 auto:cdsdisk    -            -            online
+emc_clariion0_79 auto:cdsdisk    -            -            online
+emc_clariion0_80 auto:cdsdisk    -            -            online
+emc_clariion0_81 auto:cdsdisk    -            -            online
+emc_clariion0_82 auto:cdsdisk    -            -            online
+emc_clariion0_83 auto:cdsdisk    -            -            online
+emc_clariion0_84 auto:cdsdisk    -            -            online
+emc_clariion0_85 auto:cdsdisk    -            -            online
+emc_clariion0_86 auto:cdsdisk    -            -            online
+emc_clariion0_87 auto:cdsdisk    -            -            online
+emc_clariion0_88 auto:cdsdisk    -            -            online
+emc_clariion0_89 auto:cdsdisk    -            -            online
+emc_clariion1_277 auto:cdsdisk    -            -            online
+emc_clariion1_278 auto:cdsdisk    -            -            online
+emc_clariion1_279 auto:cdsdisk    -            -            online
+emc_clariion1_280 auto:cdsdisk    -            -            online
+emc_clariion1_281 auto:cdsdisk    -            -            online
+emc_clariion1_282 auto:cdsdisk    -            -            online
+emc_clariion1_283 auto:cdsdisk    -            -            online
+emc_clariion1_284 auto:cdsdisk    -            -            online
+emc_clariion1_285 auto:cdsdisk    -            -            online
+emc_clariion1_286 auto:cdsdisk    -            -            online
+emc_clariion1_287 auto:cdsdisk    -            -            online
+emc_clariion1_288 auto:cdsdisk    -            -            online
+emc_clariion1_289 auto:cdsdisk    -            -            online
+emc_clariion1_290 auto:cdsdisk    -            -            online
+emc_clariion1_291 auto:cdsdisk    -            -            online
+emc_clariion1_292 auto:cdsdisk    -            -            online
+emc_clariion1_293 auto:cdsdisk    -            -            online
+emc_clariion1_294 auto:cdsdisk    -            -            online
+emc_clariion1_295 auto:cdsdisk    -            -            online
+emc_clariion1_296 auto:cdsdisk    -            -            online
+emc0_0244    auto:cdsdisk    -            -            online
+emc0_0246    auto:cdsdisk    -            -            online
+sdfv         auto:none       -            -            online invalid
+
+
+DATE:2017-06-14 06:31:19
+HOST:l111055
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-06-14 06:31:20
+HOST:l111059
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-06-14 06:31:21
+HOST:l111059
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE       TYPE            DISK         GROUP        STATUS
+ams_25000_316 auto:cdsdisk    -            (vxfendg)    online
+ams_25000_317 auto:cdsdisk    -            (vxfendg)    online
+ams_25000_724 auto:cdsdisk    -            (vxfendg)    online
+ams_25000_733 auto:cdsdisk    -            -            online
+ams_25000_734 auto:cdsdisk    -            -            online
+ams_25000_735 auto:cdsdisk    -            -            online
+ams_25000_736 auto:cdsdisk    -            -            online
+ams_25000_1734 auto:cdsdisk    -            -            online
+ams_25000_1735 auto:cdsdisk    -            -            online
+ams_25000_1736 auto:cdsdisk    -            -            online
+ams_25000_1737 auto:cdsdisk    -            -            online
+ams_25000_1738 auto:cdsdisk    -            -            online
+ams_25000_1739 auto:cdsdisk    -            -            online
+ams_25000_1740 auto:cdsdisk    -            -            online
+ams_25000_1741 auto:cdsdisk    -            -            online
+ams_25000_1742 auto:cdsdisk    -            -            online
+ams_25000_1743 auto:cdsdisk    -            -            online
+ams_25000_1781 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1782 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1783 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1784 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1785 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1786 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1787 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1788 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1789 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1790 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1791 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1792 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1793 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1794 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1795 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1796 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1797 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1798 auto:cdsdisk    -            -            online thinrclm
+ams_25000_1844 auto:cdsdisk    -            -            online
+ams_25000_1845 auto:cdsdisk    -            -            online
+ams_25000_1846 auto:cdsdisk    -            -            online
+ams_25000_1847 auto:cdsdisk    -            -            online
+ams_25000_1848 auto:cdsdisk    -            -            online
+ams_25000_1849 auto:cdsdisk    -            -            online
+ams_25000_1850 auto:cdsdisk    -            -            online
+ams_25000_1851 auto:cdsdisk    -            -            online
+emc_clariion0_70 auto:cdsdisk    -            -            online
+emc_clariion0_71 auto:cdsdisk    -            -            online
+emc_clariion0_72 auto:cdsdisk    -            -            online
+emc_clariion0_73 auto:cdsdisk    -            -            online
+emc_clariion0_74 auto:cdsdisk    -            -            online
+emc_clariion0_75 auto:cdsdisk    -            -            online
+emc_clariion0_76 auto:cdsdisk    -            -            online
+emc_clariion0_77 auto:cdsdisk    -            -            online
+emc_clariion0_78 auto:cdsdisk    -            -            online
+emc_clariion0_79 auto:cdsdisk    -            -            online
+emc_clariion0_80 auto:cdsdisk    -            -            online
+emc_clariion0_81 auto:cdsdisk    -            -            online
+emc_clariion0_82 auto:cdsdisk    -            -            online
+emc_clariion0_83 auto:cdsdisk    -            -            online
+emc_clariion0_84 auto:cdsdisk    -            -            online
+emc_clariion0_85 auto:cdsdisk    -            -            online
+emc_clariion0_86 auto:cdsdisk    -            -            online
+emc_clariion0_87 auto:cdsdisk    -            -            online
+emc_clariion0_88 auto:cdsdisk    -            -            online
+emc_clariion0_89 auto:cdsdisk    -            -            online
+emc_clariion1_277 auto:cdsdisk    -            -            online
+emc_clariion1_278 auto:cdsdisk    -            -            online
+emc_clariion1_279 auto:cdsdisk    -            -            online
+emc_clariion1_280 auto:cdsdisk    -            -            online
+emc_clariion1_281 auto:cdsdisk    -            -            online
+emc_clariion1_282 auto:cdsdisk    -            -            online
+emc_clariion1_283 auto:cdsdisk    -            -            online
+emc_clariion1_284 auto:cdsdisk    -            -            online
+emc_clariion1_285 auto:cdsdisk    -            -            online
+emc_clariion1_286 auto:cdsdisk    -            -            online
+emc_clariion1_287 auto:cdsdisk    -            -            online
+emc_clariion1_288 auto:cdsdisk    -            -            online
+emc_clariion1_289 auto:cdsdisk    -            -            online
+emc_clariion1_290 auto:cdsdisk    -            -            online
+emc_clariion1_291 auto:cdsdisk    -            -            online
+emc_clariion1_292 auto:cdsdisk    -            -            online
+emc_clariion1_293 auto:cdsdisk    -            -            online
+emc_clariion1_294 auto:cdsdisk    -            -            online
+emc_clariion1_295 auto:cdsdisk    -            -            online
+emc_clariion1_296 auto:cdsdisk    -            -            online
+emc0_0244    auto:cdsdisk    -            -            online
+emc0_0246    auto:cdsdisk    -            -            online
+sdfu         auto:none       -            -            online invalid
+
+
+DATE:2017-06-14 06:31:22
+HOST:l111059
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID

@@ -1,0 +1,177 @@
+#des:support platform linux,aix,solaris
+#P:55
+
+dg=autotcdg
+vol=autotcvol
+mp=/autotc
+group=cfsmntgrp
+
+oLog step "Checking basic environment of testbed"
+#check if login without password by root and oracle user
+checkNode root
+for node in $NODES
+do
+        getHostnameOSProduct $node
+	if [ "$type" = L ]
+	then
+		checkProductVersByVxvm 6.1 || myexit 201
+	else
+		checkProductVersByVxvm 6.2 || myexit 201
+	fi
+done
+
+oLog step "Getting master node name"
+master=`getMasterNode` || exit 201
+another_node=`echo "$NODES"|sed "s/$master//"|awk '{print $1}'`
+
+oLog step "Find out one local disk on each node,Here we use shared disks,could simulate that by exclude disk on the remote node."
+disks=`getDisk $node share` || exit 201
+disks=`echo "$disks"|awk '$2>2200 {print $1}'|head -$NODESN`
+if [ `echo "$disks"|wc -l` -lt $NODESN ]
+then
+	oLog error "Failed to get enough disks"
+	myexit 201
+fi
+
+oLog step "each disk will be exported on one node and excluded by the other nodes"
+disks=(`echo "$disks"`)
+i=0
+for node in $NODES
+do
+    for j in `echo "$NODES"|sed "s/$node//"`
+    do
+        RExec root $j "vxdmpadm exclude dmpnodename=${disks[$i]}"
+    done
+    RExec root $node "vxdisk list ${disks[$i]}"
+    echo "$out"|grep state=|awk '{print $1}'|xargs -n100|sed "s/ /,/g"|awk '{print "'$node':'${disks[$i]}':"$0}' >> $BASE/tmp/fss_map.$PID
+    RExec root $node "vxdisk export ${disks[$i]}"
+    i=$[$i+1]
+done
+oLog des "Displaying the node:disk:path map"
+LExec "cat $BASE/tmp/fss_map.$PID"
+fssmap="$out"
+rm -f $BASE/tmp/fss_map.$PID
+
+
+
+oLog step "Create FSS shared dg and create host-mirror volume then mount"
+RExec root $master "vxdg -s -o fss init $dg ${disks[*]}"
+RExec root $master "vxassist -g $dg make $vol 2g mirror=host"
+mkVxfs $master $dg $vol
+cfsMount $master $dg $vol $mp $group
+RExec root $master "vxprint -g $dg"
+masterdisk=`echo "$fssmap"|grep -P "^$node:"|cut -d : -f 2`
+otherdisk=`echo "$fssmap"|grep -vP "^$node:"|cut -d : -f 2|xargs -n1000`
+disk_plex_map=`echo "$out"|awk '$3 ~ /'"$vol"'-[0-9]+/{print $2,$3}'`
+
+oLog step "Copy io_activity.pl to $master,providing io action"
+copyFileToRemote $BASE/etc/io_activity.pl $master
+fsStressStart $master $mp
+sleep 5
+
+oLog step "reboot Master node and write files on one of the left nodes"
+rebootNode $master
+waitNodeOffline $master
+plex=`echo "$disk_plex_map"|grep ^$masterdisk-|awk '{print $2}'`
+waitMirrorPlexWithStatus $another_node $dg $plex NODEVICE
+RExec root $another_node "/opt/VRTS/bin/lltstat -nvv active" '' "$master"
+RExec root $another_node "echo 'this is for for checking by rebooting node' > $mp/flag"
+RExec root $another_node "ls $mp/flag;cat $mp/flag"
+check0="$out"
+
+oLog step "check if files sync up to the original master node after it comes up"
+waitNodeOnline $master
+waitGroupOnline $another_node $group
+plex=`echo "$disk_plex_map"|grep ^$masterdisk-|awk '{print $2}'`
+waitMirrorPlexWithStatus $another_node $dg $plex ACTIVE
+#waitDiskWithStatus $master $masterdisk online
+oLog step "disable the remote paths,making sure only the original master contribute the storage"
+for node in `echo "$NODES"|sed "s/$master//"`
+do
+	disk=`echo "$fssmap"|grep -P "^$node:"|cut -d : -f 2`
+	pathManage $node $disk disable
+done
+RExec root $another_node "dd if=/dev/zero of=$mp/iotest bs=1024k count=10"
+sleep 2
+plex=`echo "$disk_plex_map"|grep ^$otherdisk-|awk '{print $2}'`
+waitMirrorPlexWithStatus $another_node $dg $plex NODEVICE
+#waitDiskWithStatus $master "$otherdisk" error
+RExec root $master "ls $mp/flag;cat $mp/flag"
+check1="$out"
+if [ "$check0" = "$check1" ]
+then
+	oLog des "Files auto resync up to orginal master by rebooting node"
+else
+	oLog error "Faile did not auto resync up to orginal master by rebooting node"
+	myexit 1
+fi
+
+oLog step "Enable the paths just disabled"
+for node in `echo "$NODES"|sed "s/$master//"`
+do
+	disk=`echo "$fssmap"|grep -P "^$node:"|cut -d : -f 2`
+	pathManage $node $disk enable
+done
+plex=`echo "$disk_plex_map"|grep ^$otherdisk-|awk '{print $2}'`
+waitMirrorPlexWithStatus $another_node $dg $plex ACTIVE
+#waitDiskWithStatus $master "$otherdisk" online
+
+oLog step "Getting the new master node name"
+master=`getMasterNode` || exit 201
+another_node=`echo "$NODES"|sed "s/$master//"|awk '{print $1}'`
+RExec root $master "vxprint -g $dg"
+masterdisk=`echo "$fssmap"|grep -P "^$node:"|cut -d : -f 2`
+otherdisk=`echo "$fssmap"|grep -vP "^$node:"|cut -d : -f 2|xargs -n1000`
+
+oLog step "Adding IO,Disable the path of local disk on current master node,write file on one of the other node"
+copyFileToRemote $BASE/etc/io_activity.pl $master
+fsStressStart $master $mp
+sleep 5
+disk=`echo "$fssmap"|grep -P "^$master:"|cut -d : -f 2`
+pathManage $master $disk disable
+RExec root $master "dd if=/dev/zero of=$mp/iotest bs=1024k count=10"
+plex=`echo "$disk_plex_map"|grep ^$masterdisk-|awk '{print $2}'`
+waitMirrorPlexWithStatus $master $dg $plex NODEVICE
+#waitDiskWithStatus $master "$masterdisk" error
+RExec root $master "echo 'this is for for checking by disabling paths' > $mp/flag"
+RExec root $master "ls $mp/flag;cat $mp/flag"
+check0="$out"
+
+oLog step "Enable the path of local disk on master node,and check files"
+pathManage $master $disk enable
+plex=`echo "$disk_plex_map"|grep ^$masterdisk-|awk '{print $2}'`
+waitMirrorPlexWithStatus $master $dg $plex ACTIVE
+#waitDiskWithStatus $master "$masterdisk" online
+oLog step "disable the remote paths,making sure only the current master contribute the storage"
+for node in `echo "$NODES"|sed "s/$master//"`
+do
+	disk=`echo "$fssmap"|grep -P "^$node:"|cut -d : -f 2`
+	pathManage $node $disk disable
+done
+RExec root $master "dd if=/dev/zero of=$mp/iotest bs=1024k count=10"
+sleep 2
+plex=`echo "$disk_plex_map"|grep ^$otherdisk-|awk '{print $2}'`
+waitMirrorPlexWithStatus $master $dg $plex NODEVICE
+#waitDiskWithStatus $master "$otherdisk" error
+RExec root $master "ls $mp/flag;cat $mp/flag"
+check1="$out"
+if [ "$check0" = "$check1" ]
+then
+        oLog des "Files auto resync up to orginal master by disabling paths"
+else
+        oLog error "Files did not auto resync up to orginal master by disabling paths"
+        myexit 1
+fi
+
+oLog step "Enable the paths just disabled"
+for node in `echo "$NODES"|sed "s/$master//"`
+do
+	disk=`echo "$fssmap"|grep -P "^$node:"|cut -d : -f 2`
+	pathManage $node $disk enable
+done
+
+oLog step "Stopping IO on the master node"
+fsStressStop $master
+oLog flag
+myexit 10
+

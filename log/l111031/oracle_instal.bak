@@ -1,0 +1,1039 @@
+
+==================== Operation Log for TC oracle_install ====================
+DATE:2017-07-21 14:45:05
+Nodes:l111031 l111032
+
+
+====STEP: Checking basic environment of testbed
+DATE:2017-07-21 14:45:05
+
+***Getting driver node name and ip***
+
+
+
+DATE:2017-07-21 14:45:05
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:hostname;ifconfig
+STDOUT:
+l092152.cdc.veritas.com
+eth0      Link encap:Ethernet  HWaddr 00:50:56:88:13:63  
+          inet addr:10.198.92.152  Bcast:10.198.95.255  Mask:255.255.248.0
+          inet6 addr: fe80::250:56ff:fe88:1363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:37605442 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:7681945 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:5773803040 (5.3 GiB)  TX bytes:1842138798 (1.7 GiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:1175 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:1175 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:191744 (187.2 KiB)  TX bytes:191744 (187.2 KiB)
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-07-21 14:45:07
+HOST:l111031
+USER:root
+STDIN:ssh -l root l111031
+STDOUT:
+
+
+
+DATE:2017-07-21 14:45:11
+HOST:l111032
+USER:root
+STDIN:ssh -l root l111032
+STDOUT:
+
+
+
+DATE:2017-07-21 14:45:20
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/opt/itf/etc/setssh l111031,l111032
+STDOUT:
+
+
+
+DATE:2017-07-21 14:45:22
+HOST:l111031
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+
+DATE:2017-07-21 14:45:23
+HOST:l111032
+USER:root
+STDIN:/opt/VRTS/bin/hasys -list
+STDOUT:
+l111031
+l111032
+
+***Getting hostname of node***
+
+
+
+DATE:2017-07-21 14:45:25
+HOST:l111031
+USER:root
+STDIN:hostname
+STDOUT:
+l111031.cdc.veritas.com
+
+***Getting os version***
+
+
+
+DATE:2017-07-21 14:45:26
+HOST:l111031
+USER:root
+STDIN:uname
+STDOUT:
+Linux
+
+
+DATE:2017-07-21 14:45:28
+HOST:l111031
+USER:root
+STDIN:[ -f /etc/redhat-release ] && cat /etc/redhat-release || cat /etc/issue
+STDOUT:
+Red Hat Enterprise Linux Server release 7.4 (Maipo)
+
+
+DATE:2017-07-21 14:45:30
+HOST:l111031
+USER:root
+STDIN:uname -r
+STDOUT:
+3.10.0-693.el7.x86_64
+
+
+DATE:2017-07-21 14:45:31
+HOST:l111031
+USER:root
+STDIN:uname -r
+STDOUT:
+3.10.0-693.el7.x86_64
+
+***Getting package data of InfoScale Product***
+
+
+
+DATE:2017-07-21 14:45:35
+HOST:l111031
+USER:root
+STDIN:for i in `rpm -qa|grep -i vrts`; do echo Package INFO: $i; rpm -qi $i; echo; done
+STDOUT:
+Package INFO: VRTSveki-7.3.0.000-RHEL7.x86_64
+Name        : VRTSveki
+Version     : 7.3.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:24:06 AM UTC
+Group       : Applications/System
+Size        : 144573
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:31:06 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSveki-7.3.0.000-RHEL7.src.rpm
+Build Date  : Fri 21 Apr 2017 02:08:37 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Veki
+Description :
+Veritas Veki
+
+Package INFO: VRTSgms-7.3.0.000-RHEL7.x86_64
+Name        : VRTSgms
+Version     : 7.3.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:28:20 AM UTC
+Group       : Applications/System
+Size        : 78399
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:30:44 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSgms-7.3.0.000-RHEL7.src.rpm
+Build Date  : Fri 28 Apr 2017 09:23:08 AM UTC
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Messaging Services
+Description :
+Veritas Group Messaging Sevice (GMS) driver
+
+Package INFO: VRTSvxfs-7.3.0.100-RHEL7.x86_64
+Name        : VRTSvxfs
+Version     : 7.3.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 04:04:07 AM UTC
+Group       : Applications/System
+Size        : 55264897
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfs-7.3.0.100-RHEL7.src.rpm
+Build Date  : Thu 06 Jul 2017 12:37:13 PM UTC
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Filesystem
+Description :
+Veritas Filesystem
+
+Package INFO: VRTSvcsag-7.3.0.000-RHEL7.x86_64
+Name        : VRTSvcsag
+Version     : 7.3.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:27:34 AM UTC
+Group       : Applications/System
+Size        : 85024715
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:31:00 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcsag-7.3.0.000-RHEL7.src.rpm
+Build Date  : Fri 21 Apr 2017 02:22:51 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : VCS Bundled Agents
+Description :
+Veritas Cluster Server Bundled Agents (x86_64)
+Build Stamp : 7.3.0.000-2017-04-21_03.29.09
+
+Package INFO: VRTSsfmh-7.3.0.0-0.x86_64
+Name        : VRTSsfmh
+Version     : 7.3.0.0
+Release     : 0
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:29:03 AM UTC
+Group       : Applications/System
+Size        : 190228179
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:28:58 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSsfmh-7.3.0.0-0.src.rpm
+Build Date  : Tue 18 Apr 2017 07:53:15 AM UTC
+Build Host  : vommvrhel55bld
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Veritas Infoscale Operations Manager Managed Host
+Description :
+Veritas Infoscale Operations Manager Managed Host
+
+Package INFO: VRTSaslapm-7.3.0.200-RHEL7.x86_64
+Name        : VRTSaslapm
+Version     : 7.3.0.200
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 04:04:32 AM UTC
+Group       : Applications/System
+Size        : 56460437
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSaslapm-7.3.0.200-RHEL7.src.rpm
+Build Date  : Tue 18 Jul 2017 12:56:01 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+Description :
+Array Support Libraries and Array Policy Modules for Veritas Volume Manager.
+
+Package INFO: VRTSvlic-3.02.73.001-RHEL7.x86_64
+Name        : VRTSvlic
+Version     : 3.02.73.001
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:23:53 AM UTC
+Group       : Applications/System
+Size        : 1605770
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:31:07 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvlic-3.02.73.001-RHEL7.src.rpm
+Build Date  : Thu 27 Apr 2017 12:32:19 PM UTC
+Build Host  : vcsbuildrhel6x8664
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas License Utilities
+Description :
+These are the Veritas License Utilities. It includes the programs to install
+licenses and display a report of licenses installed on the system.
+
+Package INFO: VRTScps-7.3.0.000-RHEL7.x86_64
+Name        : VRTScps
+Version     : 7.3.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:27:24 AM UTC
+Group       : Applications/System
+Size        : 63126142
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:30:32 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTScps-7.3.0.000-RHEL7.src.rpm
+Build Date  : Fri 21 Apr 2017 02:24:17 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Co-ordination Point Server
+Description :
+Veritas Co-ordination Point Server
+Build Stamp: 7.3.0.000-2017-04-21_03.29.09
+
+Package INFO: VRTSglm-7.3.0.000-RHEL7.x86_64
+Name        : VRTSglm
+Version     : 7.3.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:28:04 AM UTC
+Group       : Applications/System
+Size        : 764480
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:30:42 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSglm-7.3.0.000-RHEL7.src.rpm
+Build Date  : Fri 28 Apr 2017 09:27:40 AM UTC
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Lock Manager (GLM) driver
+Description :
+Veritas Group Lock Manager (GLM) driver
+Supported kernel(s): 3.10.0-123.el7.x86_64, 3.10.0-229.el7.x86_64 or later
+
+Package INFO: VRTSdbac-7.3.0.000-RHEL7.x86_64
+Name        : VRTSdbac
+Version     : 7.3.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:28:54 AM UTC
+Group       : Applications/System
+Size        : 13376622
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:30:33 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSdbac-7.3.0.000-RHEL7.src.rpm
+Build Date  : Tue 18 Apr 2017 10:07:36 AM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Real Application Cluster Support Package
+Description :
+Veritas Oracle Real Application Cluster Support Package
+Build Stamp	: 7.3.0.000-2017-04-18_03.00.56
+Supported kernel(s): 3.10.0-229.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-514.el7.x86_64
+
+Package INFO: VRTSvcswiz-7.3.0.000-RHEL7.x86_64
+Name        : VRTSvcswiz
+Version     : 7.3.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:29:48 AM UTC
+Group       : Applications/System
+Size        : 8845325
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:31:05 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcswiz-7.3.0.000-RHEL7.src.rpm
+Build Date  : Fri 21 Apr 2017 02:24:31 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : "Veritas Technologies LLC"
+URL         : http://www.veritas.com/support
+Summary     : Veritas Cluster Server Wizards
+Description :
+"The package contains Wizards for Veritas Cluster Server"
+
+Arch : (x86_64)
+Build Stamp : 7.3.0.000-2017-04-21_07.24.29
+
+Package INFO: VRTSodm-7.3.0.100-RHEL7.x86_64
+Name        : VRTSodm
+Version     : 7.3.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 04:04:19 AM UTC
+Group       : Applications/System
+Size        : 1448285
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSodm-7.3.0.100-RHEL7.src.rpm
+Build Date  : Thu 06 Jul 2017 01:03:15 PM UTC
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC.
+URL         : www.veritas.com/support
+Summary     : Veritas Oracle Disk Manager
+Description :
+Veritas Oracle Disk Manager (ODM)
+
+Package INFO: VRTSamf-7.3.0.100-RHEL7.x86_64
+Name        : VRTSamf
+Version     : 7.3.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 04:04:42 AM UTC
+Group       : System Environment/Kernel
+Size        : 22261828
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSamf-7.3.0.100-RHEL7.src.rpm
+Build Date  : Wed 19 Jul 2017 10:51:17 AM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Asynchronous Monitoring Framework (AMF) Driver
+Description :
+Veritas Asynchronous Monitoring Framework (AMF) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-229.el7.x86_64 3.10.0-514.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-693.el7.x86_64
+Build Stamp        : 7.3.0.100-2017-07-19_03.50.16
+
+Package INFO: VRTSperl-5.24.0.1-RHEL7.x86_64
+Name        : VRTSperl
+Version     : 5.24.0.1
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:23:40 AM UTC
+Group       : Applications/System
+Size        : 75685331
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:30:48 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSperl-5.24.0.1-RHEL7.src.rpm
+Build Date  : Thu 16 Feb 2017 04:14:28 PM UTC
+Build Host  : rhel6-perl.cdc.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Perl 5.24.0 for Veritas
+Description :
+ This package is a binary distribution of Perl version 5.24.0 compiled on Linux 2.6.32-279.el6.x86_64 using the multithreading and multiplicity options.
+
+ This distribution also includes the following CPAN modules:
+
+        JSON-2.90
+	Canary-Stability-2001
+	JSON-XS-3.03
+	JSON-PP-2.27400
+	Module-Build-0.4220
+	Module-Implementation-0.09
+	Test-Fatal-0.014
+	Module-Runtime-0.014
+	Try-Tiny-0.28
+	Params-Validate-1.26
+	Algorithm-Diff-1.1903
+	Compress-Raw-Zlib-2.072
+	IO-Compress-2.070
+	HTML-Tagset-3.20
+	IO-String-1.08
+	IO-Tty-1.12
+	List-Compare-0.53
+	Log-Dispatch-2.62
+	Logfile-Rotate-1.04
+	MIME-Base64-3.15
+	Net-FTP-Common-7.0.d
+	Net-Netmask-1.9022
+	Net-Telnet-3.04
+	Proc-Background-1.10
+	Test-Plan-0.03
+	Test-Simple-1.302075
+	Time-ZoneInfo-0.3
+	TimeDate-2.30
+	XML-Parser-2.44
+	XML-Simple-2.22
+	URI-1.71
+	Crypt-CBC-2.33
+	Net-SNMP-v6.0.1
+	Archive-Tar-2.24
+	Net-IP-1.26
+	HTML-Parser-3.72
+	Net-DNS-1.07
+	Net-DNS-SEC-1.03
+	Path-Class-0.37
+	Expect-1.33
+	Crypt-SSLeay-0.72
+	Crypt-OpenSSL-AES-0.02
+	XML-RegExp-0.04
+	XML-DOM-1.46
+	Test-Exception-0.43
+	Sub-Uplevel-0.2600
+	Socket-GetAddrInfo-0.22
+	Socket6-0.28
+	IO-Socket-INET6-2.72
+	Params-Util-1.07
+	Module-Pluggable-5.2
+	Sys-Filesystem-1.406
+	Text-CSV-1.33
+	Devel-Trace-0.12
+	common-sense-3.74
+	DBI-1.636
+	DBD-SQLite-1.52
+	Switch-2.17
+	Parse-RecDescent-1.967013
+	IPC-Run-0.94
+	Email-Address-1.907
+	Email-MessageID-1.406
+	Email-Simple-2.213
+	Email-MIME-ContentType-1.018
+	Email-MIME-Encodings-1.315
+	Email-MIME-1.940
+	Class-Accessor-0.34
+	HTTP-Request-Params-1.02
+	Net-HTTP-6.12
+	LWP-MediaTypes-6.02
+	WWW-RobotRules-6.02
+	Encode-Locale-1.05
+	HTTP-Date-6.02
+	HTTP-Message-6.11
+	HTTP-Negotiate-6.00
+	HTTP-Cookies-6.01
+	Net-SSLeay-1.80
+	HTTP-Daemon-6.01
+	File-Listing-6.04
+	IO-Socket-SSL-2.045
+	LWP-Protocol-https-6.06
+	libwww-perl-6.15
+	Log-Log4perl-1.48
+	Locale-Maketext-1.28
+	BSD-Resource-1.2910
+	File-FcntlLock-0.22
+	CGI-4.35
+	Package-Constants-0.06
+ Perl man pages are not included with this distribution.
+
+ Perl source files can be obtained from
+
+ http://www.perl.com/download.csp
+
+ Perl CPAN modules, including those included in this distribution, can be obtained from http://www.cpan.org/
+
+Package INFO: VRTSvcs-7.3.0.000-RHEL7.x86_64
+Name        : VRTSvcs
+Version     : 7.3.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:27:11 AM UTC
+Group       : Applications/System
+Size        : 226789536
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:30:58 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcs-7.3.0.000-RHEL7.src.rpm
+Build Date  : Fri 21 Apr 2017 02:23:12 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Server
+Description :
+Veritas Cluster Server and Commands (x86_64)
+Build Stamp : 7.3.0.000-2017-04-21_03.29.09
+
+Package INFO: VRTSdbed-7.3.0.000-RHEL.x86_64
+Name        : VRTSdbed
+Version     : 7.3.0.000
+Release     : RHEL
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:27:52 AM UTC
+Group       : Applications/Databases
+Size        : 278940021
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:30:36 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSdbed-7.3.0.000-RHEL.src.rpm
+Build Date  : Mon 03 Apr 2017 07:37:33 AM UTC
+Build Host  : snapper53-64.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Storage Management Software for Databases
+Description :
+Veritas Storage Foundation for Oracle combines the strengths of the core
+technology products with database-specific enhancements to offer performance,
+availability, and manageability for Oracle database servers.
+
+Package INFO: VRTSsfcpi-7.3.0.000-GENERIC.noarch
+Name        : VRTSsfcpi
+Version     : 7.3.0.000
+Release     : GENERIC
+Architecture: noarch
+Install Date: Thu 20 Jul 2017 03:29:38 AM UTC
+Group       : Applications/System
+Size        : 15447161
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:28:56 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSsfcpi-7.3.0.000-GENERIC.src.rpm
+Build Date  : Fri 28 Apr 2017 08:12:12 AM UTC
+Build Host  : mtvre01.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : http://www.veritas.com/support
+Summary     : Veritas InfoScale Installer
+Description :
+Veritas InfoScale Installer. VRTSperl is required.
+
+Package INFO: VRTSllt-7.3.0.100-RHEL7.x86_64
+Name        : VRTSllt
+Version     : 7.3.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 04:04:17 AM UTC
+Group       : Applications/System
+Size        : 57298072
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSllt-7.3.0.100-RHEL7.src.rpm
+Build Date  : Wed 19 Jul 2017 10:41:56 AM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Low Latency Transport
+Description :
+Veritas Low Latency Transport (LLT) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-229.el7.x86_64 3.10.0-514.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-693.el7.x86_64 [LINUX_RHEL70]
+Build Stamp: Veritas-7.3.0.100-2017-07-19_00.36.49
+
+Package INFO: VRTSvxfen-7.3.0.100-RHEL7.x86_64
+Name        : VRTSvxfen
+Version     : 7.3.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 04:04:40 AM UTC
+Group       : Applications/System
+Size        : 25732733
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxfen-7.3.0.100-RHEL7.src.rpm
+Build Date  : Wed 19 Jul 2017 10:48:10 AM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas I/O Fencing
+Description :
+Veritas Fencing (VxFEN) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-229.el7.x86_64 3.10.0-514.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-693.el7.x86_64
+Build Stamp        : 7.3.0.100-2017-07-19_00.36.49
+
+Package INFO: VRTSfsadv-7.3.0.000-RHEL7.x86_64
+Name        : VRTSfsadv
+Version     : 7.3.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:26:17 AM UTC
+Group       : Applications/System
+Size        : 15079986
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:30:38 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSfsadv-7.3.0.000-RHEL7.src.rpm
+Build Date  : Thu 20 Apr 2017 01:14:50 PM UTC
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas File System Advanced Features
+Description :
+Veritas File System Advanced Features
+
+Package INFO: VRTSvcsea-7.3.0.000-RHEL7.x86_64
+Name        : VRTSvcsea
+Version     : 7.3.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:27:42 AM UTC
+Group       : Applications/System
+Size        : 1367127
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:31:02 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvcsea-7.3.0.000-RHEL7.src.rpm
+Build Date  : Fri 21 Apr 2017 02:24:51 PM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Cluster Enterprise Agents
+Description :
+Veritas Cluster Server Enterprise Agents
+Includes Oracle, Sybase and DB2 Agents
+Build Stamp : 7.3.0.000-2017-04-21_03.29.09
+
+Package INFO: VRTSvbs-7.3.0.000-GA_Linux.x86_64
+Name        : VRTSvbs
+Version     : 7.3.0.000
+Release     : GA_Linux
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:29:30 AM UTC
+Group       : Applications/System
+Size        : 74469123
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:30:56 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSvbs-7.3.0.000-GA_Linux.src.rpm
+Build Date  : Thu 06 Apr 2017 11:21:23 AM UTC
+Build Host  : snapper53-64.engba.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Virtual Business Services by Veritas
+Description :
+Virtual Business Services by Veritas
+Build Stamp : 7.3.0.000-2017-04-06_02.59.58
+
+Package INFO: VRTSgab-7.3.0.100-RHEL7.x86_64
+Name        : VRTSgab
+Version     : 7.3.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 04:04:38 AM UTC
+Group       : Applications/System
+Size        : 26053445
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSgab-7.3.0.100-RHEL7.src.rpm
+Build Date  : Wed 19 Jul 2017 10:44:33 AM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Group Membership and Atomic Broadcast
+Description :
+Veritas Group Atomic Broadcast and Membership (GAB) Driver and commands for Linux
+Supported kernel(s): 3.8.13-35.3.1.el7uek.x86_64 3.10.0-229.el7.x86_64 3.10.0-514.el7.x86_64 3.10.0-327.el7.x86_64 3.10.0-693.el7.x86_64
+Build Stamp        : Veritas-7.3.0.100-2017-07-19_00.36.49
+
+Package INFO: VRTSspt-7.3.0.000-RHEL7.noarch
+Name        : VRTSspt
+Version     : 7.3.0.000
+Release     : RHEL7
+Architecture: noarch
+Install Date: Thu 20 Jul 2017 03:23:59 AM UTC
+Group       : Applications/System
+Size        : 43385538
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:30:54 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTSspt-7.3.0.000-RHEL7.src.rpm
+Build Date  : Wed 05 Apr 2017 11:27:01 AM UTC
+Build Host  : sptpunrhel5bld1.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Software Support Tools Package
+Description :
+VRTSspt is a group of support tools for troubleshooting a system
+and collecting information on its configuration.  Note that this package
+is optional: the tools are not required for operation of any Veritas
+software.  In general, these tools only gather configuration information;
+however, they may significantly impact system performance while doing so.
+They are designed to be used under the direction of a Veritas Technical
+Support Engineer only.  Any other use of these tools is at your own risk.
+
+Package INFO: VRTScavf-7.3.0.000-RHEL7.x86_64
+Name        : VRTScavf
+Version     : 7.3.0.000
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 03:28:14 AM UTC
+Group       : Applications/System
+Size        : 911717
+License     : Veritas Proprietary
+Signature   : RSA/SHA1, Fri 28 Apr 2017 07:30:30 PM UTC, Key ID 4e84af75cc633953
+Source RPM  : VRTScavf-7.3.0.000-RHEL7.src.rpm
+Build Date  : Fri 28 Apr 2017 09:23:33 AM UTC
+Build Host  : iarhel7bld.vxindia.veritas.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : "Veritas Cluster Server Agents for Storage Foundation Cluster File System"
+Description :
+Veritas Cluster Server Agent Extensions for Storage Foundation Cluster File System
+
+Package INFO: VRTSvxvm-7.3.0.100-RHEL7.x86_64
+Name        : VRTSvxvm
+Version     : 7.3.0.100
+Release     : RHEL7
+Architecture: x86_64
+Install Date: Thu 20 Jul 2017 04:03:49 AM UTC
+Group       : Applications/System
+Size        : 739789100
+License     : Veritas Proprietary
+Signature   : (none)
+Source RPM  : VRTSvxvm-7.3.0.100-RHEL7.src.rpm
+Build Date  : Fri 14 Jul 2017 10:37:45 AM UTC
+Build Host  : sfhamtvbuildrhel7-ga.engba.symantec.com
+Relocations : (not relocatable)
+Packager    : enterprise_technical_support@veritas.com
+Vendor      : Veritas Technologies LLC
+URL         : www.veritas.com/support
+Summary     : Veritas Volume Manager
+Description :
+Veritas Volume Manager for Linux
+
+
+====STEP: Checking if OADT existing on the driver node
+DATE:2017-07-21 14:45:35
+
+
+DATE:2017-07-21 14:45:35
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ls -l /orainst/oradbinst
+STDOUT:
+-rwx--x--x 1 root root 70672 Apr 20 11:22 /orainst/oradbinst
+
+
+====STEP: Install oracle stuff
+DATE:2017-07-21 14:45:35
+
+
+DATE:2017-07-21 14:45:40
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:ls -l /var/orainst/l111031/log/pid
+STDOUT:
+-rw-r--r-- 1 root root 5 Jul 21 14:45 /var/orainst/l111031/log/pid
+
+
+DATE:2017-07-21 15:44:24
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:/orainst/oradbinst -node l111031,l111032 -vers 112040 -type RAC -racip 10.200.111.111,10.200.111.112,10.200.111.113 -storagetype FS:VCFS -step 1-5
+STDOUT:
+2017-07-21 14:45:48    INFO Checking if nodes are wop-sshable....Passed!
+2017-07-21 14:45:51    INFO Checking if nodes belong to the same subnet....Passed!
+2017-07-21 14:46:03    INFO Checking if nodes belong to the same OS Type....Passed!
+2017-07-21 14:46:03    INFO Checking if nodes belong to the same kernel....Passed!
+2017-07-21 14:46:03    INFO Checking if the combination RHEL7 -- 112040 in support list....Passed!
+2017-07-21 14:46:03    INFO Checking if amount of SCANIP and VIP is right....Passed!
+2017-07-21 14:46:03    INFO Checking if SCANIP or VIP belong to subnet "10.200.111.0"....Passed!
+2017-07-21 14:46:33    INFO Checking if SCANIP or VIP are usable....Passed!
+2017-07-21 14:46:42    INFO Copying scripts and files to Node "l111031"....Passed!
+2017-07-21 14:46:47    INFO Copying scripts and files to Node "l111032"....Passed!
+2017-07-21 14:46:48    INFO Checking if CVM are online....Passed!
+2017-07-21 14:46:48    INFO Configuring filesystem for Oracle Installation....Passed!
+2017-07-21 14:47:24    INFO     Creating oracle dg "oradg1912_ocrvote"....Passed!
+2017-07-21 14:47:24    INFO     Creating oracle dg "oradg1912_dbarch"....Passed!
+2017-07-21 14:47:24    INFO     Creating oracle volume "ocrvote"....Passed!
+2017-07-21 14:47:24    INFO     Mounting oracle volume "ocrvote" on node "l111031"....Passed!
+2017-07-21 14:47:24    INFO     Creating oracle volume "dbdata"....Passed!
+2017-07-21 14:47:24    INFO     Mounting oracle volume "dbdata" on node "l111031"....Passed!
+2017-07-21 14:47:24    INFO     Creating oracle volume "archive"....Passed!
+2017-07-21 14:47:24    INFO     Mounting oracle volume "archive" on node "l111031"....Passed!
+2017-07-21 14:47:24    INFO Configuring required stuff and install required packages on node "l111031"....Passed!
+2017-07-21 14:50:38    INFO 	Writting resolv stuff to hosts file on node "l111031"....Passed!
+2017-07-21 14:50:38    INFO 	Setting private ip for "em1" with ipaddr "192.200.111.31/255.255.255.0" on node "l111031"....Passed!
+2017-07-21 14:50:38    INFO 	Creating Oracle User "oracle" with password "Oracle123" on the node "l111031"....Passed!
+2017-07-21 14:50:38    INFO 	Setting oracle user profile on the node "l111031"....Passed!
+2017-07-21 14:50:38    INFO 	Generating pub key for oracle user on the node "l111031"....Passed!
+2017-07-21 14:50:38    INFO 	Setting oracle user limits on the node "l111031"....Passed!
+2017-07-21 14:50:38    INFO 	Creating directory for oracle binary on the node "l111031"....Passed!
+2017-07-21 14:50:38    INFO 	Configruring kernel parameters on the node "l111031"....Passed!
+2017-07-21 14:50:38    INFO 	Checking if YUM or Zypper is configured on the node "l111031"....Passed!
+2017-07-21 14:50:38    INFO 	Installing required pakcages on the node "l111031"....Passed!
+2017-07-21 14:50:38    INFO 	Executing additional script on the node "l111031"....Passed!
+2017-07-21 14:50:38    INFO Configuring required stuff and install required packages on node "l111032"....Passed!
+2017-07-21 15:08:23    INFO 	Writting resolv stuff to hosts file on node "l111032"....Passed!
+2017-07-21 15:08:23    INFO 	Setting private ip for "em1" with ipaddr "192.200.111.32/255.255.255.0" on node "l111032"....Passed!
+2017-07-21 15:08:23    INFO 	Creating Oracle User "oracle" with password "Oracle123" on the node "l111032"....Passed!
+2017-07-21 15:08:23    INFO 	Setting oracle user profile on the node "l111032"....Passed!
+2017-07-21 15:08:23    INFO 	Generating pub key for oracle user on the node "l111032"....Passed!
+2017-07-21 15:08:23    INFO 	Setting oracle user limits on the node "l111032"....Passed!
+2017-07-21 15:08:23    INFO 	Creating directory for oracle binary on the node "l111032"....Passed!
+2017-07-21 15:08:23    INFO 	Mounting oracle volume "ocrvote" on the node "l111032" ....Passed!
+2017-07-21 15:08:23    INFO 	Mounting oracle volume "dbdata" on the node "l111032" ....Passed!
+2017-07-21 15:08:23    INFO 	Mounting oracle volume "archive" on the node "l111032" ....Passed!
+2017-07-21 15:08:23    INFO 	Configruring kernel parameters on the node "l111032"....Passed!
+2017-07-21 15:08:23    INFO 	Checking if YUM or Zypper is configured on the node "l111032"....Passed!
+2017-07-21 15:08:23    INFO 	Installing required pakcages on the node "l111032"....Passed!
+2017-07-21 15:08:23    INFO 	Executing additional script on the node "l111032"....Passed!
+2017-07-21 15:08:31    INFO Mounting oracle iamge to /oraimage on the node "l111031"....Passed!
+2017-07-21 15:08:46    INFO Configuring oracle user equivalence....Passed!
+2017-07-21 15:08:46    INFO STEP 1:"DOENV:Setting up environment for Oracle RAC Installation"....Passed!
+2017-07-21 15:08:46    INFO Installing Grid binary....Passed!
+2017-07-21 15:08:48    INFO     Mounting oracle installation log from the node "l111031"....Passed!
+2017-07-21 15:08:54    INFO     Installing grid binary to l111031,l111032....100%
+2017-07-21 15:14:57    INFO     Umounting oracle installation log....Passed!
+2017-07-21 15:14:57    INFO STEP 2:"DOINSTGRID:Installing Grid binary for Oracle RAC Installation"....Passed!
+2017-07-21 15:15:00    INFO Configuring Grid Service....Passed!
+2017-07-21 15:15:02    INFO     Running "/orainst/oraInventory/orainstRoot.sh" on the node "l111031"....Passed!
+2017-07-21 15:15:03    INFO     Running "/orainst/oraInventory/orainstRoot.sh" on the node "l111032"....Passed!
+2017-07-21 15:23:13    INFO     Running "/crs/crshome/root.sh" on the node "l111031"....Passed!
+2017-07-21 15:29:02    INFO     Running "/crs/crshome/root.sh" on the node "l111032"....Passed!
+2017-07-21 15:29:02    INFO STEP 3:"DOSETGRID:Configuring Grid service for Oracle RAC Installation"....Passed!
+2017-07-21 15:29:18    INFO Installing database binnary to all nodes....Passed!
+2017-07-21 15:29:20    INFO     Mounting oracle installation log from the node "l111031"....Passed!
+2017-07-21 15:29:26    INFO     Installing database binary to l111031,l111032....100%
+2017-07-21 15:38:19    INFO     Umounting oracle installation log....Passed!
+2017-07-21 15:38:22    INFO     Running "/oracle/orahome/root.sh" on the node "l111031"....Passed!
+2017-07-21 15:38:26    INFO     Running "/oracle/orahome/root.sh" on the node "l111032"....Passed!
+2017-07-21 15:38:26    INFO STEP 4:"DODBBIN:Installing database binary for Oracle RAC Installation"....Passed!
+2017-07-21 15:38:26    INFO Creating database to all nodes....Passed!
+2017-07-21 15:38:26    INFO     Creating database on l111031,l111032....100%
+2017-07-21 15:43:36    INFO     Finishing oracle database settings on the node "l111031"....Passed!
+2017-07-21 15:44:24    INFO     Finishing oracle database settings on the node "l111032"....Passed!
+2017-07-21 15:44:24    INFO STEP 5:"DODBCA:Creating database for Oracle RAC Installation"....Passed!
+2017-07-21 15:44:24    INFO Congratulations!!! You have got Oracle RAC installed on l111031,l111032!
+2017-07-21 15:44:24     END 
+
+
+====STEP: Checking if oracle install successfully
+DATE:2017-07-21 15:44:24
+
+***No Errors found in /opt/itf/log/l111031/oracle_install.olog***
+
+
+
+====STEP: Installing oracle patch if needed
+DATE:2017-07-21 15:44:24
+
+
+DATE:2017-07-21 15:44:28
+HOST:l111031
+USER:root
+STDIN:ls /tmp/L_p*
+STDOUT:
+/tmp/L_p18180390_112040_Linux-x86-64.zip
+
+
+DATE:2017-07-21 15:44:29
+HOST:l111031
+USER:root
+STDIN:cd /tmp;unzip /tmp/L_p18180390_112040_Linux-x86-64.zip
+STDOUT:
+Archive:  /tmp/L_p18180390_112040_Linux-x86-64.zip
+   creating: 18180390/
+  inflating: 18180390/README.txt     
+   creating: 18180390/online/
+   creating: 18180390/online/etc/
+   creating: 18180390/online/etc/config/
+  inflating: 18180390/online/etc/config/deploy.xml  
+  inflating: 18180390/online/etc/config/inventory.xml  
+  inflating: 18180390/online/etc/config/actions.xml  
+   creating: 18180390/online/etc/xml/
+  inflating: 18180390/online/etc/xml/GenericActions.xml  
+  inflating: 18180390/online/etc/xml/ShiphomeDirectoryStructure.xml  
+   creating: 18180390/online/files/
+   creating: 18180390/online/files/hpatch/
+  inflating: 18180390/online/files/hpatch/bug18180390.pch  
+   creating: 18180390/etc/
+   creating: 18180390/etc/xml/
+  inflating: 18180390/etc/xml/GenericActions.xml  
+  inflating: 18180390/etc/xml/ShiphomeDirectoryStructure.xml  
+   creating: 18180390/etc/config/
+  inflating: 18180390/etc/config/actions.xml  
+  inflating: 18180390/etc/config/inventory.xml  
+  inflating: 18180390/etc/config/deploy.xml  
+   creating: 18180390/files/
+   creating: 18180390/files/lib/
+   creating: 18180390/files/lib/libserver11.a/
+  inflating: 18180390/files/lib/libserver11.a/ksfd.o  
+  inflating: PatchSearch.xml         
+
+
+DATE:2017-07-21 15:44:50
+HOST:l111031
+USER:oracle
+STDIN:cd /tmp/18180390;echo y|/oracle/orahome/OPatch/opatch apply
+STDOUT:
+Oracle Interim Patch Installer version 11.2.0.3.4
+Copyright (c) 2012, Oracle Corporation.  All rights reserved.
+
+
+Oracle Home       : /oracle/orahome
+Central Inventory : /orainst/oraInventory
+   from           : /oracle/orahome/oraInst.loc
+OPatch version    : 11.2.0.3.4
+OUI version       : 11.2.0.4.0
+Log file location : /oracle/orahome/cfgtoollogs/opatch/18180390_Jul_21_2017_07_45_30/apply2017-07-21_07-45-30AM_1.log
+
+Applying interim patch '18180390' to OH '/oracle/orahome'
+Verifying environment and performing prerequisite checks...
+All checks passed.
+
+This node is part of an Oracle Real Application Cluster.
+Remote nodes: 'l111032' 
+Local node: 'l111031'
+Please shutdown Oracle instances running out of this ORACLE_HOME on the local system.
+(Oracle Home = '/oracle/orahome')
+
+
+Is the local system ready for patching? [y|n]
+User Responded with: Y
+Backing up files...
+
+Patching component oracle.rdbms, 11.2.0.4.0...
+
+Verifying the update...
+
+The local system has been patched.  You can restart Oracle instances on it.
+
+
+Patching in rolling mode.
+
+
+The node 'l111032' will be patched next.
+
+
+Please shutdown Oracle instances running out of this ORACLE_HOME on 'l111032'.
+(Oracle Home = '/oracle/orahome')
+
+Is the node ready for patching? [y|n]
+You may exit the patching session and patch remaining nodes later from an un-patched node.  Do you want to continue?
+Do you want to proceed? [y|n]
+[ Error during RAC propagation Phase]. Detail: OPatch failed to propagate the patch to the remote node(s).
+Run the patch again on each of the remote node(s) using -local option.
+Details: null
+[ Error during RAC propagation Phase]. Detail: OPatch failed: OUI-67081:OPatch failed to propagate the patch to the remote node(s).
+Run the patch again on each of the remote node(s) using -local option.
+Details: null
+Log file location: /oracle/orahome/cfgtoollogs/opatch/18180390_Jul_21_2017_07_45_30/apply2017-07-21_07-45-30AM_1.log
+
+Recommended actions: Please apply the patch to the remote nodes manually.
+
+OPatch failed with error code 202
+RETURN:202
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-07-21 15:44:50
+Duration:59m45s

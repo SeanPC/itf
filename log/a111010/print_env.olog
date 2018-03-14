@@ -1,0 +1,29 @@
+
+==================== Operation Log for TC print_env ====================
+DATE:2017-01-16 14:48:08
+Nodes:a111010
+
+
+====STEP: Check and Print environment
+DATE:2017-01-16 14:48:08
+
+***checking if hosts are wop-sshable with root***
+
+
+
+DATE:2017-01-16 14:48:08
+HOST:a111010
+USER:root
+STDIN:nmap -p 22 a111010
+STDOUT:
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2017-01-16 14:48 CST
+Failed to resolve given hostname/IP: a111010.  Note that you can't use '/mask' AND '1-4,7,100-' style IP ranges
+WARNING: No targets were specified, so 0 hosts scanned.
+Nmap finished: 0 IP addresses (0 hosts up) scanned in 0.142 seconds
+RESULT:Failed
+
+
+Case Result:Failed
+DATE:2017-01-16 14:48:08
+Duration:0m0s

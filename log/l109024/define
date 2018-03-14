@@ -1,0 +1,4 @@
+export oracle="oracle"
+export oracletype="RAC"
+export racip="10.200.109.211,10.200.109.212,10.200.109.213"
+export vers="112040"

@@ -1,0 +1,812 @@
+
+***Going to clear mount point on the nfsclient***
+
+
+
+DATE:2017-07-06 15:03:53
+HOST:cdc-nfs-client-cd-02
+USER:root
+STDIN:ps -ef|grep tmpfile
+STDOUT:
+root      3988  3986  0 15:04 ?        00:00:00 grep tmpfile
+
+
+DATE:2017-07-06 15:04:13
+HOST:l007011
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster bj-7-1112 (
+	UserNames = { admin = cJKcJEjGKfKKiSKeJH }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l007011 (
+	)
+
+system l007012 (
+	)
+
+group autotcsg1 (
+	SystemList = { l007011 = 0, l007012 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l007011, l007012 }
+	)
+
+	CFSMount cfsmount1 (
+		Critical = 0
+		MountPoint = "/autotcmnt1"
+		BlockDevice = "/dev/vx/dsk/autotcdg1/autotcdg1_r0_1"
+		MountOpt @l007011 = rw
+		MountOpt @l007012 = rw
+		NodeList = { l007011, l007012 }
+		)
+
+	CVMVolDg cvmvoldg1 (
+		Critical = 0
+		CVMDiskGroup = autotcdg1
+		CVMVolume = { autotcdg1_r0_1 }
+		CVMActivation @l007011 = sw
+		CVMActivation @l007012 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount1 requires cvmvoldg1
+
+
+	// resource dependency tree
+	//
+	//	group autotcsg1
+	//	{
+	//	CFSMount cfsmount1
+	//	    {
+	//	    CVMVolDg cvmvoldg1
+	//	    }
+	//	}
+
+
+group autotcsg2 (
+	SystemList = { l007011 = 0, l007012 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l007011, l007012 }
+	)
+
+	CFSMount cfsmount2 (
+		Critical = 0
+		MountPoint = "/autotcmnt2"
+		BlockDevice = "/dev/vx/dsk/autotcdg1/autotcdg1_r1_2"
+		MountOpt @l007011 = "rw,smartiomode=writeback"
+		MountOpt @l007012 = "rw,smartiomode=writeback"
+		NodeList = { l007011, l007012 }
+		)
+
+	CVMVolDg cvmvoldg2 (
+		Critical = 0
+		CVMDiskGroup = autotcdg1
+		CVMVolume = { autotcdg1_r1_2 }
+		CVMActivation @l007011 = sw
+		CVMActivation @l007012 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount2 requires cvmvoldg2
+
+
+	// resource dependency tree
+	//
+	//	group autotcsg2
+	//	{
+	//	CFSMount cfsmount2
+	//	    {
+	//	    CVMVolDg cvmvoldg2
+	//	    }
+	//	}
+
+
+group autotcsg3 (
+	SystemList = { l007011 = 0, l007012 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l007011, l007012 }
+	)
+
+	CFSMount cfsmount3 (
+		Critical = 0
+		MountPoint = "/autotcmnt3"
+		BlockDevice = "/dev/vx/dsk/autotcdg2/autotcdg2_r0_1"
+		MountOpt @l007011 = "rw,smartiomode=read,smartiocache=cache2"
+		MountOpt @l007012 = "rw,smartiomode=read,smartiocache=cache2"
+		NodeList = { l007011, l007012 }
+		)
+
+	CVMVolDg cvmvoldg3 (
+		Critical = 0
+		CVMDiskGroup = autotcdg2
+		CVMVolume = { autotcdg2_r0_1 }
+		CVMActivation @l007011 = sw
+		CVMActivation @l007012 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount3 requires cvmvoldg3
+
+
+	// resource dependency tree
+	//
+	//	group autotcsg3
+	//	{
+	//	CFSMount cfsmount3
+	//	    {
+	//	    CVMVolDg cvmvoldg3
+	//	    }
+	//	}
+
+
+group autotcsg4 (
+	SystemList = { l007011 = 0, l007012 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l007011, l007012 }
+	)
+
+	CFSMount cfsmount4 (
+		Critical = 0
+		MountPoint = "/autotcmnt4"
+		BlockDevice = "/dev/vx/dsk/autotcdg2/autotcdg2_r1_2"
+		MountOpt @l007011 = "rw,smartiomode=writeback,smartiocache=cache2:cache3"
+		MountOpt @l007012 = "rw,smartiomode=writeback,smartiocache=cache2:cache3"
+		NodeList = { l007011, l007012 }
+		)
+
+	CVMVolDg cvmvoldg4 (
+		Critical = 0
+		CVMDiskGroup = autotcdg2
+		CVMVolume = { autotcdg2_r1_2 }
+		CVMActivation @l007011 = sw
+		CVMActivation @l007012 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount4 requires cvmvoldg4
+
+
+	// resource dependency tree
+	//
+	//	group autotcsg4
+	//	{
+	//	CFSMount cfsmount4
+	//	    {
+	//	    CVMVolDg cvmvoldg4
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { l007011 = 0, l007012 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l007011, l007012 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l007011 = { p45816495632775p = sw, autotcdg = sw, dg1 = sw,
+			 autotcdg1 = sw,
+			 autotcdg2 = sw }
+		ActivationMode @l007012 = { p45816495632775p = sw, autotcdg = sw, dg1 = sw,
+			 autotcdg1 = sw,
+			 autotcdg2 = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = bj-7-1112
+		CVMNodeId = { l007011 = 0, l007012 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+***import the maincf /opt/itf/log/l007011/logs/main.cf to cluster***
+
+
+
+DATE:2017-07-06 15:04:13
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastop -all
+STDOUT:
+
+
+
+DATE:2017-07-06 15:04:24
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-06 15:04:24
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-06 15:04:34
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-06 15:04:34
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-06 15:04:44
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-07-06 15:04:45
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+l007011
+l007012
+
+
+DATE:2017-07-06 15:04:55
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -list
+STDOUT:
+VCS ERROR V-16-1-10600 Cannot connect to VCS engine
+
+
+DATE:2017-07-06 15:05:10
+HOST:l092152.cdc.veritas.com
+USER:root
+STDIN:scp -r -p -q -o ConnectTimeout=60 /opt/itf/log/l007011/logs/main.cf l007011:/tmp/tmpfile.27603
+STDOUT:
+
+
+
+DATE:2017-07-06 15:05:10
+HOST:l007011
+USER:root
+STDIN:mv /etc/VRTSvcs/conf/config/main.cf /etc/VRTSvcs/conf/config/main.cf.orig;cat /tmp/tmpfile.27603 > /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+
+
+
+DATE:2017-07-06 15:05:11
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-07-06 15:05:21
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l007011    SysState                RUNNING
+l007012    SysState                UNKNOWN
+
+
+DATE:2017-07-06 15:05:21
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l007011    SysState                RUNNING
+l007012    SysState                UNKNOWN
+
+
+DATE:2017-07-06 15:05:22
+HOST:l007012
+USER:root
+STDIN:/opt/VRTSvcs/bin/hastart
+STDOUT:
+
+
+
+DATE:2017-07-06 15:05:32
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l007011    SysState                RUNNING
+l007012    SysState                RUNNING
+
+
+DATE:2017-07-06 15:05:32
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hasys -state
+STDOUT:
+#System    Attribute               Value
+l007011    SysState                RUNNING
+l007012    SysState                RUNNING
+
+***Waiting the group cvm online***
+
+
+
+DATE:2017-07-06 15:05:32
+HOST:l007011
+USER:root
+STDIN:/opt/VRTSvcs/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |OFFLINE|STARTING|
+cvm          State                 l007012    |OFFLINE|STARTING|
+
+
+DATE:2017-07-06 15:05:32
+HOST:l007011
+USER:root
+STDIN:cat /etc/VRTSvcs/conf/config/main.cf
+STDOUT:
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster bj-7-1112 (
+	UserNames = { admin = cJKcJEjGKfKKiSKeJH }
+	Administrators = { admin }
+	UseFence = SCSI3
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l007011 (
+	)
+
+system l007012 (
+	)
+
+group cvm (
+	SystemList = { l007011 = 0, l007012 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l007011, l007012 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l007011 = { p45816495632775p = sw, autotcdg = sw, dg1 = sw }
+		ActivationMode @l007012 = { p45816495632775p = sw, autotcdg = sw, dg1 = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = bj-7-1112
+		CVMNodeId = { l007011 = 0, l007012 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
+
+
+DATE:2017-07-06 15:05:43
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |OFFLINE|STARTING|
+
+
+DATE:2017-07-06 15:05:53
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |ONLINE|
+
+
+DATE:2017-07-06 15:05:53
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/hagrp -state cvm
+STDOUT:
+#Group       Attribute             System     Value
+cvm          State                 l007011    |ONLINE|
+cvm          State                 l007012    |ONLINE|
+
+***umount vxfs on node l007011***
+
+
+
+DATE:2017-07-06 15:05:53
+HOST:l007011
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 60G 8.9G 48G 16% /
+udev 4.0G 708K 4.0G 1% /dev
+tmpfs 4.0G 708K 4.0G 1% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+
+***umount vxfs on node l007012***
+
+
+
+DATE:2017-07-06 15:05:54
+HOST:l007012
+USER:root
+STDIN:df -h|sed 1d|xargs -n 6
+STDOUT:
+/dev/sda2 59G 8.0G 48G 15% /
+udev 4.0G 724K 4.0G 1% /dev
+tmpfs 4.0G 704K 4.0G 1% /dev/shm
+tmpfs 4.0K 0 4.0K 0% /dev/vx
+
+
+DATE:2017-07-06 15:05:54
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+cache1                           VxFS   4.96g      AUTO        ONLINE     default    emc_clariion0_321
+cache2                           VxFS   4.96g      AUTO        ONLINE     reserve    emc_clariion0_318
+cache3                           VxFS   4.96g      AUTO        ONLINE     reserve    emc_clariion0_317
+
+
+DATE:2017-07-06 15:05:55
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/sfcache offline cache1
+STDOUT:
+
+
+
+DATE:2017-07-06 15:05:56
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/sfcache delete cache1
+STDOUT:
+
+
+
+DATE:2017-07-06 15:05:56
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/sfcache offline cache2
+STDOUT:
+
+
+
+DATE:2017-07-06 15:05:57
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/sfcache delete cache2
+STDOUT:
+
+
+
+DATE:2017-07-06 15:05:57
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/sfcache offline cache3
+STDOUT:
+
+
+
+DATE:2017-07-06 15:05:58
+HOST:l007011
+USER:root
+STDIN:/opt/VRTS/bin/sfcache delete cache3
+STDOUT:
+
+
+
+DATE:2017-07-06 15:05:59
+HOST:l007012
+USER:root
+STDIN:/opt/VRTS/bin/sfcache list
+STDOUT:
+NAME                             TYPE   SIZE       ASSOC-TYPE  STATE      FSTYPE     DEVICE
+cache1                           VxFS   4.96g      AUTO        ONLINE     default    emc_clariion0_316
+cache2                           VxFS   4.96g      AUTO        ONLINE     reserve    emc_clariion0_315
+cache3                           VxFS   4.96g      AUTO        ONLINE     reserve    emc_clariion0_314
+
+
+DATE:2017-07-06 15:05:59
+HOST:l007012
+USER:root
+STDIN:/opt/VRTS/bin/sfcache offline cache1
+STDOUT:
+
+
+
+DATE:2017-07-06 15:06:00
+HOST:l007012
+USER:root
+STDIN:/opt/VRTS/bin/sfcache delete cache1
+STDOUT:
+
+
+
+DATE:2017-07-06 15:06:00
+HOST:l007012
+USER:root
+STDIN:/opt/VRTS/bin/sfcache offline cache2
+STDOUT:
+
+
+
+DATE:2017-07-06 15:06:01
+HOST:l007012
+USER:root
+STDIN:/opt/VRTS/bin/sfcache delete cache2
+STDOUT:
+
+
+
+DATE:2017-07-06 15:06:01
+HOST:l007012
+USER:root
+STDIN:/opt/VRTS/bin/sfcache offline cache3
+STDOUT:
+
+
+
+DATE:2017-07-06 15:06:02
+HOST:l007012
+USER:root
+STDIN:/opt/VRTS/bin/sfcache delete cache3
+STDOUT:
+
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-07-06 15:06:02
+HOST:l007011
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-07-06 15:06:03
+HOST:l007011
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+ams_wms0_361 auto:cdsdisk    -            (vxfendg)    online
+ams_wms0_362 auto:cdsdisk    -            (vxfendg)    online
+ams_wms0_363 auto:cdsdisk    -            (vxfendg)    online
+ams_wms0_364 auto:cdsdisk    -            -            online
+ams_wms0_365 auto:cdsdisk    -            -            online
+ams_wms0_366 auto:cdsdisk    -            -            online
+ams_wms0_367 auto:cdsdisk    -            -            online
+ams_wms0_368 auto:cdsdisk    -            -            online
+ams_wms0_369 auto:cdsdisk    -            -            online
+ams_wms0_370 auto:cdsdisk    -            -            online
+ams_wms0_371 auto:cdsdisk    -            -            online
+ams_wms0_372 auto:cdsdisk    -            -            online
+ams_wms0_373 auto:cdsdisk    -            -            online
+ams_wms0_374 auto:cdsdisk    -            -            online
+ams_wms0_375 auto:cdsdisk    ams_wms0_375  autotcdg2    online shared
+ams_wms0_376 auto:cdsdisk    ams_wms0_376  autotcdg2    online shared
+ams_wms0_377 auto:cdsdisk    ams_wms0_377  autotcdg2    online shared
+ams_wms0_378 auto:cdsdisk    ams_wms0_378  autotcdg2    online shared
+ams_wms0_379 auto:cdsdisk    ams_wms0_379  autotcdg2    online shared
+ams_wms0_380 auto:cdsdisk    ams_wms0_380  autotcdg2    online shared
+ams_wms0_381 auto:cdsdisk    ams_wms0_381  autotcdg2    online shared
+ams_wms0_382 auto:cdsdisk    ams_wms0_382  autotcdg2    online shared
+ams_wms0_383 auto:cdsdisk    ams_wms0_383  autotcdg1    online shared
+ams_wms0_384 auto:cdsdisk    ams_wms0_384  autotcdg1    online shared
+ams_wms0_385 auto:cdsdisk    ams_wms0_385  autotcdg1    online shared
+ams_wms0_386 auto:cdsdisk    ams_wms0_386  autotcdg1    online shared
+ams_wms0_387 auto:cdsdisk    ams_wms0_387  autotcdg1    online shared
+ams_wms0_388 auto:cdsdisk    ams_wms0_388  autotcdg1    online shared
+ams_wms0_389 auto:cdsdisk    ams_wms0_389  autotcdg1    online shared
+ams_wms0_390 auto:cdsdisk    ams_wms0_390  autotcdg1    online shared
+emc_clariion0_314 auto:cdsdisk    -            -            online
+emc_clariion0_315 auto:cdsdisk    -            -            online
+emc_clariion0_316 auto:cdsdisk    -            -            online
+emc_clariion0_317 auto:cdsdisk    -            -            online
+emc_clariion0_318 auto:cdsdisk    -            -            online
+emc_clariion0_320 auto:cdsdisk    -            -            online
+emc_clariion0_321 auto:cdsdisk    -            -            online
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-07-06 15:06:03
+HOST:l007011
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID
+autotcdg2    enabled,shared,cds   1499324030.74.l007011
+autotcdg1    enabled,shared,cds   1499324027.72.l007011
+
+
+DATE:2017-07-06 15:06:04
+HOST:l007011
+USER:root
+STDIN:vxdg destroy autotcdg2
+STDOUT:
+
+
+
+DATE:2017-07-06 15:06:04
+HOST:l007011
+USER:root
+STDIN:vxdg destroy autotcdg1
+STDOUT:
+
+
+***Clean all Diskgroups except fendg and oradg***
+
+
+
+DATE:2017-07-06 15:06:04
+HOST:l007012
+USER:root
+STDIN:[ -f /etc/vxfendg ] && cat /etc/vxfendg || exit 0
+STDOUT:
+vxfendg
+
+
+DATE:2017-07-06 15:06:05
+HOST:l007012
+USER:root
+STDIN:vxdisk -o alldgs list
+STDOUT:
+DEVICE          TYPE            DISK         GROUP        STATUS
+ams_wms0_361 auto:cdsdisk    -            (vxfendg)    online
+ams_wms0_362 auto:cdsdisk    -            (vxfendg)    online
+ams_wms0_363 auto:cdsdisk    -            (vxfendg)    online
+ams_wms0_364 auto:cdsdisk    -            -            online
+ams_wms0_365 auto:cdsdisk    -            -            online
+ams_wms0_366 auto:cdsdisk    -            -            online
+ams_wms0_367 auto:cdsdisk    -            -            online
+ams_wms0_368 auto:cdsdisk    -            -            online
+ams_wms0_369 auto:cdsdisk    -            -            online
+ams_wms0_370 auto:cdsdisk    -            -            online
+ams_wms0_371 auto:cdsdisk    -            -            online
+ams_wms0_372 auto:cdsdisk    -            -            online
+ams_wms0_373 auto:cdsdisk    -            -            online
+ams_wms0_374 auto:cdsdisk    -            -            online
+ams_wms0_375 auto:cdsdisk    -            -            online
+ams_wms0_376 auto:cdsdisk    -            -            online
+ams_wms0_377 auto:cdsdisk    -            -            online
+ams_wms0_378 auto:cdsdisk    -            -            online
+ams_wms0_379 auto:cdsdisk    -            -            online
+ams_wms0_380 auto:cdsdisk    -            -            online
+ams_wms0_381 auto:cdsdisk    -            -            online
+ams_wms0_382 auto:cdsdisk    -            -            online
+ams_wms0_383 auto:cdsdisk    -            -            online
+ams_wms0_384 auto:cdsdisk    -            -            online
+ams_wms0_385 auto:cdsdisk    -            -            online
+ams_wms0_386 auto:cdsdisk    -            -            online
+ams_wms0_387 auto:cdsdisk    -            -            online
+ams_wms0_388 auto:cdsdisk    -            -            online
+ams_wms0_389 auto:cdsdisk    -            -            online
+ams_wms0_390 auto:cdsdisk    -            -            online
+emc_clariion0_314 auto:cdsdisk    -            -            online
+emc_clariion0_315 auto:cdsdisk    -            -            online
+emc_clariion0_316 auto:cdsdisk    -            -            online
+emc_clariion0_317 auto:cdsdisk    -            -            online
+emc_clariion0_318 auto:cdsdisk    -            -            online
+emc_clariion0_319 auto:cdsdisk    -            -            online
+emc_clariion0_321 auto:cdsdisk    -            -            online
+sda          auto:none       -            -            online invalid
+
+
+DATE:2017-07-06 15:06:05
+HOST:l007012
+USER:root
+STDIN:vxdg list
+STDOUT:
+NAME         STATE           ID

@@ -1,0 +1,228 @@
+include "OracleASMTypes.cf"
+include "types.cf"
+include "CFSTypes.cf"
+include "CRSResource.cf"
+include "CSSD.cf"
+include "CVMTypes.cf"
+include "Db2udbTypes.cf"
+include "MultiPrivNIC.cf"
+include "OracleTypes.cf"
+include "PrivNIC.cf"
+include "SybaseTypes.cf"
+
+cluster clus1314 (
+	UserNames = { admin = bIJbIDiFJeJJhRJdIG }
+	Administrators = { admin }
+	HacliUserLevel = COMMANDROOT
+	)
+
+system l111013 (
+	)
+
+system l111014 (
+	)
+
+group cfsgrp1 (
+	SystemList = { l111013 = 0, l111014 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111013, l111014 }
+	)
+
+	CFSMount cfsmount5 (
+		Critical = 0
+		MountPoint = "/autotc1"
+		BlockDevice = "/dev/vx/dsk/autotcdg/autotcvset1"
+		MountOpt @l111013 = rw
+		MountOpt @l111014 = rw
+		NodeList = { l111013, l111014 }
+		)
+
+	CVMVolDg cvmvoldg5 (
+		Critical = 0
+		CVMDiskGroup = autotcdg
+		CVMVolume = { autotcvol1, autotcvol2 }
+		CVMActivation @l111013 = sw
+		CVMActivation @l111014 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount5 requires cvmvoldg5
+
+
+	// resource dependency tree
+	//
+	//	group cfsgrp1
+	//	{
+	//	CFSMount cfsmount5
+	//	    {
+	//	    CVMVolDg cvmvoldg5
+	//	    }
+	//	}
+
+
+group cfsgrp2 (
+	SystemList = { l111013 = 0, l111014 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111013, l111014 }
+	)
+
+	CFSMount cfsmount6 (
+		Critical = 0
+		MountPoint = "/autotc2"
+		BlockDevice = "/dev/vx/dsk/autotcdg/autotcvset2"
+		MountOpt @l111013 = rw
+		MountOpt @l111014 = rw
+		NodeList = { l111013, l111014 }
+		)
+
+	CVMVolDg cvmvoldg6 (
+		Critical = 0
+		CVMDiskGroup = autotcdg
+		CVMVolume = { autotcvol3, autotcvol4 }
+		CVMActivation @l111013 = sw
+		CVMActivation @l111014 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount6 requires cvmvoldg6
+
+
+	// resource dependency tree
+	//
+	//	group cfsgrp2
+	//	{
+	//	CFSMount cfsmount6
+	//	    {
+	//	    CVMVolDg cvmvoldg6
+	//	    }
+	//	}
+
+
+group cfsgrp3 (
+	SystemList = { l111013 = 0, l111014 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111013, l111014 }
+	)
+
+	CFSMount cfsmount7 (
+		Critical = 0
+		MountPoint = "/autotc3"
+		BlockDevice = "/dev/vx/dsk/autotcdg/autotcvset3"
+		MountOpt @l111013 = rw
+		MountOpt @l111014 = rw
+		NodeList = { l111013, l111014 }
+		)
+
+	CVMVolDg cvmvoldg7 (
+		Critical = 0
+		CVMDiskGroup = autotcdg
+		CVMVolume = { autotcvol5, autotcvol6 }
+		CVMActivation @l111013 = sw
+		CVMActivation @l111014 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount7 requires cvmvoldg7
+
+
+	// resource dependency tree
+	//
+	//	group cfsgrp3
+	//	{
+	//	CFSMount cfsmount7
+	//	    {
+	//	    CVMVolDg cvmvoldg7
+	//	    }
+	//	}
+
+
+group cfsgrp4 (
+	SystemList = { l111013 = 0, l111014 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111013, l111014 }
+	)
+
+	CFSMount cfsmount8 (
+		Critical = 0
+		MountPoint = "/autotc4"
+		BlockDevice = "/dev/vx/dsk/autotcdg/autotcvset4"
+		MountOpt @l111013 = rw
+		MountOpt @l111014 = rw
+		NodeList = { l111013, l111014 }
+		)
+
+	CVMVolDg cvmvoldg8 (
+		Critical = 0
+		CVMDiskGroup = autotcdg
+		CVMVolume = { autotcvol7 }
+		CVMActivation @l111013 = sw
+		CVMActivation @l111014 = sw
+		)
+
+	requires group cvm online local firm
+	cfsmount8 requires cvmvoldg8
+
+
+	// resource dependency tree
+	//
+	//	group cfsgrp4
+	//	{
+	//	CFSMount cfsmount8
+	//	    {
+	//	    CVMVolDg cvmvoldg8
+	//	    }
+	//	}
+
+
+group cvm (
+	SystemList = { l111013 = 0, l111014 = 1 }
+	AutoFailOver = 0
+	Parallel = 1
+	AutoStartList = { l111013, l111014 }
+	)
+
+	CFSfsckd vxfsckd (
+		ActivationMode @l111013 = { autotcdg = sw }
+		ActivationMode @l111014 = { autotcdg = sw }
+		)
+
+	CVMCluster cvm_clus (
+		CVMClustName = clus1314
+		CVMNodeId = { l111013 = 0, l111014 = 1 }
+		CVMTransport = gab
+		CVMTimeout = 200
+		)
+
+	CVMVxconfigd cvm_vxconfigd (
+		Critical = 0
+		CVMVxconfigdArgs = { syslog }
+		)
+
+	ProcessOnOnly vxattachd (
+		Critical = 0
+		PathName = "/bin/sh"
+		Arguments = "- /usr/lib/vxvm/bin/vxattachd root"
+		RestartLimit = 3
+		)
+
+	cvm_clus requires cvm_vxconfigd
+	vxfsckd requires cvm_clus
+
+
+	// resource dependency tree
+	//
+	//	group cvm
+	//	{
+	//	ProcessOnOnly vxattachd
+	//	CFSfsckd vxfsckd
+	//	    {
+	//	    CVMCluster cvm_clus
+	//	        {
+	//	        CVMVxconfigd cvm_vxconfigd
+	//	        }
+	//	    }
+	//	}
